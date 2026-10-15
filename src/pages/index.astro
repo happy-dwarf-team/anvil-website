@@ -1,0 +1,207 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+import PluginCard from '../components/PluginCard.astro';
+import { url } from '../lib/url';
+
+const plugins = (await getCollection('plugins')).sort((a, b) => a.data.order - b.data.order);
+
+const features = [
+	{
+		title: 'eu4.exe stays untouched',
+		text: 'Anvil is a small version.dll next to the game. Steam updates and "Verify integrity of game files" keep working.',
+		icon: 'M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Zm-3 9 2 2 4-4',
+	},
+	{
+		title: 'Safe by default',
+		text: 'Every plugin lists the game builds it supports. Unknown builds, broken plugins or an empty folder: the game simply starts as usual.',
+		icon: 'M4 12h4l3 7 4-14 3 7h2',
+	},
+	{
+		title: 'Always explained',
+		text: 'Each start writes anvil/anvil.log: which plugins loaded, which were skipped, and why.',
+		icon: 'M6 3h9l4 4v14H6V3Zm9 0v4h4M9 12h7M9 16h7',
+	},
+];
+
+const steps = [
+	{ title: 'Download', text: 'Get the latest anvil-windows-x64.zip.' },
+	{
+		title: 'Extract',
+		text: 'Unpack it into the game folder, the one that contains eu4.exe.',
+	},
+	{ title: 'Add plugins and play', text: 'Put plugins into anvil/plugins/ and start EU4 as usual.' },
+];
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Plugin loader for Europa Universalis IV',
+		description:
+			'Anvil is a plugin loader for Europa Universalis IV. Native plugins, no changes to eu4.exe.',
+		template: 'splash',
+		hero: {
+			title: 'Anvil',
+			tagline: 'Native plugins for Europa Universalis IV, without touching <code>eu4.exe</code>.',
+		},
+	}}
+>
+	<section class="features" aria-label="Features">
+		{
+			features.map((f) => (
+				<div class="feature">
+					<svg aria-hidden="true" viewBox="0 0 24 24" width="28" height="28">
+						<path
+							d={f.icon}
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.75"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					<h2 class="forge-heading">{f.title}</h2>
+					<p>{f.text}</p>
+				</div>
+			))
+		}
+	</section>
+
+	<section class="block" aria-labelledby="plugins">
+		<div class="block-head">
+			<h2 id="plugins" class="forge-heading">Plugins</h2>
+			<a href={url('plugins/')}>All plugins <span aria-hidden="true">→</span></a>
+		</div>
+		<div class="plugin-grid">
+			{plugins.map((plugin) => <PluginCard plugin={plugin} />)}
+		</div>
+	</section>
+
+	<section class="block" aria-labelledby="install">
+		<div class="block-head">
+			<h2 id="install" class="forge-heading">Install in three steps</h2>
+			<a href={url('docs/install/')}>Full guide <span aria-hidden="true">→</span></a>
+		</div>
+		<ol class="steps">
+			{
+				steps.map((s) => (
+					<li>
+						<h3>{s.title}</h3>
+						<p>{s.text}</p>
+					</li>
+				))
+			}
+		</ol>
+		<p class="uninstall">
+			To uninstall, delete <code>version.dll</code> and the <code>anvil</code> folder. Nothing else
+			was changed.
+		</p>
+	</section>
+</StarlightPage>
+
+<style>
+	/* Starlight spaces sibling elements in content with margin-top; grids use gap instead. */
+	.features > *,
+	.plugin-grid > *,
+	.steps > * {
+		margin-top: 0;
+	}
+	.features {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+		gap: 1rem;
+		margin-block: 2.5rem 0;
+	}
+	.feature {
+		padding: 1.25rem;
+		border-top: 2px solid var(--forge-accent);
+		background: var(--forge-surface);
+		border-radius: 0 0 var(--forge-radius) var(--forge-radius);
+	}
+	.feature svg {
+		color: var(--forge-accent);
+	}
+	.feature h2 {
+		margin: 0.75rem 0 0.4rem;
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-lg);
+	}
+	.feature p {
+		margin: 0;
+		color: var(--forge-text-muted);
+	}
+	.block {
+		margin-top: 4.5rem;
+	}
+	.block-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.25rem;
+	}
+	.block-head h2 {
+		margin: 0;
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-2xl);
+	}
+	.block-head a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		min-height: 2.75rem;
+		color: var(--forge-text);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+	.block-head a:hover {
+		color: var(--forge-accent-strong);
+	}
+	.plugin-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+		gap: 1rem;
+	}
+	.steps {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 1rem;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		counter-reset: step;
+	}
+	.steps li {
+		counter-increment: step;
+		margin: 0;
+		padding: 1.25rem;
+		border: 1px solid var(--forge-border);
+		border-radius: var(--forge-radius);
+	}
+	.steps li::before {
+		content: counter(step);
+		display: inline-grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		background: var(--forge-accent-soft);
+		color: var(--forge-accent-strong);
+		font-family: var(--__sl-font-mono);
+		font-weight: 700;
+	}
+	.steps h3 {
+		margin: 0.75rem 0 0.25rem;
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-base);
+	}
+	.steps p {
+		margin: 0;
+		color: var(--forge-text-muted);
+	}
+	.uninstall {
+		margin-top: 1rem;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
+</style>

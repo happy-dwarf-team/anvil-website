@@ -1,0 +1,83 @@
+/*
+ * "Dark forge" theme. Values and contrast ratios are documented in DESIGN.md.
+ * The site is dark only; ThemeProvider forces data-theme="dark".
+ */
+:root {
+	/* Brand tokens */
+	--forge-bg: #16171a;
+	--forge-surface: #1f2024;
+	--forge-surface-raised: #26272c;
+	--forge-border: #34363c;
+	--forge-text: #e8e6e3;
+	--forge-text-muted: #a8a29e;
+	--forge-accent: #f5922a;
+	--forge-accent-strong: #ffad55;
+	--forge-accent-soft: #3d2611;
+	--forge-on-accent: #16171a;
+
+	--forge-radius: 0.75rem;
+	--forge-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+	/* Starlight mapping */
+	--sl-font: 'IBM Plex Sans Variable';
+	--sl-font-mono: 'JetBrains Mono Variable';
+
+	--sl-color-white: #f7f5f2;
+	--sl-color-gray-1: #ece9e5;
+	--sl-color-gray-2: var(--forge-text);
+	--sl-color-gray-3: var(--forge-text-muted);
+	--sl-color-gray-4: #6b6d74;
+	--sl-color-gray-5: var(--forge-border);
+	--sl-color-gray-6: var(--forge-surface);
+	--sl-color-black: var(--forge-bg);
+
+	--sl-color-accent-low: var(--forge-accent-soft);
+	--sl-color-accent: var(--forge-accent);
+	--sl-color-accent-high: var(--forge-accent-strong);
+
+	--sl-color-text: var(--forge-text);
+	--sl-color-bg-nav: var(--forge-bg);
+	--sl-color-bg-sidebar: var(--forge-bg);
+	--sl-color-hairline: var(--forge-border);
+	--sl-color-hairline-light: var(--forge-border);
+	--sl-line-height: 1.6;
+}
+
+/* Headings use the mono face; body text stays in Plex Sans. */
+.sl-markdown-content :is(h1, h2, h3),
+h1#_top,
+.forge-heading {
+	font-family: var(--__sl-font-mono);
+	letter-spacing: -0.02em;
+}
+
+:focus-visible {
+	outline: 2px solid var(--forge-accent);
+	outline-offset: 2px;
+}
+
+/* The header separator sits before the theme picker, which this site does not have. */
+.social-icons::after {
+	content: none;
+}
+
+.site-title img {
+	height: 1.75rem;
+	width: auto;
+}
+.site-title {
+	font-family: var(--__sl-font-mono);
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}

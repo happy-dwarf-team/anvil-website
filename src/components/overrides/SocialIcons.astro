@@ -1,0 +1,45 @@
+---
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+import { url } from '../../lib/url';
+
+const links = [
+	{ label: 'Plugins', href: url('plugins/') },
+	{ label: 'Docs', href: url('docs/install/') },
+];
+const path = Astro.url.pathname;
+---
+
+<nav class="site-nav" aria-label="Main">
+	{
+		links.map((link) => (
+			<a href={link.href} aria-current={path.startsWith(link.href) ? 'page' : undefined}>
+				{link.label}
+			</a>
+		))
+	}
+</nav>
+<Default />
+
+<style>
+	.site-nav {
+		display: flex;
+		gap: 0.25rem;
+	}
+	.site-nav a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		padding: 0 0.75rem;
+		border-radius: 0.5rem;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+		font-weight: 500;
+		text-decoration: none;
+		transition: color 150ms var(--forge-ease), background-color 150ms var(--forge-ease);
+	}
+	.site-nav a:hover,
+	.site-nav a[aria-current='page'] {
+		color: var(--forge-text);
+		background-color: var(--forge-surface);
+	}
+</style>

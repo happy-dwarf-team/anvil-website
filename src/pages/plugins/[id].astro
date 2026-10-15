@@ -1,0 +1,80 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+	const plugins = await getCollection('plugins');
+	return plugins.map((plugin) => ({ params: { id: plugin.id }, props: { plugin } }));
+}
+
+interface Props {
+	plugin: CollectionEntry<'plugins'>;
+}
+const { plugin } = Astro.props;
+const { name, summary, repo, status, gameBuilds, affectsGameplay } = plugin.data;
+const { Content, headings } = await render(plugin);
+---
+
+<StarlightPage frontmatter={{ title: name, description: summary }} headings={headings} hasSidebar={false}>
+	<a class="back" href={url('plugins/')}><span aria-hidden="true">←</span> All plugins</a>
+	<dl class="facts">
+		<div>
+			<dt>Status</dt>
+			<dd><StatusBadge status={status} /></dd>
+		</div>
+		<div>
+			<dt>Game builds</dt>
+			<dd>{gameBuilds.map((b) => <code>{b}</code>)}</dd>
+		</div>
+		<div>
+			<dt>Changes gameplay</dt>
+			<dd>{affectsGameplay ? 'Yes: may affect multiplayer and ironman' : 'No'}</dd>
+		</div>
+		<div>
+			<dt>Source</dt>
+			<dd><a href={repo}>{repo.replace('https://github.com/', '')}</a></dd>
+		</div>
+	</dl>
+	<Content />
+</StarlightPage>
+
+<style>
+	.back {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		min-height: 2.75rem;
+		color: var(--forge-text-muted);
+		text-decoration: none;
+	}
+	.back:hover {
+		color: var(--forge-text);
+	}
+	.facts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+		gap: 1rem;
+		margin: 1rem 0 2rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--forge-border);
+		border-radius: var(--forge-radius);
+		background: var(--forge-surface);
+	}
+	.facts div {
+		margin: 0;
+	}
+	dt {
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-xs);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+	dd {
+		margin: 0.25rem 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+</style>

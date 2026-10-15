@@ -1,0 +1,9 @@
+---
+// The site has a single dark theme ("dark forge"), so the theme is fixed instead of
+// following the system or a stored choice.
+---
+
+<script is:inline>
+	document.documentElement.dataset.theme = 'dark';
+	window.StarlightThemeProvider = { updatePickers() {} };
+</script>

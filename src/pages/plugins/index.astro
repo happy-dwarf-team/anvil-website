@@ -1,0 +1,48 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+import PluginCard from '../../components/PluginCard.astro';
+import { url } from '../../lib/url';
+
+const plugins = (await getCollection('plugins')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Plugins',
+		description: 'Plugins for Anvil, the plugin loader for Europa Universalis IV.',
+		template: 'splash',
+	}}
+>
+	<p class="lead">
+		Plugins are native DLLs that Anvil loads into the game. Each one declares the EU4 builds it
+		supports; on any other build it is skipped and the game starts as usual.
+	</p>
+	<div class="plugin-grid">
+		{plugins.map((plugin) => <PluginCard plugin={plugin} />)}
+	</div>
+	<p class="author">
+		Writing your own? Start with the <a href={url('docs/plugins/overview/')}>plugin author guide</a>.
+	</p>
+</StarlightPage>
+
+<style>
+	.lead {
+		max-width: 42rem;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-lg);
+	}
+	.plugin-grid > * {
+		margin-top: 0;
+	}
+	.plugin-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+	.author {
+		margin-top: 2.5rem;
+		color: var(--forge-text-muted);
+	}
+</style>

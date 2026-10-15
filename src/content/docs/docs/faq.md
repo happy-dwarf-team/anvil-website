@@ -1,0 +1,41 @@
+---
+title: FAQ
+description: Common questions about Anvil and EU4 plugins.
+---
+
+## Does Anvil modify the game?
+
+No. `eu4.exe` and the game files are never changed. Windows loads Anvil's `version.dll`
+together with the game; it forwards every call to the system `version.dll` and also loads
+plugins. Plugins change code in memory only, for the current session.
+
+## Is it safe?
+
+Plugins are native code and run with the same permissions as the game, like any other
+program you install. Only install plugins you trust. Anvil itself never downloads
+anything, and its releases come with SHA-256 checksums.
+
+## Does it work with mods, Ironman and achievements?
+
+Anvil is independent of the mods you enable in the launcher. Whether a plugin affects
+Ironman, achievements or multiplayer depends on the plugin: each one declares whether it
+changes gameplay, and the plugin page shows it. Plugins that do not change gameplay, such
+as EU4 Startup Boost, only change how fast or how smoothly the game runs.
+
+The effect on Ironman and achievements has not been verified yet. This answer will be
+updated once it has been tested.
+
+## What happens when EU4 updates?
+
+Plugins that do not support the new build are skipped automatically, and the game starts
+as usual. Updated plugins will support the new build.
+
+## Which game versions are supported?
+
+Anvil runs on Windows, 64-bit, Steam. Supported builds depend on each plugin; see the
+plugin pages.
+
+## Who makes Anvil?
+
+Happy Dwarf Team. Anvil is an unofficial community project under the MIT license, not
+affiliated with Paradox Interactive.

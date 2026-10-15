@@ -1,0 +1,156 @@
+---
+import {
+	getLatestRelease,
+	formatSize,
+	LATEST_DOWNLOAD_URL,
+	LATEST_CHECKSUMS_URL,
+	RELEASES_URL,
+} from '../lib/release';
+
+const release = await getLatestRelease();
+---
+
+<div class="download">
+	{
+		release ? (
+			<a class="forge-button" href={LATEST_DOWNLOAD_URL}>
+				<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+					<path
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"
+					/>
+				</svg>
+				Download Anvil {release.version}
+				<span class="spark s1" aria-hidden="true" />
+				<span class="spark s2" aria-hidden="true" />
+				<span class="spark s3" aria-hidden="true" />
+				<span class="spark s4" aria-hidden="true" />
+			</a>
+		) : (
+			<span class="forge-button is-pending" role="note">
+				First public release coming soon
+			</span>
+		)
+	}
+	<p class="meta">
+		{
+			release ? (
+				<>
+					Windows 64-bit · {formatSize(release.sizeBytes)} ·{' '}
+					<a href={LATEST_CHECKSUMS_URL}>SHA-256</a> · <a href={RELEASES_URL}>All releases</a>
+				</>
+			) : (
+				<>
+					Releases will appear on <a href={RELEASES_URL}>GitHub</a>.
+				</>
+			)
+		}
+	</p>
+</div>
+
+<style>
+	.download {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+	}
+	.forge-button {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		min-height: 3rem;
+		padding: 0 1.5rem;
+		border-radius: 0.6rem;
+		background: var(--forge-accent);
+		color: var(--forge-on-accent);
+		font-weight: 600;
+		font-size: var(--sl-text-lg);
+		text-decoration: none;
+		box-shadow: 0 0 0 0 rgb(245 146 42 / 0);
+		transition:
+			background-color 180ms var(--forge-ease),
+			box-shadow 220ms var(--forge-ease),
+			transform 180ms var(--forge-ease);
+		animation: ember 1.6s var(--forge-ease) 0.3s 1 both;
+	}
+	a.forge-button:hover,
+	a.forge-button:focus-visible {
+		background: var(--forge-accent-strong);
+		box-shadow: 0 0 28px 2px rgb(245 146 42 / 0.35);
+		transform: translateY(-1px);
+	}
+	.forge-button.is-pending {
+		background: var(--forge-surface-raised);
+		color: var(--forge-text);
+		border: 1px solid var(--forge-border);
+		animation: none;
+		font-size: var(--sl-text-base);
+	}
+	.meta {
+		margin: 0;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
+	.meta a {
+		color: var(--forge-text);
+	}
+
+	/* One-time glow when the page loads, like metal taken out of the forge. */
+	@keyframes ember {
+		0% {
+			box-shadow: 0 0 0 0 rgb(245 146 42 / 0);
+		}
+		40% {
+			box-shadow: 0 0 36px 6px rgb(245 146 42 / 0.45);
+		}
+		100% {
+			box-shadow: 0 0 0 0 rgb(245 146 42 / 0);
+		}
+	}
+
+	/* Sparks fly up from the button on hover / keyboard focus. */
+	.spark {
+		position: absolute;
+		top: 30%;
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: var(--forge-accent-strong);
+		box-shadow: 0 0 6px 1px rgb(255 173 85 / 0.8);
+		opacity: 0;
+		pointer-events: none;
+	}
+	.s1 { left: 18%; --dx: -14px; --dy: -34px; --delay: 0ms; }
+	.s2 { left: 42%; --dx: -4px; --dy: -44px; --delay: 60ms; }
+	.s3 { left: 63%; --dx: 8px; --dy: -38px; --delay: 120ms; }
+	.s4 { left: 84%; --dx: 16px; --dy: -30px; --delay: 30ms; }
+	a.forge-button:hover .spark,
+	a.forge-button:focus-visible .spark {
+		animation: spark 650ms ease-out var(--delay) 1 both;
+	}
+	@keyframes spark {
+		0% {
+			opacity: 1;
+			transform: translate(0, 0) scale(1);
+		}
+		100% {
+			opacity: 0;
+			transform: translate(var(--dx), var(--dy)) scale(0.4);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.forge-button {
+			animation: none;
+		}
+		.spark {
+			display: none;
+		}
+	}
+</style>

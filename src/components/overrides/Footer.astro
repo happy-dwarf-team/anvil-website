@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import Default from '@astrojs/starlight/components/Footer.astro';
+import dwarf from '../../assets/happy-dwarf.png';
+---
+
+<Default />
+
+<div class="site-footer">
+	<a class="team" href="https://github.com/happy-dwarf-team">
+		<Image src={dwarf} alt="" width={80} height={80} />
+		<span>Happy Dwarf Team</span>
+	</a>
+	<p>
+		Anvil and its plugins are MIT-licensed. Unofficial community project, not affiliated with
+		Paradox Interactive.
+	</p>
+</div>
+
+<style>
+	.site-footer {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem 2rem;
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--forge-border);
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
+	.site-footer p {
+		margin: 0;
+		max-width: 36rem;
+	}
+	.team {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		min-height: 2.75rem;
+		color: var(--forge-text);
+		font-weight: 600;
+		text-decoration: none;
+	}
+	.team:hover span {
+		color: var(--forge-accent-strong);
+	}
+	.team img {
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+</style>
