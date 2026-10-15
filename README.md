@@ -43,7 +43,14 @@ button shows "First public release coming soon".
 
 `.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main`,
 on demand, daily, and when Anvil sends the `anvil-release` repository dispatch after a
-release (see Anvil's `build.yml`; it needs the `WEBSITE_DISPATCH_TOKEN` secret there).
+release (see Anvil's `release.yml`; it needs the `WEBSITE_DISPATCH_TOKEN` secret there).
+
+Changes go through squash-merged pull requests whose titles follow
+[Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `docs`,
+`build`, `ci`, …), checked by `.github/workflows/pr-title.yml`; the conventions match
+[Anvil's CONTRIBUTING.md](https://github.com/happy-dwarf-team/anvil/blob/main/CONTRIBUTING.md).
+The site is not versioned or released; every merge to `main` deploys. Actions are
+pinned to commit SHAs and, like npm packages, updated by Dependabot.
 
 Custom domain: set the repository variable `CUSTOM_DOMAIN` (for example
 `anvil.happydwarf.dev`), add the domain under Settings → Pages, and point a DNS `CNAME`
