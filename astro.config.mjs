@@ -11,6 +11,11 @@ export default defineConfig({
 	site,
 	base,
 	trailingSlash: 'always',
+	// Plugin pages renamed along with their plugin; old links keep working. Astro adds
+	// `base` to the source path but not to the destination.
+	redirects: {
+		'/plugins/eu4-startup-boost/': `${base.replace(/\/$/, '')}/plugins/bellows/`,
+	},
 	integrations: [
 		starlight({
 			title: 'Anvil',

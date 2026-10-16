@@ -7,13 +7,13 @@ Every plugin folder contains a `plugin.toml`. Unknown keys are logged and ignore
 fields can be added without breaking older Anvil versions.
 
 ```toml
-id = "eu4-startup-boost"          # [a-z0-9-]+, max 64 characters, unique
-name = "EU4 Startup Boost"
+id = "bellows"                    # [a-z0-9-]+, max 64 characters, unique
+name = "Bellows"
 version = "0.1.0"                 # SemVer
 authors = ["Happy Dwarf Team"]
 description = "Faster game start-up."
 api = 1                           # Anvil plugin API major version
-entry = "eu4_startup_boost.dll"   # DLL file name inside the plugin folder
+entry = "bellows.dll"             # DLL file name inside the plugin folder
 phase = "early"                   # "early" or "main"
 affects_gameplay = false          # true if the plugin may change the simulation
 load_after = []                   # ordering only, not a dependency
