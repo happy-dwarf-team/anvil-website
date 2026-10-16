@@ -1,7 +1,7 @@
 ---
-name: EU4 Startup Boost
-summary: Makes Europa Universalis IV start faster without changing game files or game behaviour.
-repo: https://github.com/happy-dwarf-team/eu4-startup-boost
+name: Bellows
+summary: Faster Europa Universalis IV start-up. Makes the game start faster without changing game files or game behaviour.
+repo: https://github.com/happy-dwarf-team/bellows
 status: released
 gameBuilds: ['eu4-1.37.5-steam-win64']
 affectsGameplay: false
@@ -12,11 +12,11 @@ highlight:
   after: ~12 s
 ---
 
-EU4 Startup Boost shortens the time from launching the game to the main menu. Game state,
+Bellows (formerly EU4 Startup Boost) shortens the time from launching the game to the main menu. Game state,
 logs and loaded content stay identical to vanilla; only the time changes.
 
 Download the latest release from the
-[releases page](https://github.com/happy-dwarf-team/eu4-startup-boost/releases).
+[releases page](https://github.com/happy-dwarf-team/bellows/releases).
 
 ## What it does
 
@@ -34,13 +34,17 @@ repeats on every start:
 - after a reboot, opens the files the game will need in parallel, so the slow first
   access does not block the start.
 
-Every module can be switched off on its own in `anvil/data/eu4-startup-boost/config.toml`,
+Every module can be switched off on its own in `anvil/data/bellows/config.toml`,
 and a module that fails turns itself off while the game continues.
 
 ### Upgrading
 
 The plugin writes its `config.toml` on the first start and never overwrites it:
 
+- From EU4 Startup Boost (0.5.0 or earlier): delete the `anvil/plugins/eu4-startup-boost/`
+  folder and extract Bellows. On its first start Bellows moves your settings and learned
+  profiles from `anvil/data/eu4-startup-boost/` to `anvil/data/bellows/`. While the old
+  folder is still installed, Bellows changes nothing and says so in `anvil/anvil.log`.
 - From 0.3.0 or earlier, the file keeps `trigger_intern = "off"`. Set it to `"on"`, or
   delete the file to get the new defaults.
 - The keyword cache (0.5.0) is not listed in the file and is on for existing files too.

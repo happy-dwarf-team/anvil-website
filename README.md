@@ -28,7 +28,7 @@ npm run preview
 | Docs | Markdown in `src/content/docs/docs/`, sidebar in `astro.config.mjs` |
 | Theme | `src/styles/theme.css` |
 
-To add a plugin, copy `src/content/plugins/eu4-startup-boost.md`, change the frontmatter and
+To add a plugin, copy `src/content/plugins/bellows.md`, change the frontmatter and
 text. The file name becomes the URL (`/plugins/<file-name>/`).
 
 ## Download button
