@@ -9,8 +9,11 @@
   relative links. The site must work both at the custom domain and under `/anvil-website/`.
 - Content is English. State the source of every measurement and mark unverified claims.
   Do not imply affiliation with Paradox Interactive.
-- Check `npm run build` before finishing a change. Do not commit, push or change
-  repository settings without an explicit instruction.
+- Check `npm run build` before finishing a change.
+- The agent owns the pull request flow: it works on a branch with Conventional Commits,
+  pushes it, opens a PR and squash-merges it once ready (green CI, build checked, no
+  blocking review findings, not put on hold by the user). Do not bypass CI or branch
+  protection, and do not change repository settings beyond what auto-merge needs.
 
 ## Development
 
