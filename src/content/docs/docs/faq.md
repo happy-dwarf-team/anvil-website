@@ -20,7 +20,9 @@ anything, and its releases come with SHA-256 checksums.
 Anvil is independent of the mods you enable in the launcher. Whether a plugin affects
 Ironman, achievements or multiplayer depends on the plugin: each one declares whether it
 changes gameplay, and the plugin page shows it. Plugins that do not change gameplay, such
-as Bellows, only change how fast or how smoothly the game runs.
+as Bellows, only change how fast or how smoothly the game runs. Tongs does not change
+gameplay either: it lets local scripts read the game and, when allowed, press keys and click
+the way a player would.
 
 The effect on Ironman and achievements has not been verified yet. This answer will be
 updated once it has been tested.
