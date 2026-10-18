@@ -9,6 +9,7 @@ import {
 	formatDate,
 	getLatestRelease,
 	getReleasedManifest,
+	pluginAsset,
 	repoSlug,
 } from '../../lib/release';
 import { softwareApplication } from '../../lib/structured-data';
@@ -24,7 +25,7 @@ interface Props {
 }
 const { plugin } = Astro.props;
 const { name, summary, repo, status, manifestPath } = plugin.data;
-const asset = plugin.data.asset ?? `${plugin.id}-windows-x64.zip`;
+const asset = pluginAsset(plugin.id, plugin.data.asset);
 const slug = repoSlug(repo);
 
 // The released plugin.toml is the source of truth; the frontmatter is the fallback when

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getLatestRelease, pluginAsset, repoSlug } from '../lib/release';
 import { url } from '../lib/url';
 import PluginIcon from './PluginIcon.astro';
 import StatusBadge from './StatusBadge.astro';
@@ -8,7 +9,8 @@ interface Props {
 	plugin: CollectionEntry<'plugins'>;
 }
 const { plugin } = Astro.props;
-const { name, summary, status, highlight } = plugin.data;
+const { name, summary, status, highlight, repo, asset } = plugin.data;
+const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, asset));
 ---
 
 <article class="plugin-card">
@@ -17,7 +19,7 @@ const { name, summary, status, highlight } = plugin.data;
 			<PluginIcon id={plugin.id} size={28} />
 			<a href={url(`plugins/${plugin.id}/`)}>{name}</a>
 		</h3>
-		<StatusBadge status={status} />
+		<StatusBadge status={status} version={release?.version} />
 	</div>
 	<p>{summary}</p>
 	{

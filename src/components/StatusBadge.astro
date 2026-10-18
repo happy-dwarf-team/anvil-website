@@ -1,16 +1,21 @@
 ---
 interface Props {
 	status: 'planned' | 'in-development' | 'released';
+	// Latest released version, shown after the label when known.
+	version?: string;
 }
 const labels = {
 	planned: 'Planned',
 	'in-development': 'In development',
 	released: 'Released',
 } as const;
-const { status } = Astro.props;
+const { status, version } = Astro.props;
 ---
 
-<span class:list={['badge', status]}>{labels[status]}</span>
+<span class:list={['badge', status]}>
+	{labels[status]}
+	{version && <span class="version">{version}</span>}
+</span>
 
 <style>
 	.badge {
@@ -22,6 +27,10 @@ const { status } = Astro.props;
 		font-size: var(--sl-text-xs);
 		font-weight: 500;
 		white-space: nowrap;
+	}
+	.version {
+		margin-inline-start: 0.4rem;
+		font-family: var(--__sl-font-mono);
 	}
 	.released {
 		border-color: var(--forge-accent);
