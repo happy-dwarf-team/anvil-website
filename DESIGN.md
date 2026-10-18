@@ -70,7 +70,8 @@ Starlight's `--sl-color-*` variables are mapped onto these tokens; components us
   so contrast and target sizes stay a manual check against the tables above.
 - Symbols that carry meaning (such as "→" between two numbers) are `aria-hidden` and have
   a `sr-only` text next to them; `aria-label` is not used on plain `span`s.
-- Images through `astro:assets` (the team logo is converted to WebP).
+- Images through `astro:assets`. The team logo is an SVG (`src/assets/happy-dwarf.svg`), traced
+  from the original PNG; its transparent highlights and teeth are filled white.
 
 ## Content rules
 
