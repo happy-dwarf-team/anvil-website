@@ -36,6 +36,10 @@ function targetFile(url) {
 }
 
 const pages = htmlFiles(distDir);
+if (pages.length === 0) {
+	console.error('No HTML pages in dist/; run `npm run build` first.');
+	process.exit(1);
+}
 const ids = new Map();
 function idsOf(file) {
 	if (!ids.has(file)) {

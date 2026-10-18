@@ -109,6 +109,77 @@ async function fetchSha256(checksumsUrl: string, asset: string): Promise<string 
 	return undefined;
 }
 
+export interface ReleaseNote {
+	repo: string;
+	version: string;
+	publishedAt: Date;
+	pageUrl: string;
+	// Changelog entries from the release notes, e.g. "Features: range_witness: on by default".
+	changes: { section: string; text: string }[];
+}
+
+// Sections of release-please notes worth listing on the site; build and CI changes are left out.
+const NOTE_SECTIONS: Record<string, string> = {
+	'⚠ BREAKING CHANGES': 'Breaking',
+	Features: 'Feature',
+	'Bug Fixes': 'Fix',
+	Performance: 'Performance',
+};
+
+// "* **scope:** text ([#22](…)) ([2d3cb86](…))" → "scope: text"
+function noteText(line: string): string {
+	return line
+		.replace(/^\*\s+/, '')
+		.replace(/\s*\(\[[^\]]*\]\([^)]*\)\)/g, '')
+		.replace(/\*\*([^*]+)\*\*/g, '$1')
+		.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+		.trim();
+}
+
+function parseNotes(body: string): { section: string; text: string }[] {
+	const changes: { section: string; text: string }[] = [];
+	let section: string | undefined;
+	for (const line of body.split('\n')) {
+		const heading = /^###\s+(.+?)\s*$/.exec(line);
+		if (heading) section = NOTE_SECTIONS[heading[1]];
+		else if (section && line.startsWith('* ')) changes.push({ section, text: noteText(line) });
+	}
+	return changes;
+}
+
+// Published releases of a repository, newest first (at most the latest 30).
+export async function getReleaseNotes(repo: string): Promise<ReleaseNote[] | null> {
+	try {
+		const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=30`, {
+			headers: githubHeaders(),
+		});
+		if (!res.ok) {
+			console.warn(`[release] ${repo}: GitHub API returned ${res.status}; no release notes.`);
+			return null;
+		}
+		const data = (await res.json()) as {
+			tag_name: string;
+			published_at: string | null;
+			html_url: string;
+			body: string | null;
+			draft: boolean;
+			prerelease: boolean;
+		}[];
+		return data
+			.filter((r) => !r.draft && !r.prerelease && r.published_at)
+			.map((r) => ({
+				repo,
+				version: r.tag_name.replace(/^v/, ''),
+				publishedAt: new Date(r.published_at as string),
+				pageUrl: r.html_url,
+				changes: parseNotes(r.body ?? ''),
+			}));
+	} catch (error) {
+		console.warn(`[release] ${repo}: ${String(error)}; no release notes.`);
+		return null;
+	}
+}
+
 // The fields of a plugin's plugin.toml that the catalog shows.
 export interface PluginManifest {
 	anvil?: string;
