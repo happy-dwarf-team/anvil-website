@@ -5,9 +5,10 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
-  # Sent by happy-dwarf-team/anvil after a release, so the download button shows the new version.
+  # Sent by happy-dwarf-team/anvil (anvil-release) and the plugin repositories
+  # (plugin-release) after a release, so the download buttons show the new version.
   repository_dispatch:
-    types: [anvil-release]
+    types: [anvil-release, plugin-release]
   # Safety net in case a dispatch is missed.
   schedule:
     - cron: '17 4 * * *'

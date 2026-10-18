@@ -29,21 +29,29 @@ npm run preview
 | Theme | `src/styles/theme.css` |
 
 To add a plugin, copy `src/content/plugins/bellows.md`, change the frontmatter and
-text. The file name becomes the URL (`/plugins/<file-name>/`).
+text. The file name becomes the URL (`/plugins/<file-name>/`). The page adds the facts box,
+the download button and the "Supported game builds" section itself, so the Markdown starts
+with what the plugin does.
 
-## Download button
+## Download buttons and plugin facts
 
-At build time the site reads the latest release of `happy-dwarf-team/anvil` from the
-GitHub API and shows its version and size. The button always links to
-`releases/latest/download/anvil-windows-x64.zip`, so it serves the newest file even if the
-site has not been rebuilt yet. Without a release (or while the repository is private) the
-button shows "First public release coming soon".
+At build time the site reads the latest release of Anvil and of each plugin from the
+GitHub API and shows its version, date and size. Buttons always link to
+`releases/latest/download/<asset>`, so they serve the newest file even if the site has not
+been rebuilt yet. Without a release (or while a repository is private) the button shows
+"First public release coming soon".
+
+For each plugin the site also reads `plugin.toml` at the released tag (`manifestPath`,
+default `plugin/plugin.toml`) and shows the Anvil version it requires, its game builds and
+whether it changes gameplay. When GitHub cannot be reached, the frontmatter values are used
+instead. The release asset defaults to `<file-name>-windows-x64.zip` (`asset`).
 
 ## Deployment
 
 `.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main`,
-on demand, daily, and when Anvil sends the `anvil-release` repository dispatch after a
-release (see Anvil's `release.yml`; it needs the `WEBSITE_DISPATCH_TOKEN` secret there).
+on demand, daily, and when Anvil or a plugin sends the `anvil-release` or `plugin-release`
+repository dispatch after a release (see their `release.yml`; it needs the
+`WEBSITE_DISPATCH_TOKEN` secret in that repository).
 
 Changes go through squash-merged pull requests whose titles follow
 [Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `docs`,
