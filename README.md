@@ -16,6 +16,8 @@ Requires Node.js 22 or newer.
 npm install
 npm run dev       # http://localhost:4321
 npm run build     # static site in dist/
+npm run check     # type-check components and content collections
+npm run check:links  # internal links and anchors in dist/ (after build)
 npm run preview
 ```
 
