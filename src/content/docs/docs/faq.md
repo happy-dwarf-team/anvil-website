@@ -35,7 +35,20 @@ as usual. Updated plugins will support the new build.
 ## Which game versions are supported?
 
 Anvil runs on Windows, 64-bit, Steam. Supported builds depend on each plugin; see the
-plugin pages.
+plugin pages. The `game build:` line in `anvil/anvil.log` shows which build Anvil
+detected.
+
+## Does it work with GOG, the Microsoft Store, Linux or macOS?
+
+Not supported. Anvil and the current plugins are built for the Steam release of EU4 on
+Windows:
+
+- **GOG or Microsoft Store (Game Pass):** not tested. Their `eu4.exe` is a different build,
+  so Anvil would report it as `unknown` and skip every plugin that uses game addresses;
+  the game starts normally.
+- **Linux with Proton:** not tested. Proton runs the Windows game, but Anvil has not been
+  tried there.
+- **macOS and the native Linux build of EU4:** not supported, and not a goal for now.
 
 ## Who makes Anvil?
 

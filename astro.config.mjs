@@ -58,6 +58,7 @@ export default defineConfig({
 					label: 'Players',
 					items: [
 						{ slug: 'docs/install' },
+						{ slug: 'docs/install-plugins' },
 						{ slug: 'docs/troubleshooting' },
 						{ slug: 'docs/faq' },
 					],
