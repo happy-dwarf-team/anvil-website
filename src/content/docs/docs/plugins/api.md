@@ -3,9 +3,9 @@ title: Host API
 description: What the Anvil host offers to plugins.
 ---
 
-`anvil_plugin_load` receives an `AnvilHost`, a table of functions. It has a `size` and an
-`api_version` field: new functions are appended in minor updates (check `size`), and a
-breaking change increases the API major version. The full reference is the SDK header
+`anvil_plugin_load` receives an `AnvilHost`, a table of functions. It has a `size`, an
+`api_version` and an `anvil_version` field: new functions are appended in minor updates,
+and a breaking change increases the API major version. The full reference is the SDK header
 [`anvil_plugin.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_plugin.h).
 
 ## Basics
@@ -33,6 +33,21 @@ plugin ids are logged.
 
 If your plugin's load fails, all its patches are rolled back.
 
+## Checking game bytes
+
+`expect_bytes(self, rva, expected, mask, size)` checks, without writing anything, that game
+code or data the plugin relies on is what it was written for: functions it calls, vtables,
+globals. It compares `actual & mask` with `expected & mask`; a `NULL` mask compares every
+bit, and a `0x00` mask byte skips that byte. Bytes already patched by other plugins are
+compared in their original form. One call compares at most `ANVIL_MAX_EXPECT_BYTES`
+(64 KiB).
+
+Check every dependency before the first patch. Once the plugin has patches of its own, the
+call returns `ANVIL_ERROR_WRONG_PHASE`, so a plugin never leaves the running game
+half-patched. Dependencies known in advance are better declared as
+[`[[expect]]`](../manifest/#expected-game-bytes) in `plugin.toml`: Anvil checks those
+before the plugin DLL is loaded.
+
 ## Services
 
 A plugin can offer a service to other plugins: a C struct of function pointers whose first
@@ -59,3 +74,21 @@ events synchronously on the publishing thread, in subscription order. Built-in e
 | `anvil.game_ready` | When the game has finished starting. Only on known builds; check `game->ready_signal_known`. |
 
 The `anvil.` prefix is reserved for the host.
+
+## Functions added after API 1.0
+
+Functions appended after API 1.0 are only present on newer hosts. Check for one with
+`ANVIL_HOST_HAS` before calling it:
+
+```c
+if (ANVIL_HOST_HAS(host, expect_bytes)) {
+    /* the host provides expect_bytes */
+}
+```
+
+Or require the Anvil version that added it with `anvil = ">=0.2.0"` in the
+[manifest](../manifest/#anvil-version); an older Anvil then skips the plugin.
+
+| Function | Added in |
+| --- | --- |
+| `expect_bytes` | Anvil 0.2.0 |
