@@ -85,6 +85,8 @@ const { Content, headings } = await render(plugin);
 	}
 	dd {
 		margin: 0.25rem 0 0;
+		/* Starlight indents <dd> in content; values sit under their labels here. */
+		padding-inline-start: 0;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.4rem;

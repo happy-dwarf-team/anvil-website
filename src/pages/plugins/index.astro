@@ -32,9 +32,6 @@ const plugins = (await getCollection('plugins')).sort((a, b) => a.data.order - b
 		color: var(--forge-text-muted);
 		font-size: var(--sl-text-lg);
 	}
-	.plugin-grid > * {
-		margin-top: 0;
-	}
 	.plugin-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
