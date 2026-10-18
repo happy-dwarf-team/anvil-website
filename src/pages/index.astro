@@ -2,7 +2,19 @@
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection } from 'astro:content';
 import PluginCard from '../components/PluginCard.astro';
+import { getLatestRelease } from '../lib/release';
+import { softwareApplication } from '../lib/structured-data';
 import { url } from '../lib/url';
+
+const description =
+	'Anvil is a plugin loader for Europa Universalis IV. Native plugins, no changes to eu4.exe.';
+const jsonLd = softwareApplication({
+	name: 'Anvil',
+	description,
+	pageUrl: new URL(Astro.url.pathname, Astro.site).href,
+	repoUrl: 'https://github.com/happy-dwarf-team/anvil',
+	release: await getLatestRelease(),
+});
 
 const plugins = (await getCollection('plugins')).sort((a, b) => a.data.order - b.data.order);
 
@@ -37,10 +49,9 @@ const steps = [
 <StarlightPage
 	frontmatter={{
 		title: 'Plugin loader for Europa Universalis IV',
-		description:
-			'Anvil is a plugin loader for Europa Universalis IV. Native plugins, no changes to eu4.exe.',
+		description,
 		template: 'splash',
-		head: [{ tag: 'meta', attrs: { property: 'og:type', content: 'website' } }],
+		head: [{ tag: 'meta', attrs: { property: 'og:type', content: 'website' } }, jsonLd],
 		hero: {
 			title: 'Anvil',
 			tagline: 'Native plugins for Europa Universalis IV, without touching <code>eu4.exe</code>.',
