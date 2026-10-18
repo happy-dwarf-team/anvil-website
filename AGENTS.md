@@ -9,8 +9,8 @@
   relative links. The site must work both at the custom domain and under `/anvil-website/`.
 - Content is English. State the source of every measurement and mark unverified claims.
   Do not imply affiliation with Paradox Interactive.
-- Check `npm run check`, `npm run build` and `npm run check:links` before finishing a change;
-  CI runs all three.
+- Check `npm run check`, `npm run build`, `npm run check:links` and `npm run check:a11y`
+  before finishing a change; CI runs all four.
 - The agent owns the pull request flow: it works on a branch with Conventional Commits,
   pushes it and opens the PR as a draft. Once ready (green CI, build checked, no blocking
   review findings, not put on hold by the user) it marks the PR ready and squash-merges
