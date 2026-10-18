@@ -6,9 +6,8 @@ import type { SvgComponent } from 'astro/types';
 interface Props {
 	id: string;
 	size?: number;
-	class?: string;
 }
-const { id, size = 32, class: className } = Astro.props;
+const { id, size = 32 } = Astro.props;
 
 const icons = import.meta.glob<SvgComponent>('../assets/plugins/*.svg', {
 	eager: true,
@@ -17,7 +16,7 @@ const icons = import.meta.glob<SvgComponent>('../assets/plugins/*.svg', {
 const Icon = icons[`../assets/plugins/${id}.svg`];
 ---
 
-{Icon && <Icon class:list={['plugin-icon', className]} width={size} height={size} aria-hidden="true" />}
+{Icon && <Icon class="plugin-icon" width={size} height={size} aria-hidden="true" />}
 
 <style>
 	.plugin-icon {
