@@ -78,4 +78,5 @@ Starlight's `--sl-color-*` variables are mapped onto these tokens; components us
 
 - Anvil logo: the site uses a placeholder anvil mark (`src/assets/anvil-mark.svg`, also the
   favicon) and a text wordmark until the real logo exists.
-- Social preview image (Open Graph) once the logo exists.
+- Social preview image: `public/og.png` (1200 × 630, rendered by `scripts/og-image.mjs`)
+  uses the placeholder mark and a monospace wordmark. Render it again when the logo exists.
