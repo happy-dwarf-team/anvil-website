@@ -65,5 +65,7 @@ refused, so a wrong build fails safely instead of corrupting the game.
 
 ## Next
 
+- [Your first plugin](../first-plugin/), step by step
 - [Manifest reference](../manifest/)
 - [Host API](../api/)
+- [List your plugin](../catalog/) in the catalog
