@@ -20,7 +20,7 @@ Download the latest release from the
 
 - Reads the game state: whether a game is loaded, the date, the speed and the pause.
 - Times the game between two dates (`run_until`, `wait_until`), for measuring how fast
-  the game runs, and reports whether the game was paused while waiting.
+  the game runs, and reports whether and when the game was paused while waiting.
 - Reports the game window, the game's worker threads and CPU masks, and writes
   screenshots of the window, also while it is covered.
 - When you allow it, presses keys, types text, moves the pointer, clicks and scrolls
@@ -57,7 +57,7 @@ while another reads `state` or sends `cancel`.
 | `window` | size and position of the game window, focus, DPI |
 | `threads` | worker threads in the game's two pools, CPU masks and priority of the main thread |
 | `screenshot [NAME]` | writes a PNG of the game window and answers with its path |
-| `wait_until DATE` | waits, without touching the game, until the date is reached; answers with the timing |
+| `wait_until DATE [timeout=S] [max_pause=S]` | waits, without touching the game, until the date is reached; answers with the timing |
 | `cancel` | ends every `wait_until` / `run_until` in progress |
 | `help` | the commands and whether input commands are enabled |
 
@@ -67,11 +67,17 @@ With `input = true`, also:
 | --- | --- |
 | `pause`, `resume` | press Space when needed and wait until the game is paused or running |
 | `speed N` | presses keypad `+` / `-` until the speed is `N` (1–5); works while paused |
-| `run_until DATE [speed=N]` | sets the speed, resumes, waits for the date and pauses again |
+| `run_until DATE [speed=N] [timeout=S] [max_pause=S]` | sets the speed, resumes, waits for the date and pauses again |
 | `key NAME` | presses one key (letters, digits, F-keys, arrows, Space, Esc, the console key, …) |
 | `text STRING` | types into the focused text field |
 | `move X Y`, `click X Y`, `scroll STEPS` | point, click (left, right, middle, double) and turn the wheel at window coordinates |
 | `release` | hands the pointer back to the real mouse |
+
+`wait_until` and `run_until` wait at most 1 hour by default; `timeout=S` sets the limit,
+up to 14 400 s. With `max_pause=S` the wait ends with an error once the game has stayed
+paused for `S` seconds, for example on an event with a choice, instead of running into the
+timeout. Answers report `paused_ms` and, after a pause, `paused_date`, so a measurement
+with a pause in it can be rejected.
 
 Input commands answer once the game has reacted, or with an error after 10 s, and always
 include the state. The full list of keys and answer fields is in the
@@ -119,10 +125,12 @@ Delete the `tongs` folder to uninstall.
 ## Tested
 
 Checked in the game on EU4 1.37.5 (Steam) with Anvil 0.2.0, on one development machine
-with a loaded save. Not verified yet: input in the main menu and in event pop-ups,
-keyboard layouts other than US, clicks on the map (only interface buttons were tried) and
-dragging, for which there is no command yet. Details are in the
-[design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md).
+with a loaded save. `max_pause` was checked in a lab measurement series: a run that an
+event paused ended after 5 s of pause instead of waiting for its 300 s timeout. Not
+verified yet: input in the main menu and in event pop-ups, keyboard layouts other than US,
+clicks on the map (only interface buttons were tried) and dragging, for which there is no
+command yet. Details are in the [design
+notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md).
 
 ## Supported game build
 
