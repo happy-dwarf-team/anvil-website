@@ -67,8 +67,10 @@ export default defineConfig({
 					label: 'Plugin authors',
 					items: [
 						{ slug: 'docs/plugins/overview' },
+						{ slug: 'docs/plugins/first-plugin' },
 						{ slug: 'docs/plugins/manifest' },
 						{ slug: 'docs/plugins/api' },
+						{ slug: 'docs/plugins/catalog' },
 					],
 				},
 			],
