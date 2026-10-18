@@ -71,7 +71,7 @@ With `input = true`, also:
 | `release` | hands the pointer back to the real mouse |
 
 `wait_until` and `run_until` wait at most 1 hour by default; `timeout=S` sets the limit,
-up to 14 400 s. With `max_pause=S` the wait ends with an error once the game has stayed
+up to 14 400 s. With `max_pause=S` (since 0.3.0) the wait ends with an error once the game has stayed
 paused for `S` seconds, for example on an event with a choice, instead of running into the
 timeout. Answers report `paused_ms` and, after a pause, `paused_date`, so a measurement
 with a pause in it can be rejected.
