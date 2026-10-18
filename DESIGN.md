@@ -37,6 +37,19 @@ Starlight's `--sl-color-*` variables are mapped onto these tokens; components us
 - Headings, site title, numbers and code: **JetBrains Mono** (variable), tight tracking.
 - No body text below 13 px.
 
+## Plugin icons
+
+- One icon per plugin in `src/assets/plugins/<plugin id>.svg`, named after the content file.
+  `PluginIcon.astro` shows it on the plugin card (28 px) and in the fact box of the plugin
+  page (40 px). A plugin without an icon file shows none.
+- Each icon is a blacksmith tool matching the plugin name: Bellows (side view, two boards and
+  the accordion) and Tongs (thick arms, oval jaws). The anvil mark stays the Anvil placeholder.
+- Style, same as the anvil mark: 32 × 32 viewBox, flat shapes, no gradients. The accent is
+  `currentColor`, set to `--forge-accent` by the component, plus at most one dark accent in
+  `#16171a` (`--forge-bg`) at opacity .35 over the orange.
+- Must read at 16 px: no detail thinner than about 1.5 units of the grid.
+- Inlined and decorative (`aria-hidden="true"`); the plugin name next to it is the label.
+
 ## Motion
 
 - Hover/focus transitions of 150–220 ms with one easing curve (`--forge-ease`).

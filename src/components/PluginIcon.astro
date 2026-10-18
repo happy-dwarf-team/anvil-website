@@ -1,0 +1,26 @@
+---
+// A plugin's icon is src/assets/plugins/<plugin id>.svg. A plugin without one renders nothing.
+// The icon is inlined and decorative: its accent is currentColor, set to --forge-accent here.
+import type { SvgComponent } from 'astro/types';
+
+interface Props {
+	id: string;
+	size?: number;
+}
+const { id, size = 32 } = Astro.props;
+
+const icons = import.meta.glob<SvgComponent>('../assets/plugins/*.svg', {
+	eager: true,
+	import: 'default',
+});
+const Icon = icons[`../assets/plugins/${id}.svg`];
+---
+
+{Icon && <Icon class="plugin-icon" width={size} height={size} aria-hidden="true" />}
+
+<style>
+	.plugin-icon {
+		flex: none;
+		color: var(--forge-accent);
+	}
+</style>

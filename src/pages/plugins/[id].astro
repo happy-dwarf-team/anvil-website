@@ -1,6 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import PluginIcon from '../../components/PluginIcon.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { url } from '../../lib/url';
 
@@ -19,24 +20,27 @@ const { Content, headings } = await render(plugin);
 
 <StarlightPage frontmatter={{ title: name, description: summary }} headings={headings} hasSidebar={false}>
 	<a class="back" href={url('plugins/')}><span aria-hidden="true">←</span> All plugins</a>
-	<dl class="facts">
-		<div>
-			<dt>Status</dt>
-			<dd><StatusBadge status={status} /></dd>
-		</div>
-		<div>
-			<dt>Game builds</dt>
-			<dd>{gameBuilds.map((b) => <code>{b}</code>)}</dd>
-		</div>
-		<div>
-			<dt>Changes gameplay</dt>
-			<dd>{affectsGameplay ? 'Yes: may affect multiplayer and ironman' : 'No'}</dd>
-		</div>
-		<div>
-			<dt>Source</dt>
-			<dd><a href={repo}>{repo.replace('https://github.com/', '')}</a></dd>
-		</div>
-	</dl>
+	<div class="facts">
+		<PluginIcon id={plugin.id} size={40} />
+		<dl>
+			<div>
+				<dt>Status</dt>
+				<dd><StatusBadge status={status} /></dd>
+			</div>
+			<div>
+				<dt>Game builds</dt>
+				<dd>{gameBuilds.map((b) => <code>{b}</code>)}</dd>
+			</div>
+			<div>
+				<dt>Changes gameplay</dt>
+				<dd>{affectsGameplay ? 'Yes: may affect multiplayer and ironman' : 'No'}</dd>
+			</div>
+			<div>
+				<dt>Source</dt>
+				<dd><a href={repo}>{repo.replace('https://github.com/', '')}</a></dd>
+			</div>
+		</dl>
+	</div>
 	<Content />
 </StarlightPage>
 
@@ -53,8 +57,8 @@ const { Content, headings } = await render(plugin);
 		color: var(--forge-text);
 	}
 	.facts {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+		display: flex;
+		align-items: flex-start;
 		gap: 1rem;
 		margin: 1rem 0 2rem;
 		padding: 1rem 1.25rem;
@@ -62,7 +66,15 @@ const { Content, headings } = await render(plugin);
 		border-radius: var(--forge-radius);
 		background: var(--forge-surface);
 	}
-	.facts div {
+	.facts dl {
+		flex: 1;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 1rem 2rem;
+	}
+	.facts > *,
+	.facts dl div {
 		margin: 0;
 	}
 	dt {
