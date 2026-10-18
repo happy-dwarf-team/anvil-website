@@ -11,6 +11,7 @@ import {
 	getReleasedManifest,
 	repoSlug,
 } from '../../lib/release';
+import { softwareApplication } from '../../lib/structured-data';
 import { url } from '../../lib/url';
 
 export async function getStaticPaths() {
@@ -36,11 +37,19 @@ if (manifest && manifest.affectsGameplay !== plugin.data.affectsGameplay) {
 	console.warn(`[catalog] ${plugin.id}: affectsGameplay differs between the frontmatter and plugin.toml.`);
 }
 
+const jsonLd = softwareApplication({
+	name,
+	description: summary,
+	pageUrl: new URL(Astro.url.pathname, Astro.site).href,
+	repoUrl: repo,
+	release,
+});
+
 const { Content, headings } = await render(plugin);
 const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', text: 'Supported game builds' }];
 ---
 
-<StarlightPage frontmatter={{ title: name, description: summary }} headings={pageHeadings} hasSidebar={false}>
+<StarlightPage frontmatter={{ title: name, description: summary, head: [jsonLd] }} headings={pageHeadings} hasSidebar={false}>
 	<a class="back" href={url('plugins/')}><span aria-hidden="true">←</span> All plugins</a>
 	<div class="facts">
 		<PluginIcon id={plugin.id} size={40} />

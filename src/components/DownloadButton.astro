@@ -1,5 +1,5 @@
 ---
-import { getLatestRelease, formatSize, releaseLinks, ANVIL_REPO, ANVIL_ASSET } from '../lib/release';
+import { getLatestRelease, formatSize, releasesUrl, ANVIL_REPO, ANVIL_ASSET } from '../lib/release';
 
 interface Props {
 	// Defaults to Anvil; plugin pages pass their own repository and asset.
@@ -10,13 +10,13 @@ interface Props {
 }
 const { name = 'Anvil', repo = ANVIL_REPO, asset = ANVIL_ASSET, align = 'center' } = Astro.props;
 const release = await getLatestRelease(repo, asset);
-const links = releaseLinks(repo, asset);
+const allReleases = releasesUrl(repo);
 ---
 
 <div class:list={['download', align]}>
 	{
 		release ? (
-			<a class="forge-button" href={links.download}>
+			<a class="forge-button" href={release.downloadUrl}>
 				<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
 					<path
 						fill="none"
@@ -43,16 +43,27 @@ const links = releaseLinks(repo, asset);
 		{
 			release ? (
 				<>
-					Windows 64-bit · {formatSize(release.sizeBytes)} ·{' '}
-					<a href={links.checksums}>SHA-256</a> · <a href={links.releases}>All releases</a>
+					Windows 64-bit · {formatSize(release.sizeBytes)} · <a href={allReleases}>All releases</a>
 				</>
 			) : (
 				<>
-					Releases will appear on <a href={links.releases}>GitHub</a>.
+					Releases will appear on <a href={allReleases}>GitHub</a>.
 				</>
 			)
 		}
 	</p>
+	{
+		release?.sha256 && (
+			<details class="checksum">
+				<summary>SHA-256 checksum</summary>
+				<code>{release.sha256}</code>
+				<p>
+					Compare it with <code>Get-FileHash .\{asset}</code> in PowerShell, or with{' '}
+					<a href={release.checksumsUrl}>SHA256SUMS.txt</a> of the release.
+				</p>
+			</details>
+		)
+	}
 </div>
 
 <style>
@@ -102,6 +113,28 @@ const links = releaseLinks(repo, asset);
 		margin: 0;
 		color: var(--forge-text-muted);
 		font-size: var(--sl-text-sm);
+	}
+	.checksum {
+		max-width: 100%;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
+	.center .checksum {
+		text-align: center;
+	}
+	.checksum summary {
+		cursor: pointer;
+		/* Keeps the toggle a comfortable click target. */
+		padding-block: 0.5rem;
+	}
+	.checksum > code {
+		display: block;
+		margin-top: 0.25rem;
+		overflow-wrap: anywhere;
+		color: var(--forge-text);
+	}
+	.checksum p {
+		margin: 0.5rem 0 0;
 	}
 	.meta a {
 		color: var(--forge-text);

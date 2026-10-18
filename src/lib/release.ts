@@ -1,6 +1,7 @@
 // Reads the latest release of Anvil and of each plugin from the GitHub API at build time.
-// Download buttons link to releases/latest/download/<asset> regardless, so a stale build
-// still serves the newest file; only the version label and size can lag behind.
+// Download buttons link to the asset of that exact release, so the file always matches the
+// version, size and SHA-256 shown next to it; the site is rebuilt after every release (and
+// daily), which keeps it current.
 import { parse as parseToml } from 'smol-toml';
 
 export const ANVIL_REPO = 'happy-dwarf-team/anvil';
@@ -13,21 +14,14 @@ export interface Release {
 	publishedAt: Date;
 	sizeBytes: number;
 	pageUrl: string;
+	downloadUrl: string;
+	checksumsUrl: string;
+	// SHA-256 of the asset from the release's SHA256SUMS.txt, if it lists the asset.
+	sha256?: string;
 }
 
-export interface ReleaseLinks {
-	download: string;
-	checksums: string;
-	releases: string;
-}
-
-export function releaseLinks(repo: string, asset: string): ReleaseLinks {
-	const releases = `https://github.com/${repo}/releases`;
-	return {
-		download: `${releases}/latest/download/${asset}`,
-		checksums: `${releases}/latest/download/SHA256SUMS.txt`,
-		releases,
-	};
+export function releasesUrl(repo: string): string {
+	return `https://github.com/${repo}/releases`;
 }
 
 // "https://github.com/owner/name" → "owner/name"
@@ -77,6 +71,8 @@ async function fetchLatestRelease(repo: string, asset: string): Promise<Release 
 			console.warn(`[release] ${repo} ${data.tag_name} has no ${asset}; building without release data.`);
 			return null;
 		}
+		const download = `https://github.com/${repo}/releases/download/${data.tag_name}`;
+		const checksumsUrl = `${download}/SHA256SUMS.txt`;
 		return {
 			repo,
 			version: data.tag_name.replace(/^v/, ''),
@@ -84,11 +80,33 @@ async function fetchLatestRelease(repo: string, asset: string): Promise<Release 
 			publishedAt: new Date(data.published_at),
 			sizeBytes: file.size,
 			pageUrl: data.html_url,
+			downloadUrl: `${download}/${asset}`,
+			checksumsUrl,
+			sha256: await fetchSha256(checksumsUrl, asset),
 		};
 	} catch (error) {
 		console.warn(`[release] ${repo}: ${String(error)}; building without release data.`);
 		return null;
 	}
+}
+
+async function fetchSha256(checksumsUrl: string, asset: string): Promise<string | undefined> {
+	try {
+		const res = await fetch(checksumsUrl);
+		if (!res.ok) {
+			console.warn(`[release] ${checksumsUrl} returned ${res.status}; no checksum shown.`);
+			return undefined;
+		}
+		// sha256sum format: "<64 hex digits>  <file name>" per line.
+		for (const line of (await res.text()).split('\n')) {
+			const match = /^([0-9a-f]{64})\s+\*?(.+?)\s*$/i.exec(line);
+			if (match && match[2] === asset) return match[1].toLowerCase();
+		}
+		console.warn(`[release] ${checksumsUrl} does not list ${asset}; no checksum shown.`);
+	} catch (error) {
+		console.warn(`[release] ${checksumsUrl}: ${String(error)}; no checksum shown.`);
+	}
+	return undefined;
 }
 
 // The fields of a plugin's plugin.toml that the catalog shows.

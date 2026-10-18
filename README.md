@@ -40,10 +40,12 @@ with what the plugin does.
 ## Download buttons and plugin facts
 
 At build time the site reads the latest release of Anvil and of each plugin from the
-GitHub API and shows its version, date and size. Buttons always link to
-`releases/latest/download/<asset>`, so they serve the newest file even if the site has not
-been rebuilt yet. Without a release (or while a repository is private) the button shows
-"First public release coming soon".
+GitHub API and shows its version, date, size and SHA-256 (from the release's
+`SHA256SUMS.txt`). Buttons link to the asset of that exact release, so the file always
+matches the checksum shown; Anvil and the plugins trigger a rebuild after each release,
+and the site is also rebuilt daily. Without a release (or while a repository is private)
+the button shows "First public release coming soon". Home and plugin pages also carry
+schema.org `SoftwareApplication` data (`src/lib/structured-data.ts`).
 
 For each plugin the site also reads `plugin.toml` at the released tag (`manifestPath`,
 default `plugin/plugin.toml`) and shows the Anvil version it requires, its game builds and
