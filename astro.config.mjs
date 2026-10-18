@@ -6,6 +6,9 @@ import starlight from '@astrojs/starlight';
 // site lives at https://happy-dwarf-team.github.io/anvil-website/.
 const site = process.env.SITE_URL ?? 'https://anvil.happydwarf.dev';
 const base = process.env.SITE_BASE ?? '/';
+// Social preview image (public/og.png, rendered by scripts/og-image.mjs); crawlers need an
+// absolute URL.
+const ogImage = new URL(`${base.replace(/\/?$/, '/')}og.png`, site).href;
 
 export default defineConfig({
 	site,
@@ -24,6 +27,17 @@ export default defineConfig({
 			logo: { src: './src/assets/anvil-mark.svg', alt: '' },
 			favicon: '/favicon.svg',
 			credits: false,
+			editLink: { baseUrl: 'https://github.com/happy-dwarf-team/anvil-website/edit/main/' },
+			// Dates come from git history; the deploy workflow checks out the full history.
+			lastUpdated: true,
+			head: [
+				{ tag: 'meta', attrs: { property: 'og:image', content: ogImage } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+				{ tag: 'meta', attrs: { property: 'og:image:alt', content: 'Anvil, plugin loader for Europa Universalis IV' } },
+				{ tag: 'meta', attrs: { name: 'twitter:image', content: ogImage } },
+				{ tag: 'meta', attrs: { name: 'theme-color', content: '#16171a' } },
+			],
 			customCss: [
 				'@fontsource-variable/ibm-plex-sans/wght.css',
 				'@fontsource-variable/jetbrains-mono/wght.css',

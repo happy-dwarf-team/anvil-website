@@ -29,6 +29,7 @@ npm run preview
 | Plugin catalog | one Markdown file per plugin in `src/content/plugins/` (schema in `src/content.config.ts`) |
 | Docs | Markdown in `src/content/docs/docs/`, sidebar in `astro.config.mjs` |
 | Theme | `src/styles/theme.css` |
+| Social preview image | `public/og.png`, rendered by `node scripts/og-image.mjs` |
 
 To add a plugin, copy `src/content/plugins/bellows.md`, change the frontmatter and
 text. The file name becomes the URL (`/plugins/<file-name>/`). The page adds the facts box,
