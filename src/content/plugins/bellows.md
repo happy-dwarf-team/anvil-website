@@ -1,6 +1,6 @@
 ---
 name: Bellows
-summary: Faster Europa Universalis IV start-up. Makes the game start faster without changing game files or game behaviour.
+summary: Faster Europa Universalis IV start-up and simulation. Makes the game start and run faster without changing game files or game behaviour.
 repo: https://github.com/happy-dwarf-team/bellows
 status: released
 gameBuilds: ['eu4-1.37.5-steam-win64']
@@ -13,13 +13,14 @@ highlight:
 ---
 
 Bellows (formerly EU4 Startup Boost) shortens the time from launching the game to the main
-menu. Game state, logs and loaded content stay identical to vanilla; only the time changes.
-Like a smith's bellows, it gets the forge hot sooner.
+menu. Since 0.7.0 it also speeds up the running game: a simulated year takes about a
+quarter less time. Game state, logs and loaded content stay identical to vanilla; only the
+time changes. Like a smith's bellows, it gets the forge hot sooner.
 
 ## What it does
 
 The plugin loads early, before the game's own code runs, and speeds up the work the game
-repeats on every start. Each part is a module:
+repeats on every start, and one check the game repeats every day. Each part is a module:
 
 | Module | What it does | Default |
 | --- | --- | --- |
@@ -32,9 +33,14 @@ repeats on every start. Each part is a module:
 | `open_warmup` | Opens the files the game will need on parallel threads, so the slow first access after a reboot does not block the start | on |
 | `ram_prefetch` | Reads and unpacks the DLC archive members the game will need into memory on background threads; uses up to 1 GB of extra RAM during start-up | on |
 | `attr_cache` | Remembers "file not found" answers for game and mod files during start-up | off |
+| `range_witness` | **Simulation, not start-up.** Answers the country range check (can a country still reach a province?) from the province that was in range last time, instead of walking all of the country's provinces again; same answers as the game's own code | on |
 
-`open_warmup` and `ram_prefetch` learn which files to read per mod set. A module that fails
-turns itself off while the game continues.
+`open_warmup` and `ram_prefetch` learn which files to read per mod set. `range_witness`
+keeps what it learns only for the current session. A module that fails turns itself off
+while the game continues.
+
+The diagnostic module `range_profile` (off by default) only observes the range check and
+writes counters to `anvil/data/bellows/`; it is meant for development, not for playing.
 
 ## Install
 
@@ -55,8 +61,9 @@ the game's own code, for checking a module rather than for playing.
 
 - `[ram_prefetch] budget_mb` sets the memory budget of `ram_prefetch` (64–8192, default
   1024).
-- `token_dict_cache` is not listed in the file and is on for existing files too. Add
-  `token_dict_cache = "off"` under `[modules]` to switch it off.
+- `token_dict_cache` and `range_witness` are not listed in the file and are on for existing
+  files too. Add `token_dict_cache = "off"` or `range_witness = "off"` under `[modules]` to
+  switch one off, or `range_witness = "verify"` to compare every answer with the game's.
 - When the game is ready, the plugin writes its counters to `anvil/anvil.log`.
 
 ### Upgrading
@@ -70,7 +77,9 @@ the game's own code, for checking a module rather than for playing.
 
 ## Tested and measured
 
-All measurements: EU4 1.37.5 (Steam, Windows 64-bit) with 10 UI, graphics and music mods,
+### Start-up
+
+All start-up measurements: EU4 1.37.5 (Steam, Windows 64-bit) with 10 UI, graphics and music mods,
 on the development machine, warm starts (not the first after a reboot), from the game
 process starting to the main menu. Details and run names are in the
 [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md).
@@ -92,8 +101,31 @@ Single modules were measured on a copy of the game folder:
 In every series the game's `setup.log`, `error.log` and `system.log` were identical with
 and without the plugin. In a verification start, the modules compared their answers with
 the game's own code: 0 differences over 3.6 million calls. Five in-game years were played
-with the plugin without crashes or new errors, and an autosave from that session loaded
-correctly.
+with the plugin (before 0.7.0, so without `range_witness`) without crashes or new errors,
+and an autosave from that session loaded correctly.
 
 Not measured yet: the first start after a reboot. The research build that the plugin's
 techniques come from took it from ~61 s to ~15 s.
+
+### Simulation
+
+`range_witness` was measured in the lab on EU4 1.37.5 (Steam) with a save from 17 March
+1719 (Russia), 8 worker threads in each of the game's two pools and only this module on.
+[Tongs](../tongs/) ran the game through the year 1720 at speed 5 and timed it, one game
+launch per trial, interleaved:
+
+| Simulated year 1720 | Without `range_witness` | With `range_witness` |
+| --- | ---: | ---: |
+| Trials | 27.29 / 27.58 / 27.91 s | 20.68 / 20.48 / 21.02 / 20.05 s |
+| Average | 27.6 s | **20.6 s** (−25.5%) |
+
+One trial without the module was rejected because an event paused the game during the
+measured year. The game's main thread used 19.1 s of CPU time per year instead of 25.5 s;
+92% of the range checks were answered from the remembered province.
+
+In `verify` sessions the module compared its answers with the game's own code: 0
+differences over more than 1.4 million compared answers, including one session driven
+year by year from 17 March 1719 to 1 January 1727. Details are in the
+[design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#range_witness-simulation).
+
+Not verified yet: other saves, mod sets and much later dates.
