@@ -66,6 +66,10 @@ Starlight's `--sl-color-*` variables are mapped onto these tokens; components us
 - SVG icons only (no emoji), decorative icons have `aria-hidden`.
 - No horizontal scroll at 375 px; checked on all pages.
 - No client-side JavaScript except Starlight's search.
+- CI runs axe-core on every page (`npm run check:a11y`). It cannot see colours or sizes,
+  so contrast and target sizes stay a manual check against the tables above.
+- Symbols that carry meaning (such as "→" between two numbers) are `aria-hidden` and have
+  a `sr-only` text next to them; `aria-label` is not used on plain `span`s.
 - Images through `astro:assets` (the team logo is converted to WebP).
 
 ## Content rules

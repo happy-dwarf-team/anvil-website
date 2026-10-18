@@ -25,7 +25,8 @@ const { name, summary, status, highlight } = plugin.data;
 			<p class="highlight">
 				<span class="label">{highlight.label}</span>
 				<span class="numbers">
-					{highlight.before} <span aria-label="to">→</span> <strong>{highlight.after}</strong>
+					{highlight.before} <span aria-hidden="true">→</span><span class="sr-only"> to </span>{' '}
+					<strong>{highlight.after}</strong>
 				</span>
 			</p>
 		)
