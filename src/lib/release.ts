@@ -24,6 +24,11 @@ export function releasesUrl(repo: string): string {
 	return `https://github.com/${repo}/releases`;
 }
 
+// Release asset of a catalog plugin: the frontmatter's `asset`, or <plugin-id>-windows-x64.zip.
+export function pluginAsset(id: string, asset?: string): string {
+	return asset ?? `${id}-windows-x64.zip`;
+}
+
 // "https://github.com/owner/name" → "owner/name"
 export function repoSlug(repoUrl: string): string {
 	return new URL(repoUrl).pathname.replace(/^\/|\/$/g, '');
