@@ -1,8 +1,16 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import DownloadButton from '../../components/DownloadButton.astro';
 import PluginIcon from '../../components/PluginIcon.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import {
+	describeGameBuild,
+	formatDate,
+	getLatestRelease,
+	getReleasedManifest,
+	repoSlug,
+} from '../../lib/release';
 import { url } from '../../lib/url';
 
 export async function getStaticPaths() {
@@ -14,11 +22,25 @@ interface Props {
 	plugin: CollectionEntry<'plugins'>;
 }
 const { plugin } = Astro.props;
-const { name, summary, repo, status, gameBuilds, affectsGameplay } = plugin.data;
+const { name, summary, repo, status, manifestPath } = plugin.data;
+const asset = plugin.data.asset ?? `${plugin.id}-windows-x64.zip`;
+const slug = repoSlug(repo);
+
+// The released plugin.toml is the source of truth; the frontmatter is the fallback when
+// GitHub cannot be reached at build time.
+const release = await getLatestRelease(slug, asset);
+const manifest = release ? await getReleasedManifest(release, manifestPath) : null;
+const gameBuilds = manifest?.gameBuilds.length ? manifest.gameBuilds : plugin.data.gameBuilds;
+const affectsGameplay = manifest?.affectsGameplay ?? plugin.data.affectsGameplay;
+if (manifest && manifest.affectsGameplay !== plugin.data.affectsGameplay) {
+	console.warn(`[catalog] ${plugin.id}: affectsGameplay differs between the frontmatter and plugin.toml.`);
+}
+
 const { Content, headings } = await render(plugin);
+const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', text: 'Supported game builds' }];
 ---
 
-<StarlightPage frontmatter={{ title: name, description: summary }} headings={headings} hasSidebar={false}>
+<StarlightPage frontmatter={{ title: name, description: summary }} headings={pageHeadings} hasSidebar={false}>
 	<a class="back" href={url('plugins/')}><span aria-hidden="true">←</span> All plugins</a>
 	<div class="facts">
 		<PluginIcon id={plugin.id} size={40} />
@@ -27,6 +49,28 @@ const { Content, headings } = await render(plugin);
 				<dt>Status</dt>
 				<dd><StatusBadge status={status} /></dd>
 			</div>
+			{
+				release && (
+					<div>
+						<dt>Latest version</dt>
+						<dd>
+							<a href={release.pageUrl}>{release.version}</a>
+							<span class="muted">{formatDate(release.publishedAt)}</span>
+						</dd>
+					</div>
+				)
+			}
+			{
+				manifest?.anvil && (
+					<div>
+						<dt>Requires</dt>
+						<dd>
+							<a href={url('docs/install/')}>Anvil</a>
+							<code>{manifest.anvil}</code>
+						</dd>
+					</div>
+				)
+			}
 			<div>
 				<dt>Game builds</dt>
 				<dd>{gameBuilds.map((b) => <code>{b}</code>)}</dd>
@@ -37,11 +81,29 @@ const { Content, headings } = await render(plugin);
 			</div>
 			<div>
 				<dt>Source</dt>
-				<dd><a href={repo}>{repo.replace('https://github.com/', '')}</a></dd>
+				<dd><a href={repo}>{slug}</a></dd>
 			</div>
 		</dl>
 	</div>
+	<div class="get">
+		<DownloadButton name={name} repo={slug} asset={asset} align="start" />
+	</div>
 	<Content />
+	<h2 id="supported-game-builds">Supported game builds</h2>
+	<ul>
+		{
+			gameBuilds.map((build) =>
+				build === '*' ? (
+					<li>Any game build: the plugin does not use game addresses.</li>
+				) : (
+					<li>
+						{describeGameBuild(build)}, <code>{build}</code>
+					</li>
+				),
+			)
+		}
+	</ul>
+	<p>On any other build Anvil skips the plugin and the game starts normally.</p>
 </StarlightPage>
 
 <style>
@@ -89,6 +151,14 @@ const { Content, headings } = await render(plugin);
 		padding-inline-start: 0;
 		display: flex;
 		flex-wrap: wrap;
+		align-items: baseline;
 		gap: 0.4rem;
+	}
+	.muted {
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
+	.get {
+		margin-bottom: 2rem;
 	}
 </style>

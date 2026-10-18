@@ -16,9 +16,6 @@ Bellows (formerly EU4 Startup Boost) shortens the time from launching the game t
 menu. Game state, logs and loaded content stay identical to vanilla; only the time changes.
 Like a smith's bellows, it gets the forge hot sooner.
 
-Download the latest release from the
-[releases page](https://github.com/happy-dwarf-team/bellows/releases).
-
 ## What it does
 
 The plugin loads early, before the game's own code runs, and speeds up the work the game
@@ -100,8 +97,3 @@ correctly.
 
 Not measured yet: the first start after a reboot. The research build that the plugin's
 techniques come from took it from ~61 s to ~15 s.
-
-## Supported game build
-
-EU4 1.37.5 (Steam, Windows 64-bit). On any other build Anvil skips the plugin and the
-game starts normally.

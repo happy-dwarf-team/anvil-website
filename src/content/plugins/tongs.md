@@ -13,9 +13,6 @@ instead of reading pixels from screenshots. Every command answers with the state
 from the game, so a script can check that its action took effect. Like a smith's tongs,
 it holds the work from outside the forge.
 
-Download the latest release from the
-[releases page](https://github.com/happy-dwarf-team/tongs/releases).
-
 ## What it does
 
 - Reads the game state: whether a game is loaded, the date, the speed and the pause.
@@ -131,8 +128,3 @@ verified yet: input in the main menu and in event pop-ups, keyboard layouts othe
 clicks on the map (only interface buttons were tried) and dragging, for which there is no
 command yet. Details are in the [design
 notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md).
-
-## Supported game build
-
-EU4 1.37.5 (Steam, Windows 64-bit). On any other build Anvil skips the plugin and the
-game starts normally.

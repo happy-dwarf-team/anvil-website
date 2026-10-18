@@ -16,6 +16,10 @@ const plugins = defineCollection({
 		gameBuilds: z.array(z.string()).min(1),
 		affectsGameplay: z.boolean(),
 		order: z.number().default(100),
+		// Release asset and manifest path in the plugin repository; the defaults fit the
+		// Happy Dwarf Team plugins (<id>-windows-x64.zip, plugin/plugin.toml).
+		asset: z.string().optional(),
+		manifestPath: z.string().default('plugin/plugin.toml'),
 		highlight: z
 			.object({ label: z.string(), before: z.string(), after: z.string() })
 			.optional(),
