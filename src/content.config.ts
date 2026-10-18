@@ -4,7 +4,8 @@ import { z } from 'astro/zod';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
-// One Markdown file per plugin in src/content/plugins/. The file name is the page slug.
+// One Markdown file per plugin in src/content/plugins/. The file name is the page slug; an
+// optional icon with the same name in src/assets/plugins/ is shown by PluginIcon.astro.
 const plugins = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/plugins' }),
 	schema: z.object({
