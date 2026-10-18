@@ -73,11 +73,11 @@ With `input = true`, also:
 | `move X Y`, `click X Y`, `scroll STEPS` | point, click (left, right, middle, double) and turn the wheel at window coordinates |
 | `release` | hands the pointer back to the real mouse |
 
-`wait_until` and `run_until` wait at most 1 hour by default; `timeout=S` sets the limit, up
-to 14 400 s. With `max_pause=S` the wait ends with an error once the game
-has stayed paused for `S` seconds, for example on an event with a choice, instead of
-running into the timeout. Answers report `paused_ms` and, after a pause, `paused_date`, so
-a measurement with a pause in it can be rejected.
+`wait_until` and `run_until` wait at most 1 hour by default; `timeout=S` sets the limit,
+up to 14 400 s. With `max_pause=S` the wait ends with an error once the game has stayed
+paused for `S` seconds, for example on an event with a choice, instead of running into the
+timeout. Answers report `paused_ms` and, after a pause, `paused_date`, so a measurement
+with a pause in it can be rejected.
 
 Input commands answer once the game has reacted, or with an error after 10 s, and always
 include the state. The full list of keys and answer fields is in the
@@ -126,10 +126,11 @@ Delete the `tongs` folder to uninstall.
 
 Checked in the game on EU4 1.37.5 (Steam) with Anvil 0.2.0, on one development machine
 with a loaded save. `max_pause` was checked in a lab measurement series: a run that an
-event paused ended after 5 s of pause instead of waiting for its 300 s timeout. Not verified yet: input in the main menu and in event pop-ups,
-keyboard layouts other than US, clicks on the map (only interface buttons were tried) and
-dragging, for which there is no command yet. Details are in the
-[design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md).
+event paused ended after 5 s of pause instead of waiting for its 300 s timeout. Not
+verified yet: input in the main menu and in event pop-ups, keyboard layouts other than US,
+clicks on the map (only interface buttons were tried) and dragging, for which there is no
+command yet. Details are in the [design
+notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md).
 
 ## Supported game build
 
