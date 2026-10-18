@@ -1,7 +1,8 @@
 ---
 interface Props {
 	status: 'planned' | 'in-development' | 'released';
-	// Latest released version, shown after the label when known.
+	// Latest released version. When known, the badge shows only the version: a plugin with a
+	// release is released, and 0.x already says how early it is.
 	version?: string;
 }
 const labels = {
@@ -12,10 +13,15 @@ const labels = {
 const { status, version } = Astro.props;
 ---
 
-<span class:list={['badge', status]}>
-	{labels[status]}
-	{version && <span class="version">{version}</span>}
-</span>
+{
+	version ? (
+		<span class="badge released version">
+			<span class="sr-only">Latest version </span>v{version}
+		</span>
+	) : (
+		<span class:list={['badge', status]}>{labels[status]}</span>
+	)
+}
 
 <style>
 	.badge {
@@ -29,7 +35,6 @@ const { status, version } = Astro.props;
 		white-space: nowrap;
 	}
 	.version {
-		margin-inline-start: 0.4rem;
 		font-family: var(--__sl-font-mono);
 	}
 	.released {

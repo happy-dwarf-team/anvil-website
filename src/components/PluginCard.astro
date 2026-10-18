@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getLatestRelease, pluginAsset, repoSlug } from '../lib/release';
+import { formatDate, getLatestRelease, pluginAsset, repoSlug } from '../lib/release';
 import { url } from '../lib/url';
 import PluginIcon from './PluginIcon.astro';
 import StatusBadge from './StatusBadge.astro';
@@ -19,7 +19,16 @@ const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, as
 			<PluginIcon id={plugin.id} size={28} />
 			<a href={url(`plugins/${plugin.id}/`)}>{name}</a>
 		</h3>
-		<StatusBadge status={status} version={release?.version} />
+		<div class="status">
+			<StatusBadge status={status} version={release?.version} />
+			{
+				release && (
+					<span class="updated">
+						Updated <time datetime={release.publishedAt.toISOString().slice(0, 10)}>{formatDate(release.publishedAt)}</time>
+					</span>
+				)
+			}
+		</div>
 	</div>
 	<p>{summary}</p>
 	{
@@ -62,6 +71,18 @@ const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, as
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
+	}
+	.status {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.3rem;
+		flex-shrink: 0;
+	}
+	.updated {
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-xs);
+		white-space: nowrap;
 	}
 	h3 {
 		display: flex;

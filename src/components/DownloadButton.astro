@@ -1,5 +1,5 @@
 ---
-import { getLatestRelease, formatSize, releasesUrl, ANVIL_REPO, ANVIL_ASSET } from '../lib/release';
+import { getLatestRelease, formatDate, formatSize, releasesUrl, ANVIL_REPO, ANVIL_ASSET } from '../lib/release';
 
 interface Props {
 	// Defaults to Anvil; plugin pages pass their own repository and asset.
@@ -43,7 +43,9 @@ const allReleases = releasesUrl(repo);
 		{
 			release ? (
 				<>
-					Windows 64-bit · {formatSize(release.sizeBytes)} · <a href={allReleases}>All releases</a>
+					Windows 64-bit · {formatSize(release.sizeBytes)} · released{' '}
+					<time datetime={release.publishedAt.toISOString().slice(0, 10)}>{formatDate(release.publishedAt)}</time> ·{' '}
+					<a href={allReleases}>All releases</a>
 				</>
 			) : (
 				<>
