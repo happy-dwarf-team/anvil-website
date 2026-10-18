@@ -10,7 +10,8 @@ Every start writes `anvil/anvil.log` in the game folder; the previous start is k
 
 - the Anvil version,
 - the detected game build, or `unknown` with the identity of `eu4.exe`,
-- for each plugin: `loaded`, `skipped (reason)` or `failed (reason)`,
+- for each plugin: `loaded`, `skipped — <reason>`, or an error if its load failed (its
+  patches are then rolled back),
 - the patches each plugin applied, and how long loading took.
 
 If there is no log at all, Anvil did not run. Check that `version.dll` and the `anvil`

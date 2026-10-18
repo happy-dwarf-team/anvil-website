@@ -21,7 +21,7 @@ Anvil works with **Europa Universalis IV for Windows, 64-bit, from Steam**.
 4. Extract the archive into that folder. You should now see `version.dll` and an `anvil`
    folder next to `eu4.exe`.
 5. Put plugins into `anvil/plugins/`, one folder per plugin, for example
-   `anvil/plugins/bellows/`.
+   `anvil/plugins/bellows/`; see [Install plugins](../install-plugins/).
 6. Start the game as usual, from Steam or the Paradox launcher.
 
 After the first start, `anvil/anvil.log` lists what was loaded. See
