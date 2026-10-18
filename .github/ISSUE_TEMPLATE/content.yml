@@ -1,0 +1,27 @@
+name: Wrong or missing content
+description: Something on the website is wrong, outdated, unclear or missing.
+labels: [documentation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks. Every docs page has an "Edit page" link if you would rather propose the fix directly. Problems with Anvil or a plugin itself belong in their repositories (see the links on the previous page).
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The address of the page, e.g. https://anvil.happydwarf.dev/docs/install/
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing
+      description: Quote the text if it is wrong, and say what you expected to find.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: Where the correct information is, if you know (a README, a release, a log line).

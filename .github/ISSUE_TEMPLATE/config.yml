@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/happy-dwarf-team/anvil-website/security/advisories/new
+    about: Report privately; see SECURITY.md.
+  - name: Anvil (loader) issues
+    url: https://github.com/happy-dwarf-team/anvil/issues/new/choose
+    about: Problems with Anvil itself, not with its website.
+  - name: Bellows issues
+    url: https://github.com/happy-dwarf-team/bellows/issues/new/choose
+    about: Problems or ideas for the Bellows plugin.
+  - name: Tongs issues
+    url: https://github.com/happy-dwarf-team/tongs/issues/new/choose
+    about: Problems or ideas for the Tongs plugin.
