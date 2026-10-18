@@ -61,11 +61,11 @@ and the plugins in the [catalog](../../../plugins/).
 
 Within API 1, new host functions and manifest keys are only added, never changed. A plugin
 that needs something added later states the Anvil versions it needs in `anvil`. An older
-Anvil then skips it with a log line such as
-`requires Anvil >=0.2.0, this is Anvil 0.1.0`, instead of loading it without the feature.
+Anvil then skips it with a log line such as `requires Anvil >=0.3.0, this is Anvil 0.2.0`,
+instead of loading it without the feature.
 
-Set `anvil = ">=0.2.0"` or higher when the plugin uses `[[expect]]` or `expect_bytes`: an
-Anvil before 0.2.0 does not know `[[expect]]` and would only log it as an unknown key.
+Anvil checks this field since 0.2.0, its first public release. A plugin that uses
+`[[expect]]` or `expect_bytes` should state at least `>=0.2.0`, as Bellows and Tongs do.
 
 ## Dependencies
 
