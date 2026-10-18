@@ -25,6 +25,10 @@ function htmlFiles(dir) {
 let failures = 0;
 let checked = 0;
 const pages = htmlFiles(distDir);
+if (pages.length === 0) {
+	console.error('No HTML pages in dist/; run `npm run build` first.');
+	process.exit(1);
+}
 for (const file of pages) {
 	const page = relative(distDir, file);
 	const html = readFileSync(file, 'utf8');

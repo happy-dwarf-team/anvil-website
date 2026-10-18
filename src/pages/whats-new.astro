@@ -1,0 +1,122 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+import { ANVIL_REPO, formatDate, getReleaseNotes, repoSlug, type ReleaseNote } from '../lib/release';
+import { url } from '../lib/url';
+
+// Every release of Anvil and of the catalog's plugins, newest first, from the GitHub API at
+// build time. The site is rebuilt after each release and daily.
+const plugins = await getCollection('plugins');
+const projects = [
+	{ name: 'Anvil', repo: ANVIL_REPO, href: url('') },
+	...plugins.map((p) => ({ name: p.data.name, repo: repoSlug(p.data.repo), href: url(`plugins/${p.id}/`) })),
+];
+const results = await Promise.all(projects.map((p) => getReleaseNotes(p.repo)));
+const missing = projects.filter((_, i) => results[i] === null);
+const releases = results
+	.flatMap((notes, i) => (notes ?? []).map((note) => ({ project: projects[i], note })))
+	.sort((a, b) => b.note.publishedAt.getTime() - a.note.publishedAt.getTime());
+
+function codeSpans(text: string): { code: boolean; text: string }[] {
+	return text.split('`').map((part, i) => ({ code: i % 2 === 1, text: part }));
+}
+
+function summary(note: ReleaseNote): string | undefined {
+	return note.changes.length === 0 ? 'See the release notes.' : undefined;
+}
+---
+
+<StarlightPage
+	frontmatter={{
+		title: "What's new",
+		description: 'Releases of Anvil and its plugins, newest first.',
+		tableOfContents: false,
+	}}
+>
+	<p class="lead">
+		Releases of Anvil and its plugins, newest first. Each version links to its release notes and
+		downloads on GitHub.
+	</p>
+	{
+		missing.length > 0 && (
+			<p class="note">
+				Release data for {missing.map((p) => p.name).join(', ')} could not be read when this page
+				was built; see their releases on GitHub.
+			</p>
+		)
+	}
+	<ol class="releases">
+		{
+			releases.map(({ project, note }) => (
+				<li>
+					<p class="when">
+						<time datetime={note.publishedAt.toISOString().slice(0, 10)}>{formatDate(note.publishedAt)}</time>
+					</p>
+					<h2>
+						<a href={project.href}>{project.name}</a> <a href={note.pageUrl}>{note.version}</a>
+					</h2>
+					{summary(note) && <p class="muted">{summary(note)}</p>}
+					{note.changes.length > 0 && (
+						<ul>
+							{note.changes.map((change) => (
+								<li>
+									<span class="tag">{change.section}</span>{' '}
+									{codeSpans(change.text).map((part) => (part.code ? <code>{part.text}</code> : part.text))}
+								</li>
+							))}
+						</ul>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</StarlightPage>
+
+<style>
+	.lead {
+		max-width: 42rem;
+		color: var(--forge-text-muted);
+	}
+	.note {
+		padding: 0.75rem 1rem;
+		border: 1px solid var(--forge-border);
+		border-radius: var(--forge-radius);
+		color: var(--forge-text-muted);
+	}
+	.releases {
+		padding: 0;
+		list-style: none;
+	}
+	.releases > li {
+		margin: 0;
+		padding: 1.25rem 0;
+		border-top: 1px solid var(--forge-border);
+	}
+	.when {
+		margin: 0;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
+	h2 {
+		margin: 0.25rem 0 0.5rem;
+		font-size: var(--sl-text-xl);
+	}
+	h2 a:first-child {
+		color: var(--sl-color-white);
+		text-decoration: none;
+	}
+	.muted {
+		color: var(--forge-text-muted);
+	}
+	ul {
+		margin: 0;
+	}
+	.tag {
+		display: inline-block;
+		min-width: 6.5rem;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-xs);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+</style>

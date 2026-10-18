@@ -14,7 +14,7 @@ Requires Node.js 22 or newer.
 
 ```powershell
 npm install
-npm run dev       # http://localhost:4321
+npm run dev       # http://localhost:4321 (set GITHUB_TOKEN to avoid the API rate limit)
 npm run build     # static site in dist/
 npm run check     # type-check components and content collections
 npm run check:links  # internal links and anchors in dist/ (after build)
@@ -27,6 +27,7 @@ npm run preview
 | What | Where |
 | --- | --- |
 | Home page | `src/pages/index.astro` |
+| What's new | `src/pages/whats-new.astro`, releases of Anvil and the catalog's plugins from the GitHub API |
 | Plugin catalog | one Markdown file per plugin in `src/content/plugins/` (schema in `src/content.config.ts`) |
 | Docs | Markdown in `src/content/docs/docs/`, sidebar in `astro.config.mjs` |
 | Theme | `src/styles/theme.css` |

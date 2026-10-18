@@ -73,6 +73,13 @@ export default defineConfig({
 						{ slug: 'docs/plugins/catalog' },
 					],
 				},
+				{
+					label: 'Project',
+					items: [
+						{ label: "What's new", link: '/whats-new/' },
+						{ slug: 'docs/roadmap' },
+					],
+				},
 			],
 		}),
 	],
