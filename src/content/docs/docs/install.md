@@ -51,7 +51,10 @@ list single plugins in `disabled_plugins`:
 ```toml
 enabled = true
 disabled_plugins = ["bellows"]
+log_level = "info"            # "debug", "info", "warning" or "error"
 ```
+
+`log_level` sets how much `anvil/anvil.log` records; `debug` helps when reporting a problem.
 
 ## Game updates
 

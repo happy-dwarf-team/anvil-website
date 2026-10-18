@@ -18,13 +18,21 @@ folder are directly next to `eu4.exe`, not in a subfolder.
 
 ## Common reasons a plugin is skipped
 
+A skipped plugin has a line `<plugin-id>: skipped — <reason>` in the log. The reason starts
+with one of these:
+
 | Log says | What to do |
 | --- | --- |
-| Game build unknown / not supported | EU4 was updated, or the plugin targets another build. Wait for a plugin update. |
-| Manifest error | `plugin.toml` is broken. Reinstall the plugin. |
-| Entry DLL missing | The plugin folder is incomplete. Reinstall the plugin. |
-| Missing dependency | Install the plugin it depends on, in a compatible version. |
-| Disabled | The plugin is listed in `disabled_plugins` in `anvil/anvil.toml`. |
+| `game build … not supported` | EU4 was updated, or the plugin targets another build. Wait for a plugin update. |
+| `game code differs from what the plugin expects` | The game code the plugin relies on has changed: EU4 was updated, or `eu4.exe` was modified. Wait for a plugin update, or use **Verify integrity of game files** in Steam. |
+| `requires Anvil …` | The plugin needs a newer Anvil. [Update Anvil](../install/). |
+| `built for plugin API …` | The plugin and Anvil use different plugin API versions. Update whichever is older. |
+| `plugin.toml: …` | The manifest is broken. Reinstall the plugin. |
+| `entry … not found` | The plugin folder is incomplete. Reinstall the plugin. |
+| `requires plugin …` or `requires '…'` | Install the plugin it depends on, in a compatible version. |
+| `duplicate id` | Two folders contain the same plugin, for example an old copy next to a new one. Delete one of them. |
+| `dependency/load_after cycle` or `early plugin cannot depend on …` | The plugins' manifests contradict each other. Report it to the plugin authors. |
+| `disabled in anvil.toml` | The plugin is listed in `disabled_plugins` in `anvil/anvil.toml`. |
 
 ## Start once without plugins
 
