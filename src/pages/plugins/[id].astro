@@ -28,14 +28,17 @@ const { name, summary, repo, status, manifestPath } = plugin.data;
 const asset = pluginAsset(plugin.id, plugin.data.asset);
 const slug = repoSlug(repo);
 
-// The released plugin.toml is the source of truth; the frontmatter is the fallback when
-// GitHub cannot be reached at build time.
+// The released plugin.toml and symbols.toml are the source of truth; the frontmatter is the
+// fallback when GitHub cannot be reached at build time.
 const release = await getLatestRelease(slug, asset);
 const manifest = release ? await getReleasedManifest(release, manifestPath) : null;
 const gameBuilds = manifest?.gameBuilds.length ? manifest.gameBuilds : plugin.data.gameBuilds;
 const affectsGameplay = manifest?.affectsGameplay ?? plugin.data.affectsGameplay;
 if (manifest && manifest.affectsGameplay !== plugin.data.affectsGameplay) {
 	console.warn(`[catalog] ${plugin.id}: affectsGameplay differs between the frontmatter and plugin.toml.`);
+}
+if (manifest?.gameBuilds.length && manifest.gameBuilds.join() !== plugin.data.gameBuilds.join()) {
+	console.warn(`[catalog] ${plugin.id}: gameBuilds differs between the frontmatter and symbols.toml.`);
 }
 
 const jsonLd = softwareApplication({

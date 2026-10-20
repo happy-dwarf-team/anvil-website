@@ -12,16 +12,17 @@ the maintainer reviews it and decides on merging.
 
 At build time the site reads your latest GitHub release and the `plugin.toml` of that
 release. The page then shows the version and date, the Anvil version the plugin requires
-(`anvil`), whether it changes gameplay (`affects_gameplay`), and a download button with
-size and SHA-256. The game builds come from `gameBuilds` in the frontmatter. You do not
-repeat these in the Markdown.
+(`anvil`), whether it changes gameplay (`affects_gameplay`), the game build (`build` from
+the `symbols.toml` that `symbols` names, or every build without one), and a download button
+with size and SHA-256. You do not repeat these in the Markdown.
 
 This needs a release shaped like those of Bellows and Tongs:
 
 - an asset with a fixed name, `<plugin-id>-windows-x64.zip`, that contains the folder
   `<plugin-id>/` with `plugin.toml`, the DLL and the other files of the plugin;
 - `SHA256SUMS.txt` next to it, with the archive's SHA-256 in `sha256sum` format;
-- `plugin.toml` in the repository at the release tag, by default at `plugin/plugin.toml`.
+- `plugin.toml` in the repository at the release tag, by default at `plugin/plugin.toml`,
+  and the `symbols.toml` it names, if any.
 
 Other names can be set in the frontmatter. A repository made from the
 [template](../first-plugin/#7-release) keeps `plugin.toml` at the root
@@ -52,7 +53,7 @@ What the plugin does, how to install and configure it, and how it was tested.
 | `summary` | yes | Card text and page description. |
 | `repo` | yes | GitHub repository URL. |
 | `status` | yes | `planned`, `in-development` or `released`. |
-| `gameBuilds` | yes | The `build` from the plugin's `symbols.toml`, or `['*']` if the plugin has none and runs on every build. |
+| `gameBuilds` | yes | The `build` from the plugin's `symbols.toml`, or `['*']` if the plugin has none and runs on every build; used when GitHub cannot be reached. |
 | `affectsGameplay` | yes | `affects_gameplay` from `plugin.toml`; used when GitHub cannot be reached. |
 | `order` | no | Position in the catalog, lower first; default 100. |
 | `highlight` | no | One measured result for the card: `label`, `before`, `after`. |

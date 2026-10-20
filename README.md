@@ -49,9 +49,10 @@ the button shows "First public release coming soon". Home and plugin pages also 
 schema.org `SoftwareApplication` data (`src/lib/structured-data.ts`).
 
 For each plugin the site also reads `plugin.toml` at the released tag (`manifestPath`,
-default `plugin/plugin.toml`) and shows the Anvil version it requires, its game builds and
-whether it changes gameplay. When GitHub cannot be reached, the frontmatter values are used
-instead. The release asset defaults to `<file-name>-windows-x64.zip` (`asset`).
+default `plugin/plugin.toml`) and shows the Anvil version it requires and whether it changes
+gameplay. The game build is the `build` of the `symbols.toml` that `plugin.toml` names
+(`symbols`, next to `plugin.toml`); a plugin without one supports every build (`*`). When
+GitHub cannot be reached, the frontmatter values are used instead. The release asset defaults to `<file-name>-windows-x64.zip` (`asset`).
 
 ## Deployment
 

@@ -185,18 +185,15 @@ export async function getReleaseNotes(repo: string): Promise<ReleaseNote[] | nul
 	}
 }
 
-// The fields of a plugin's plugin.toml that the catalog shows.
+// The fields of a plugin's plugin.toml (and its symbols.toml) that the catalog shows.
 export interface PluginManifest {
 	anvil?: string;
+	// The `build` of symbols.toml, or ['*'] for a plugin without game addresses.
 	gameBuilds: string[];
 	affectsGameplay: boolean;
 }
 
-// Reads plugin.toml as it was released, so the page matches the downloadable version.
-export async function getReleasedManifest(
-	release: Release,
-	path: string,
-): Promise<PluginManifest | null> {
+async function fetchReleasedToml(release: Release, path: string): Promise<Record<string, unknown> | null> {
 	const url = `https://raw.githubusercontent.com/${release.repo}/${release.tag}/${path}`;
 	try {
 		const res = await fetch(url);
@@ -204,17 +201,33 @@ export async function getReleasedManifest(
 			console.warn(`[release] ${url} returned ${res.status}; using the catalog frontmatter.`);
 			return null;
 		}
-		const toml = parseToml(await res.text());
-		const gameBuilds = toml.game_builds;
-		return {
-			anvil: typeof toml.anvil === 'string' ? toml.anvil : undefined,
-			gameBuilds: Array.isArray(gameBuilds) ? gameBuilds.map(String) : [],
-			affectsGameplay: toml.affects_gameplay === true,
-		};
+		return parseToml(await res.text());
 	} catch (error) {
 		console.warn(`[release] ${url}: ${String(error)}; using the catalog frontmatter.`);
 		return null;
 	}
+}
+
+// Reads plugin.toml as it was released, so the page matches the downloadable version. With
+// plugin API 2 the game build is the `build` of the symbols.toml that plugin.toml names
+// (`symbols`, relative to plugin.toml); a plugin without one runs on every build.
+export async function getReleasedManifest(
+	release: Release,
+	path: string,
+): Promise<PluginManifest | null> {
+	const toml = await fetchReleasedToml(release, path);
+	if (!toml) return null;
+	let gameBuilds = ['*'];
+	if (typeof toml.symbols === 'string') {
+		const folder = path.includes('/') ? path.slice(0, path.lastIndexOf('/') + 1) : '';
+		const symbols = await fetchReleasedToml(release, folder + toml.symbols);
+		gameBuilds = typeof symbols?.build === 'string' ? [symbols.build] : [];
+	}
+	return {
+		anvil: typeof toml.anvil === 'string' ? toml.anvil : undefined,
+		gameBuilds,
+		affectsGameplay: toml.affects_gameplay === true,
+	};
 }
 
 export function formatSize(bytes: number): string {
