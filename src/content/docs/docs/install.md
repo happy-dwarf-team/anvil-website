@@ -36,9 +36,14 @@ After the first start, `anvil/anvil.log` lists what was loaded. See
   anvil/
     anvil.toml             optional settings
     anvil.log              log of the last start
+    crashes/               crash reports of the last 10 crashes
+    plugins/anvil-game/    standard plugin that ships with Anvil
     plugins/<plugin-id>/   plugin manifest and DLL
     data/<plugin-id>/      files a plugin writes (caches, settings)
 ```
+
+Keep `anvil-game` installed and enabled: it tells other plugins when the game is ready
+and when a game session starts, and plugins that depend on it are skipped without it.
 
 ## Uninstall
 
@@ -58,7 +63,8 @@ log_level = "info"            # "debug", "info", "warning" or "error"
 
 ## Game updates
 
-Plugins declare which game builds they support. After an EU4 update, plugins that do not
-know the new build are skipped and the game starts normally until they are updated.
+Plugins declare the game code they rely on, and Anvil checks it against the running game
+before it loads them. After an EU4 update, plugins whose code no longer matches are skipped
+and the game starts normally until they are updated.
 Steam updates and **Verify integrity of game files** are not affected, because
 `eu4.exe` is never modified.
