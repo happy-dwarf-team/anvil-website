@@ -7,8 +7,10 @@ interface Props {
 	repo?: string;
 	asset?: string;
 	align?: 'center' | 'start';
+	// Shown after the size, e.g. "AnvilManager.exe".
+	fileLabel?: string;
 }
-const { name = 'Anvil', repo = ANVIL_REPO, asset = ANVIL_ASSET, align = 'center' } = Astro.props;
+const { name = 'Anvil', repo = ANVIL_REPO, asset = ANVIL_ASSET, align = 'center', fileLabel } = Astro.props;
 const release = await getLatestRelease(repo, asset);
 const allReleases = releasesUrl(repo);
 ---
@@ -43,7 +45,7 @@ const allReleases = releasesUrl(repo);
 		{
 			release ? (
 				<>
-					Windows 64-bit · {formatSize(release.sizeBytes)} · released{' '}
+					{fileLabel && <>{fileLabel} · </>}Windows 64-bit · {formatSize(release.sizeBytes)} · released{' '}
 					<time datetime={release.publishedAt.toISOString().slice(0, 10)}>{formatDate(release.publishedAt)}</time> ·{' '}
 					<a href={allReleases}>All releases</a>
 				</>
