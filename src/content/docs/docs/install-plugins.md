@@ -13,7 +13,28 @@ starts; nothing else is installed or registered.
   version the plugin needs) and **Game builds**. On another game build Anvil skips the
   plugin and the game starts normally.
 
-## Install a plugin
+## Install a plugin with Anvil Manager
+
+1. Download the plugin's archive, for example `bellows-windows-x64.zip`.
+2. In `AnvilManager.exe`, open the **Plugins** tab and click **Install a plugin from a
+   zip…**, or drop the zip on the window.
+3. Before anything is copied, the Manager checks the plugin the way `anvil check` does:
+   its manifest, and its game addresses against your `eu4.exe`. It shows the name,
+   version, authors, whether the plugin changes gameplay, any problems, and whether Anvil
+   would skip it on your game build.
+4. Click **Install**. The plugin goes to `anvil/plugins/<plugin-id>/` and replaces an
+   older version there; `anvil/data/<plugin-id>/` with its settings stays.
+
+A plugin is native code that runs inside the game with your rights, like any program:
+install plugins only from authors you trust. Files next to the plugin's folder in the zip,
+such as `SHA256SUMS.txt`, are not installed.
+
+The **Plugins** tab also shows which plugins will load, in which order, and why one is
+skipped, without starting the game. It turns plugins on and off, allows the ones that
+offer it in ironman or multiplayer, and removes them; **Settings** edits a plugin's
+settings.
+
+## Install a plugin by hand
 
 1. Download the plugin's archive, for example `bellows-windows-x64.zip`, with the download
    button on its page.
@@ -66,6 +87,9 @@ create their settings file on the first start.
 updating: it lists the rare cases that need more, such as a renamed plugin.
 
 ## Turn a plugin off or remove it
+
+With the Manager, untick the plugin on the **Plugins** tab, or click **Remove** (its
+settings in `anvil/data/<plugin-id>/` stay). By hand:
 
 - **Off for now:** add its id to `disabled_plugins` in `anvil/anvil.toml`, for example
   `disabled_plugins = ["bellows"]`. The log then says `disabled in anvil.toml`.

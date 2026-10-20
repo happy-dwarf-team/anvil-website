@@ -81,7 +81,9 @@ variable `ANVIL_DISABLE=1` for that start. Anvil then only writes the log.
 
 Anvil is a proxy `version.dll`, a pattern that antivirus heuristics sometimes flag.
 Releases are built by GitHub Actions from public source, and each release publishes
-SHA-256 checksums you can compare. Code signing is planned.
+SHA-256 checksums you can compare. Code signing is planned. Until then Windows SmartScreen
+may warn about `AnvilManager.exe` on its first start; choose **More info** → **Run
+anyway** after checking its SHA-256.
 
 ## Reporting a problem
 
