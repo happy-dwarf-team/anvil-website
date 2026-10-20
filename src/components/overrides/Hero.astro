@@ -2,22 +2,47 @@
 // Only the home page sets `hero`, so this replaces Starlight's hero with the landing header.
 import DownloadButton from '../DownloadButton.astro';
 import mark from '../../assets/anvil-mark.svg';
+import { ANVIL_ASSET, ANVIL_MANAGER_ASSET, getLatestRelease } from '../../lib/release';
+import { url } from '../../lib/url';
 
 const { data } = Astro.locals.starlightRoute.entry;
 const { title = data.title, tagline } = data.hero || {};
+// The main button is Anvil Manager, which installs Anvil; the zip stays as the manual install.
+// A release without the Manager (before 1.2) falls back to the zip.
+const manager = await getLatestRelease(undefined, ANVIL_MANAGER_ASSET);
+const zip = await getLatestRelease(undefined, ANVIL_ASSET);
 ---
 
 <header class="hero">
 	<img class="mark" src={mark.src} alt="" width="72" height="72" />
 	<h1 id="_top" class="forge-heading" data-page-title set:html={title} />
 	{tagline && <p class="tagline" set:html={tagline} />}
-	<DownloadButton />
+	{
+		manager ? (
+			<DownloadButton asset={ANVIL_MANAGER_ASSET} fileLabel="Anvil Manager, the installer" />
+		) : (
+			<DownloadButton />
+		)
+	}
+	{
+		manager && zip && (
+			<p class="manual">
+				Or the <a href={zip.downloadUrl}>{ANVIL_ASSET}</a> for a{' '}
+				<a href={url('docs/install/#install-by-hand')}>manual install</a>.
+			</p>
+		)
+	}
 	<a class="github" href="https://github.com/happy-dwarf-team/anvil">
 		Source on GitHub <span aria-hidden="true">→</span>
 	</a>
 </header>
 
 <style>
+	.manual {
+		margin: -0.5rem 0 0;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
 	.hero {
 		display: flex;
 		flex-direction: column;

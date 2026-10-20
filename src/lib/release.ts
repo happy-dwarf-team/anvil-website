@@ -6,6 +6,8 @@ import { parse as parseToml } from 'smol-toml';
 
 export const ANVIL_REPO = 'happy-dwarf-team/anvil';
 export const ANVIL_ASSET = 'anvil-windows-x64.zip';
+// The installer and manager, an asset of every release from Anvil 1.2.
+export const ANVIL_MANAGER_ASSET = 'AnvilManager.exe';
 
 export interface Release {
 	repo: string;
