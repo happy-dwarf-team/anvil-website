@@ -1,130 +1,118 @@
 ---
 title: Your first plugin
-description: Build, test and release a minimal Anvil plugin, step by step.
+description: Build, check, test and release an Anvil plugin from the template.
 ---
 
-This guide builds `my-plugin`, a plugin that only writes to the log, and releases it the
-way Bellows and Tongs are released. It does not touch game code; the
-[overview](../overview/) and the [Host API](../api/) cover patching.
+This guide starts from
+[anvil-plugin-template](https://github.com/happy-dwarf-team/anvil-plugin-template), a C++
+plugin for plugin API 2 that hooks a function (the game-speed object), hooks the middle
+of another one (the return to the main menu) and has one setting. Its
+[README](https://github.com/happy-dwarf-team/anvil-plugin-template#readme) is the same
+guide in more detail.
 
-You need Windows, Visual Studio 2022 (or its Build Tools) with the C++ workload, CMake 3.25
-or newer, Git, and EU4 with [Anvil installed](../../install/).
+You need Windows x64, Visual Studio 2022 (or its Build Tools) with **Desktop development
+with C++**, which brings CMake 3.25 or newer, Git, and EU4 1.37.5 with
+[Anvil 1.0 or newer installed](../../install/).
 
-## 1. Repository layout
+## 1. Create the repository
 
-```
-my-plugin/
-  CMakeLists.txt
-  plugin/plugin.toml
-  src/plugin.c
-  third_party/anvil/anvil_plugin.h
-```
+On GitHub, open the template and choose **Use this template → Create a new repository**,
+then clone it. You get:
 
-Copy the SDK header
-[`anvil_plugin.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_plugin.h)
-into `third_party/anvil/`. It is the whole SDK: a plain C ABI, no library to link.
+| Path | What |
+| --- | --- |
+| `plugin.toml` | the manifest |
+| `symbols.toml` | the game addresses the plugin uses |
+| `symbols.lock` | the result of `anvil check --exe`; CI checks it is current |
+| `settings.toml` | what the player can change |
+| `src/plugin.cpp` | the plugin |
+| `CMakeLists.txt` | fetches the Anvil SDK and calls `anvil_add_plugin` |
+| `.github/` | CI, pull request titles and releases |
 
-## 2. Manifest
+## 2. Name the plugin
 
-`plugin/plugin.toml`:
+| File | What to change |
+| --- | --- |
+| `plugin.toml` | `id`, `name`, `entry`, `authors`, `description`, `issues`, `repository`, `affects_gameplay` |
+| `CMakeLists.txt` | `project(my_plugin …)` and the target in `anvil_add_plugin(my_plugin …)` |
+| `workshop/descriptor.mod` | `name`, the mod's name in the launcher |
+
+The id is lowercase letters, digits and `-`. The `my_plugin-check` and `my_plugin-deploy`
+targets below follow the target name.
+
+## 3. Declare the symbols
+
+Every game address the plugin touches is a `[symbol.<name>]` in `symbols.toml`:
 
 ```toml
-id = "my-plugin"
-name = "My Plugin"
-version = "0.1.0"
-authors = ["Your Name"]
-description = "Writes a line to anvil.log."
-api = 1
-anvil = ">=0.2.0"
-entry = "my-plugin.dll"
-phase = "main"
-affects_gameplay = false
-game_builds = ["*"]
+build = "eu4-1.37.5-steam-win64"
+
+[symbol.speed_object]
+rva = 0x8024D0
+bytes = "48 8B 81 18 04 00 00 C3"      # mov rax, [rcx+0x418]; ret
+memory = "code"
+signature = "void* (void* session)"
 ```
 
-`game_builds = ["*"]` is right only while the plugin uses no game addresses. Once it
-does, list the exact builds and declare the game code it relies on; see the
-[manifest reference](../manifest/).
-
-## 3. Code
-
-`src/plugin.c`:
-
-```c
-#include <anvil/anvil_plugin.h>
-
-#include <stdio.h>
-
-ANVIL_PLUGIN_EXPORT AnvilResult anvil_plugin_load(const AnvilHost *host, AnvilPlugin *self) {
-    char message[160];
-    snprintf(message, sizeof(message), "hello from Anvil %s, game build %s", host->anvil_version,
-             host->game->build_id ? host->game->build_id : "unknown");
-    host->log(self, ANVIL_LOG_INFO, message);
-    return ANVIL_OK;
-}
-```
-
-Return an error, or crash, and Anvil rolls back the plugin's patches while the game keeps
-starting. The
-[`hello` example](https://github.com/happy-dwarf-team/anvil/blob/main/examples/hello/hello.c)
-also registers a service and waits for the game to be ready.
+At build time `anvil gen` turns it into `symbols.gen.hpp`, so the code says
+`sym::speed_object`, and a detour that does not match the signature does not compile. The
+[manifest reference](../manifest/#symbolstoml) lists every key.
 
 ## 4. Build
 
-`CMakeLists.txt`:
-
-```cmake
-cmake_minimum_required(VERSION 3.25)
-project(my_plugin VERSION 0.1.0 LANGUAGES C)
-
-# Static C runtime: players do not need a Visual C++ redistributable.
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
-add_library(my_plugin SHARED src/plugin.c)
-target_include_directories(my_plugin PRIVATE third_party)
-set_target_properties(my_plugin PROPERTIES OUTPUT_NAME my-plugin)
-
-# Plugin folder layout: <prefix>/my-plugin/{plugin.toml, my-plugin.dll}
-install(TARGETS my_plugin RUNTIME DESTINATION my-plugin)
-install(FILES plugin/plugin.toml DESTINATION my-plugin)
-```
+Point `EU4_EXE` at the game's `eu4.exe` and `EU4_DIR` at its folder:
 
 ```powershell
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DEU4_EXE="C:/Program Files (x86)/Steam/steamapps/common/Europa Universalis IV/eu4.exe" -DEU4_DIR="C:/Program Files (x86)/Steam/steamapps/common/Europa Universalis IV"
 cmake --build build --config Release
-cmake --install build --config Release --prefix dist
 ```
 
-`dist/my-plugin/` now holds `plugin.toml` and `my-plugin.dll`.
+The first configure downloads the SDK archive pinned in `CMakeLists.txt`. The plugin lands
+in `build/plugin/my-plugin/`.
 
-## 5. Test in the game
+## 5. Check it against the game
 
-1. Copy `dist/my-plugin/` into `<game folder>/anvil/plugins/`.
-2. Start the game.
-3. Open `anvil/anvil.log`. It should contain a line with `my-plugin 0.1.0: loaded (main, …)`
-   and your message tagged with the plugin id.
+```powershell
+cmake --build build --config Release --target my_plugin-check
+```
 
-If the plugin was skipped, the log says why; see
-[Troubleshooting](../../troubleshooting/). Delete the folder when you are done.
+This runs `anvil check --exe`: it verifies every symbol against `eu4.exe` (build, bytes,
+memory kind, instruction boundaries) and rewrites `symbols.lock`. Commit `symbols.lock`
+with `symbols.toml`. CI has no game, so it fails when the lock does not match
+`symbols.toml` or records problems.
 
-## 6. Release
+## 6. Deploy and run
 
-The catalog and players expect the same release shape as Bellows and Tongs:
+Close the game, then:
 
-- a GitHub release tagged `vX.Y.Z`,
-- an asset `<plugin-id>-windows-x64.zip` that contains the folder `<plugin-id>/` with
-  `plugin.toml` and the DLL,
-- `SHA256SUMS.txt` next to it, with the archive's SHA-256 in `sha256sum` format.
+```powershell
+cmake --build build --config Release --target my_plugin-deploy
+```
 
-Bellows and Tongs build on GitHub Actions and let
-[release-please](https://github.com/googleapis/release-please) create the releases from
-Conventional Commits, so the version in `plugin.toml` never drifts from the tag. Their
-[`build.yml`](https://github.com/happy-dwarf-team/tongs/blob/main/.github/workflows/build.yml)
-and
-[`release.yml`](https://github.com/happy-dwarf-team/tongs/blob/main/.github/workflows/release.yml)
-are a working template, including build provenance attestations.
+This copies the plugin to `<game folder>/anvil/plugins/my-plugin/`. Start EU4 as usual and
+open `anvil/anvil.log`: it lists the plugin with its status and its changes, then the
+plugin's own lines. If a symbol does not verify, the log names the symbol and the byte and
+the plugin is skipped while the game runs on. See [Troubleshooting](../../troubleshooting/).
+
+Now replace `src/plugin.cpp` with your own code. The [Host API](../api/) page lists what
+the host offers.
+
+## 7. Release
+
+The template's CI builds with warnings as errors, runs `anvil check . --format github` and
+packages the plugin. Its release workflow uses
+[release-please](https://github.com/googleapis/release-please): merging the release pull
+request tags `vX.Y.Z` and attaches a zip of the plugin folder, a Workshop mod zip and
+`SHA256SUMS.txt`, with build attestations. Anvil 1.0 loads plugins only from
+`anvil/plugins/`; loading plugins from Workshop mods is planned for Anvil 1.3.
+
+To be listed in the [catalog](../catalog/), the release also needs an asset with a fixed
+name, `<plugin-id>-windows-x64.zip`, as Bellows and Tongs have. The template names its
+zips with the version (`<id>-<version>.zip`), so let the Package step in
+`.github/workflows/build.yml` also write a copy under the fixed name. The release workflow
+uploads every zip in `dist/` and adds it to `SHA256SUMS.txt`.
 
 ## Next
 
 - [List your plugin](../catalog/) in the catalog
-- [Manifest reference](../manifest/) and [Host API](../api/) for patching game code
+- [Manifest reference](../manifest/) and [Host API](../api/)
