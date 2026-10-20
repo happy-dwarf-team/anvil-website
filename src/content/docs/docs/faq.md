@@ -17,7 +17,9 @@ anything, and its releases come with SHA-256 checksums.
 
 ## Does it work with mods, Ironman and achievements?
 
-Anvil is independent of the mods you enable in the launcher. Whether a plugin affects
+Anvil works with the mods you enable in the launcher. From Anvil 1.3 a mod can also bring
+Anvil plugins, which load only after you approve them; see
+[Plugins from mods](../plugins-from-mods/). Whether a plugin affects
 Ironman, achievements or multiplayer depends on the plugin: each one declares whether it
 changes gameplay, and the plugin page shows it. Plugins that do not change gameplay, such
 as Bellows, only change how fast or how smoothly the game runs. A plugin that changes
