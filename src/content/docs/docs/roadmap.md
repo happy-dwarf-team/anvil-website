@@ -3,8 +3,8 @@ title: Roadmap
 description: What Anvil has, what comes next, and what is not planned.
 ---
 
-Anvil 1.0 with plugin API 2 is released. The next releases are plans, not promises, and
-have no dates. Source: the delivery plan in Anvil's
+Anvil 1.3 is released: plugin API 2, the in-game overlay, Anvil Manager and plugins from
+mods. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
 [design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#22-delivery).
 
 ## Done
@@ -18,15 +18,20 @@ have no dates. Source: the delivery plan in Anvil's
    for Rust; and the [plugin template](https://github.com/happy-dwarf-team/anvil-plugin-template).
    [Bellows](../../plugins/bellows/) and [Tongs](../../plugins/tongs/) moved to API 2 with
    it.
+3. **In-game overlay: Anvil 1.1.** Notifications for skipped plugins, crashes and safe
+   mode, and a panel with the plugins' status and a settings editor.
+4. **Anvil Manager: Anvil 1.2.** `AnvilManager.exe` installs, repairs and uninstalls Anvil,
+   installs plugins from zips and shows what will load and why, before the game starts.
+5. **Plugins from mods: Anvil 1.3.** Plugins that come with mods enabled in the Paradox
+   launcher (Steam Workshop or local mods), each version only after the player approves it.
+   See [Plugins from mods](../plugins-from-mods/).
 
 ## Planned
 
-- **Anvil 1.1: in-game overlay.** Notifications for skipped plugins, crashes and safe
-  mode, and a panel with the plugins' status and a settings editor.
-- **Anvil 1.2: Anvil Manager.** A program that installs Anvil, enables plugins and shows
-  what will load and why, before the game starts.
-- **Anvil 1.3: plugins from mods.** Plugins that come with mods enabled in the Paradox
-  launcher (Steam Workshop), each new version only after the player approves it.
+- **Ports of older native patches.** EU4 Menu Patch and EU4 Unicode Patch as Anvil plugins
+  are being researched with their author
+  ([#105](https://github.com/happy-dwarf-team/anvil/issues/105),
+  [#104](https://github.com/happy-dwarf-team/anvil/issues/104)).
 
 Not scheduled: code signing of releases, a safe Rust crate on top of `anvil-sys`, and other
 storefront builds of EU4 1.37.5.

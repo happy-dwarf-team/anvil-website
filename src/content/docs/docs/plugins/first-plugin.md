@@ -103,8 +103,9 @@ The template's CI builds with warnings as errors, runs `anvil check . --format g
 packages the plugin. Its release workflow uses
 [release-please](https://github.com/googleapis/release-please): merging the release pull
 request tags `vX.Y.Z` and attaches a zip of the plugin folder, a Workshop mod zip and
-`SHA256SUMS.txt`, with build attestations. Anvil 1.0 loads plugins only from
-`anvil/plugins/`; loading plugins from Workshop mods is planned for Anvil 1.3.
+`SHA256SUMS.txt`, with build attestations. From Anvil 1.3 players can also get the plugin
+through the Workshop mod: Anvil loads it after the player approves it (see
+[Plugins from mods](../../plugins-from-mods/)).
 
 To be listed in the [catalog](../catalog/), the release also needs an asset with a fixed
 name, `<plugin-id>-windows-x64.zip`, as Bellows and Tongs have. The template names its
