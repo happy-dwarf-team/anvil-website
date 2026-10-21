@@ -1,5 +1,9 @@
 # Anvil website
 
+[![deploy](https://github.com/happy-dwarf-team/anvil-website/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/happy-dwarf-team/anvil-website/actions/workflows/deploy.yml)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fanvil.happydwarf.dev&label=anvil.happydwarf.dev)](https://anvil.happydwarf.dev)
+[![License: MIT](https://img.shields.io/github/license/happy-dwarf-team/anvil-website)](LICENSE)
+
 Source of the website for [Anvil](https://github.com/happy-dwarf-team/anvil), the plugin
 loader for Europa Universalis IV, and its plugins. Built with
 [Astro](https://astro.build) and [Starlight](https://starlight.astro.build), hosted on

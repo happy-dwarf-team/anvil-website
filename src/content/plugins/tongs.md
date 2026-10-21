@@ -104,7 +104,7 @@ with a pause in it can be rejected.
 
 Input commands answer once the game has reacted, or with an error after 10 s, and always
 include the state. The full list of keys and answer fields is in the
-[README](https://github.com/happy-dwarf-team/tongs#commands).
+[command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md).
 
 ```powershell
 .\tongs.ps1 state
