@@ -1,6 +1,7 @@
 ---
 name: Tongs
 summary: Control Europa Universalis IV from scripts and agents. A local command pipe that reads the state of a running game and, when you allow it, uses its keyboard and mouse and runs console commands.
+tagline: 'Lets scripts and agents control a running game: read its state, take screenshots, use keyboard and mouse.'
 repo: https://github.com/happy-dwarf-team/tongs
 status: released
 gameBuilds: ['eu4-1.37.5-steam-win64']

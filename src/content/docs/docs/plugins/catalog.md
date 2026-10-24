@@ -38,6 +38,7 @@ Add `src/content/plugins/<plugin-id>.md`. The file name is the page URL
 ---
 name: My Plugin
 summary: One or two sentences for the plugin card.
+tagline: One sentence that says what the plugin does for the player.
 repo: https://github.com/you/my-plugin
 status: released
 gameBuilds: ['eu4-1.37.5-steam-win64']
@@ -51,6 +52,7 @@ What the plugin does, how to install and configure it, and how it was tested.
 | --- | --- | --- |
 | `name` | yes | Display name. |
 | `summary` | yes | Card text and page description. |
+| `tagline` | yes | One sentence in a player's words, without jargon; shown where the plugin is listed outside this site. |
 | `repo` | yes | GitHub repository URL. |
 | `status` | yes | `planned`, `in-development` or `released`. |
 | `gameBuilds` | yes | The `build` from the plugin's `symbols.toml`, or `['*']` if the plugin has none and runs on every build; used when GitHub cannot be reached. |
@@ -59,6 +61,10 @@ What the plugin does, how to install and configure it, and how it was tested.
 | `highlight` | no | One measured result for the card: `label`, `before`, `after`. |
 | `asset` | no | Release asset name, if not `<plugin-id>-windows-x64.zip`. |
 | `manifestPath` | no | Path of `plugin.toml` in the repository, if not `plugin/plugin.toml`. |
+
+The catalog is also published as data at [`plugins.json`](../../../plugins.json), with each
+plugin's id, name, tagline, repository, status, order, page URL and icon.
+[happydwarf.dev](https://happydwarf.dev/) reads it to list the team's plugins.
 
 An icon is optional: `src/assets/plugins/<plugin-id>.svg`, following the icon rules in
 [DESIGN.md](https://github.com/happy-dwarf-team/anvil-website/blob/main/DESIGN.md#plugin-icons).

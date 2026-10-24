@@ -11,6 +11,8 @@ const plugins = defineCollection({
 	schema: z.object({
 		name: z.string(),
 		summary: z.string(),
+		// One sentence in a user's words; published in plugins.json for happydwarf.dev.
+		tagline: z.string(),
 		repo: z.url(),
 		status: z.enum(['planned', 'in-development', 'released']),
 		gameBuilds: z.array(z.string()).min(1),

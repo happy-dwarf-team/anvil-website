@@ -1,6 +1,7 @@
 ---
 name: Bellows
 summary: Faster Europa Universalis IV start-up and simulation. Makes the game start and run faster without changing game files or game behaviour.
+tagline: Makes the game start faster, without changing game files or how it plays.
 repo: https://github.com/happy-dwarf-team/bellows
 status: released
 gameBuilds: ['eu4-1.37.5-steam-win64']
