@@ -1,22 +1,14 @@
 /*
- * "Dark forge" theme. Values and contrast ratios are documented in DESIGN.md.
+ * Anvil's own styles on top of the forge family (forge-family.css, loaded first): the site
+ * accent, the Starlight mapping and Starlight tweaks. See DESIGN.md.
  * The site is dark only; ThemeProvider forces data-theme="dark".
  */
 :root {
-	/* Brand tokens */
-	--forge-bg: #16171a;
-	--forge-surface: #1f2024;
-	--forge-surface-raised: #26272c;
-	--forge-border: #34363c;
-	--forge-text: #e8e6e3;
-	--forge-text-muted: #a8a29e;
+	/* Site accent: forge orange, the family colour. */
 	--forge-accent: #f5922a;
 	--forge-accent-strong: #ffad55;
 	--forge-accent-soft: #3d2611;
 	--forge-on-accent: #16171a;
-
-	--forge-radius: 0.75rem;
-	--forge-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
 	/* Starlight mapping */
 	--sl-font: 'IBM Plex Sans Variable';
@@ -51,11 +43,6 @@ h1#_top,
 	letter-spacing: -0.02em;
 }
 
-:focus-visible {
-	outline: 2px solid var(--forge-accent);
-	outline-offset: 2px;
-}
-
 /* The header separator sits before the theme picker, which this site does not have. */
 .social-icons::after {
 	content: none;
@@ -70,14 +57,4 @@ h1#_top,
 	font-weight: 700;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
-	}
 }

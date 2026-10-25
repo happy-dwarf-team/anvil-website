@@ -2,8 +2,8 @@
 
 - Static site: Astro + Starlight, deployed to GitHub Pages. Keep it minimal: no UI
   framework, no Tailwind, no client-side JavaScript beyond Starlight's search.
-- Follow [DESIGN.md](DESIGN.md). Use the `--forge-*` tokens from `src/styles/theme.css`
-  instead of raw colours, keep text contrast at 4.5:1 or more, keep focus rings visible,
+- Follow [DESIGN.md](DESIGN.md). Use the `--forge-*` tokens from `src/styles/forge-family.css`
+  (a verbatim copy; never edit it) and `src/styles/theme.css` instead of raw colours, keep text contrast at 4.5:1 or more, keep focus rings visible,
   and respect `prefers-reduced-motion`. Update DESIGN.md when a design decision changes.
 - Internal links in components go through `url()` from `src/lib/url.ts`; in Markdown use
   relative links. The site must work both at the custom domain and under `/anvil-website/`.

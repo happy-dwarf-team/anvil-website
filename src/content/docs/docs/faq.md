@@ -55,5 +55,5 @@ Windows:
 
 ## Who makes Anvil?
 
-Happy Dwarf Team. Anvil is an unofficial community project under the MIT license, not
-affiliated with Paradox Interactive.
+Happy Dwarf Team, under the MIT license. Anvil and its plugins are an unofficial community
+project, not affiliated with or endorsed by Paradox Interactive.

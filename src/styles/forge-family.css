@@ -1,0 +1,48 @@
+/* Copied from happy-dwarf-team/happydwarf-website src/styles/forge-family.css at 7603894. Do not edit; change the source and copy again. */
+/*
+ * Forge family: the dark-forge design system shared by the Happy Dwarf sites.
+ * Source: happy-dwarf-team/happydwarf-website, src/styles/forge-family.css, documented in
+ * DESIGN.md ("Family"). Other sites copy this file verbatim, with a "Copied from ... at
+ * <commit>" line above this comment; change the source and copy again, never edit a copy.
+ *
+ * The site accent (--forge-accent, -strong, -soft, --forge-on-accent) is not here: each site
+ * defines it in its own stylesheet. The fonts need @fontsource-variable/ibm-plex-sans and
+ * @fontsource-variable/jetbrains-mono installed.
+ */
+@import '@fontsource-variable/ibm-plex-sans/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
+:root {
+	/* Dark only; there is no light theme. */
+	color-scheme: dark;
+
+	--forge-bg: #16171a;
+	--forge-surface: #1f2024;
+	--forge-surface-raised: #26272c;
+	--forge-border: #34363c;
+	--forge-text: #e8e6e3;
+	--forge-text-muted: #a8a29e;
+
+	--forge-radius: 0.75rem;
+	--forge-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+	--forge-font-sans: 'IBM Plex Sans Variable', system-ui, sans-serif;
+	--forge-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+}
+
+/* The focus ring is drawn in the site's interaction accent. */
+:focus-visible {
+	outline: 2px solid var(--forge-accent);
+	outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

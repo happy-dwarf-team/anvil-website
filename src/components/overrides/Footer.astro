@@ -1,4 +1,6 @@
 ---
+// Starlight's footer, then the team link, the licence and the family disclaimer, on every page
+// (404 included). The site shows no game art, so the disclaimer has no game-art line.
 import { Image } from 'astro:assets';
 import Default from '@astrojs/starlight/components/Footer.astro';
 import dwarf from '../../assets/happy-dwarf.svg';
@@ -11,9 +13,11 @@ import dwarf from '../../assets/happy-dwarf.svg';
 		<Image src={dwarf} alt="" width={80} height={80} />
 		<span>Happy Dwarf Team</span>
 	</a>
-	<p>
-		Anvil and its plugins are MIT-licensed. Unofficial community project, not affiliated with
-		Paradox Interactive.
+	<p>Anvil and its plugins are MIT-licensed.</p>
+	<p class="disclaimer">
+		Anvil and its plugins are an unofficial community project, not affiliated with or endorsed
+		by Paradox Interactive. Europa Universalis and Paradox Interactive are trademarks or
+		registered trademarks of Paradox Interactive AB.
 	</p>
 </div>
 
@@ -33,6 +37,11 @@ import dwarf from '../../assets/happy-dwarf.svg';
 	.site-footer p {
 		margin: 0;
 		max-width: 36rem;
+	}
+	.site-footer .disclaimer {
+		flex-basis: 100%;
+		max-width: 52rem;
+		font-size: 0.8125rem;
 	}
 	.team {
 		display: inline-flex;

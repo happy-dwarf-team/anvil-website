@@ -79,5 +79,5 @@ record at `happy-dwarf-team.github.io`. Without the variable the site is built f
 
 ## License
 
-MIT, see [LICENSE](LICENSE). Unofficial community project, not affiliated with Paradox
-Interactive.
+MIT, see [LICENSE](LICENSE). The Anvil website is an unofficial community project, not
+affiliated with or endorsed by Paradox Interactive.
