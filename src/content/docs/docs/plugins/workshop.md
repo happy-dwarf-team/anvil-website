@@ -86,15 +86,15 @@ the [GitHub CLI](https://cli.github.com/) (`gh`).
 
 ## Publish a release
 
-1. Merge the release pull request. `release.yml` tags `vX.Y.Z` and attaches the zips to a
-   draft release.
+1. Merge the release pull request. `release.yml` tags `vX.Y.Z` and creates a draft release;
+   wait until it has attached the zips.
 2. Edit the release notes if you like and **publish the draft**. The notes become the
    Workshop change note.
 3. Approve the `steam-workshop` deployment of the `workshop-publish` run.
 
-The workflow downloads the release's plugin zip, checks its build attestation, so the
-Workshop gets exactly the build GitHub serves, and publishes the mod in steamcmd mode with
-the saved session. Publishing never changes the item's visibility: make it public on Steam
+The workflow downloads the release's plugin zip, checks its build attestation (in a private
+repository, only its line in `SHA256SUMS.txt`), so the Workshop gets exactly the build GitHub
+serves, and publishes the mod in steamcmd mode with the saved session. Publishing never changes the item's visibility: make it public on Steam
 when you are ready. When the session has expired, the job fails with exit code 3; run
 `pdx-ws session export` again to replace the secret.
 
