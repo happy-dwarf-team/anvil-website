@@ -68,6 +68,8 @@ plugin's id, name, tagline, repository, status, order, page URL and icon.
 
 An icon is optional: `src/assets/plugins/<plugin-id>.svg`, following the icon rules in
 [DESIGN.md](https://github.com/happy-dwarf-team/anvil-website/blob/main/DESIGN.md#plugin-icons).
+The same icon is the base of the plugin's
+[Steam Workshop thumbnail](../workshop/#the-workshop-page).
 
 ## Content rules
 

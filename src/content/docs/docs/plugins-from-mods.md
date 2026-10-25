@@ -71,4 +71,5 @@ and E2 in Anvil's
 a mod that only has `descriptor.mod` and `anvil/` kept the game's checksum and ironman
 achievements, and a private Workshop upload delivered the DLL byte for byte.
 Every change to any file in the plugin folder is a new version that players have to
-approve.
+approve. [Publish your plugin on the Steam Workshop](../plugins/workshop/) shows how to create
+the Workshop item and publish every release from CI.

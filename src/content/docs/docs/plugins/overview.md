@@ -14,6 +14,8 @@ The fastest way in is
 [anvil-plugin-template](https://github.com/happy-dwarf-team/anvil-plugin-template): a C++
 plugin that hooks a function, hooks the middle of another one and has one setting, with CI
 and release-please already set up. [Your first plugin](../first-plugin/) walks through it.
+It can also publish each release as a Steam Workshop mod; see
+[Publish your plugin on the Steam Workshop](../workshop/).
 
 ## The SDK
 
@@ -150,4 +152,5 @@ that loads them again.
 - [Your first plugin](../first-plugin/), from the template
 - [Manifest reference](../manifest/): `plugin.toml`, `symbols.toml`, `settings.toml`
 - [Host API](../api/): changes, chains, services and events
+- [Publish your plugin on the Steam Workshop](../workshop/), from Anvil 1.3
 - [List your plugin](../catalog/) in the catalog
