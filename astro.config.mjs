@@ -38,11 +38,8 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: ogImage } },
 				{ tag: 'meta', attrs: { name: 'theme-color', content: '#16171a' } },
 			],
-			customCss: [
-				'@fontsource-variable/ibm-plex-sans/wght.css',
-				'@fontsource-variable/jetbrains-mono/wght.css',
-				'./src/styles/theme.css',
-			],
+			// The family stylesheet imports the fonts; the site's own one comes after it.
+			customCss: ['./src/styles/forge-family.css', './src/styles/theme.css'],
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/happy-dwarf-team/anvil' },
 			],
