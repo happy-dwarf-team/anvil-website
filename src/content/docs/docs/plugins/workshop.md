@@ -78,6 +78,12 @@ the [GitHub CLI](https://cli.github.com/) (`gh`).
    gh secret set STEAM_USERNAME --env steam-workshop --body my_steam_name
    ```
 
+   Publishing several plugins from one GitHub organization? One session can serve them all
+   as organization secrets limited to those repositories; the environment then keeps no
+   secrets of its own but still gates every publish. Every workflow in those repositories
+   can read an organization secret, so the
+   [setup guide](https://github.com/happy-dwarf-team/paradox-workshop-publish/blob/main/docs/guide/setup.md#several-repositories-in-one-organization) explains when that is acceptable.
+
 6. **Turn publishing on:**
 
    ```powershell
