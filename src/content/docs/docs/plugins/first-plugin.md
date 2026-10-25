@@ -35,7 +35,8 @@ then clone it. You get:
 | --- | --- |
 | `plugin.toml` | `id`, `name`, `entry`, `authors`, `description`, `issues`, `repository`, `affects_gameplay` |
 | `CMakeLists.txt` | `project(my_plugin …)` and the target in `anvil_add_plugin(my_plugin …)` |
-| `workshop/descriptor.mod` | `name`, the mod's name in the launcher |
+| `workshop/descriptor.mod` | `name`, the mod's name in the launcher and on the Workshop: `<Name> - <what it does>` |
+| `workshop/description.md`, `workshop/thumbnail.png` | the Workshop page; see [Publish your plugin on the Steam Workshop](../workshop/#the-workshop-page) |
 
 The id is lowercase letters, digits and `-`. The `my_plugin-check` and `my_plugin-deploy`
 targets below follow the target name.
@@ -105,7 +106,8 @@ packages the plugin. Its release workflow uses
 request tags `vX.Y.Z` and attaches a zip of the plugin folder, a Workshop mod zip and
 `SHA256SUMS.txt`, with build attestations. From Anvil 1.3 players can also get the plugin
 through the Workshop mod: Anvil loads it after the player approves it (see
-[Plugins from mods](../../plugins-from-mods/)).
+[Plugins from mods](../../plugins-from-mods/)). To publish it on the Steam Workshop from CI,
+see [Publish your plugin on the Steam Workshop](../workshop/).
 
 To be listed in the [catalog](../catalog/), the release also needs an asset with a fixed
 name, `<plugin-id>-windows-x64.zip`, as Bellows and Tongs have. The template names its
@@ -115,5 +117,6 @@ uploads every zip in `dist/` and adds it to `SHA256SUMS.txt`.
 
 ## Next
 
+- [Publish your plugin on the Steam Workshop](../workshop/)
 - [List your plugin](../catalog/) in the catalog
 - [Manifest reference](../manifest/) and [Host API](../api/)

@@ -71,6 +71,7 @@ export default defineConfig({
 						{ slug: 'docs/plugins/first-plugin' },
 						{ slug: 'docs/plugins/manifest' },
 						{ slug: 'docs/plugins/api' },
+						{ slug: 'docs/plugins/workshop' },
 						{ slug: 'docs/plugins/catalog' },
 					],
 				},
