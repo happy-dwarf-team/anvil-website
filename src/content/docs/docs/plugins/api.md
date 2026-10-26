@@ -140,9 +140,33 @@ runs work on the main thread after the next frame. A plugin that subscribes afte
 is ready asks `ready()`. Queued work never runs once the game quits, and frames stop while
 a save loads, so never wait for it without a limit.
 
+## Start-up benchmark
+
+From Anvil 1.4 the core offers the service `anvil.benchmark` (version 1), through which a
+plugin joins the [start-up benchmark](../../benchmark/) of Anvil Manager and adds its own
+fields to the report. Include
+[`anvil_benchmark.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_benchmark.h)
+(C++: `anvil_benchmark.hpp`) and look it up with `get_service`; an older Anvil returns
+`NULL` and the plugin works on without it. No manifest key is involved.
+
+- **Join:** declare the fields inside `anvil_plugin_load`. Declaring, even zero fields,
+  makes the plugin a participant, which promises one `done()` call. The kinds are `int`,
+  `number`, `enum` and `flag`, with an optional unit (`ms`, `count`, `bytes`, `mb`,
+  `percent`); there is no string kind, so no paths or text reach a report. Names are
+  `group.field` or `field` from `[a-z0-9_]`.
+- **During a start:** `active()` says whether this is a benchmark start; outside one every
+  call checks its arguments and records nothing. `set(field, value)` works from any thread.
+  `done()` says the plugin's work after the game is ready is finished; the game quits once
+  every participant is done, at most 30 s after ready. `learning(reason)` discards a start
+  that is not representative for the plugin, and `open_cost(files, ms)` reports files the
+  plugin opened ahead of the game, which tells warm starts from cold ones.
+
+Bellows 0.10.0 is the first participant. The full contract is §5 of the
+[benchmark specification](https://github.com/happy-dwarf-team/anvil/blob/main/docs/spec/benchmark-v1.md#5-anvilbenchmark-v1).
+
 ## Versions
 
 Within API 2, fields are only appended to `AnvilHost`, after the line "end of API 2.0".
 Check one added later with `ANVIL_HOST_HAS(host, field)` before calling it, or require the
-Anvil version that added it in the manifest's `anvil` range. Anvil 1.0.0 has nothing
-after that line yet. A breaking change increases `ANVIL_API_VERSION`.
+Anvil version that added it in the manifest's `anvil` range. Anvil 1.5.0 has nothing
+after that line yet; the start-up benchmark is a service, not a host field. A breaking change increases `ANVIL_API_VERSION`.

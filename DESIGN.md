@@ -69,6 +69,15 @@ Starlight's `--sl-color-*` variables and fonts are mapped onto the `--forge-*` t
 - Must read at 16 px: no detail thinner than about 1.5 units of the grid.
 - Inlined and decorative (`aria-hidden="true"`); the plugin name next to it is the label.
 
+## Plugin pages
+
+- The download button (orange) stays the one primary action. A plugin with a Steam Workshop
+  item (`workshop` in the frontmatter) gets a secondary link below it: raised surface, grey
+  border, light text, orange border and text on hover or focus, at least 44 px high, with an
+  external-link icon and a short note that it needs Anvil 1.3 and an approval.
+- On the plugin card the Workshop link is a plain text link below the summary, lifted above
+  the card's whole-card link so it stays a link of its own.
+
 ## Motion
 
 - Hover/focus transitions of 150–220 ms with one easing curve (`--forge-ease`).

@@ -13,7 +13,10 @@ plugins. Plugins change code in memory only, for the current session.
 
 Plugins are native code and run with the same permissions as the game, like any other
 program you install. Only install plugins you trust. Anvil itself never downloads
-anything, and its releases come with SHA-256 checksums.
+anything, and its releases come with SHA-256 checksums. Nothing is uploaded either, with one
+exception you control: a [start-up benchmark](../benchmark/) report leaves your computer only
+when you click **Send** after seeing it (see
+[Benchmark reports and your privacy](../benchmark-privacy/)).
 
 ## Does it work with mods, Ironman and achievements?
 
@@ -29,6 +32,12 @@ and you allow it in `anvil/anvil.toml`.
 
 The effect on Ironman and achievements has not been verified yet. This answer will be
 updated once it has been tested.
+
+## How much faster does a plugin make my game?
+
+Each plugin page says how it was measured. To measure on your own computer, use the
+**Benchmark** tab of Anvil Manager (Anvil 1.5 or newer); see
+[Start-up benchmark](../benchmark/).
 
 ## What happens when EU4 updates?
 
@@ -52,6 +61,14 @@ Windows:
 - **Linux with Proton:** not tested. Proton runs the Windows game, but Anvil has not been
   tried there.
 - **macOS and the native Linux build of EU4:** not supported, and not a goal for now.
+
+## What else is built on Anvil?
+
+[Etch](https://etch.happydwarf.dev/), a preview for EU4 interface mods in Visual Studio
+Code, is built on Anvil. Its game host, a private copy of the game that draws the edited
+window itself, runs with pinned builds of Anvil, `anvil-game`, Bellows and Etch's own Anvil
+plugin, which come with Etch. Etch is not a plugin from this catalog, and you do not need to
+install anything here for it.
 
 ## Who makes Anvil?
 

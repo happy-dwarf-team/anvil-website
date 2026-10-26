@@ -133,30 +133,77 @@ The repository has two small clients in
 
 Any program that can open a named pipe can be a client.
 
+## MCP server
+
+For agents such as Claude Code, the repository's
+[`mcp/`](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md) folder has an
+[MCP](https://modelcontextprotocol.io) server with one typed tool per command family
+(`tongs_state`, `tongs_run_until`, `tongs_ui_click`, `tongs_screenshot` and others). It
+speaks MCP over stdio only, runs on the same Windows machine as the game, and adds nothing
+the pipe does not have: every tool sends one Tongs command and returns the plugin's answer
+unchanged, and Tongs' own settings still decide what is allowed.
+
+It needs [uv](https://docs.astral.sh/uv/) (or Python 3.11 or newer with pip) and a clone of
+the repository:
+
+```powershell
+git clone https://github.com/happy-dwarf-team/tongs
+cd tongs\mcp
+uv sync --frozen
+claude mcp add --transport stdio --scope user tongs -- uv run --frozen --directory C:\path\to\tongs\mcp tongs-mcp
+```
+
+Other MCP clients take the same command. Long waits report the game days done as MCP
+progress, so a `run_until` over many game years stays within the client's timeouts. Tool
+annotations say which tools only read and which act as the player or change game state. The
+[MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md) has the tool
+list, the timeouts of common clients and its live checks.
+
 ## Install
 
-1. Install [Anvil](../../docs/install/) 1.0.0 or newer, with its standard plugin
-   `anvil-game`, which is part of Anvil's package.
-2. Download `tongs-windows-x64.zip` from the
-   [latest release](https://github.com/happy-dwarf-team/tongs/releases/latest) and extract
-   it into `<EU4>/anvil/plugins/`; it contains the `tongs` folder. `SHA256SUMS.txt` next
-   to the archive holds its checksum.
-3. Turn it on in `anvil/data/tongs/settings.toml`, one `name = value` per line:
-   `enabled = true`, and `input = true` if scripts should use the keyboard and mouse. Then
-   start the game. A `config.toml` from Tongs 0.12 or older is moved into this file on the
-   first start.
+Tongs needs [Anvil](../../docs/install/) 1.0.0 or newer, with its standard plugin
+`anvil-game`, which is part of Anvil's package.
 
-Delete the `tongs` folder to uninstall.
+Download `tongs-windows-x64.zip` with the button above, or from the
+[latest release](https://github.com/happy-dwarf-team/tongs/releases/latest)
+(`SHA256SUMS.txt` next to it holds its checksum), and install it on the **Plugins** tab of
+Anvil Manager, or extract it into `<EU4>/anvil/plugins/`; it contains the `tongs` folder.
+From 0.16.0 Tongs is also packaged as a Steam Workshop mod, which Anvil 1.3 or newer loads
+once you approve it (see [Plugins from mods](../../docs/plugins-from-mods/)); its Workshop
+item is not public yet.
+
+Then turn it on: in `anvil/data/tongs/settings.toml`, one `name = value` per line, set
+`enabled = true`, and `input = true` if scripts should use the keyboard and mouse, or use the
+**Settings** tab of Anvil Manager. Start the game. `ANVIL_TONGS_<NAME>` environment variables
+(for example `ANVIL_TONGS_ENABLED=true`) override a value for one start. A `config.toml` from
+Tongs 0.12 or older is moved into `settings.toml` on the first start.
+
+Remove it on the Manager's **Plugins** tab, or delete the `tongs` folder, to uninstall.
 
 ## Tested
 
-Checked in the game on EU4 1.37.5 (Steam) with Anvil 0.2.0, on one development machine
-with a loaded save. A development build of Tongs for plugin API 2 then ran in the game with
-an Anvil 1.0 release candidate (`ping`, `state`, `threads`, `frames`, `run_until`,
-`ui find`, `ui click` and `screenshot`); the 0.13.0 release itself has not been run in the
-game yet. `max_pause` was checked in a lab measurement series: a run that an
-event paused ended after 5 s of pause instead of waiting for its 300 s timeout. Not
-verified yet: input in the main menu and in event pop-ups, keyboard layouts other than US,
-clicks on the map (only interface buttons were tried) and dragging, for which there is no
-command yet. Details are in the [design
-notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md).
+Source: the live checks in Tongs'
+[design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md) and its
+[MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md). All ran in
+the lab on EU4 1.37.5 (Steam) with the original `eu4.exe`, on one development machine, with
+development builds of Tongs from the branch of each change:
+
+- **Plugin API 2:** with Anvil 1.0.0 and `anvil-game` (20 and 21 October 2026), Tongs
+  loaded with its game addresses verified, read the interface's widget tree before and after
+  reloading interface files with `console reload`, and ran console commands; the game did not
+  crash, and the save was unchanged afterwards.
+- **Anvil 1.3.0** (25 October 2026): widget trees in the lobby, in a battle pop-up and in
+  hidden grid boxes, `ui click` in the lobby, `click` on country shields, `event choose` and
+  the `chosen` notifications for events chosen by Tongs, by the player and by the game's
+  deadline.
+- **Agents** (19 October 2026, before plugin API 2): a Claude Code session drove the game through the MCP server with dozens of
+  `ui click`s, keys, text, speed changes, `run_until`, `event choose` and `console`; input
+  in the main menu and with event pop-ups works.
+- `max_pause` was checked in a lab measurement series: a run that an event paused ended
+  after 5 s of pause instead of waiting for its 300 s timeout.
+
+Not verified yet: the release files of 0.16.0 and its Workshop mod in the game (the checks
+above used builds of the branches), suspension in a live ironman or multiplayer game, input
+in text fields, keyboard layouts other than US, right, middle and double clicks, clicks on
+the map (only interface widgets were tried), dragging, for which there is no command yet,
+and a minimized game window.

@@ -31,6 +31,11 @@ export function pluginAsset(id: string, asset?: string): string {
 	return asset ?? `${id}-windows-x64.zip`;
 }
 
+// Steam Workshop item page of a catalog plugin's `workshop` id.
+export function workshopUrl(id: string): string {
+	return `https://steamcommunity.com/sharedfiles/filedetails/?id=${id}`;
+}
+
 // "https://github.com/owner/name" → "owner/name"
 export function repoSlug(repoUrl: string): string {
 	return new URL(repoUrl).pathname.replace(/^\/|\/$/g, '');

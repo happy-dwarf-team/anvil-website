@@ -22,6 +22,8 @@ const plugins = defineCollection({
 		// Happy Dwarf Team plugins (<id>-windows-x64.zip, plugin/plugin.toml).
 		asset: z.string().optional(),
 		manifestPath: z.string().default('plugin/plugin.toml'),
+		// Steam Workshop item id of the plugin's mod (Anvil 1.3+ loads plugins from mods).
+		workshop: z.string().regex(/^\d+$/).optional(),
 		highlight: z
 			.object({ label: z.string(), before: z.string(), after: z.string() })
 			.optional(),

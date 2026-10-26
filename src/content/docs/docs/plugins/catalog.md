@@ -61,9 +61,11 @@ What the plugin does, how to install and configure it, and how it was tested.
 | `highlight` | no | One measured result for the card: `label`, `before`, `after`. |
 | `asset` | no | Release asset name, if not `<plugin-id>-windows-x64.zip`. |
 | `manifestPath` | no | Path of `plugin.toml` in the repository, if not `plugin/plugin.toml`. |
+| `workshop` | no | Steam Workshop item id of the plugin's mod, in quotes (`'3823747170'`). The page and the card then link the Workshop item; see [Publish your plugin on the Steam Workshop](../workshop/). |
 
 The catalog is also published as data at [`plugins.json`](../../../plugins.json), with each
-plugin's id, name, tagline, repository, status, order, page URL and icon.
+plugin's id, name, tagline, repository, status, order, page URL, icon and Steam Workshop URL
+(`workshop`, or `null`).
 [happydwarf.dev](https://happydwarf.dev/) reads it to list the team's plugins.
 
 An icon is optional: `src/assets/plugins/<plugin-id>.svg`, following the icon rules in

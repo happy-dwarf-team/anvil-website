@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { formatDate, getLatestRelease, pluginAsset, repoSlug } from '../lib/release';
+import { formatDate, getLatestRelease, pluginAsset, repoSlug, workshopUrl } from '../lib/release';
 import { url } from '../lib/url';
 import PluginIcon from './PluginIcon.astro';
 import StatusBadge from './StatusBadge.astro';
@@ -9,7 +9,7 @@ interface Props {
 	plugin: CollectionEntry<'plugins'>;
 }
 const { plugin } = Astro.props;
-const { name, summary, status, highlight, repo, asset } = plugin.data;
+const { name, summary, status, highlight, repo, asset, workshop } = plugin.data;
 const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, asset));
 ---
 
@@ -31,6 +31,13 @@ const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, as
 		</div>
 	</div>
 	<p>{summary}</p>
+	{
+		workshop && (
+			<a class="workshop" href={workshopUrl(workshop)}>
+				Also on the Steam Workshop<span class="sr-only">: {name}</span>
+			</a>
+		)
+	}
 	{
 		highlight && (
 			<p class="highlight">
@@ -105,6 +112,21 @@ const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, as
 	p {
 		margin: 0;
 		color: var(--forge-text-muted);
+	}
+	/* Above the heading link's overlay, so it stays a link of its own. */
+	.workshop {
+		position: relative;
+		z-index: 1;
+		align-self: flex-start;
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		margin: -0.5rem 0;
+		color: var(--forge-text);
+		font-size: var(--sl-text-sm);
+	}
+	.workshop:hover {
+		color: var(--forge-accent-strong);
 	}
 	.highlight {
 		display: flex;

@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { workshopUrl } from '../lib/release';
 
 // The plugin catalog as data, read by happydwarf.dev at build time. The contract is section
 // 7.7 of https://github.com/happy-dwarf-team/happydwarf-website/blob/main/docs/spec.md:
@@ -23,6 +24,8 @@ export const GET: APIRoute = async ({ site }) => {
 			order: plugin.data.order,
 			url: new URL(`${base}plugins/${plugin.id}/`, site).href,
 			icon: icons[`../assets/plugins/${plugin.id}.svg`]?.trim() ?? null,
+			// Added after schemaVersion 1; the hub ignores fields it does not know.
+			workshop: plugin.data.workshop ? workshopUrl(plugin.data.workshop) : null,
 		}));
 	return new Response(JSON.stringify({ schemaVersion: 1, plugins }, null, '\t') + '\n', {
 		headers: { 'Content-Type': 'application/json' },
