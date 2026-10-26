@@ -24,6 +24,8 @@ it holds the work from outside the forge.
   screenshots of the window, also while it is covered.
 - Reads the interface's widgets and the open events, and can stream notifications: state
   and date changes, events opening and closing, new `error.log` lines.
+- Offers the widget tree to other Anvil plugins in the game's process through the service
+  `tongs.ui` (since 0.17.0; see [For other plugins](#for-other-plugins-tongsui)).
 - When you allow it, presses keys, types text, moves the pointer, clicks and scrolls
   through the game's own SDL input, as a player would, and clicks widgets and event
   options by name. The game window does not need focus.
@@ -37,7 +39,8 @@ on the game as a player's would, so Tongs declares that it affects gameplay.
 
 - **Off by default.** The pipe opens only with `enabled = true` in
   `anvil/data/tongs/settings.toml`. The keyboard and mouse commands also need
-  `input = true`, and console commands `game_calls = true`.
+  `input = true`, and console commands `game_calls = true`. The read-only service
+  `tongs.ui` for other plugins is registered also with `enabled = false`.
 - **Local only.** Only programs of the Windows user running the game can connect; remote
   clients are rejected and there is no network listener.
 - **Changes to the game code.** With `enabled = true`, Tongs adds a mid hook that only
@@ -160,6 +163,34 @@ annotations say which tools only read and which act as the player or change game
 [MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md) has the tool
 list, the timeouts of common clients and its live checks.
 
+## For other plugins: `tongs.ui`
+
+Since 0.17.0, another Anvil plugin in the game's process can read the widget tree without
+the pipe, through the service `tongs.ui` version 1:
+
+- `find` takes a selector, with the same syntax as the pipe's `ui find`, and visits the
+  matching widgets and their ancestors: the same matches in the same order, with the same
+  paths, rectangles and text.
+- `hovered` visits the widget under the game's pointer and its ancestors. Without widget
+  paths it reads only that chain, cheap enough to call every frame; with paths
+  (`TONGS_UI_PATHS`) it reads the whole tree, as `find` does.
+- Each widget carries `definition_file`, the game path of the `.gui` file it was defined in,
+  such as `interface/topbar.gui` (NULL for a stale widget, built from a definition that a
+  reload freed).
+
+The contract is the plain C11 header
+[`include/tongs/tongs_ui.h`](https://github.com/happy-dwarf-team/tongs/blob/main/include/tongs/tongs_ui.h),
+which the release zip also carries in `tongs/include/`. Vendor it, declare a dependency on
+`tongs`, look the service up with `get_service` and call it on the game's main thread, from a
+handler of `anvil-game.frame`; a call from another thread answers `ANVIL_ERROR_WRONG_PHASE`
+and reads nothing. Tongs registers the service on every load, also with `enabled = false`
+(no pipe then). The service only reads: it sends no input and makes no game calls, so
+`input` and `game_calls` do not apply, and Anvil's suspension in ironman or multiplayer
+does not stop it. See
+[For other plugins: `tongs.ui`](https://github.com/happy-dwarf-team/tongs#for-other-plugins-tongsui)
+in the Tongs README and the
+[design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md#the-tongsui-service-0170).
+
 ## Install
 
 Tongs needs [Anvil](../../docs/install/) 1.0.0 or newer, with its standard plugin
@@ -206,9 +237,20 @@ development builds of Tongs from the branch of each change:
   in the main menu and with event pop-ups works.
 - `max_pause` was checked in a lab measurement series: a run that an event paused ended
   after 5 s of pause instead of waiting for its 300 s timeout.
+- **`tongs.ui`** (27 October 2026, with Anvil 1.5.2,
+  [tongs#87](https://github.com/happy-dwarf-team/tongs/issues/87)): a test consumer plugin
+  in the lab's Russia save, paused, about 16 200 widgets. `find` gave the same matches as the
+  pipe's `ui find` in the same frame (count, order, paths, rectangles, text and flags; the
+  first 5 000 where there were more), in the main menu, in the game and after
+  `console reload outliner.gui`. The cheap `hovered` chain over buttons, list rows and a
+  scroll bar equalled the chain read from the whole tree. Calls from another thread answered
+  `ANVIL_ERROR_WRONG_PHASE`; with `enabled = false` the pipe did not exist and the service
+  answered. Cost per call: the cheap `hovered` a median of 48 µs (p99 116 µs), and
+  3.2–3.6 ms once on the first call and after a reload; `find` over the visible widgets of
+  the whole tree 12–14 ms.
 
-Not verified yet: the release files of 0.16.0 and its Workshop mod in the game (the checks
-above used builds of the branches), suspension in a live ironman or multiplayer game, input
-in text fields, keyboard layouts other than US, right, middle and double clicks, clicks on
-the map (only interface widgets were tried), dragging, for which there is no command yet,
-and a minimized game window.
+Not verified yet: the release files of 0.16.0 and 0.17.0 and the Workshop mod in the game
+(the checks above used builds of the branches), suspension in a live ironman or multiplayer
+game, input in text fields, keyboard layouts other than US, right, middle and double clicks,
+clicks on the map (only interface widgets were tried), dragging, for which there is no
+command yet, and a minimized game window.
