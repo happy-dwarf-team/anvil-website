@@ -19,7 +19,8 @@ downloaded.
 3. Click **Install Anvil**. It copies `version.dll`, the `anvil` folder with the standard
    plugins, and itself (`AnvilManager.exe`) next to `eu4.exe`. From then on, start the
    Manager from the game folder.
-4. Add plugins on the **Plugins** tab; see [Install plugins](../install-plugins/).
+4. Add plugins on the **Plugins** tab, or approve plugins from Steam Workshop mods on the
+   **Mods** tab; see [Install plugins](../install-plugins/).
 5. Start the game with **Play EU4**, or from Steam or the Paradox launcher as usual.
 
 The Manager runs without administrator rights; Steam's library folders do not need them.
@@ -30,6 +31,10 @@ Windows SmartScreen may warn about `AnvilManager.exe` on the first start, becaus
 program is not code-signed: choose **More info** → **Run anyway**. The release page lists
 its SHA-256 and a build attestation (`gh attestation verify AnvilManager.exe -R
 happy-dwarf-team/anvil`).
+
+The Manager's other tabs edit plugin settings (**Settings**), measure how much faster a plugin
+makes the game start (**Benchmark**, from Anvil 1.5; see [Start-up benchmark](../benchmark/)),
+and show crash reports and the log.
 
 The Manager can also check GitHub for a newer Anvil release when it starts. It asks once
 whether you want this; it only shows a link and downloads nothing.
@@ -70,6 +75,8 @@ After the first start, `anvil/anvil.log` lists what was loaded. See
     plugins/anvil-game/    standard plugin that ships with Anvil
     plugins/<plugin-id>/   plugin manifest and DLL
     data/<plugin-id>/      files a plugin writes (caches, settings)
+    data/anvil/            approved plugins from mods, kept benchmark reports
+    trust.toml             your approvals of plugins from mods (Anvil 1.3 and later)
 ```
 
 Keep `anvil-game` installed and enabled: it tells other plugins when the game is ready

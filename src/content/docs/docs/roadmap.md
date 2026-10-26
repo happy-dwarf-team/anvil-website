@@ -3,8 +3,8 @@ title: Roadmap
 description: What Anvil has, what comes next, and what is not planned.
 ---
 
-Anvil 1.3 is released: plugin API 2, the in-game overlay, Anvil Manager and plugins from
-mods. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
+Anvil 1.5 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods
+and the start-up benchmark. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
 [design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#22-delivery).
 
 ## Done
@@ -24,7 +24,17 @@ mods. Further work is a plan, not a promise, and has no dates. Source: the deliv
    installs plugins from zips and shows what will load and why, before the game starts.
 5. **Plugins from mods: Anvil 1.3.** Plugins that come with mods enabled in the Paradox
    launcher (Steam Workshop or local mods), each version only after the player approves it.
-   See [Plugins from mods](../plugins-from-mods/).
+   See [Plugins from mods](../plugins-from-mods/). Bellows is published on the Steam
+   Workshop this way.
+6. **Benchmark service for plugins: Anvil 1.4.** The core service `anvil.benchmark`, through
+   which plugins report their own fields for a start-up benchmark, and benchmark starts that
+   leave the compared plugin out or quit by themselves once the game is ready. Nothing a
+   player sees. Bellows 0.10.0 takes part.
+7. **Benchmark tab: Anvil 1.5.** Anvil Manager runs a series of game starts without a plugin
+   and with it, shows the result with warm and cold starts apart, and lets the player send an
+   anonymous report to the maintainers or copy it. See
+   [Start-up benchmark](../benchmark/) and
+   [Benchmark reports and your privacy](../benchmark-privacy/).
 
 ## Planned
 
@@ -43,9 +53,11 @@ storefront builds of EU4 1.37.5.
 - Suspending gameplay plugins in ironman and multiplayer is implemented, but has not been
   checked in a live ironman or multiplayer game yet. The effect of plugins on achievements
   has not been tested.
-- Bellows: the first start after a reboot has not been measured with the plugin yet.
-- Tongs: input in the main menu and in event pop-ups, keyboard layouts other than US and
-  clicks on the map are not verified yet.
+- Bellows: the first start after a reboot has not been measured with the plugin yet. The
+  Benchmark tab shows the cold starts a series happens to contain, but cannot make one on
+  demand.
+- Tongs: input in text fields, keyboard layouts other than US and clicks on the map are not
+  verified yet.
 
 ## Not planned for now
 

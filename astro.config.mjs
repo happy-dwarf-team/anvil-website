@@ -57,6 +57,8 @@ export default defineConfig({
 						{ slug: 'docs/install' },
 						{ slug: 'docs/install-plugins' },
 						{ slug: 'docs/plugins-from-mods' },
+						{ slug: 'docs/benchmark' },
+						{ slug: 'docs/benchmark-privacy' },
 						{ slug: 'docs/troubleshooting' },
 						{ slug: 'docs/faq' },
 					],
