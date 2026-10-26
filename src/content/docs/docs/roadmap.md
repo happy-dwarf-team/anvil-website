@@ -24,8 +24,8 @@ and the start-up benchmark. Further work is a plan, not a promise, and has no da
    installs plugins from zips and shows what will load and why, before the game starts.
 5. **Plugins from mods: Anvil 1.3.** Plugins that come with mods enabled in the Paradox
    launcher (Steam Workshop or local mods), each version only after the player approves it.
-   See [Plugins from mods](../plugins-from-mods/). Bellows is published on the Steam
-   Workshop this way.
+   See [Plugins from mods](../plugins-from-mods/). Bellows and Tongs are published on the
+   Steam Workshop this way.
 6. **Benchmark service for plugins: Anvil 1.4.** The core service `anvil.benchmark`, through
    which plugins report their own fields for a start-up benchmark, and benchmark starts that
    leave the compared plugin out or quit by themselves once the game is ready. Nothing a
