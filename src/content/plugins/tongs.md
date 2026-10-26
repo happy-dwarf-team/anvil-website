@@ -7,6 +7,7 @@ status: released
 gameBuilds: ['eu4-1.37.5-steam-win64']
 affectsGameplay: true
 order: 20
+workshop: '3826695093'
 ---
 
 Tongs lets test agents and scripts talk to a running game through a local named pipe,
@@ -162,15 +163,18 @@ list, the timeouts of common clients and its live checks.
 ## Install
 
 Tongs needs [Anvil](../../docs/install/) 1.0.0 or newer, with its standard plugin
-`anvil-game`, which is part of Anvil's package.
+`anvil-game`, which is part of Anvil's package. Get the plugin in one of two ways:
 
-Download `tongs-windows-x64.zip` with the button above, or from the
-[latest release](https://github.com/happy-dwarf-team/tongs/releases/latest)
-(`SHA256SUMS.txt` next to it holds its checksum), and install it on the **Plugins** tab of
-Anvil Manager, or extract it into `<EU4>/anvil/plugins/`; it contains the `tongs` folder.
-From 0.16.0 Tongs is also packaged as a Steam Workshop mod, which Anvil 1.3 or newer loads
-once you approve it (see [Plugins from mods](../../docs/plugins-from-mods/)); its Workshop
-item is not public yet.
+- **From the Steam Workshop** (Anvil 1.3 or newer): subscribe to
+  [Tongs on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3826695093)
+  and enable it in your playset. Anvil loads it once you approve that version in its panel
+  (`Ctrl+Shift+F12`, **Mods**) or on the **Mods** tab of Anvil Manager, and asks again after
+  every update; see [Plugins from mods](../../docs/plugins-from-mods/). The item is unlisted:
+  it does not show up in Workshop searches, only through this link.
+- **From the release zip:** download `tongs-windows-x64.zip` with the button above, or from
+  the [latest release](https://github.com/happy-dwarf-team/tongs/releases/latest)
+  (`SHA256SUMS.txt` next to it holds its checksum), and install it on the **Plugins** tab of
+  Anvil Manager, or extract it into `<EU4>/anvil/plugins/`; it contains the `tongs` folder.
 
 Then turn it on: in `anvil/data/tongs/settings.toml`, one `name = value` per line, set
 `enabled = true`, and `input = true` if scripts should use the keyboard and mouse, or use the
@@ -178,7 +182,8 @@ Then turn it on: in `anvil/data/tongs/settings.toml`, one `name = value` per lin
 (for example `ANVIL_TONGS_ENABLED=true`) override a value for one start. A `config.toml` from
 Tongs 0.12 or older is moved into `settings.toml` on the first start.
 
-Remove it on the Manager's **Plugins** tab, or delete the `tongs` folder, to uninstall.
+Unsubscribe from the mod, or remove the plugin on the Manager's **Plugins** tab (or delete the
+`tongs` folder), to uninstall.
 
 ## Tested
 
