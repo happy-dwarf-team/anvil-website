@@ -10,8 +10,8 @@ order: 10
 workshop: '3823747170'
 highlight:
   label: Warm start to the main menu
-  before: 37.15 s
-  after: 13.03 s
+  before: 38.68 s
+  after: 12.28 s
 ---
 
 Bellows (formerly EU4 Startup Boost) shortens the time from launching the game to the main
@@ -116,21 +116,24 @@ override). When the game is ready, the plugin writes its counters to `anvil/anvi
 Source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#measured). EU4
 1.37.5 (Steam, Windows 64-bit) with 10 UI, graphics and music mods, on the development
 machine; warm starts (not the first after a reboot) from the game process starting to the
-main menu (`Running application` in `system.log`); the original `eu4.exe`, Anvil 1.3.0 and
-Bellows 0.9.0 from the release files, Bellows with default settings and the profiles it
-learned on an earlier start; 3 interleaved starts each:
+main menu (`Running application` in `system.log`); the original `eu4.exe`, Anvil 1.5.0 and
+Bellows 0.10.0 from the release files, Bellows with default settings and the profiles it
+learned on an earlier start; 3 interleaved starts each, every start only after no other
+program had used the processor for 15 seconds:
 
 | Setup | Starts | Median |
 | --- | --- | ---: |
-| Anvil without plugins | 37.15 / 37.15 / 36.60 s | 37.15 s |
-| Anvil + `anvil-game` | 38.51 / 37.10 / 36.54 s | 37.10 s |
-| Anvil + `anvil-game` + Bellows 0.9.0 | 13.03 / 13.32 / 12.26 s | **13.03 s** |
+| Anvil without plugins | 39.24 / 38.68 / 38.44 s | 38.68 s |
+| Anvil + `anvil-game` | 39.74 / 39.22 / 39.51 s | 39.51 s |
+| Anvil + `anvil-game` + Bellows 0.10.0 | 12.79 / 12.24 / 12.28 s | **12.28 s** |
 
-`anvil-game` on its own does not change the start-up time. The very first start, with the
-profile shipped in the release, took 13.61 s.
+`anvil-game` on its own made no clear difference (the ranges overlap). The very first start,
+with the profile shipped in the release, took 12.80 s. Starts on the same day while other
+programs were busy took 40–46 s without Bellows and 12.8–13.6 s with it; they are left out
+of the table.
 
-The game's `setup.log`, `error.log` and `system.log` were byte for byte the same in all of
-these starts, with and without Bellows. With default settings the modules also compare a
+The game's `setup.log`, `error.log` and `system.log` were byte for byte the same in all 31
+starts of that day, with and without Bellows. With default settings the modules also compare a
 sample of their answers with the game's own code (about 45,700 comparisons per start): 0
 differences.
 
