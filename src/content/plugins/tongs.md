@@ -72,7 +72,7 @@ while another reads `state` or sends `cancel`.
 | Command | Answer |
 | --- | --- |
 | `ping` | plugin version and game process id |
-| `state` | whether a game is loaded; then the date, speed (1–5 as in the interface) and pause |
+| `state` | whether a game is loaded; then the date, speed (1–5 as in the interface), pause and session (1 for the first game, +1 at every load) |
 | `window` | size and position of the game window, focus, DPI |
 | `threads` | worker threads in the game's two pools, CPU masks and priority of the main thread |
 | `screenshot [NAME]` | writes a PNG of the game window and answers with its path |
@@ -101,7 +101,9 @@ With `input = true`, also:
 With `game_calls = true`, also `console LINE`, which runs one console command in the game
 and **changes game state**.
 
-`wait_until` and `run_until` wait at most 1 hour by default; `timeout=S` sets the limit,
+`wait_until` and `run_until` wait at most 1 hour by default and count the input, client
+calls and console commands of every client meanwhile (`inputs`, `client_calls`,
+`game_calls`), so a measurement can reject a touched run; `timeout=S` sets the limit,
 up to 14 400 s. With `max_pause=S` (since 0.3.0) the wait ends with an error once the game has stayed
 paused for `S` seconds, for example on an event with a choice, instead of running into the
 timeout. Answers report `paused_ms` and, after a pause, `paused_date`, so a measurement
@@ -126,12 +128,15 @@ The repository has two small clients in
 - `tongs.ps1` (PowerShell): sends one or more commands over one connection and prints one
   answer line per command.
 - `tongs.py` (Python 3, standard library only): the same from the command line, or as a
-  module:
+  module. Since 0.19.0 it is the public client: every call has a read timeout, a wait that
+  times out or is interrupted is cancelled, answers from another game process are refused,
+  and `ready()` waits until a started or loaded game takes input, without a fixed sleep:
 
   ```python
-  from tongs import Tongs
-  with Tongs() as game:
-      result = game.call("run_until 1720.1.1 speed=5", check=True)
+  import tongs
+  tongs.ready(session=1, speed=5)  # after starting the game with a save
+  with tongs.Tongs() as game:
+      result = game.run_until("1720.1.1")
       print(result["days_per_second"])
   ```
 
@@ -142,7 +147,8 @@ Any program that can open a named pipe can be a client.
 For agents such as Claude Code, the repository's
 [`mcp/`](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md) folder has an
 [MCP](https://modelcontextprotocol.io) server with one typed tool per command family
-(`tongs_state`, `tongs_run_until`, `tongs_ui_click`, `tongs_screenshot` and others). It
+(`tongs_state`, `tongs_ready`, `tongs_run_until`, `tongs_ui_click`, `tongs_screenshot` and
+others). It
 speaks MCP over stdio only, runs on the same Windows machine as the game, and adds nothing
 the pipe does not have: every tool sends one Tongs command and returns the plugin's answer
 unchanged, and Tongs' own settings still decide what is allowed.
@@ -248,6 +254,13 @@ development builds of Tongs from the branch of each change:
   answered. Cost per call: the cheap `hovered` a median of 48 µs (p99 116 µs), and
   3.2–3.6 ms once on the first call and after a reload; `find` over the visible widgets of
   the whole tree 12–14 ms.
+- **Sessions and the ready wait** (28 October 2026, with Anvil 1.5.2,
+  [tongs#115](https://github.com/happy-dwarf-team/tongs/pull/115)): in the lab's Russia save,
+  `session` was 1 after the start and went to 2 and 3 with two loads by the player through
+  the in-game menu; a `wait_until` across a load ended with an error and reported the inputs
+  of the clicks, and the console count started again at 0. The first speed change after
+  `ready()` took 176 ms after the start. After a load from the in-game menu, that menu stays
+  open and the speed keys do nothing until it is closed.
 
 Not verified yet: the release files of 0.16.0 and 0.17.0 and the Workshop mod in the game
 (the checks above used builds of the branches), suspension in a live ironman or multiplayer
