@@ -26,7 +26,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 
 | Module | What it does | Default |
 | --- | --- | --- |
-| `mimalloc` | Replaces the memory allocator of the game's C runtime with a faster one, for the whole session | on |
+| `mimalloc` | Replaces the memory allocator of the game's C runtime with a faster one until the main menu; later allocations use the Windows heap. `on` keeps it for the whole session, which made the simulation about 5% slower in the lab | start-up only |
 | `verifypath_listing` | Answers the game's path checks from directory listings | on |
 | `exists_index` | Answers "does this file exist?" for the modifier icon check | on |
 | `trigger_intern` | Interns the game's triggers at the end of loading with a faster index | on |
@@ -36,12 +36,14 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `attr_cache` | Remembers "file not found" answers for game and mod files during start-up | off |
 | `token_dict_cache` | Caches the script tokenizer's keyword lookups instead of walking a large tree character by character | on |
 | `range_witness` | **Simulation, not start-up.** Answers the country range check (can a country still reach a province?) from the province that was in range last time, instead of walking all of the country's provinces again; same answers as the game's own code | on |
+| `frame_pacing` | **Simulation, experimental.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms. The simulation is the same; the map and interface update between days instead and react later to clicks during long days | off |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
 session. A module that fails turns itself off while the game continues. The diagnostic
-modules `zip_profile`, `token_dict_profile` and `range_profile` (off by default) only count
-and are meant for development, not for playing.
+modules `zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`,
+`army_search_profile` and `score_probe` (off by default) only count and are meant for
+development, not for playing.
 
 Bellows needs Anvil's standard plugin `anvil-game`, which is part of Anvil's package.
 
@@ -79,8 +81,9 @@ Remove it on the Manager's **Plugins** tab, or delete the `bellows` folder.
 
 Each module is a setting `on`, `off` or, where the module has it, `verify`; `verify` also
 runs the game's own code and compares the answers, for checking a module rather than for
-playing. `ram_prefetch_budget_mb` sets the memory budget of `ram_prefetch` (64–8192, default
-1024). The defaults, labels and descriptions are in the plugin's
+playing. `mimalloc` also takes `startup`, its default. `ram_prefetch_budget_mb` sets the
+memory budget of `ram_prefetch` (64–8192, default 1024), and `frame_pacing_interval_ms` the
+interval of `frame_pacing` (0–1000, default 100; 0 keeps the game's own). The defaults, labels and descriptions are in the plugin's
 [`settings.toml`](https://github.com/happy-dwarf-team/bellows/blob/main/plugin/settings.toml).
 
 Change them on the **Settings** tab of Anvil Manager or in the Anvil panel in the game, or by
@@ -179,3 +182,9 @@ year by year from 17 March 1719 to 1 January 1727. Details are in the
 [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#range_witness-simulation).
 
 Not verified yet: other saves, mod sets and much later dates.
+
+`frame_pacing` (experimental, off by default) was measured the same way, with Bellows'
+defaults in both arms and the module at 100 ms against counting only: a year at speed 5 in
+20.2 s instead of 22.8 s (medians of 4 and 5 interleaved trials). The cost is input
+latency: a key press at speed 5 was handled after 73 ms instead of 50 ms in the median
+(see the [README](https://github.com/happy-dwarf-team/bellows#modules)).
