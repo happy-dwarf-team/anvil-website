@@ -31,6 +31,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `exists_index` | Answers "does this file exist?" for the modifier icon check | on |
 | `trigger_intern` | Interns the game's triggers at the end of loading with a faster index | on |
 | `metascript_subst` | Substitutes `$parameter$` placeholders in scripted effects and triggers in a single pass | on |
+| `metascript_blocks` | Resolves the `[[parameter] ...]` blocks of scripted effects and triggers in a single pass (matters for mods with large scripted effects, such as Anbennar) | on |
 | `open_warmup` | Opens the files the game will need on parallel threads, so the slow first access after a reboot does not block the start | on |
 | `ram_prefetch` | Reads and unpacks the DLC archive members the game will need into memory on background threads; uses up to 1 GB of extra RAM during start-up | on |
 | `attr_cache` | Remembers "file not found" answers for game and mod files during start-up | off |
@@ -146,6 +147,25 @@ differences.
 Not measured with the plugin yet: the first start after a reboot (a cold start). The research
 build that the plugin's techniques come from took it from about 61 s to about 15 s in the lab
 ([design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md)).
+
+### A big mod set: Anbennar
+
+Source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#a-big-mod-set-anbennar).
+Anbennar with Proper 2K UI Enhanced and P2KE Patch - Anbennar (the Workshop items as of 26
+October 2026), warm starts to the main menu, the original `eu4.exe`, Anvil 1.5.2 and Bellows
+0.14.0 from the release files, Bellows with default settings and the profiles it learned on
+earlier starts; 5 interleaved starts each, in a separate game profile with no other game
+running:
+
+| Setup | Starts | Median |
+| --- | --- | ---: |
+| Without Anvil | 85.32 / 87.19 / 84.64 / 85.29 / 86.01 s | 85.32 s |
+| Anvil + `anvil-game` + Bellows 0.14.0 | 22.42 / 21.81 / 21.83 / 22.47 / 23.01 s | **22.42 s** |
+
+About 10 s of that gain comes from `metascript_blocks` (0.14.0), which matters for Anbennar's
+large scripted effects and makes no difference on the 10-mod set above. The game's logs were
+the same in all five pairs of starts. The first start after a reboot was not measured on this
+mod set.
 
 ### Measure your own
 
