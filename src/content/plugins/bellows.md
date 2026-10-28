@@ -36,7 +36,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `attr_cache` | Remembers "file not found" answers for game and mod files during start-up | off |
 | `token_dict_cache` | Caches the script tokenizer's keyword lookups instead of walking a large tree character by character | on |
 | `range_witness` | **Simulation, not start-up.** Answers the country range check (can a country still reach a province?) from the province that was in range last time, instead of walking all of the country's provinces again; same answers as the game's own code | on |
-| `frame_pacing` | **Simulation, experimental.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms. The simulation is the same; the map and interface update between days instead and react later to clicks during long days | off |
+| `frame_pacing` | **Simulation, experimental.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms while you do nothing, and at once when you press a key, click or turn the wheel. The simulation is the same; the map updates less smoothly during long days | off |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
@@ -83,7 +83,10 @@ Each module is a setting `on`, `off` or, where the module has it, `verify`; `ver
 runs the game's own code and compares the answers, for checking a module rather than for
 playing. `mimalloc` also takes `startup`, its default. `ram_prefetch_budget_mb` sets the
 memory budget of `ram_prefetch` (64–8192, default 1024), and `frame_pacing_interval_ms` the
-interval of `frame_pacing` (0–1000, default 100; 0 keeps the game's own). The defaults, labels and descriptions are in the plugin's
+interval of `frame_pacing` (0–1000, default 100; 0 keeps the game's own).
+`frame_pacing_input` says what `frame_pacing` does with a key press or click: `draw` (the
+default since 0.13.0) draws a frame at once, `wait` waits for the interval as 0.12.0 did.
+The defaults, labels and descriptions are in the plugin's
 [`settings.toml`](https://github.com/happy-dwarf-team/bellows/blob/main/plugin/settings.toml).
 
 Change them on the **Settings** tab of Anvil Manager or in the Anvil panel in the game, or by
@@ -184,7 +187,9 @@ year by year from 17 March 1719 to 1 January 1727. Details are in the
 Not verified yet: other saves, mod sets and much later dates.
 
 `frame_pacing` (experimental, off by default) was measured the same way, with Bellows'
-defaults in both arms and the module at 100 ms against counting only: a year at speed 5 in
-20.2 s instead of 22.8 s (medians of 4 and 5 interleaved trials). The cost is input
-latency: a key press at speed 5 was handled after 73 ms instead of 50 ms in the median
-(see the [README](https://github.com/happy-dwarf-team/bellows#modules)).
+defaults in both arms and the module at 100 ms against counting only: in 0.13.0 a year at
+speed 5 took 20.8 s instead of 23.4 s (medians of 4 and 6 interleaved trials), and a key
+press at speed 5 was handled after 21 ms instead of 51.5 ms in the median (120 presses each),
+so the game reacts sooner than without the module. 0.12.0, which also waited for the
+interval when a key was pressed, handled it after 73 ms (see the
+[README](https://github.com/happy-dwarf-team/bellows#modules)).
