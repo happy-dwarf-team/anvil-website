@@ -101,7 +101,10 @@ With `input = true`, also:
 | `province open ID`, `province goto ID` | navigation (since 0.21.0): opens a province's view and moves the camera to it as the game's own province links do, or only moves the camera; client calls, counted in `client_calls` |
 
 With `game_calls = true`, also `console LINE`, which runs one console command in the game
-and **changes game state**.
+and **changes game state**, and `save load NAME` (since 0.22.0), which loads a save from
+`save games` in the running game as the in-game Load dialog does: it **discards the running
+game without saving**, answers once the loaded save's date and player are on screen, and
+counts as a game call.
 
 `wait_until` and `run_until` wait at most 1 hour by default and count the input, client
 calls and console commands of every client meanwhile (`inputs`, `client_calls`,
