@@ -38,7 +38,7 @@ on the game as a player's would, so Tongs declares that it affects gameplay.
 ## Safety
 
 - **Off by default.** The pipe opens only with `enabled = true` in
-  `anvil/data/tongs/settings.toml`. The keyboard and mouse commands also need
+  `anvil/data/tongs/settings.toml`. The keyboard, mouse and navigation commands also need
   `input = true`, and console commands `game_calls = true`. The read-only service
   `tongs.ui` for other plugins is registered also with `enabled = false`.
 - **Local only.** Only programs of the Windows user running the game can connect; remote
@@ -98,6 +98,7 @@ With `input = true`, also:
 | `release` | hands the pointer back to the real mouse |
 | `ui click SEL` | clicks the one widget the selector matches, after checking that nothing covers it |
 | `event choose N` | chooses an option of an open event |
+| `province open ID`, `province goto ID` | navigation (since 0.21.0): opens a province's view and moves the camera to it as the game's own province links do, or only moves the camera; client calls, counted in `client_calls` |
 
 With `game_calls = true`, also `console LINE`, which runs one console command in the game
 and **changes game state**.
@@ -217,7 +218,8 @@ Tongs needs [Anvil](../../docs/install/) 1.0.0 or newer, with its standard plugi
   Anvil Manager, or extract it into `<EU4>/anvil/plugins/`; it contains the `tongs` folder.
 
 Then turn it on: in `anvil/data/tongs/settings.toml`, one `name = value` per line, set
-`enabled = true`, and `input = true` if scripts should use the keyboard and mouse, or use the
+`enabled = true`, and `input = true` if scripts should use the keyboard, the mouse and
+navigation (the camera and province views), or use the
 **Settings** tab of Anvil Manager. Start the game. `ANVIL_TONGS_<NAME>` environment variables
 (for example `ANVIL_TONGS_ENABLED=true`) override a value for one start. A `config.toml` from
 Tongs 0.12 or older is moved into `settings.toml` on the first start.
