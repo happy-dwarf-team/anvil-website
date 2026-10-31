@@ -79,6 +79,7 @@ while another reads `state` or sends `cancel`.
 | `frames` | frames per second of the game's main loop |
 | `ui find SEL`, `ui tree [SEL]` | widgets of the interface, by their names in the game's `.gui` files |
 | `event list` | the open events and their options |
+| `province ID`, `country TAG`, `player`, `selection` | world reads (since 0.20.0): one province's owner, controller, cores and development, one country's provinces and capital, the player's country, and the last selected province and whether its view is open |
 | `wait_until DATE [timeout=S] [max_pause=S]` | waits, without touching the game, until the date is reached; answers with the timing |
 | `cancel` | ends every `wait_until` / `run_until` in progress |
 | `subscribe KINDS` | turns the connection into a stream of notifications |
@@ -130,12 +131,14 @@ The repository has two small clients in
 - `tongs.py` (Python 3, standard library only): the same from the command line, or as a
   module. Since 0.19.0 it is the public client: every call has a read timeout, a wait that
   times out or is interrupted is cancelled, answers from another game process are refused,
-  and `ready()` waits until a started or loaded game takes input, without a fixed sleep:
+  `ready()` waits until a started or loaded game takes input, without a fixed sleep, and
+  typed steps such as `province()` and `country()` return the world reads:
 
   ```python
   import tongs
   tongs.ready(session=1, speed=5)  # after starting the game with a save
   with tongs.Tongs() as game:
+      print(game.province(295)["owner"])  # the owner's tag, e.g. "RUS"
       result = game.run_until("1720.1.1")
       print(result["days_per_second"])
   ```
