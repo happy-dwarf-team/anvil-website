@@ -37,7 +37,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `attr_cache` | Remembers "file not found" answers for game and mod files during start-up | off |
 | `token_dict_cache` | Caches the script tokenizer's keyword lookups instead of walking a large tree character by character | on |
 | `range_witness` | **Simulation, not start-up.** Answers the country range check (can a country still reach a province?) from the province that was in range last time, instead of walking all of the country's provinces again; same answers as the game's own code | on |
-| `frame_pacing` | **Simulation, experimental.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms while you do nothing, and at once when you press a key, click or turn the wheel. The simulation is the same; the map updates less smoothly during long days | off |
+| `frame_pacing` | **Simulation.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms while you do nothing, and at once when you press a key, click or turn the wheel. The simulation is the same; while you just watch, the map is drawn about 16 instead of 22 times a second | on |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
@@ -206,10 +206,13 @@ year by year from 17 March 1719 to 1 January 1727. Details are in the
 
 Not verified yet: other saves, mod sets and much later dates.
 
-`frame_pacing` (experimental, off by default) was measured the same way, with Bellows'
-defaults in both arms and the module at 100 ms against counting only: in 0.13.0 a year at
-speed 5 took 20.8 s instead of 23.4 s (medians of 4 and 6 interleaved trials), and a key
-press at speed 5 was handled after 21 ms instead of 51.5 ms in the median (120 presses each),
-so the game reacts sooner than without the module. 0.12.0, which also waited for the
-interval when a key was pressed, handled it after 73 ms (see the
+`frame_pacing` (on by default since 0.15.0) was measured the same way, with Bellows'
+defaults in both arms and the module at 100 ms against counting only: a year at speed 5
+took 20.8 s instead of 23.4 s (medians of 4 and 6 interleaved trials), and a key press at
+speed 5 was handled after 21 ms instead of 51.5 ms in the median (120 presses through
+Tongs each; a real key press sent to the game window, 53 each: 21.6 ms instead of 56.8 ms),
+so the game reacts sooner than without the module. While nothing is pressed, the map was
+drawn 16.4 instead of 22.5 times a second at speed 5 (15.8 instead of 22.7 on a save from
+1821), with the same longest gap between frames. 0.12.0, which also waited for the interval
+when a key was pressed, handled it after 73 ms (see the
 [README](https://github.com/happy-dwarf-team/bellows#modules)).
