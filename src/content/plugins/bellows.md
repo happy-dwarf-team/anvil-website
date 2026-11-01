@@ -38,12 +38,13 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `token_dict_cache` | Caches the script tokenizer's keyword lookups instead of walking a large tree character by character | on |
 | `range_witness` | **Simulation, not start-up.** Answers the country range check (can a country still reach a province?) from the province that was in range last time, instead of walking all of the country's provinces again; same answers as the game's own code | on |
 | `frame_pacing` | **Simulation.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms while you do nothing, and at once when you press a key, click or turn the wheel. The simulation is the same; while you just watch, the map is drawn about 16 instead of 22 times a second | on |
+| `modifier_merge` | **Simulation.** In the monthly update the game adds every country's modifiers (about 700) to each of its units by scanning a list entry by entry; Bellows does the same with an index. The lists come out exactly as the game's own, and the module checks every 1,024th merge against the game's code while you play | on |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
 session. A module that fails turns itself off while the game continues. The diagnostic
 modules `zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`,
-`army_search_profile` and `score_probe` (off by default) only count and are meant for
+`army_search_profile`, `score_probe` and `monthly_probe` (off by default) only count and are meant for
 development, not for playing.
 
 Bellows needs Anvil's standard plugin `anvil-game`, which is part of Anvil's package.
@@ -216,3 +217,11 @@ drawn 16.4 instead of 22.5 times a second at speed 5 (15.8 instead of 22.7 on a 
 1821), with the same longest gap between frames. 0.12.0, which also waited for the interval
 when a key was pressed, handled it after 73 ms (see the
 [README](https://github.com/happy-dwarf-team/bellows#modules)).
+
+`modifier_merge` (on by default since 0.16.0) was measured the same way, with Bellows'
+defaults in both arms and the module on or off: the year 1720 took 19.45 s instead of
+20.64 s (medians of 5 and 6 interleaved trials). On a save from 1821 the year was shorter
+too (26.2 s against 30.2 s, 6 trials each), but late-game years vary by about 3 s between
+runs, so that comparison is not conclusive. In the lab 1.52 million merges were compared
+with the game's own code, and all gave the same list (see the
+[design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#modifier_merge-simulation)).
