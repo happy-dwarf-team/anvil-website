@@ -3,8 +3,8 @@ title: Roadmap
 description: What Anvil has, what comes next, and what is not planned.
 ---
 
-Anvil 1.5 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods
-and the start-up benchmark. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
+Anvil 1.6 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
+the start-up benchmark and a shorter `error.log`. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
 [design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#22-delivery).
 
 ## Done
@@ -35,6 +35,13 @@ and the start-up benchmark. Further work is a plan, not a promise, and has no da
    anonymous report to the maintainers or copy it. See
    [Start-up benchmark](../benchmark/) and
    [Benchmark reports and your privacy](../benchmark-privacy/).
+8. **Game date and log throttling: Anvil 1.6.** The service of `anvil-game` gives plugins
+   the in-game date. The new standard plugin `anvil-log-throttle` writes a line that
+   repeats in `error.log` 10 times and then only counts it (see
+   [Install](../install/#folder-layout)). In a lab test with a playset whose script errors
+   came in bursts of about 125 000 lines, `error.log` stayed at 161 KB after 12.6 minutes,
+   against 61.9 MB in 11.3 minutes without the plugin
+   ([measurement](https://github.com/happy-dwarf-team/anvil/issues/172)).
 
 ## Planned
 
