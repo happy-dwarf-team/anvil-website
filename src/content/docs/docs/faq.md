@@ -65,10 +65,10 @@ Windows:
 ## What else is built on Anvil?
 
 [Etch](https://etch.happydwarf.dev/), a preview for EU4 interface mods in Visual Studio
-Code, is built on Anvil. Its game host, a private copy of the game that draws the edited
-window itself, runs with pinned builds of Anvil, `anvil-game`, Bellows and Etch's own Anvil
-plugin, which come with Etch. Etch is not a plugin from this catalog, and you do not need to
-install anything here for it.
+Code, is built on Anvil. Its live game, a private copy of the game played beside the editor
+that reloads each saved file into the game's own window, runs with pinned builds of Anvil,
+`anvil-game`, Bellows, Tongs and Etch's own Anvil plugin, which come with Etch. Etch is not a
+plugin from this catalog, and you do not need to install anything here for it.
 
 ## Who makes Anvil?
 
