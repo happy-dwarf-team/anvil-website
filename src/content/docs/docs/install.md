@@ -66,21 +66,30 @@ After the first start, `anvil/anvil.log` lists what was loaded. See
 ```
 <game folder>/
   eu4.exe
-  version.dll              Anvil
-  AnvilManager.exe         installer and plugin manager (Anvil 1.2 and later)
+  version.dll                    Anvil
+  AnvilManager.exe               installer and plugin manager (Anvil 1.2 and later)
   anvil/
-    anvil.toml             optional settings
-    anvil.log              log of the last start
-    crashes/               crash reports of the last 10 crashes
-    plugins/anvil-game/    standard plugin that ships with Anvil
-    plugins/<plugin-id>/   plugin manifest and DLL
-    data/<plugin-id>/      files a plugin writes (caches, settings)
-    data/anvil/            approved plugins from mods, kept benchmark reports
-    trust.toml             your approvals of plugins from mods (Anvil 1.3 and later)
+    anvil.toml                   optional settings
+    anvil.log                    log of the last start
+    crashes/                     crash reports of the last 10 crashes
+    plugins/anvil-game/          standard plugins that ship with Anvil
+    plugins/anvil-overlay/
+    plugins/anvil-log-throttle/  (Anvil 1.6 and later)
+    plugins/<plugin-id>/         plugin manifest and DLL
+    data/<plugin-id>/            files a plugin writes (caches, settings)
+    data/anvil/                  approved plugins from mods, kept benchmark reports
+    trust.toml                   your approvals of plugins from mods (Anvil 1.3 and later)
 ```
 
 Keep `anvil-game` installed and enabled: it tells other plugins when the game is ready
 and when a game session starts, and plugins that depend on it are skipped without it.
+
+From Anvil 1.6, `anvil-log-throttle` keeps the game's `error.log` short. A line that
+repeats is written 10 times, and after that only counted: a line
+`[anvil-log-throttle] repeated <n> more times in the last <s> s: <text>` gives the count
+every minute and when the game closes the log. To get every line, for example while
+debugging a mod, turn on **Write every line** (`full_log`) in the overlay's panel, or
+disable the plugin.
 
 ## Update Anvil
 

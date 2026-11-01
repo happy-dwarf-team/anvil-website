@@ -125,7 +125,7 @@ events synchronously on the publishing thread. A plugin publishes only events na
 
 The game's own events come from `anvil-game`, a standard plugin shipped with Anvil.
 Depend on it in `plugin.toml` (`id = "anvil-game"`, `version = "^1"`) and include
-[`anvil_game.h`](https://github.com/happy-dwarf-team/anvil/blob/v1.0.0/include/anvil/anvil_game.h).
+[`anvil_game.h`](https://github.com/happy-dwarf-team/anvil/blob/v1.6.0/include/anvil/anvil_game.h).
 All its events are published on the game's main thread:
 
 | Event | Payload | When |
@@ -139,6 +139,13 @@ Its service `anvil-game.game` (version 1, `AnvilGameService`) has `ready`,
 runs work on the main thread after the next frame. A plugin that subscribes after the game
 is ready asks `ready()`. Queued work never runs once the game quits, and frames stop while
 a save loads, so never wait for it without a limit.
+
+From Anvil 1.6.0 the service also has `date(&out)`: while a session runs it fills an
+`AnvilGameDate` (`year`, `month`, `day` and the `session` number that `session()` reports)
+and returns nonzero; in the main menu it returns 0. It can be called from any thread and
+shows the date as of the last frame of the main loop. It was added within service version
+1, so check `ANVIL_GAME_HAS(service, date)` before calling it, or depend on `anvil-game`
+with `version = "^1.6.0"`.
 
 ## Start-up benchmark
 
