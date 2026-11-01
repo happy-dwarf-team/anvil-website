@@ -39,6 +39,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `range_witness` | **Simulation, not start-up.** Answers the country range check (can a country still reach a province?) from the province that was in range last time, instead of walking all of the country's provinces again; same answers as the game's own code | on |
 | `frame_pacing` | **Simulation.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms while you do nothing, and at once when you press a key, click or turn the wheel. The simulation is the same; while you just watch, the map is drawn about 16 instead of 22 times a second | on |
 | `modifier_merge` | **Simulation.** In the monthly update the game adds every country's modifiers (about 700) to each of its units by scanning a list entry by entry; Bellows does the same with an index. The lists come out exactly as the game's own, and the module checks every 1,024th merge against the game's code while you play | on |
+| `province_modifier_view` | **Simulation, experimental.** Every day each country looks up one value in the modifiers of every province it owns, and the game first copies the province's whole modifier list for that; Bellows reads the value in place. The same value as the game's own code; `verify` compares every call. Off until its effect on the AI is checked (below) | off |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
@@ -225,3 +226,18 @@ too (26.2 s against 30.2 s, 6 trials each), but late-game years vary by about 3 
 runs, so that comparison is not conclusive. In the lab 1.52 million merges were compared
 with the game's own code, and all gave the same list (see the
 [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#modifier_merge-simulation)).
+
+`province_modifier_view` (0.17.0, off by default) has not been timed by game year yet. In lab
+game sessions (the save of 1719 and an autosave of 1821, 300 s each) it compared 12.17
+million values with the game's own code, with 0 differences. By the module's own clocks the
+game's copy and read took 0.80–0.83 µs a call and the view 0.07–0.11 µs; with about 0.6
+million calls a game year in 1720 and 1.4 million in 1821, that would be roughly 0.4 s (about
+2%) and 1 s (about 4%) less a year. This is an estimate, not a measured year: the clocks
+count every thread, and some calls may run on the AI's worker threads, where they do not
+lengthen the year directly. The module stays off because without the copy the game
+allocates less memory on this path, which changes how its memory is laid out, and the lab
+suspects that the AI breaks some ties by memory address
+([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)): a single-player game
+could then take another course even though every value is right. It will be turned on only
+after a determinism check and a timed series (see the
+[design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#province_modifier_view-simulation)).
