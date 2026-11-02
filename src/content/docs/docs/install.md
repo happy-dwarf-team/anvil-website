@@ -81,7 +81,7 @@ with the plugins' status, their settings, the crash report and the log (the key
 menu, never in a game. To hide it, turn off **Show Anvil in the main menu** on the panel's
 **Settings** tab (plugin `anvil-overlay`).
 
-![The Anvil badge on the left edge of the game's main menu, with its tooltip: 4 loaded, 0 failed, 0 skipped; click to open the Anvil panel, or press Ctrl+Shift+F12.](../../../assets/menu-badge.png)
+![The Anvil badge on the left edge of the game's main menu, with its tooltip: Anvil 1.8.0, 5 loaded, 0 failed, 0 skipped; click to open the Anvil panel, or press Ctrl+Shift+F12.](../../../assets/menu-badge.png)
 
 The overlay draws on the game's Direct3D 9 renderer; with OpenGL there is no badge and no
 panel, and Anvil Manager shows the same information outside the game.
