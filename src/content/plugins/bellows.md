@@ -4,7 +4,7 @@ summary: Faster Europa Universalis IV start-up, simulation and saves. Makes the 
 tagline: Makes the game start faster, without changing game files or how it plays.
 repo: https://github.com/happy-dwarf-team/bellows
 status: released
-gameBuilds: ['eu4-1.37.5-steam-win64']
+gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
 affectsGameplay: false
 order: 10
 workshop: '3823747170'
@@ -74,7 +74,9 @@ extra random draw on the host. Source: the
 
 ## Install
 
-Bellows 0.8.0 and newer needs [Anvil](../../docs/install/) 1.0 or newer.
+Bellows 0.19.0 and newer needs [Anvil](../../docs/install/) 1.7 or newer and runs on EU4 1.37.5
+from Steam and on the GOG build 1.37.5.2; 0.8.0 to 0.18.0 need Anvil 1.0 or newer and run on
+Steam only.
 
 ### From the Steam Workshop
 

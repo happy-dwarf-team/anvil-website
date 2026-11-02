@@ -4,8 +4,8 @@ description: Install and uninstall Anvil, the plugin loader for Europa Universal
 ---
 
 Anvil works with **Europa Universalis IV 1.37.5 for Windows, 64-bit, from Steam**, and from
-Anvil 1.7 also with the **GOG build 1.37.5.2**. On GOG, Bellows and Tongs do not load yet:
-a plugin that uses game addresses loads only on the builds it declares (see
+Anvil 1.7 also with the **GOG build 1.37.5.2**, where Bellows 0.19 and Tongs 0.26 or newer
+load too: a plugin that uses game addresses loads only on the builds it declares (see
 [FAQ](../faq/#does-it-work-with-gog-the-microsoft-store-linux-or-macos)).
 
 ## Install with Anvil Manager

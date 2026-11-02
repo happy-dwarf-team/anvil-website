@@ -56,8 +56,9 @@ detected.
 GOG partly; the others are not supported:
 
 - **GOG:** from Anvil 1.7, Anvil knows the GOG build 1.37.5.2 (`eu4-1.37.5.2-gog-win64`),
-  and `anvil-game` runs on it. Bellows and Tongs declare only the Steam build so far, so on
-  GOG they are skipped and the game starts without them. The Manager does not find a GOG
+  and `anvil-game` runs on it, and so do Bellows from 0.19.0 and Tongs from 0.26.0; older
+  versions declare only the Steam build, so on GOG they are skipped and the game starts
+  without them. The Manager does not find a GOG
   game by itself: choose the folder that contains `eu4.exe`. The other GOG build of
   1.37.5 (1.37.5.0) is not known yet
   ([#160](https://github.com/happy-dwarf-team/anvil/issues/160)).
