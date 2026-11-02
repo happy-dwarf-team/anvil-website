@@ -40,6 +40,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `frame_pacing` | **Simulation.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms while you do nothing, and at once when you press a key, click or turn the wheel. The simulation is the same; while you just watch, the map is drawn about 16 instead of 22 times a second | on |
 | `modifier_merge` | **Simulation.** In the monthly update the game adds every country's modifiers (about 700) to each of its units by scanning a list entry by entry; Bellows does the same with an index. The lists come out exactly as the game's own, and the module checks every 1,024th merge against the game's code while you play | on |
 | `province_modifier_view` | **Simulation, experimental.** Every day each country looks up one value in the modifiers of every province it owns, and the game first copies the province's whole modifier list for that; Bellows reads the value in place. The same value as the game's own code; `verify` compares every call. Off until its effect on the AI is checked (below) | off |
+| `save_compress` | **Saving.** For compressed saves (`compress_autosave = yes` and the like): compresses each part of the save with the game's own zlib, call for call as the game does, but computes its checksum eight bytes at a time instead of one; the file is byte for byte the game's. `save_compress_parallel` (off by default) compresses the large gamestate on several threads instead: a valid save with the same content, which the game loads and save tools read, but with other compressed bytes | on |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
@@ -89,6 +90,8 @@ memory budget of `ram_prefetch` (64–8192, default 1024), and `frame_pacing_int
 interval of `frame_pacing` (0–1000, default 100; 0 keeps the game's own).
 `frame_pacing_input` says what `frame_pacing` does with a key press or click: `draw` (the
 default since 0.13.0) draws a frame at once, `wait` waits for the interval as 0.12.0 did.
+`save_compress_parallel` (`off`, the default, `on` or `verify`) compresses large members of
+a compressed save on several threads while `save_compress` is on.
 The defaults, labels and descriptions are in the plugin's
 [`settings.toml`](https://github.com/happy-dwarf-team/bellows/blob/main/plugin/settings.toml).
 
@@ -241,3 +244,23 @@ suspects that the AI breaks some ties by memory address
 could then take another course even though every value is right. It will be turned on only
 after a determinism check and a timed series (see the
 [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#province_modifier_view-simulation)).
+
+### Saving
+
+`save_compress` (on by default since 0.18.0) was measured in the lab with the save from 17
+March 1719 and `compress_autosave = yes`, Bellows' defaults otherwise, in interleaved games
+that ran at speed 5 to 1722 (three autosaves each); the time from the game's
+`autosave.tmp` to the finished file:
+
+| Autosave of a 62 MB gamestate | Autosaves | Median | Range |
+| --- | ---: | ---: | --- |
+| `save_compress` off | 6 | 0.873 s | 0.871–0.900 s |
+| `save_compress` on | 6 | 0.831 s | 0.823–0.842 s |
+| on, with `save_compress_parallel` | 6 | **0.612 s** | 0.575–0.637 s |
+
+In `verify` the module ran the game's own compression on the same input and compared every
+part of the save: 0 differences, and every autosave written with the module on is byte for
+byte what the game's code gives. A save written with `save_compress_parallel` loaded in a
+game without Bellows, and Python's `zipfile`, Windows `tar`, NanaZip and Etch's save reader
+read it. Not tested yet: such a save in multiplayer, ironman and cloud saves (see the
+[design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#save_compress-saving)).
