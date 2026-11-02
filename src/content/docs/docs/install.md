@@ -36,6 +36,14 @@ The Manager's other tabs edit plugin settings (**Settings**), measure how much f
 makes the game start (**Benchmark**, from Anvil 1.5; see [Start-up benchmark](../benchmark/)),
 and show crash reports and the log.
 
+From Anvil 1.7, the Manager and the in-game overlay use the language EU4 is set to: English,
+French, German or Spanish; any other language shows English. To pick one of the four
+without changing the game's language, set the environment variable `ANVIL_LANGUAGE` to `en`,
+`fr`, `de` or `es`. `anvil.log` and `anvil check` stay in English, as do the names,
+descriptions and setting labels a plugin brings. The French, German and Spanish texts have
+not been checked by a native speaker yet; corrections are welcome in
+[issue #158](https://github.com/happy-dwarf-team/anvil/issues/158).
+
 The Manager can also check GitHub for a newer Anvil release when it starts. It asks once
 whether you want this; it only shows a link and downloads nothing.
 

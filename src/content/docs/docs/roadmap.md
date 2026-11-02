@@ -3,8 +3,9 @@ title: Roadmap
 description: What Anvil has, what comes next, and what is not planned.
 ---
 
-Anvil 1.6 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
-the start-up benchmark and a shorter `error.log`. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
+Anvil 1.7 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
+the start-up benchmark, a shorter `error.log`, and the overlay and the Manager in four
+languages. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
 [design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#22-delivery).
 
 ## Done
@@ -42,6 +43,10 @@ the start-up benchmark and a shorter `error.log`. Further work is a plan, not a 
    came in bursts of about 125 000 lines, `error.log` stayed at 161 KB after 12.6 minutes,
    against 61.9 MB in 11.3 minutes without the plugin
    ([measurement](https://github.com/happy-dwarf-team/anvil/issues/172)).
+9. **The player's language: Anvil 1.7.** The overlay and the Manager speak the language EU4
+   is set to: English, French, German or Spanish (see
+   [Install](../install/#install-with-anvil-manager)). The log and `anvil check` stay in
+   English.
 
 ## Planned
 
@@ -49,6 +54,9 @@ the start-up benchmark and a shorter `error.log`. Further work is a plan, not a 
   are being researched with their author
   ([#105](https://github.com/happy-dwarf-team/anvil/issues/105),
   [#104](https://github.com/happy-dwarf-team/anvil/issues/104)).
+- **Chinese, Japanese and Korean** in the overlay and the Manager, with the Unicode Patch
+  port, which brings the fonts they need
+  ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)).
 
 Not scheduled: code signing of releases, a safe Rust crate on top of `anvil-sys`, and other
 storefront builds of EU4 1.37.5.
@@ -63,6 +71,8 @@ storefront builds of EU4 1.37.5.
 - Bellows: the first start after a reboot has not been measured with the plugin yet. The
   Benchmark tab shows the cold starts a series happens to contain, but cannot make one on
   demand.
+- The French, German and Spanish texts of the overlay and the Manager have not been checked
+  by a native speaker yet.
 - Tongs: input in text fields, keyboard layouts other than US and clicks on the map are not
   verified yet.
 
