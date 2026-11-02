@@ -3,9 +3,9 @@ title: Roadmap
 description: What Anvil has, what comes next, and what is not planned.
 ---
 
-Anvil 1.7 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
+Anvil 1.8 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
 the start-up benchmark, a shorter `error.log`, the overlay and the Manager in four
-languages, and the GOG build of EU4 1.37.5. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
+languages, the GOG build of EU4 1.37.5, and a badge in the game's main menu. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
 [design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#22-delivery).
 
 ## Done
@@ -51,6 +51,9 @@ languages, and the GOG build of EU4 1.37.5. Further work is a plan, not a promis
     on it. A `symbols.toml` can declare several builds (see
     [Plugin manifest](../plugins/manifest/#several-builds)); Bellows and Tongs stay on Steam
     until their own ports.
+11. **Anvil in the main menu: Anvil 1.8.** A badge with Anvil's version in the game's main
+    menu shows that Anvil runs; a click opens the Anvil panel (see
+    [Install](../install/#check-that-anvil-runs)).
 
 ## Planned
 

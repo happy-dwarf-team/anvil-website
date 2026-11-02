@@ -72,6 +72,20 @@ whether you want this; it only shows a link and downloads nothing.
 After the first start, `anvil/anvil.log` lists what was loaded. See
 [Troubleshooting](../troubleshooting/) if something looks wrong.
 
+## Check that Anvil runs
+
+From Anvil 1.8, the game's main menu shows a small **Anvil** badge with its version on the
+left edge. Point at it to see how many plugins loaded; click it to open the Anvil panel
+with the plugins' status, their settings, the crash report and the log (the key
+`Ctrl+Shift+F12` opens the same panel, also during a game). The badge is only in the main
+menu, never in a game. To hide it, turn off **Show Anvil in the main menu** on the panel's
+**Settings** tab (plugin `anvil-overlay`).
+
+![The Anvil badge on the left edge of the game's main menu, with its tooltip: Anvil 1.8.0, 5 loaded, 0 failed, 0 skipped; click to open the Anvil panel, or press Ctrl+Shift+F12.](../../../assets/menu-badge.png)
+
+The overlay draws on the game's Direct3D 9 renderer; with OpenGL there is no badge and no
+panel, and Anvil Manager shows the same information outside the game.
+
 ## Folder layout
 
 ```
