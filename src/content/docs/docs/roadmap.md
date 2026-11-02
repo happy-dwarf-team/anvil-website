@@ -57,10 +57,11 @@ languages, the GOG build of EU4 1.37.5, and a badge in the game's main menu. Fur
 
 ## Planned
 
-- **Ports of older native patches.** EU4 Menu Patch and EU4 Unicode Patch as Anvil plugins
-  are being researched with their author
-  ([#105](https://github.com/happy-dwarf-team/anvil/issues/105),
-  [#104](https://github.com/happy-dwarf-team/anvil/issues/104)).
+- **Ports of older native patches.** EU4 Menu Patch is out as
+  [Hamweard](../../plugins/hamweard/)
+  ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)); EU4 Unicode Patch as an
+  Anvil plugin is being researched
+  ([#104](https://github.com/happy-dwarf-team/anvil/issues/104)).
 - **Chinese, Japanese and Korean** in the overlay and the Manager, with the Unicode Patch
   port, which brings the fonts they need
   ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)).
