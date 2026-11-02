@@ -16,8 +16,9 @@ highlight:
 
 Bellows (formerly EU4 Startup Boost) shortens the time from launching the game to the main
 menu, and since 0.7.0 it also speeds up the running game: a simulated year takes about a
-quarter less time. Game state, logs and loaded content stay identical to vanilla; only the
-time changes. Like a smith's bellows, it gets the forge hot sooner.
+quarter less time. Every module gives the game's own answers, and logs and loaded content
+stay identical to vanilla; only the time changes (one exception in single player: AI ties,
+[below](#ai-ties-and-multiplayer)). Like a smith's bellows, it gets the forge hot sooner.
 
 ## What it does
 
@@ -50,6 +51,26 @@ modules `zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`,
 development, not for playing.
 
 Bellows needs Anvil's standard plugin `anvil-game`, which is part of Anvil's package.
+
+## AI ties and multiplayer
+
+Bellows changes no rule and no result the game computes. One thing can still come out
+differently in single player: when the AI chooses between options with exactly the same
+score, for example two leaders with the same pips for one army, or two countries its
+diplomacy rates the same, the game breaks the tie by where the two objects lie in memory.
+`mimalloc` (start-up only, the default) and Bellows' own memory use change where the game's
+objects end up, so such a tie can go the other way than without Bellows. The choice is as
+valid as the game's own, just the other of two equal options, and from then on that game
+takes its own course. Two computers without Bellows lay out memory differently too, so the
+same happens between them.
+
+In multiplayer this is safe. The host's AI makes these choices and sends them to every
+player as commands, so all games stay the same whoever runs Bellows. In the lab the host
+ran Bellows 0.17.0 with default settings and the other computer ran no Bellows: 233 game
+days without an out-of-sync, with the game's own out-of-sync check shown to catch a single
+extra random draw on the host. Source: the
+[Bellows README](https://github.com/happy-dwarf-team/bellows#ai-ties-and-multiplayer) and
+[bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79).
 
 ## Install
 
@@ -238,9 +259,8 @@ million calls a game year in 1720 and 1.4 million in 1821, that would be roughly
 2%) and 1 s (about 4%) less a year. This is an estimate, not a measured year: the clocks
 count every thread, and some calls may run on the AI's worker threads, where they do not
 lengthen the year directly. The module stays off because without the copy the game
-allocates less memory on this path, which changes how its memory is laid out, and the lab
-suspects that the AI breaks some ties by memory address
-([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)): a single-player game
+allocates less memory on this path, which changes how its memory is laid out, and the AI
+breaks some ties by memory address ([above](#ai-ties-and-multiplayer)): a single-player game
 could then take another course even though every value is right. It will be turned on only
 after a determinism check and a timed series (see the
 [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#province_modifier_view-simulation)).
