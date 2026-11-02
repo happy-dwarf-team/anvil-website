@@ -71,8 +71,8 @@ Microsoft Store and Epic builds of EU4 1.37.5.
 ## Open items now
 
 - Supported game builds: EU4 1.37.5 (Steam, Windows 64-bit) and the GOG build 1.37.5.2.
-  Bellows and Tongs run on Steam only so far, and the GOG build 1.37.5.0 waits for a copy
-  to check ([#160](https://github.com/happy-dwarf-team/anvil/issues/160)). Other builds
+  Bellows (0.19.0) and Tongs (0.26.0) run on both, and the GOG build 1.37.5.0 waits for a
+  copy to check ([#160](https://github.com/happy-dwarf-team/anvil/issues/160)). Other builds
   start without plugins that use game addresses.
 - Suspending gameplay plugins in ironman and multiplayer is implemented, but has not been
   checked in a live ironman or multiplayer game yet. The effect of plugins on achievements

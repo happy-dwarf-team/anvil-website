@@ -195,7 +195,7 @@ export async function getReleaseNotes(repo: string): Promise<ReleaseNote[] | nul
 // The fields of a plugin's plugin.toml (and its symbols.toml) that the catalog shows.
 export interface PluginManifest {
 	anvil?: string;
-	// The `build` of symbols.toml, or ['*'] for a plugin without game addresses.
+	// The `build` or `builds` of symbols.toml, or ['*'] for a plugin without game addresses.
 	gameBuilds: string[];
 	affectsGameplay: boolean;
 }
@@ -216,8 +216,9 @@ async function fetchReleasedToml(release: Release, path: string): Promise<Record
 }
 
 // Reads plugin.toml as it was released, so the page matches the downloadable version. With
-// plugin API 2 the game build is the `build` of the symbols.toml that plugin.toml names
-// (`symbols`, relative to plugin.toml); a plugin without one runs on every build.
+// plugin API 2 the game builds are the `build` (or, from Anvil 1.7, the `builds`) of the
+// symbols.toml that plugin.toml names (`symbols`, relative to plugin.toml); a plugin without
+// one runs on every build.
 export async function getReleasedManifest(
 	release: Release,
 	path: string,
@@ -228,7 +229,9 @@ export async function getReleasedManifest(
 	if (typeof toml.symbols === 'string') {
 		const folder = path.includes('/') ? path.slice(0, path.lastIndexOf('/') + 1) : '';
 		const symbols = await fetchReleasedToml(release, folder + toml.symbols);
-		gameBuilds = typeof symbols?.build === 'string' ? [symbols.build] : [];
+		if (typeof symbols?.build === 'string') gameBuilds = [symbols.build];
+		else if (Array.isArray(symbols?.builds)) gameBuilds = symbols.builds.filter((b): b is string => typeof b === 'string');
+		else gameBuilds = [];
 	}
 	return {
 		anvil: typeof toml.anvil === 'string' ? toml.anvil : undefined,
