@@ -1,6 +1,6 @@
 ---
 name: Bellows
-summary: Faster Europa Universalis IV start-up and simulation. Makes the game start and run faster without changing game files or game behaviour.
+summary: Faster Europa Universalis IV start-up, simulation and saves. Makes the game start and run faster with the game's own results and without changing game files.
 tagline: Makes the game start faster, without changing game files or how it plays.
 repo: https://github.com/happy-dwarf-team/bellows
 status: released
@@ -141,6 +141,52 @@ override). When the game is ready, the plugin writes its counters to `anvil/anvi
   folder and install Bellows. On its first start Bellows moves your settings and learned
   profiles from `anvil/data/eu4-startup-boost/` to `anvil/data/bellows/`. Anvil 1.0 does not
   load the old plugin; Bellows mentions the leftover folder in `anvil/anvil.log`.
+
+## Troubleshooting
+
+- **Was Bellows loaded?** `anvil/anvil.log` has one line per start with every module and its
+  mode, e.g. `modules: mimalloc=startup, open_warmup=on, …`. A module shown as `FAILED`
+  turned itself off (the line above it says why) and the game went on without it. When Anvil
+  skips the whole plugin (another game build, an unapproved Workshop version), the log and the
+  **Mods** tab of the Anvil panel (Ctrl+Shift+F12) say so, and the game starts as without
+  Bellows.
+- **Turn one module off** to see whether it causes a problem: on the **Settings** tab of Anvil
+  Manager or in the Anvil panel, or with a line such as `range_witness = "off"` in
+  `anvil/data/bellows/settings.toml`; it applies at the next start. For one start only,
+  `ANVIL_BELLOWS_RANGE_WITNESS=off` does the same.
+- **Not faster?** `open_warmup` and `ram_prefetch` learn what a mod set needs during one start
+  and pay off from the next; each mod set has its own profile in
+  `anvil/data/bellows/profiles/`. Deleting that folder makes Bellows learn again. The
+  Benchmark tab ([Measure your own](#measure-your-own)) gives a fair number.
+- **A module counted `mismatches` above 0** in `anvil/anvil.log` or in its `.tsv` file in
+  `anvil/data/bellows/`: one of its answers differed from the game's. The modules that
+  compare a sample in `"on"` mode then go back to the game's code for the rest of the session
+  (the log says so). Please report it with the log and the `.tsv` file.
+- **Reporting a problem:** a
+  [bug report](https://github.com/happy-dwarf-team/bellows/issues/new?template=bug_report.yml)
+  with `anvil/anvil.log` of that start, `anvil/data/bellows/settings.toml`, the mods of the
+  playset, and whether it happens with Bellows removed.
+
+## For mod authors
+
+- Nothing to do: Bellows reads your mod as the game does and gives the game's own answers.
+  `setup.log`, `error.log` and `system.log` are the same with and without it (compared on
+  every start-up series in the lab), so a script error your mod has shows up as it would
+  without Bellows.
+- **Files must not change while the game starts.** `verifypath_listing` and `exists_index`
+  answer path checks from directory listings read once during start-up, and `attr_cache`
+  (off by default) remembers "not found". A file that a tool writes into the game or mod
+  folders while the game is loading may be missed, and one it deletes may still be found,
+  until the next start. Edit your files between starts, or turn those modules off while you
+  develop. Nothing of this applies after the main menu is up: the start-up modules stop
+  there.
+- Learned profiles are per mod set (the enabled mods in `dlc_load.json` and the game build),
+  not per mod version. After an update of your mod the profile adds the new files on the next
+  start and drops the ones no longer used, so the first start after an update may gain a
+  little less.
+- Large scripted effects and triggers with `$parameter$` and `[[parameter]]` blocks are where
+  `metascript_subst` and `metascript_blocks` save the most (about 10 s of Anbennar's
+  start-up); the text they produce is the game's.
 
 ## Tested and measured
 
