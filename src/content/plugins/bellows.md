@@ -75,12 +75,10 @@ extra random draw on the host. Source: the
 ## Install
 
 Bellows 0.19.0 and newer needs [Anvil](../../docs/install/) 1.7 or newer and runs on EU4 1.37.5
-from Steam and on the GOG build 1.37.5.2; 0.8.0 to 0.18.0 need Anvil 1.0 or newer and run on
-Steam only.
+from Steam and on the GOG build 1.37.5.2; 0.8.0 to 0.18.0 need Anvil 1.0 and run on Steam
+only.
 
 ### From the Steam Workshop
-
-With Anvil 1.3 or newer:
 
 1. Subscribe to [Bellows on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3823747170)
    and enable it in your playset in the Paradox launcher.
@@ -243,7 +241,7 @@ mod set.
 
 ### Measure your own
 
-Anvil 1.5 or newer has a **Benchmark** tab in Anvil Manager. It starts the game again and
+Anvil Manager has a **Benchmark** tab (since Anvil 1.5). It starts the game again and
 again, without Bellows and with it in turn; each start quits by itself once the game is
 ready, and nothing in your saves, mods or `anvil.toml` changes. The tab shows the median and
 spread per setup, and separately the cold starts that the series happened to contain. You

@@ -208,9 +208,9 @@ in the Tongs README and the
 
 Tongs 0.26.0 and newer needs [Anvil](../../docs/install/) 1.7.0 or newer, with its standard
 plugin `anvil-game`, which is part of Anvil's package, and runs on EU4 1.37.5 from Steam and on
-the GOG build 1.37.5.2 (0.25 and older: Anvil 1.0.0 or newer, Steam only). Get the plugin in one of two ways:
+the GOG build 1.37.5.2 (0.25 and older: Anvil 1.0.0, Steam only). Get the plugin in one of two ways:
 
-- **From the Steam Workshop** (Anvil 1.3 or newer): subscribe to
+- **From the Steam Workshop**: subscribe to
   [Tongs on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3826695093)
   and enable it in your playset. Anvil loads it once you approve that version in its panel
   (`Ctrl+Shift+F12`, **Mods**) or on the **Mods** tab of Anvil Manager, and asks again after
