@@ -51,6 +51,9 @@ languages, and the GOG build of EU4 1.37.5. Further work is a plan, not a promis
     on it. A `symbols.toml` can declare several builds (see
     [Plugin manifest](../plugins/manifest/#several-builds)); Bellows and Tongs stay on Steam
     until their own ports.
+11. **Anvil in the main menu: Anvil 1.8.** A badge with Anvil's version in the game's main
+    menu shows that Anvil runs; a click opens the Anvil panel (see
+    [Install](../install/#check-that-anvil-runs)).
 
 ## Planned
 

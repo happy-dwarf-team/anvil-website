@@ -110,9 +110,10 @@ Starlight's `--sl-color-*` variables and fonts are mapped onto the `--forge-*` t
   ([#14](https://github.com/happy-dwarf-team/.github/issues/14), hub
   [spec](https://github.com/happy-dwarf-team/happydwarf-website/blob/main/docs/spec.md)
   section 6): the non-affiliation line ("Anvil and its plugins are an unofficial community
-  project, not affiliated with or endorsed by Paradox Interactive.") and the trademark line.
-  The site shows no game art, so there is no game-art line; add it, with "Anvil" in place of
-  "Etch", if the site ever shows EU4 screenshots. The FAQ answer "Who makes Anvil?" uses the
+  project, not affiliated with or endorsed by Paradox Interactive."), the trademark line and,
+  since Install shows a screenshot of the game's main menu (Anvil's badge), Etch's game-art
+  line with "Anvil" in place of "Etch". Screenshots of the game are crops that show what
+  Anvil adds, through `astro:assets`. The FAQ answer "Who makes Anvil?" uses the
   non-affiliation line.
 
 ## Open items
