@@ -130,7 +130,7 @@ signature = "const char* ()"
 ```
 
 - `build` is the one game build the plugin runs on. On any other build, or an unknown
-  one, Anvil skips the plugin.
+  one, Anvil skips the plugin. For several builds see below.
 - A symbol is a **function** (`signature`), a **pointer slot** (`points_to`), **data**
   (`type`) or a **site** (none of them). `signature`, `points_to` and `type` exclude each
   other.
@@ -148,6 +148,46 @@ Before loading the DLL, Anvil compares every symbol with the running game:
 stored pointer. Bytes already changed by other plugins are compared in their original
 form, so two plugins can rely on the same function. On a mismatch the plugin is skipped
 with the symbol, the RVA and the first differing byte in the log.
+
+### Several builds
+
+From Anvil 1.7, a file can declare more than one build, for example Steam and the GOG build
+1.37.5.2. It lists them in `builds` instead of `build` and still declares each symbol once.
+What a symbol is stays shared; only `rva`, `bytes` and `points_to` may differ, in a
+`build."<id>"` table of the symbol:
+
+```toml
+builds = ["eu4-1.37.5-steam-win64", "eu4-1.37.5.2-gog-win64"]
+
+[symbol.frame]                        # the same bytes, another address
+bytes = "48 89 5C 24 08 48 89 6C 24 10"
+memory = "code"
+signature = "uintptr_t (void* app, uint8_t outer)"
+build."eu4-1.37.5-steam-win64" = { rva = 0x14C25A0 }
+build."eu4-1.37.5.2-gog-win64" = { rva = 0x14BC400 }
+
+[symbol.speed_object]                 # other bytes: a table per build
+memory = "code"
+values.speed = { at = 3, size = 4 }   # 0x418 on Steam, 0x408 on GOG
+
+[symbol.speed_object.build."eu4-1.37.5-steam-win64"]
+rva = 0x8024D0
+bytes = "48 8B 81 18 04 00 00 C3"
+
+[symbol.speed_object.build."eu4-1.37.5.2-gog-win64"]
+rva = 0x801850
+bytes = "48 8B 81 08 04 00 00 C3"
+```
+
+- Each of `rva`, `bytes` and `points_to` is given either for every build or per build, not
+  both. Each build must pass the rules above on its own; an error names the build.
+- A symbol keeps its id in every build, so the plugin's code does not change. Anvil uses
+  the running game's addresses, and a file that does not list the running build skips the
+  plugin.
+- `anvil gen` writes a value as a constant only when every build has the same one;
+  otherwise the plugin reads it when the game loads (`symbol_value`).
+- `anvil check --exe` checks the build of the `eu4.exe` it is given, so run it once per
+  build. The lock then keeps one check per build.
 
 ### symbols.lock
 

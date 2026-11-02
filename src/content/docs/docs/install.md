@@ -3,7 +3,10 @@ title: Install Anvil
 description: Install and uninstall Anvil, the plugin loader for Europa Universalis IV.
 ---
 
-Anvil works with **Europa Universalis IV for Windows, 64-bit, from Steam**.
+Anvil works with **Europa Universalis IV 1.37.5 for Windows, 64-bit, from Steam**, and from
+Anvil 1.7 also with the **GOG build 1.37.5.2**. On GOG, Bellows and Tongs do not load yet:
+a plugin that uses game addresses loads only on the builds it declares (see
+[FAQ](../faq/#does-it-work-with-gog-the-microsoft-store-linux-or-macos)).
 
 ## Install with Anvil Manager
 
@@ -14,8 +17,8 @@ downloaded.
 1. Download `AnvilManager.exe` from the
    [latest release](https://github.com/happy-dwarf-team/anvil/releases/latest). Optional:
    compare its SHA-256 with `SHA256SUMS.txt` from the same release, as below.
-2. Run it. It finds the game through Steam; otherwise choose the folder that contains
-   `eu4.exe`.
+2. Run it. It finds the game through Steam; otherwise (for example with GOG) choose the
+   folder that contains `eu4.exe`.
 3. Click **Install Anvil**. It copies `version.dll`, the `anvil` folder with the standard
    plugins, and itself (`AnvilManager.exe`) next to `eu4.exe`. From then on, start the
    Manager from the game folder.

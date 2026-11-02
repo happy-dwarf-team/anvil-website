@@ -46,18 +46,24 @@ as usual. Updated plugins will support the new build.
 
 ## Which game versions are supported?
 
-Anvil runs on Windows, 64-bit, Steam. Supported builds depend on each plugin; see the
+Anvil runs on Windows, 64-bit: EU4 1.37.5 from Steam, and from Anvil 1.7 the GOG build
+1.37.5.2. Supported builds depend on each plugin; see the
 plugin pages. The `game build:` line in `anvil/anvil.log` shows which build Anvil
 detected.
 
 ## Does it work with GOG, the Microsoft Store, Linux or macOS?
 
-Not supported. Anvil and the current plugins are built for the Steam release of EU4 on
-Windows:
+GOG partly; the others are not supported:
 
-- **GOG or Microsoft Store (Game Pass):** not tested. Their `eu4.exe` is a different build,
-  so Anvil would report it as `unknown` and skip every plugin that uses game addresses;
-  the game starts normally.
+- **GOG:** from Anvil 1.7, Anvil knows the GOG build 1.37.5.2 (`eu4-1.37.5.2-gog-win64`),
+  and `anvil-game` runs on it. Bellows and Tongs declare only the Steam build so far, so on
+  GOG they are skipped and the game starts without them. The Manager does not find a GOG
+  game by itself: choose the folder that contains `eu4.exe`. The other GOG build of
+  1.37.5 (1.37.5.0) is not known yet
+  ([#160](https://github.com/happy-dwarf-team/anvil/issues/160)).
+- **Microsoft Store (Game Pass):** not tested. Its `eu4.exe` is a different build, so Anvil
+  would report it as `unknown` and skip every plugin that uses game addresses; the game
+  starts normally.
 - **Linux with Proton:** not tested. Proton runs the Windows game, but Anvil has not been
   tried there.
 - **macOS and the native Linux build of EU4:** not supported, and not a goal for now.
