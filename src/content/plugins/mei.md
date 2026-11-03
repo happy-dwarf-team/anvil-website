@@ -45,8 +45,9 @@ forge too.
 - **Script files and saves are not converted:** packs whose names live in scripts (such as
   the Chinese supplementary pack with its dynamic province names) show those names wrong.
 - **Japanese kanji** in Mei's own fonts take their Simplified Chinese shapes.
-- The Anvil panel itself shows Latin text only
-  ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)).
+- The Anvil panel and Anvil Manager speak Chinese, Japanese and Korean from Anvil 1.9
+  ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)); with Anvil 1.8 they show
+  Latin text only.
 - EU4 1.37.5 Steam only. On any other build Anvil does not load the plugin.
 
 ## Install

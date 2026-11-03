@@ -3,9 +3,10 @@ title: Roadmap
 description: What Anvil has, what comes next, and what is not planned.
 ---
 
-Anvil 1.8 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
-the start-up benchmark, a shorter `error.log`, the overlay and the Manager in four
-languages, the GOG build of EU4 1.37.5, and a badge in the game's main menu. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
+Anvil 1.9 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
+the start-up benchmark, a shorter `error.log`, the overlay and the Manager in eight
+languages, the GOG build of EU4 1.37.5, a badge in the game's main menu, and a catalog of
+the team's plugins in the Manager. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
 [design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#22-delivery).
 
 ## Done
@@ -57,6 +58,9 @@ languages, the GOG build of EU4 1.37.5, and a badge in the game's main menu. Fur
 12. **Plugin catalog: Anvil 1.9.** The Manager's **Catalog** tab lists the team's plugins
     and installs or updates one with a click, from a release whose SHA-256 the list pins
     (see [Install plugins](../install-plugins/#install-a-plugin-from-the-managers-catalog)).
+13. **Chinese, Japanese and Korean: Anvil 1.9.** With [Mei](../../plugins/mei/), the overlay
+    and the Manager speak Simplified or Traditional Chinese, Japanese or Korean, as Steam or
+    Windows is set (see [Install](../install/#install-with-anvil-manager)).
 
 ## Planned
 
@@ -65,9 +69,6 @@ languages, the GOG build of EU4 1.37.5, and a badge in the game's main menu. Fur
   ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)), and EU4 Unicode Patch as
   [Mei](../../plugins/mei/)
   ([#104](https://github.com/happy-dwarf-team/anvil/issues/104)).
-- **Chinese, Japanese and Korean** in the overlay and the Manager: Mei brings them to the
-  game, the Anvil panel still shows Latin text only
-  ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)).
 
 Not planned: code signing of releases; they keep SHA-256 checksums and a build attestation
 instead ([#157](https://github.com/happy-dwarf-team/anvil/issues/157)). Not scheduled: a safe
@@ -87,8 +88,8 @@ Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4
 - Bellows: the first start after a reboot has not been measured with the plugin yet. The
   Benchmark tab shows the cold starts a series happens to contain, but cannot make one on
   demand.
-- The French, German and Spanish texts of the overlay and the Manager have not been checked
-  by a native speaker yet.
+- The French, German, Spanish, Chinese, Japanese and Korean texts of the overlay and the
+  Manager have not been checked by a native speaker yet.
 - Tongs: input in text fields, keyboard layouts other than US and clicks on the map are not
   verified yet.
 
