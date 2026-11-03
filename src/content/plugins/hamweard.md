@@ -88,6 +88,9 @@ profile, on one development machine (1 and 2 November 2026):
 - Five more campaigns in a fresh process, four with a war, a battle and a peace, three of
   them about two years long and one three years long without a war: the same result. The
   return to the main menu took 3.5 to 4 seconds after each.
+- On the GOG build 1.37.5.2 (3 November 2026, Hamweard 1.1's code with Anvil 1.9's): five
+  campaigns of 30 days in one process, five Exit to Menu and two Back, each return in 4.0
+  to 4.5 seconds, no crash.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the
 second to fourth campaign of such a series.
