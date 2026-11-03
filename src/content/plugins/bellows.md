@@ -10,8 +10,8 @@ order: 10
 workshop: '3823747170'
 highlight:
   label: Warm start to the main menu
-  before: 38.68 s
-  after: 12.28 s
+  before: 40.80 s
+  after: 12.76 s
 ---
 
 Bellows (formerly EU4 Startup Boost) shortens the time from launching the game to the main
@@ -128,13 +128,22 @@ Every setting applies at the next start. For one start, an environment variable 
 it: `ANVIL_BELLOWS_<NAME>`, for example `ANVIL_BELLOWS_EXISTS_INDEX=verify` (Anvil logs each
 override). When the game is ready, the plugin writes its counters to `anvil/anvil.log`.
 
+From 1.0 on, every 1.x release keeps the module settings and their values,
+`ram_prefetch_budget_mb`, `frame_pacing_*`, `save_compress_parallel` and the oldest Anvil it
+needs, so a `settings.toml` written for 1.0 means the same in any later 1.x. The diagnostics
+(`zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`, `army_search_profile`,
+`score_probe`, `monthly_probe`), the log lines, counters and `.tsv` files may change in any
+release. Details:
+[Compatibility](https://github.com/happy-dwarf-team/bellows#compatibility) in the README.
+
 ### Upgrading
 
 - **From 0.7.0 or earlier:** on its first start Bellows moves your
   `anvil/data/bellows/config.toml` into `settings.toml` (only the values that differ from the
   defaults; `[ram_prefetch] budget_mb` becomes `ram_prefetch_budget_mb`) and keeps the old file
   as `config.toml.migrated`; `anvil/anvil.log` says what was moved or left out. The
-  `EU4SB_<NAME>` variables are no longer read: use `ANVIL_BELLOWS_<NAME>`.
+  `EU4SB_<NAME>` variables are no longer read: use `ANVIL_BELLOWS_<NAME>`. These migrations
+  stay in every 1.x release and go only in 2.0.
 - A `config.toml` written by 0.3.0 or earlier said `trigger_intern = "off"`, and the migration
   keeps that: delete the line from `settings.toml` to use the default `"on"`.
 - **From EU4 Startup Boost (0.5.0 or earlier):** delete the `anvil/plugins/eu4-startup-boost/`
@@ -195,29 +204,29 @@ override). When the game is ready, the plugin writes its counters to `anvil/anvi
 Source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#measured). EU4
 1.37.5 (Steam, Windows 64-bit) with 10 UI, graphics and music mods, on the development
 machine; warm starts (not the first after a reboot) from the game process starting to the
-main menu (`Running application` in `system.log`); the original `eu4.exe`, Anvil 1.5.0 and
-Bellows 0.10.0 from the release files, Bellows with default settings and the profiles it
-learned on an earlier start; 3 interleaved starts each, every start only after no other
-program had used the processor for 15 seconds:
+main menu (`Running application` in `system.log`); the original `eu4.exe`, Anvil 1.8.0 and
+Bellows 0.19.0 from the release files, Bellows with default settings and the profiles it
+learned on an earlier start; 5 interleaved starts each, 3 November 2026:
 
 | Setup | Starts | Median |
 | --- | --- | ---: |
-| Anvil without plugins | 39.24 / 38.68 / 38.44 s | 38.68 s |
-| Anvil + `anvil-game` | 39.74 / 39.22 / 39.51 s | 39.51 s |
-| Anvil + `anvil-game` + Bellows 0.10.0 | 12.79 / 12.24 / 12.28 s | **12.28 s** |
+| Anvil without plugins | 40.99 / 39.73 / 40.81 / 47.69 s | 40.90 s |
+| Anvil + `anvil-game` | 41.36 / 40.63 / 40.48 / 40.80 / 46.91 s | 40.80 s |
+| Anvil + `anvil-game` + Bellows 0.19.0 | 12.76 / 12.49 / 12.47 / 13.31 / 12.81 s | **12.76 s** |
 
-`anvil-game` on its own made no clear difference (the ranges overlap). The very first start,
-with the profile shipped in the release, took 12.80 s. Starts on the same day while other
-programs were busy took 40–46 s without Bellows and 12.8–13.6 s with it; they are left out
-of the table.
+About 28 s less. `anvil-game` on its own made no difference. One start without plugins
+(55.05 s) ran while a build used the same processor and is left out; the slower fifth round
+without Bellows has no known cause and is kept. The starts did not wait for an idle
+processor. Bellows 0.10.0 on Anvil 1.5.0 (October 2026) took 12.28 s against 39.51 s.
 
-The game's `setup.log`, `error.log` and `system.log` were byte for byte the same in all 31
-starts of that day, with and without Bellows. With default settings the modules also compare a
-sample of their answers with the game's own code (about 45,700 comparisons per start): 0
-differences.
+The game's `setup.log`, `error.log` and `system.log` were the same, apart from times and
+counts, in every round with and without Bellows. With default settings the modules also
+compare a sample of their answers with the game's own code (about 45,700 comparisons per
+start): 0 differences.
 
-Not measured with the plugin yet: the first start after a reboot (a cold start). The research
-build that the plugin's techniques come from took it from about 61 s to about 15 s in the lab
+Not measured with the plugin: the first start after a reboot (a cold start), so Bellows makes
+no claim for it. The research build that the plugin's techniques come from took it from about
+61 s to about 15 s in the lab
 ([design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md)).
 
 ### A big mod set: Anbennar
