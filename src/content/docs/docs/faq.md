@@ -30,8 +30,12 @@ gameplay, such as Tongs (its keyboard, mouse and console commands act on the gam
 suspended by Anvil in ironman and multiplayer games, unless the plugin offers an opt-in
 and you allow it in `anvil/anvil.toml`.
 
-The effect on Ironman and achievements has not been verified yet. This answer will be
-updated once it has been tested.
+Anvil and its plugins live outside the files the game's checksum covers. In one test (EU4
+1.37.5 from Steam, Anvil 0.2 with a plugin in the game folder, and a mod that holds only an
+`anvil/` folder), the checksum in the main menu stayed the vanilla one, and the achievement
+status of a new ironman game did not name a modified game. Newer Anvil versions were not
+tested again, and no achievement has been earned in a full ironman campaign with Anvil yet.
+A mod that adds game files changes the checksum as any mod does, with or without Anvil.
 
 ## How much faster does a plugin make my game?
 
@@ -61,7 +65,8 @@ GOG partly; the others are not supported:
   without them. The Manager does not find a GOG
   game by itself: choose the folder that contains `eu4.exe`. The other GOG build of
   1.37.5 (1.37.5.0) is not known yet
-  ([#160](https://github.com/happy-dwarf-team/anvil/issues/160)).
+  ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Of the other plugins,
+  Hamweard and Mei declare only the Steam build so far.
 - **Microsoft Store (Game Pass):** not tested. Its `eu4.exe` is a different build, so Anvil
   would report it as `unknown` and skip every plugin that uses game addresses; the game
   starts normally.

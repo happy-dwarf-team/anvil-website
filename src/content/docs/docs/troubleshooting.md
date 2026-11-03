@@ -81,12 +81,22 @@ variable `ANVIL_DISABLE=1` for that start. Anvil then only writes the log.
 
 Anvil is a proxy `version.dll`, a pattern that antivirus heuristics sometimes flag.
 Releases are built by GitHub Actions from public source, and each release publishes
-SHA-256 checksums you can compare. Code signing is planned. Until then Windows SmartScreen
-may warn about `AnvilManager.exe` on its first start; choose **More info** → **Run
-anyway** after checking its SHA-256.
+SHA-256 checksums you can compare and a build attestation
+(`gh attestation verify <file> --repo happy-dwarf-team/anvil`). Releases are not
+code-signed, and this is not planned
+([#157](https://github.com/happy-dwarf-team/anvil/issues/157)), so Windows SmartScreen may
+warn about `AnvilManager.exe` on its first start; choose **More info** → **Run anyway**
+after checking its SHA-256. If your antivirus removes `version.dll`, you can report the
+false positive to Microsoft through the
+[WDSI submission page](https://www.microsoft.com/wdsi/filesubmission), or to your
+antivirus vendor.
 
 ## Reporting a problem
 
-Open an issue on [GitHub](https://github.com/happy-dwarf-team/anvil/issues) and attach
-`anvil/anvil.log`, and after a crash the `.txt` report from `anvil/crashes/`. If the report
-names a plugin, report it to that plugin's issue tracker instead.
+Open an issue on [GitHub](https://github.com/happy-dwarf-team/anvil/issues/new/choose) and
+attach `anvil/anvil.log`, and after a crash the `.txt` report from `anvil/crashes/`. The
+Manager's **Log** tab copies the log, and its **Crashes** tab copies a crash report and
+opens the issue tracker of the plugin it names. If the log or the report names a plugin,
+report it to that plugin's issue tracker instead; a plugin's page links its repository.
+Before posting, check the log for anything you do not want to share, such as your Windows
+user name in paths.

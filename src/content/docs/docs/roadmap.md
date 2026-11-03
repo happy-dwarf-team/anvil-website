@@ -66,18 +66,21 @@ languages, the GOG build of EU4 1.37.5, and a badge in the game's main menu. Fur
   game, the Anvil panel still shows Latin text only
   ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)).
 
-Not scheduled: code signing of releases, a safe Rust crate on top of `anvil-sys`, and the
-Microsoft Store and Epic builds of EU4 1.37.5.
+Not planned: code signing of releases; they keep SHA-256 checksums and a build attestation
+instead ([#157](https://github.com/happy-dwarf-team/anvil/issues/157)). Not scheduled: a safe
+Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4 1.37.5.
 
 ## Open items now
 
 - Supported game builds: EU4 1.37.5 (Steam, Windows 64-bit) and the GOG build 1.37.5.2.
   Bellows (0.19.0) and Tongs (0.26.0) run on both, and the GOG build 1.37.5.0 waits for a
-  copy to check ([#160](https://github.com/happy-dwarf-team/anvil/issues/160)). Other builds
+  copy to check ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Other builds
   start without plugins that use game addresses.
 - Suspending gameplay plugins in ironman and multiplayer is implemented, but has not been
-  checked in a live ironman or multiplayer game yet. The effect of plugins on achievements
-  has not been tested.
+  checked in a live ironman or multiplayer game yet. Achievements: one test with Anvil 0.2
+  kept the vanilla checksum and the ironman achievement status
+  ([FAQ](../faq/#does-it-work-with-mods-ironman-and-achievements)); no achievement has been
+  earned in a full campaign with Anvil yet.
 - Bellows: the first start after a reboot has not been measured with the plugin yet. The
   Benchmark tab shows the cold starts a series happens to contain, but cannot make one on
   demand.
