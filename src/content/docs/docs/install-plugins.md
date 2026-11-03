@@ -38,8 +38,8 @@ settings.
 ## Install a plugin from the Steam Workshop
 
 From Anvil 1.3, a plugin can come with a mod that you enable in the Paradox launcher.
-[Bellows](../../plugins/bellows/), [Tongs](../../plugins/tongs/) and
-[Hamweard](../../plugins/hamweard/) are on the Steam Workshop; a plugin's page links its Workshop item when it has one.
+[Bellows](../../plugins/bellows/), [Tongs](../../plugins/tongs/),
+[Hamweard](../../plugins/hamweard/) and [Mei](../../plugins/mei/) are on the Steam Workshop; a plugin's page links its Workshop item when it has one.
 
 1. Subscribe to the plugin's Workshop item and enable the mod in your playset.
 2. Start the game. A notice lists the plugins that wait for your approval: open the Anvil
