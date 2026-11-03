@@ -4,7 +4,7 @@ summary: Back to the main menu without restarting the game. Exit to Menu in a ca
 tagline: Takes you from a campaign back to the main menu in seconds, without restarting the game.
 repo: https://github.com/happy-dwarf-team/hamweard
 status: released
-gameBuilds: ['eu4-1.37.5-steam-win64']
+gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
 affectsGameplay: true
 order: 30
 workshop: '3832650792'
@@ -40,16 +40,18 @@ back home. The team's other tools are named after the forge (Anvil, Bellows, Ton
 - Not seen in a test: naval battles and some message popups (an heir to name, a new
   colonial nation). About eight windows per campaign still stay behind; their memory cost
   over many returns was not measured.
-- EU4 1.37.5 Steam only. On any other build Anvil does not load the plugin.
+- EU4 1.37.5 on Steam and the GOG build 1.37.5.2 (from Hamweard 1.1). On any other build
+  Anvil does not load the plugin. The GOG build has no Steam lobby, so there is nothing to
+  clean up there.
 
 ## Install
 
-Hamweard needs [Anvil](../../docs/install/) 1.5 or newer. If you use the original EU4 Menu
+Hamweard 1.1 needs [Anvil](../../docs/install/) 1.9 or newer (1.0 needed 1.5). If you use the original EU4 Menu
 Patch, remove its DLL first: both change the same code.
 
 ### From the Steam Workshop
 
-With Anvil 1.5 or newer:
+With Anvil 1.9 or newer (Steam only; on GOG use the release zip):
 
 1. Subscribe to [Hamweard on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832650792)
    and enable it in your playset in the Paradox launcher.
@@ -86,6 +88,9 @@ profile, on one development machine (1 and 2 November 2026):
 - Five more campaigns in a fresh process, four with a war, a battle and a peace, three of
   them about two years long and one three years long without a war: the same result. The
   return to the main menu took 3.5 to 4 seconds after each.
+- On the GOG build 1.37.5.2 (3 November 2026, Hamweard 1.1's code with Anvil 1.9's): five
+  campaigns of 30 days in one process, five Exit to Menu and two Back, each return in 4.0
+  to 4.5 seconds, no crash.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the
 second to fourth campaign of such a series.

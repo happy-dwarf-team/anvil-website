@@ -4,7 +4,7 @@ summary: Chinese, Japanese and Korean text for a translation mod, without the ol
 tagline: Shows, wraps, searches and types the text of a Chinese, Japanese or Korean translation mod.
 repo: https://github.com/happy-dwarf-team/mei
 status: released
-gameBuilds: ['eu4-1.37.5-steam-win64']
+gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
 affectsGameplay: false
 order: 40
 workshop: '3832685486'
@@ -48,17 +48,19 @@ forge too.
 - The Anvil panel and Anvil Manager speak Chinese, Japanese and Korean from Anvil 1.9
   ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)); with Anvil 1.8 they show
   Latin text only.
-- EU4 1.37.5 Steam only. On any other build Anvil does not load the plugin.
+- EU4 1.37.5 on Steam and the GOG build 1.37.5.2 (from Mei 0.2). On any other build Anvil
+  does not load the plugin. On GOG, Mei comes from the release zips, with the fonts in a
+  local mod.
 
 ## Install
 
-Mei needs [Anvil](../../docs/install/) 1.8 or newer. Remove an old double-byte patch first
+Mei 0.2 needs [Anvil](../../docs/install/) 1.9 or newer (0.1 needed 1.8). Remove an old double-byte patch first
 (`version.dll`, `d3d9.dll` and the `plugins` folder it put in the game folder): it and
 Anvil both use `version.dll`.
 
 ### From the Steam Workshop
 
-With Anvil 1.8 or newer:
+With Anvil 1.9 or newer (Steam only; on GOG use the release zips):
 
 1. Subscribe to [Mei on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832685486)
    and to your translation mod, and enable both in your playset in the Paradox launcher.
@@ -90,7 +92,9 @@ November 2026):
 - [Chinese Language Mod for 1.37](https://steamcommunity.com/sharedfiles/filedetails/?id=2976470733)
   (Simplified Chinese): the main menu, the country selection, the map, the bookmark text,
   the 1444 introduction and messages in Chinese, wrapped; a year of play without a crash;
-  the pinyin `falanxi` finds 法兰西. Without Mei's line breaks the game crashed when the
+  the pinyin `falanxi` finds 法兰西. On the GOG build (3 November 2026, Mei 0.2's code,
+  Anvil 1.9's): the same text, `falanxi` finds 法兰西 and 法兰西岛, and a year of play
+  without a crash. Without Mei's line breaks the game crashed when the
   country selection opened, also with Mei turned off.
 - [Traditional Chinese for 1.37.5](https://steamcommunity.com/sharedfiles/filedetails/?id=2437805432):
   the menu, the country selection and the map in Traditional Chinese; `yinggelan` finds
