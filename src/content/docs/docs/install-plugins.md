@@ -14,7 +14,28 @@ a mod, for example from the Steam Workshop; see [below](#install-a-plugin-from-t
   version the plugin needs) and **Game builds**. On another game build Anvil skips the
   plugin and the game starts normally.
 
-## Install a plugin with Anvil Manager
+## Install a plugin from the Manager's catalog
+
+From Anvil 1.9, the **Catalog** tab of `AnvilManager.exe` lists the team's plugins
+([Bellows](../../plugins/bellows/), [Tongs](../../plugins/tongs/),
+[Hamweard](../../plugins/hamweard/) and [Mei](../../plugins/mei/)) with a short summary, the
+game builds each runs on, a link to its page and, for a Steam game, to its Workshop item.
+
+1. Click **Install** next to the plugin. The Manager names the file, its size and the
+   GitHub repository it comes from, and waits for you to click **Download**.
+2. It downloads the zip of the release the list pins and installs nothing unless the zip's
+   SHA-256 equals the one in the list. Then it shows the same check as for a zip you pick
+   yourself (below), and you click **Install** again.
+3. When a newer release is pinned than the one you have, the button says **Update**.
+
+The list comes with the Manager. **Get the current list** fetches the newest one from
+Anvil's repository on GitHub; nothing goes to the network before you click. Every release
+in the list was checked when it was added: its size, its SHA-256 and the build attestation
+of the plugin's own release workflow. Mei's fonts come only with its Workshop item; the
+zip holds the plugin. Why it works this way:
+[ADR 0002](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0002-manager-plugin-catalog.md).
+
+## Install a plugin from a zip with Anvil Manager
 
 1. Download the plugin's archive, for example `bellows-windows-x64.zip`.
 2. In `AnvilManager.exe`, open the **Plugins** tab and click **Install a plugin from a
@@ -101,8 +122,9 @@ them.
 ## Update a plugin
 
 A plugin from the Steam Workshop updates with its mod; approve the new version in the
-**Mods** tab. A plugin from a zip: install the new zip with the Manager, which replaces the
-old version, or by hand:
+**Mods** tab. A plugin from the catalog: click **Update** on the Manager's **Catalog** tab after
+**Get the current list**. A plugin from a zip: install the new zip with the Manager, which
+replaces the old version, or by hand:
 
 1. Delete the plugin's folder in `anvil/plugins/`, so no files of the old version remain.
 2. Extract the new archive as above.

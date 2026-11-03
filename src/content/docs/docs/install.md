@@ -11,8 +11,8 @@ load too: a plugin that uses game addresses loads only on the builds it declares
 ## Install with Anvil Manager
 
 From Anvil 1.2, each release has `AnvilManager.exe`, a single program that installs Anvil
-and manages its plugins. It carries the Anvil of its own release; nothing else is
-downloaded.
+and manages its plugins. It carries the Anvil of its own release. It downloads only what
+you click: from Anvil 1.9, a plugin from its **Catalog** tab.
 
 1. Download `AnvilManager.exe` from the
    [latest release](https://github.com/happy-dwarf-team/anvil/releases/latest). Optional:
@@ -22,8 +22,9 @@ downloaded.
 3. Click **Install Anvil**. It copies `version.dll`, the `anvil` folder with the standard
    plugins, and itself (`AnvilManager.exe`) next to `eu4.exe`. From then on, start the
    Manager from the game folder.
-4. Add plugins on the **Plugins** tab, or approve plugins from Steam Workshop mods on the
-   **Mods** tab; see [Install plugins](../install-plugins/).
+4. Add plugins on the **Catalog** tab (Anvil 1.9 and later) or from a zip on the
+   **Plugins** tab, or approve plugins from Steam Workshop mods on the **Mods** tab; see
+   [Install plugins](../install-plugins/).
 5. Start the game with **Play EU4**, or from Steam or the Paradox launcher as usual.
 
 The Manager runs without administrator rights; Steam's library folders do not need them.

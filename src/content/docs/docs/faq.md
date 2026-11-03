@@ -13,7 +13,9 @@ plugins. Plugins change code in memory only, for the current session.
 
 Plugins are native code and run with the same permissions as the game, like any other
 program you install. Only install plugins you trust. Anvil itself never downloads
-anything, and its releases come with SHA-256 checksums. Nothing is uploaded either, with one
+anything, and its releases come with SHA-256 checksums. Anvil Manager downloads only when
+you click: a plugin from its **Catalog** tab, installed only if its SHA-256 equals the one
+the list pins. Nothing is uploaded either, with one
 exception you control: a [start-up benchmark](../benchmark/) report leaves your computer only
 when you click **Send** after seeing it (see
 [Benchmark reports and your privacy](../benchmark-privacy/)).

@@ -54,6 +54,9 @@ languages, the GOG build of EU4 1.37.5, and a badge in the game's main menu. Fur
 11. **Anvil in the main menu: Anvil 1.8.** A badge with Anvil's version in the game's main
     menu shows that Anvil runs; a click opens the Anvil panel (see
     [Install](../install/#check-that-anvil-runs)).
+12. **Plugin catalog: Anvil 1.9.** The Manager's **Catalog** tab lists the team's plugins
+    and installs or updates one with a click, from a release whose SHA-256 the list pins
+    (see [Install plugins](../install-plugins/#install-a-plugin-from-the-managers-catalog)).
 
 ## Planned
 
