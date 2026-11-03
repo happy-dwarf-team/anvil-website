@@ -94,9 +94,14 @@ antivirus vendor.
 ## Reporting a problem
 
 Open an issue on [GitHub](https://github.com/happy-dwarf-team/anvil/issues/new/choose) and
-attach `anvil/anvil.log`, and after a crash the `.txt` report from `anvil/crashes/`. The
-Manager's **Log** tab copies the log, and its **Crashes** tab copies a crash report and
-opens the issue tracker of the plugin it names. If the log or the report names a plugin,
+attach `anvil/anvil.log`, and after a crash the `.txt` report from `anvil/crashes/`.
+
+From Anvil 1.9, **Copy a problem report** on the Manager's **Log** tab puts what the issue form
+asks for on the clipboard and shows it there: the Anvil and game versions, the game build, each
+plugin with its version and why it is skipped, the newest crash report, and the end of
+`anvil.log`. The game folder, your user folder and your Windows user name are left out of it,
+and nothing is uploaded; **Open an Anvil issue** opens the form to paste it into. The
+**Crashes** tab copies a whole crash report and opens the issue tracker of the plugin it names. If the log or the report names a plugin,
 report it to that plugin's issue tracker instead; a plugin's page links its repository.
 Before posting, check the log for anything you do not want to share, such as your Windows
 user name in paths.
