@@ -189,6 +189,35 @@ bytes = "48 8B 81 08 04 00 00 C3"
 - `anvil check --exe` checks the build of the `eu4.exe` it is given, so run it once per
   build. The lock then keeps one check per build.
 
+### Absent symbols
+
+From Anvil 1.9, a symbol may be missing from one of the builds a file lists, such as Steam
+code the GOG build does not have. `absent` names those builds; the symbol's other keys
+apply to the builds it is in:
+
+```toml
+[symbol.lobby_close]
+rva = 0x1658D50
+bytes = "40 53 48 83 EC 20"
+memory = "code"
+signature = "void (void* lobby)"
+absent = ["eu4-1.37.5.2-gog-win64"]
+```
+
+- On an absent build the symbol is not checked and has no address: `address_of` returns
+  `NULL`, and a hook or patch on it fails with `ANVIL_ERROR_NOT_DECLARED`. Check it before
+  you use it: `host->address_of(self, SYM_LOBBY_CLOSE) != NULL` in C,
+  `host.present(sym::lobby_close)` in C++.
+- `absent` needs `builds`, cannot list every build, and an absent build gets no
+  `build."<id>"` table. A `resume` must name a symbol that is in every build its block is
+  in.
+- Only the builds `absent` names are exempt: a symbol that does not verify on any other
+  build still skips the plugin.
+- `anvil check --exe` lists the symbols absent on the exe's build, and `anvil gen` names
+  the absent builds in each symbol's comment.
+- An older Anvil does not know the key and skips the plugin, so declare
+  `anvil = ">=1.9.0"`.
+
 ### symbols.lock
 
 `anvil check --exe` writes `symbols.lock` next to `plugin.toml`: the SHA-256 of `eu4.exe`,
