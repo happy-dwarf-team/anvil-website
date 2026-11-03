@@ -41,11 +41,16 @@ makes the game start (**Benchmark**, from Anvil 1.5; see [Start-up benchmark](..
 and show crash reports and the log.
 
 From Anvil 1.7, the Manager and the in-game overlay use the language EU4 is set to: English,
-French, German or Spanish; any other language shows English. To pick one of the four
-without changing the game's language, set the environment variable `ANVIL_LANGUAGE` to `en`,
-`fr`, `de` or `es`. `anvil.log` and `anvil check` stay in English, as do the names,
-descriptions and setting labels a plugin brings. The French, German and Spanish texts have
-not been checked by a native speaker yet; corrections are welcome in
+French, German or Spanish; any other language shows English. From Anvil 1.9 they also speak
+Simplified Chinese, Traditional Chinese, Japanese and Korean. EU4 has none of these itself:
+a translation mod replaces its English text and [Mei](../../plugins/mei/) shows it. So while
+Mei loads, Anvil takes the language Steam is set to, or else the one Windows is set to, when
+it is Chinese, Japanese or Korean. The overlay's setting **Language** (Anvil panel,
+Settings, anvil-overlay) picks one of the eight for the overlay and the Manager; for a test,
+the environment variable `ANVIL_LANGUAGE` (`en`, `fr`, `de`, `es`, `zh-Hans`, `zh-Hant`,
+`ja`, `ko`) wins over both. `anvil.log` and `anvil check` stay in English, as do the names,
+descriptions and setting labels a plugin brings. The translations have not been checked by
+a native speaker yet; corrections are welcome in
 [issue #158](https://github.com/happy-dwarf-team/anvil/issues/158).
 
 The Manager can also check GitHub for a newer Anvil release when it starts. It asks once
