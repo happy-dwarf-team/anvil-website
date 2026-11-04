@@ -5,8 +5,8 @@ description: How Anvil plugins are built, loaded and distributed with plugin API
 
 An Anvil plugin is a native Windows DLL (x64) in a folder with a `plugin.toml` manifest.
 Anvil loads it into the game process, where it changes game code through the host API and
-talks to other plugins through services and events. This page describes Anvil 1.0 and
-plugin API 2; plugins built for API 1 (Anvil 0.2) are skipped and must be ported.
+talks to other plugins through services and events. This page describes plugin API 2;
+plugins built for API 1 (Anvil 0.2) are skipped and must be ported.
 
 ## Start from the template
 
@@ -38,7 +38,7 @@ project(my_plugin LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(anvil_sdk
-    URL https://github.com/happy-dwarf-team/anvil/releases/download/v1.0.0/anvil-sdk-windows-x64.zip
+    URL https://github.com/happy-dwarf-team/anvil/releases/download/v1.9.0/anvil-sdk-windows-x64.zip
     URL_HASH SHA256=<the archive's line in the release's SHA256SUMS.txt>)
 FetchContent_MakeAvailable(anvil_sdk)
 
@@ -62,16 +62,16 @@ plugins working.
 ## C, C++ or Rust
 
 - **C:** include `anvil_plugin.h` and the generated `symbols.gen.h`
-  ([`examples/hello-c`](https://github.com/happy-dwarf-team/anvil/tree/v1.0.0/examples/hello-c)).
+  ([`examples/hello-c`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-c)).
 - **C++:** `anvil.hpp` with the generated `symbols.gen.hpp` and `settings.gen.hpp`. A
   detour whose signature does not match the declared one does not compile
-  ([`examples/hello-cpp`](https://github.com/happy-dwarf-team/anvil/tree/v1.0.0/examples/hello-cpp)).
+  ([`examples/hello-cpp`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-cpp)).
 - **Rust:** a `cdylib` that depends on [`anvil-sys`](https://github.com/happy-dwarf-team/anvil/tree/main/sdk/rust/anvil-sys),
   the raw bindings (its version is Anvil's). `anvil gen --lang rust` writes
   `symbols.gen.rs`, usually from `build.rs`. Link the C runtime statically
   (`-C target-feature=+crt-static`) and catch panics in every function Anvil or the game
   calls: unwinding into them aborts the game
-  ([`examples/hello-rust`](https://github.com/happy-dwarf-team/anvil/tree/v1.0.0/examples/hello-rust)).
+  ([`examples/hello-rust`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-rust)).
   A safe `anvil` crate is planned, not released.
 
 ## Plugin layout
@@ -144,8 +144,8 @@ says a plugin caused it. The report lists the plugins with their `issues` links,
 `issues` in your manifest. Nothing is uploaded.
 
 After two starts in a row that crashed before the game was ready, the next start is in
-safe mode: in Anvil 1.0 it loads no plugins at all, and the log says why. The start after
-that loads them again.
+safe mode: it loads no plugins at all, and the log says why. The start after that loads
+them again.
 
 ## Next
 

@@ -9,7 +9,7 @@ skipped, with the file and line in the log. `anvil check` reports the same error
 you ship.
 
 Real files: the
-[hello examples](https://github.com/happy-dwarf-team/anvil/tree/v1.0.0/examples), the
+[hello examples](https://github.com/happy-dwarf-team/anvil/tree/main/examples), the
 [template](https://github.com/happy-dwarf-team/anvil-plugin-template) and the plugins in
 the [catalog](../../../plugins/).
 
