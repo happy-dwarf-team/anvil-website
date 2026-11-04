@@ -30,16 +30,26 @@ back home. The team's other tools are named after the forge (Anvil, Bellows, Ton
 
 - **Affects gameplay.** The next campaign starts in the same process instead of a fresh
   one, so anything the game's world reset leaves behind could change it; the plugin also
-  writes the world's multiplayer restriction. `affects_gameplay = true`.
-- **Multiplayer: off and not tested.** While a multiplayer session runs, Anvil takes the
-  plugin's changes out and Exit to Menu restarts the game. The Steam lobby clean-up from the
-  original was never exercised.
-- **Ironman: off unless allowed** in Anvil (opt-in), and not tested either way.
-- **Mods: not tested.** The plugin changes no game files, so the checksum stays the same,
-  but no campaign with mods, Bellows or the Anvil overlay alongside was run.
-- Not seen in a test: naval battles and some message popups (an heir to name, a new
-  colonial nation). About eight windows per campaign still stay behind; their memory cost
-  over many returns was not measured.
+  writes the world's multiplayer restriction. `affects_gameplay = true`. In the lab a save
+  made after three returns matched one from a fresh process, apart from the campaign id and
+  the random seed. The only thing seen to survive is the achievement list after an ironman
+  campaign, which a normal save made later in the same sitting then carries; such a save
+  loaded and played normally.
+- **Multiplayer: off, and sessions not tested.** While a multiplayer session runs, Anvil
+  takes the plugin's changes out and Exit to Menu restarts the game. After a return the
+  Game Browser opens, but no lobby was hosted or joined, so the Steam lobby clean-up from
+  the original has never run.
+- **Ironman: off unless allowed** in Anvil (opt-in). With the opt-in it worked on Steam and
+  GOG, the save on leaving included; without it Exit to Menu restarts the game. An ironman
+  save does not update Continue game, so load it from the Single Player list.
+- **Mods: tested, not all of them.** The plugin changes no game files, so the checksum stays
+  the same. Anbennar with Proper 2K UI, a playset of ten interface and graphics mods, and
+  Bellows 0.19 with the Anvil overlay ran without trouble.
+- Not seen in a test: some message popups (an heir to name, a new colonial nation), the
+  window of a lost game, custom nations and Random New World. Naval battles, new games and
+  saves after a return, and changing country were tested. About eight windows per campaign
+  still stay behind, about 15 MB of memory per return in 23 returns in a row (lab, 4 November
+  2026).
 - EU4 1.37.5 on Steam and the GOG build 1.37.5.2 (from Hamweard 1.1). On any other build
   Anvil does not load the plugin. The GOG build has no Steam lobby, so there is nothing to
   clean up there.
