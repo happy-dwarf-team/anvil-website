@@ -84,7 +84,10 @@ Hamweard and Mei.
 3. Get plugins from the **Catalog** tab. The Steam Workshop does not reach a GOG game. For
    Mei's own fonts see [its page](../../plugins/mei/).
 4. Start the game from GOG Galaxy or the Paradox launcher. From Anvil 1.10, **Play EU4**
-   starts it through GOG's launcher; in Anvil 1.9 it starts Steam, so do not use it there.
+   opens the Paradox launcher, as GOG does: press **Play** there. In Anvil 1.9 it starts
+   Steam, so do not use it there. On its first start the launcher shows Paradox's EULA
+   before **Play**. That is the launcher's own, it is the same without Anvil, and only you
+   can accept it.
 
 ## Install by hand
 
@@ -169,7 +172,7 @@ disable the plugin.
 
 ## Update Anvil
 
-Run `AnvilManager.exe` of the newer release and click **Install Anvil**: it replaces
+Run `AnvilManager.exe` of the newer release and click **Install this Anvil**: it replaces
 Anvil's own files and the Manager in the game folder, and keeps `anvil/anvil.toml`, your
 plugins and their settings. By hand, extract the newer archive over the old one.
 
