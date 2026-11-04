@@ -11,9 +11,12 @@ of another one (the return to the main menu) and has one setting. Its
 guide in more detail.
 
 You need Windows x64, Visual Studio 2022 (or its Build Tools) with **Desktop development
-with C++**, which brings CMake 3.25 or newer, Git, and EU4 1.37.5 with
-[Anvil 1.7 or newer installed](../../install/), the first that reads a `symbols.toml` for
-several builds.
+with C++** and its **C++ CMake tools for Windows** (CMake 3.25 or newer), Git, and EU4 1.37.5
+with [Anvil 1.7 or newer installed](../../install/), the first that reads a `symbols.toml`
+for several builds. Run the commands in **Developer PowerShell for VS 2022**: Visual Studio's
+CMake is on the `PATH` there, not in a plain PowerShell.
+
+A plugin that needs no game addresses is simpler still; see [Recipes](../recipes/).
 
 ## 1. Create the repository
 
@@ -111,8 +114,9 @@ open `anvil/anvil.log`: it lists the plugin with its status and its changes, the
 plugin's own lines. If a symbol does not verify, the log names the symbol and the byte and
 the plugin is skipped while the game runs on. See [Troubleshooting](../../troubleshooting/).
 
-Now replace `src/plugin.cpp` with your own code. The [Host API](../api/) page lists what
-the host offers, such as [the game's events and date](../api/#anvil-game).
+Now replace `src/plugin.cpp` with your own code. [Recipes](../recipes/) has a start without
+game addresses, and the [Host API](../api/) page lists what the host offers, such as
+[the game's events and date](../api/#anvil-game).
 
 ## 7. Release
 

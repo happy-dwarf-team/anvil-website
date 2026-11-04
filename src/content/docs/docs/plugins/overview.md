@@ -13,7 +13,8 @@ plugins built for API 1 (Anvil 0.2) are skipped and must be ported.
 The fastest way in is
 [anvil-plugin-template](https://github.com/happy-dwarf-team/anvil-plugin-template): a C++
 plugin that hooks a function, hooks the middle of another one and has one setting, with CI
-and release-please already set up. [Your first plugin](../first-plugin/) walks through it.
+and release-please already set up. [Your first plugin](../first-plugin/) walks through it,
+and [Recipes](../recipes/) starts from a plugin with no game addresses.
 It can also publish each release as a Steam Workshop mod; see
 [Publish your plugin on the Steam Workshop](../workshop/).
 
@@ -38,7 +39,7 @@ project(my_plugin LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(anvil_sdk
-    URL https://github.com/happy-dwarf-team/anvil/releases/download/v1.9.0/anvil-sdk-windows-x64.zip
+    URL https://github.com/happy-dwarf-team/anvil/releases/download/v1.10.0/anvil-sdk-windows-x64.zip
     URL_HASH SHA256=<the archive's line in the release's SHA256SUMS.txt>)
 FetchContent_MakeAvailable(anvil_sdk)
 
