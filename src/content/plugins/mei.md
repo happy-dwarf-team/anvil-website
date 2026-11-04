@@ -53,13 +53,13 @@ forge too.
 
 ## Install
 
-Mei 0.2 needs [Anvil](../../docs/install/) 1.9 or newer (0.1 needed 1.8). Remove an old double-byte patch first
+Mei 0.2 and newer needs [Anvil](../../docs/install/) 1.9 or newer (0.1 needed 1.8). Remove an old double-byte patch first
 (`version.dll`, `d3d9.dll` and the `plugins` folder it put in the game folder): it and
 Anvil both use `version.dll`.
 
 ### From the Steam Workshop
 
-With Anvil 1.9 or newer (Steam only; on GOG use the release zips):
+With Anvil 1.9 or newer (Steam only; on GOG use the **Catalog** tab of Anvil Manager or the release zips):
 
 1. Subscribe to [Mei on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832685486)
    and to your translation mod, and enable both in your playset in the Paradox launcher.

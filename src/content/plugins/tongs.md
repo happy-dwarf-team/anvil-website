@@ -214,8 +214,7 @@ the GOG build 1.37.5.2 (0.25 and older: Anvil 1.0.0, Steam only). Get the plugin
   [Tongs on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3826695093)
   and enable it in your playset. Anvil loads it once you approve that version in its panel
   (`Ctrl+Shift+F12`, **Mods**) or on the **Mods** tab of Anvil Manager, and asks again after
-  every update; see [Plugins from mods](../../docs/plugins-from-mods/). The item is unlisted:
-  it does not show up in Workshop searches, only through this link.
+  every update; see [Plugins from mods](../../docs/plugins-from-mods/).
 - **From the release zip:** download `tongs-windows-x64.zip` with the button above, or from
   the [latest release](https://github.com/happy-dwarf-team/tongs/releases/latest)
   (`SHA256SUMS.txt` next to it holds its checksum), and install it on the **Plugins** tab of
