@@ -61,9 +61,8 @@ gh attestation verify .\AnvilManager.exe -R happy-dwarf-team/anvil
 A file that passes came from that repository's release workflow, and you can read the source
 of that commit. It does not prove that the code is free of bugs.
 
-A plugin's Workshop item is uploaded by the same project from its release zip, after that
-check. Steam files have no attestation of their own; to check by hand, take the zip from
-GitHub instead.
+A Workshop item has no attestation of its own. The release workflows of Bellows, Hamweard and
+Tongs upload the checked release zip to it; to check by hand, take the zip from GitHub instead.
 
 ## Why Windows warns
 
