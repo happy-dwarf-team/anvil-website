@@ -18,7 +18,8 @@ plugin. **It does not translate the game:** you need a translation mod as well.
 
 - **Encoding.** The game keeps its text in UTF-8 and draws it in menus, tooltips, events
   and on the map. Translation packs made for EU4DLL are converted as they load, so they
-  work as they are.
+  work as they are. Script files and saves too: names that a supplementary pack keeps in
+  scripts show as they read, and saves keep them in UTF-8.
 - **Line breaks.** Chinese and Japanese have no spaces, so the game had nowhere to break a
   line, and a long paragraph crashed it. Mei breaks lines between characters by Unicode's
   rules (UAX #14).
@@ -28,7 +29,8 @@ plugin. **It does not translate the game:** you need a translation mod as well.
 - **Search.** The diplomacy country list and the province finder match Chinese
   characters, full pinyin, initials and mixed input.
 - **Typing.** Typed and IME-committed text reaches text fields as UTF-8; Backspace,
-  Delete and the arrow keys step by character.
+  Delete, the arrow keys, selecting, undo (Ctrl+Z, Ctrl+Shift+Z) and paste work by
+  character.
 
 Mei is a port of [EU4 Unicode Patch](https://github.com/YozoraTempest/EU4-Unicode-Patch) by
 VulonLok (MIT): the text, search and input logic is the original's, built unchanged from
@@ -41,9 +43,6 @@ forge too.
 
 - **IME candidate window:** typing through an IME was checked with committed text only;
   the candidate window and the text being composed were not.
-- **Selecting text and undo** in text fields are not ported yet.
-- **Script files and saves are not converted:** packs whose names live in scripts (such as
-  the Chinese supplementary pack with its dynamic province names) show those names wrong.
 - **Japanese kanji** in Mei's own fonts take their Simplified Chinese shapes.
 - The Anvil panel and Anvil Manager speak Chinese, Japanese and Korean from Anvil 1.9
   ([#158](https://github.com/happy-dwarf-team/anvil/issues/158)); with Anvil 1.8 they show
@@ -96,6 +95,11 @@ November 2026):
   Anvil 1.9's): the same text, `falanxi` finds 法兰西 and 法兰西岛, and a year of play
   without a crash. Without Mei's line breaks the game crashed when the
   country selection opened, also with Mei turned off.
+- [Chinese Language Supplementary Mod for 1.37](https://steamcommunity.com/sharedfiles/filedetails/?id=1999055990),
+  on top of the mod above (4 November 2026, Mei 0.3's code, Anvil 1.9, Steam and GOG): 229,719
+  script tokens decoded, none rejected; rulers, capitals and provinces in Chinese; a binary
+  ironman save with the old escapes loads; two seeded games with and without the conversion
+  differ in names only.
 - [Traditional Chinese for 1.37.5](https://steamcommunity.com/sharedfiles/filedetails/?id=2437805432):
   the menu, the country selection and the map in Traditional Chinese; `yinggelan` finds
   英格蘭.
