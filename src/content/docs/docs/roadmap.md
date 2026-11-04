@@ -81,11 +81,10 @@ Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4
   check ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)); until then Anvil
   tells its players to update in GOG Galaxy. Other builds start without plugins that use
   game addresses.
-- Suspending gameplay plugins in ironman and multiplayer is implemented, but has not been
-  checked in a live ironman or multiplayer game yet. Achievements: one test with Anvil 0.2
-  kept the vanilla checksum and the ironman achievement status
-  ([FAQ](../faq/#does-it-work-with-mods-ironman-and-achievements)); no achievement has been
-  earned in a full campaign with Anvil yet.
+- Suspending gameplay plugins has been seen in a live ironman game (Hamweard, 4 November
+  2026), not yet in a live multiplayer session. No achievement has been earned in a full
+  campaign with Anvil yet
+  ([what was tested](../multiplayer-ironman/#what-has-not-been-tested)).
 - Bellows: the first start after a reboot has not been measured with the plugin yet. The
   Benchmark tab shows the cold starts a series happens to contain, but cannot make one on
   demand.

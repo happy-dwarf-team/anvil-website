@@ -12,34 +12,24 @@ plugins. Plugins change code in memory only, for the current session.
 ## Is it safe?
 
 Plugins are native code and run with the same permissions as the game, like any other
-program you install. Only install plugins you trust. Anvil's files are not code-signed, so
-[Windows may warn about them](../install/#if-windows-warns-about-the-file); each release is
-built from public source, with checksums and a build attestation. Anvil itself never downloads
-anything, and its releases come with SHA-256 checksums. Anvil Manager downloads only when
-you click: a plugin from its **Catalog** tab, installed only if its SHA-256 equals the one
-the list pins. Nothing is uploaded either, with one
-exception you control: a [start-up benchmark](../benchmark/) report leaves your computer only
-when you click **Send** after seeing it (see
-[Benchmark reports and your privacy](../benchmark-privacy/)).
+program you install, so only install plugins you trust. Anvil's files are not code-signed;
+each release is built from public source, and you can check every file yourself with its
+SHA-256 and build attestation. Nothing is downloaded or uploaded unless you click. The whole
+answer, including what to do when an antivirus objects, is on [Is it safe?](../safety/).
 
 ## Does it work with mods, Ironman and achievements?
 
 Anvil works with the mods you enable in the launcher. From Anvil 1.3 a mod can also bring
 Anvil plugins, which load only after you approve them; see
-[Plugins from mods](../plugins-from-mods/). Whether a plugin affects
-Ironman, achievements or multiplayer depends on the plugin: each one declares whether it
-changes gameplay, and the plugin page shows it. Plugins that do not change gameplay, such
-as Bellows, only change how fast or how smoothly the game runs. A plugin that changes
-gameplay, such as Tongs (its keyboard, mouse and console commands act on the game), is
-suspended by Anvil in ironman and multiplayer games, unless the plugin offers an opt-in
-and you allow it in `anvil/anvil.toml`.
+[Plugins from mods](../plugins-from-mods/).
 
-Anvil and its plugins live outside the files the game's checksum covers. In one test (EU4
-1.37.5 from Steam, Anvil 0.2 with a plugin in the game folder, and a mod that holds only an
-`anvil/` folder), the checksum in the main menu stayed the vanilla one, and the achievement
-status of a new ironman game did not name a modified game. Newer Anvil versions were not
-tested again, and no achievement has been earned in a full ironman campaign with Anvil yet.
-A mod that adds game files changes the checksum as any mod does, with or without Anvil.
+Anvil and its plugins live outside the files the game's checksum covers. Each plugin declares
+whether it changes gameplay. One that does is suspended by Anvil in ironman and multiplayer
+games, unless the plugin offers an opt-in and you allow it in `anvil/anvil.toml`. In a test a
+new ironman game kept the vanilla checksum and could earn achievements, but no achievement has
+been earned in a full ironman campaign with Anvil yet.
+[Multiplayer, ironman and achievements](../multiplayer-ironman/) has a table of the plugins,
+what each does there and what has not been tested.
 
 ## How much faster does a plugin make my game?
 

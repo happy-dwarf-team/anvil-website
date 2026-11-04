@@ -218,6 +218,36 @@ absent = ["eu4-1.37.5.2-gog-win64"]
 - An older Anvil does not know the key and skips the plugin, so declare
   `anvil = ">=1.9.0"`.
 
+### Digests instead of bytes
+
+`bytes` puts short pieces of `eu4.exe` in your repository, zip and Workshop item. From Anvil
+1.10 a symbol can state their SHA-256 instead, so these files hold no game code:
+
+```toml
+[symbol.speed_object]
+rva = 0x8024D0
+sha256 = "5F3A…"                                 # of the bytes at rva, with the `any` offsets set to 0
+size = 8                                         # required with sha256
+any = [3, 4]                                     # optional: offsets not compared, as ?? in bytes
+memory = "code"
+values.speed = { at = 3, size = 4, is = 0x418 }  # optional is: the value the bytes must give
+```
+
+- `sha256`, `size` and `any` are placement keys like `bytes`, shared or per build. `bytes` and
+  `sha256` exclude each other per placement.
+- A `value` with `is` keeps its `anvil gen` constant; without `is` it is read when the game
+  loads.
+- Write `bytes` while you work, then run
+  [`tools/symbols-to-digest.py`](https://github.com/happy-dwarf-team/anvil/blob/main/tools/symbols-to-digest.py),
+  which needs no game, and `anvil check --exe` once per build.
+- A mismatch names both digests, not the first differing byte, and a port to another game build
+  needs the old `eu4.exe`, because the repository no longer holds the pattern.
+- An older Anvil does not know the keys and skips the plugin, so declare `anvil = ">=1.10.0"`.
+  `bytes` stays valid for all of plugin API 2. The template uses it for readability.
+
+[ADR 0003](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0003-symbol-digests.md)
+has the reasons and the limits: a digest is not secrecy.
+
 ### symbols.lock
 
 `anvil check --exe` writes `symbols.lock` next to `plugin.toml`: the SHA-256 of `eu4.exe`,

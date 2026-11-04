@@ -61,6 +61,8 @@ export default defineConfig({
 						{ slug: 'docs/plugins-from-mods' },
 						{ slug: 'docs/benchmark' },
 						{ slug: 'docs/benchmark-privacy' },
+						{ slug: 'docs/multiplayer-ironman' },
+						{ slug: 'docs/safety' },
 						{ slug: 'docs/troubleshooting' },
 						{ slug: 'docs/faq' },
 					],
