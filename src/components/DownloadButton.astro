@@ -1,5 +1,6 @@
 ---
 import { getLatestRelease, formatDate, formatSize, releasesUrl, ANVIL_REPO, ANVIL_ASSET } from '../lib/release';
+import { url } from '../lib/url';
 
 interface Props {
 	// Defaults to Anvil; plugin pages pass their own repository and asset.
@@ -59,11 +60,16 @@ const allReleases = releasesUrl(repo);
 	{
 		release?.sha256 && (
 			<details class="checksum">
-				<summary>SHA-256 checksum</summary>
+				<summary>Check this file</summary>
 				<code>{release.sha256}</code>
 				<p>
-					Compare it with <code>Get-FileHash .\{asset}</code> in PowerShell, or with{' '}
-					<a href={release.checksumsUrl}>SHA256SUMS.txt</a> of the release.
+					This is its SHA-256. Compare it with <code>Get-FileHash .\{asset}</code> in PowerShell, or
+					with <a href={release.checksumsUrl}>SHA256SUMS.txt</a> of the release.
+				</p>
+				<p>
+					To see that GitHub built it from the public source:{' '}
+					<code>gh attestation verify .\{asset} -R {repo}</code>.{' '}
+					<a href={url('docs/safety/#check-a-download-yourself')}>How to check a download</a>
 				</p>
 			</details>
 		)
@@ -139,6 +145,9 @@ const allReleases = releasesUrl(repo);
 	}
 	.checksum p {
 		margin: 0.5rem 0 0;
+	}
+	.checksum p code {
+		overflow-wrap: anywhere;
 	}
 	.meta a {
 		color: var(--forge-text);

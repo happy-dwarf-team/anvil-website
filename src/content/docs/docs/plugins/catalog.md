@@ -76,6 +76,7 @@ The same icon is the base of the plugin's
 
 - Write in English and start with what the plugin does for the player.
 - Set `affectsGameplay` honestly. Players read it as a multiplayer and Ironman warning.
+- Add the plugin to the table on [Multiplayer, ironman and achievements](../../multiplayer-ironman/).
 - Give every measurement its source and conditions: game build, mods, number of runs,
   plugin version. Mark what has not been verified.
 - Do not imply affiliation with Paradox Interactive.

@@ -53,7 +53,7 @@ Get-FileHash .\AnvilManager.exe -Algorithm SHA256
 
 Each release is built by GitHub Actions from public source, and has a build attestation
 (`gh attestation verify AnvilManager.exe -R happy-dwarf-team/anvil`). If your antivirus
-removes a file, see [Antivirus warnings](../troubleshooting/#antivirus-warnings).
+removes a file, see [If your antivirus objects](../safety/#if-your-antivirus-objects).
 
 ### The Manager's tabs
 

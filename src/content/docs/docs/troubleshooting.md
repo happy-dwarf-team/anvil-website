@@ -68,12 +68,8 @@ plugin's authors with the log.
 
 A plugin that changes gameplay is loaded, but Anvil suspends it in an ironman or
 multiplayer game: the log then has `[<plugin-id>] suspended: affects gameplay and …`. If
-the plugin offers it, you can allow it there in `anvil/anvil.toml`:
-
-```toml
-allow_ironman = ["tongs"]
-allow_multiplayer = []
-```
+the plugin offers it, you can allow it there in `anvil/anvil.toml`; see
+[Multiplayer, ironman and achievements](../multiplayer-ironman/).
 
 ## Safe mode and crash reports
 
@@ -97,15 +93,9 @@ variable `ANVIL_DISABLE=1` for that start. Anvil then only writes the log.
 
 ## Antivirus warnings
 
-Anvil is a proxy `version.dll`, a pattern that antivirus heuristics sometimes flag.
-Releases are built by GitHub Actions from public source, and each release publishes
-SHA-256 checksums you can compare and a build attestation
-(`gh attestation verify <file> --repo happy-dwarf-team/anvil`). Releases are not
-code-signed, so [Windows may warn about the Manager](../install/#if-windows-warns-about-the-file)
-on its first start. If your antivirus removes `version.dll`, you can report the
-false positive to Microsoft through the
-[WDSI submission page](https://www.microsoft.com/wdsi/filesubmission), or to your
-antivirus vendor.
+Anvil is a proxy `version.dll`, a pattern that antivirus heuristics sometimes flag. If your
+antivirus removes it, check the file, allow only that file and report the false positive:
+[If your antivirus objects](../safety/#if-your-antivirus-objects) has the steps.
 
 ## Reporting a problem
 
