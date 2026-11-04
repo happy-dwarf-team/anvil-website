@@ -42,6 +42,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `modifier_merge` | **Simulation.** In the monthly update the game adds every country's modifiers (about 700) to each of its units by scanning a list entry by entry; Bellows does the same with an index. The lists come out exactly as the game's own, and the module checks every 1,024th merge against the game's code while you play | on |
 | `province_modifier_view` | **Simulation, experimental.** Every day each country looks up one value in the modifiers of every province it owns, and the game first copies the province's whole modifier list for that; Bellows reads the value in place. The same value as the game's own code; `verify` compares every call. Off until its effect on the AI is checked (below) | off |
 | `save_compress` | **Saving.** For compressed saves (`compress_autosave = yes` and the like): compresses each part of the save with the game's own zlib, call for call as the game does, but computes its checksum eight bytes at a time instead of one; the file is byte for byte the game's. `save_compress_parallel` (off by default) compresses the large gamestate on several threads instead: a valid save with the same content, which the game loads and save tools read, but with other compressed bytes | on |
+| `transfer_skip` | **Loading, on by default since 1.1.** In single player, "Continue" of a text save no longer compresses the whole file at level 9 for a multiplayer transfer nobody receives; the game loads the same file as before. Hosted multiplayer is left as it is. `verify` keeps the game's copy and checks that it is the save, that the load does not use it and that nothing is sent. |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
@@ -339,3 +340,20 @@ byte what the game's code gives. A save written with `save_compress_parallel` lo
 game without Bellows, and Python's `zipfile`, Windows `tar`, NanaZip and Etch's save reader
 read it. Not tested yet: such a save in multiplayer, ironman and cloud saves (see the
 [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#save_compress-saving)).
+
+### Loading
+
+`transfer_skip` (on by default since 1.1.0) was measured in the lab on EU4 1.37.5 (Steam) with
+Anvil 1.9.0 and Tongs 0.26.0, Bellows' defaults otherwise: a warm start per run, five
+interleaved runs per setting, from the click on "Continue" to the game ready (Tongs).
+
+| Save | No Bellows | `transfer_skip` off | `transfer_skip` on |
+| --- | --- | --- | --- |
+| 1821, text, 64.5 MB, 10 mods | 11.26 s (10.84–11.69) | 10.91 s (10.78–11.06) | **8.95 s** (8.55–9.23) |
+| Vanilla 1450, text, 40.2 MB | 6.11 s (5.70–6.17) | 5.84 s (5.70–6.14) | **4.47 s** (4.35–4.99) |
+
+In `verify`, on both saves, the game's copy decoded to the save, the load got the original
+bytes and nothing was sent: 0 differences. Logs and the state read after the load are the same
+with the module on and off. Compressed saves have no such copy and do not change. Not tested
+yet: a host in a real multiplayer game (the module leaves a host alone), ironman and cloud saves
+(see the [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#transfer_skip-loading)).
