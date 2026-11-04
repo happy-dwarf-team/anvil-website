@@ -16,9 +16,12 @@ on:
 permissions:
   contents: read
 
+# Deploys take turns in one group. Pull requests, which only build, get a group each:
+# in `pages` a pending run is dropped for a newer one, so a pull request could drop a
+# deploy of main.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
