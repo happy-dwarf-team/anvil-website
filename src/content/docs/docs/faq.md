@@ -67,7 +67,7 @@ GOG partly; the others are not supported:
   and `anvil-game` runs on it, and so do Bellows from 0.19.0, Tongs from 0.26.0, Hamweard
   from 1.1.0 and Mei from 0.2.0; older versions declare only the Steam build, so on GOG
   they are skipped and the game starts without them. From Anvil 1.10 the Manager finds a
-  GOG game by itself, starts it through GOG's launcher, and reads the mods of the GOG
+  GOG game by itself, starts it through the Paradox launcher as GOG does, and reads the mods of the GOG
   game's own folder, `Documents/Paradox Interactive/Europa Universalis IV GOG`; before
   1.10, [choose the folder](../install/#on-gog) that contains `eu4.exe`, and Anvil reads Steam's mods. The other
   GOG build of 1.37.5 (1.37.5.0) is not known yet

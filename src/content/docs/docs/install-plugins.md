@@ -31,8 +31,9 @@ game builds each runs on, a link to its page and, for a Steam game, to its Works
 The list comes with the Manager. **Get the current list** fetches the newest one from
 Anvil's repository on GitHub; nothing goes to the network before you click. Every release
 in the list was checked when it was added: its size, its SHA-256 and the build attestation
-of the plugin's own release workflow. Mei's fonts come only with its Workshop item; the
-zip holds the plugin. Why it works this way:
+of the plugin's own release workflow. Mei's zip holds the plugin: its fonts come with its
+Workshop item or, on GOG, as `mei-fonts.zip` in its release, for a local mod
+([Mei's page](../../plugins/mei/)). Why it works this way:
 [ADR 0002](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0002-manager-plugin-catalog.md).
 
 ## Install a plugin from a zip with Anvil Manager
