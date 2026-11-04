@@ -38,7 +38,8 @@ happy-dwarf-team/anvil`).
 
 The Manager's other tabs edit plugin settings (**Settings**), measure how much faster a plugin
 makes the game start (**Benchmark**, from Anvil 1.5; see [Start-up benchmark](../benchmark/)),
-and show crash reports and the log.
+and show crash reports and the log; from Anvil 1.9 the **Log** tab also copies a problem report
+for an issue (see [Troubleshooting](../troubleshooting/#reporting-a-problem)).
 
 From Anvil 1.7, the Manager and the in-game overlay use the language EU4 is set to: English,
 French, German or Spanish; any other language shows English. From Anvil 1.9 they also speak
