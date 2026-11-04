@@ -61,7 +61,7 @@ Patch, remove its DLL first: both change the same code.
 
 ### From the Steam Workshop
 
-With Anvil 1.9 or newer (Steam only; on GOG use the release zip):
+With Anvil 1.9 or newer (Steam only; on GOG use the **Catalog** tab of Anvil Manager or the release zip):
 
 1. Subscribe to [Hamweard on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832650792)
    and enable it in your playset in the Paradox launcher.
