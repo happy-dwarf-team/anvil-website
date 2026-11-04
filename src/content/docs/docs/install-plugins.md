@@ -71,7 +71,8 @@ From Anvil 1.3, a plugin can come with a mod that you enable in the Paradox laun
 Anvil installs nothing into `anvil/plugins/` for a mod: it loads the approved version from
 its own copy, and asks again after every update of the mod. A plugin with the same id in
 `anvil/plugins/` wins over the mod's copy. Details: [Plugins from mods](../plugins-from-mods/).
-The Workshop cannot install Anvil itself; [install Anvil](../install/) first.
+The Workshop cannot install Anvil itself; [install Anvil](../install/) first. It does not
+reach a GOG game either: there, use the catalog ([On GOG](../install/#on-gog)).
 
 ## Install a plugin by hand
 
@@ -97,8 +98,10 @@ The Workshop cannot install Anvil itself; [install Anvil](../install/) first.
 
 ## Check that it loaded
 
-Open `anvil/anvil.log` after the start. A loaded plugin has a line with its id, version
-and `loaded`, for example:
+In the game's main menu, point at the **Anvil** badge to see how many plugins loaded. The
+Manager's **Plugins** tab shows the same without starting the game. For details, open
+`anvil/anvil.log` after the start. A loaded plugin has a line with its id, version and
+`loaded`, for example:
 
 ```
 bellows 0.10.0: loaded (early, …)

@@ -12,7 +12,9 @@ plugins. Plugins change code in memory only, for the current session.
 ## Is it safe?
 
 Plugins are native code and run with the same permissions as the game, like any other
-program you install. Only install plugins you trust. Anvil itself never downloads
+program you install. Only install plugins you trust. Anvil's files are not code-signed, so
+[Windows may warn about them](../install/#if-windows-warns-about-the-file); each release is
+built from public source, with checksums and a build attestation. Anvil itself never downloads
 anything, and its releases come with SHA-256 checksums. Anvil Manager downloads only when
 you click: a plugin from its **Catalog** tab, installed only if its SHA-256 equals the one
 the list pins. Nothing is uploaded either, with one
@@ -62,13 +64,12 @@ detected.
 GOG partly; the others are not supported:
 
 - **GOG:** from Anvil 1.7, Anvil knows the GOG build 1.37.5.2 (`eu4-1.37.5.2-gog-win64`),
-  and `anvil-game` runs on it, and so do Bellows from 0.19.0 and Tongs from 0.26.0; older
-  versions declare only the Steam build, so on GOG they are skipped and the game starts
-  without them. The Manager does not find a GOG
-  game by itself: choose the folder that contains `eu4.exe`. The other GOG build of
-  1.37.5 (1.37.5.0) is not known yet
-  ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Of the other plugins,
-  Hamweard and Mei declare only the Steam build so far.
+  and `anvil-game` runs on it, and so do Bellows from 0.19.0, Tongs from 0.26.0, Hamweard
+  from 1.1.0 and Mei from 0.2.0; older versions declare only the Steam build, so on GOG
+  they are skipped and the game starts without them. The Manager does not find a GOG game
+  by itself: [On GOG](../install/#on-gog) has the steps. The other GOG build of 1.37.5
+  (1.37.5.0) is not known yet
+  ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)).
 - **Microsoft Store (Game Pass):** not tested. Its `eu4.exe` is a different build, so Anvil
   would report it as `unknown` and skip every plugin that uses game addresses; the game
   starts normally.

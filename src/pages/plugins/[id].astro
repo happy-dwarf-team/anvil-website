@@ -118,7 +118,8 @@ const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', te
 						Subscribe on the Steam Workshop
 					</a>
 					<span class="muted">
-						Needs Anvil 1.3 or newer; Anvil loads it once you approve it. See{' '}
+						<a href={url('docs/install/')}>Install Anvil</a> first{manifest?.anvil && <> (<code>{manifest.anvil}</code>)</>}:
+						the Workshop cannot install it. Anvil loads the plugin once you approve it. See{' '}
 						<a href={url('docs/plugins-from-mods/')}>Plugins from mods</a>.
 					</span>
 				</p>
