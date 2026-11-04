@@ -8,10 +8,11 @@ in `eu4.exe`. You can do a lot without that.
 
 ## A plugin with no game addresses
 
-A plugin without `symbols.toml` uses no game addresses. It loads on every game build and needs
-no work when EU4 updates. One that only reads, like this one, does not change the game, so it
-cannot put a multiplayer game out of sync. What it knows about the game comes from the standard plugin
-[`anvil-game`](../api/#anvil-game): the date, the session, the main menu and each frame.
+A plugin without `symbols.toml` uses no game addresses of its own, so it needs no porting: when
+EU4 updates, it works again as soon as Anvil does. What it knows about the game comes from the
+standard plugin [`anvil-game`](../api/#anvil-game): the date, the session, the main menu and
+each frame. One that only reads, like this one, does not change the game, so it cannot put a
+multiplayer game out of sync.
 
 This one writes one line per game month to `anvil/data/month-log/months.txt` and logs each
 session. From the [template](https://github.com/happy-dwarf-team/anvil-plugin-template):
@@ -75,7 +76,9 @@ session. From the [template](https://github.com/happy-dwarf-team/anvil-plugin-te
    ```
 
 4. Build and deploy as in [your first plugin](../first-plugin/). `-check` then says
-   `no symbols.toml (runs on every game build): OK`, and CI needs no `symbols.lock`.
+   `no symbols.toml (runs on every game build): OK`, and CI needs no `symbols.lock`. The
+   dependency still ties it to the builds `anvil-game` knows; without `anvil-game`, a plugin
+   that uses only the Windows API runs on every build.
 
 `affects_gameplay` stays `false`, and Anvil leaves the plugin on in ironman and multiplayer.
 The Windows API is yours to use too, for example to copy a file or watch a folder.
