@@ -32,13 +32,12 @@ back home. The team's other tools are named after the forge (Anvil, Bellows, Ton
   one, so anything the game's world reset leaves behind could change it; the plugin also
   writes the world's multiplayer restriction. `affects_gameplay = true`. In the lab a save
   made after three returns matched one from a fresh process, apart from the campaign id and
-  the random seed. The only thing seen to survive is the achievement list after an ironman
-  campaign, which a normal save made later in the same sitting then carries; such a save
-  loaded and played normally.
-- **Multiplayer: off, and sessions not tested.** While a multiplayer session runs, Anvil
-  takes the plugin's changes out and Exit to Menu restarts the game. After a return the
-  Game Browser opens, but no lobby was hosted or joined, so the Steam lobby clean-up from
-  the original has never run.
+  the random seed. A canal changes the map, so after a save with one both buttons
+  restart the game as usual.
+- **Multiplayer: sessions not tested.** Every real multiplayer session leaves by the game's
+  own restart; that comes from reading the game's code, not from a live session. After a
+  return the Game Browser opens, and online the game asks for a restart before multiplayer.
+  No lobby was hosted or joined, so the Steam lobby clean-up from the original has never run.
 - **Ironman: off unless allowed** in Anvil (opt-in). With the opt-in it worked on Steam and
   GOG, the save on leaving included; without it Exit to Menu restarts the game. An ironman
   save does not update Continue game, so load it from the Single Player list.
