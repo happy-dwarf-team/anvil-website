@@ -35,7 +35,7 @@ it showed you. The plugin loads at the next start.
 
 ## Updates
 
-When a mod brings a new version of its plugin, the **Mods** tab shows *update pending*. The
+When a mod brings a new version of its plugin, the **Mods** tab says that an update waits for approval. The
 version you approved keeps loading until you approve the new one, also when the new one is
 broken.
 
