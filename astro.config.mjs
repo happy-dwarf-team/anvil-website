@@ -18,6 +18,8 @@ export default defineConfig({
 	// `base` to the source path but not to the destination.
 	redirects: {
 		'/plugins/eu4-startup-boost/': `${base.replace(/\/$/, '')}/plugins/bellows/`,
+		// A shortened address lands on the install guide, as the Docs link in the header does.
+		'/docs/': `${base.replace(/\/$/, '')}/docs/install/`,
 	},
 	integrations: [
 		starlight({

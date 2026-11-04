@@ -3,59 +3,84 @@ title: Install Anvil
 description: Install and uninstall Anvil, the plugin loader for Europa Universalis IV.
 ---
 
-Anvil works with **Europa Universalis IV 1.37.5 for Windows, 64-bit, from Steam**, and from
-Anvil 1.7 also with the **GOG build 1.37.5.2**, where Bellows 0.19 and Tongs 0.26 or newer
-load too: a plugin that uses game addresses loads only on the builds it declares (see
-[FAQ](../faq/#does-it-work-with-gog-the-microsoft-store-linux-or-macos)).
+Anvil needs **Europa Universalis IV 1.37.5 for Windows, 64-bit, from Steam**, or the
+**GOG build 1.37.5.2** ([On GOG](#on-gog)). It does not change `eu4.exe`, and
+[uninstalling](#uninstall) puts the game back at once.
 
 ## Install with Anvil Manager
 
-From Anvil 1.2, each release has `AnvilManager.exe`, a single program that installs Anvil
-and manages its plugins. It carries the Anvil of its own release. It downloads only what
-you click: from Anvil 1.9, a plugin from its **Catalog** tab.
+`AnvilManager.exe` is one program that installs Anvil and manages its plugins.
 
-1. Download `AnvilManager.exe` from the
-   [latest release](https://github.com/happy-dwarf-team/anvil/releases/latest). Optional:
-   compare its SHA-256 with `SHA256SUMS.txt` from the same release, as below.
-2. Run it. It finds the game through Steam; otherwise (for example with GOG) choose the
-   folder that contains `eu4.exe`.
-3. Click **Install Anvil**. It copies `version.dll`, the `anvil` folder with the standard
+1. Download `AnvilManager.exe` with the button on the [home page](../../), or from the
+   [latest release](https://github.com/happy-dwarf-team/anvil/releases/latest).
+2. Run it. If your browser or Windows warns about the file, see
+   [If Windows warns about the file](#if-windows-warns-about-the-file).
+3. The Manager finds the game through Steam. If it asks, click **Use** next to the game, or
+   **Choose the folder...** and pick the folder that contains `eu4.exe`.
+4. Click **Install Anvil**. It copies `version.dll`, the `anvil` folder with the standard
    plugins, and itself (`AnvilManager.exe`) next to `eu4.exe`. From then on, start the
-   Manager from the game folder.
-4. Add plugins on the **Catalog** tab (Anvil 1.9 and later) or from a zip on the
-   **Plugins** tab, or approve plugins from Steam Workshop mods on the **Mods** tab; see
-   [Install plugins](../install-plugins/).
-5. Start the game with **Play EU4**, or from Steam or the Paradox launcher as usual.
+   Manager from the game folder; you can delete the file you downloaded.
+5. Add plugins. The **Catalog** tab installs them with a click. You can also subscribe to
+   them on the Steam Workshop and approve them on the **Mods** tab, or install a zip on the
+   **Plugins** tab; see [Install plugins](../install-plugins/).
+6. Start the game with **Play EU4**, or from Steam or the Paradox launcher as usual.
+   [Check that Anvil runs](#check-that-anvil-runs).
 
 The Manager runs without administrator rights; Steam's library folders do not need them.
 If Windows refuses access to the game folder, it offers to start again as administrator.
-While the game runs, it only shows the state and changes nothing.
+While the game runs, it only shows the state and changes nothing. It downloads only what
+you click, and it can check GitHub for a newer Anvil release when it starts: it asks once
+whether you want this, and then only shows a link.
 
-Windows SmartScreen may warn about `AnvilManager.exe` on the first start, because the
-program is not code-signed: choose **More info** → **Run anyway**. The release page lists
-its SHA-256 and a build attestation (`gh attestation verify AnvilManager.exe -R
-happy-dwarf-team/anvil`).
+### If Windows warns about the file
 
-The Manager's other tabs edit plugin settings (**Settings**), measure how much faster a plugin
-makes the game start (**Benchmark**, from Anvil 1.5; see [Start-up benchmark](../benchmark/)),
-and show crash reports and the log; from Anvil 1.9 the **Log** tab also copies a problem report
-for an issue (see [Troubleshooting](../troubleshooting/#reporting-a-problem)).
+Anvil's files are not code-signed, and this is not planned
+([#157](https://github.com/happy-dwarf-team/anvil/issues/157)), so Windows does not know
+them yet:
 
-From Anvil 1.7, the Manager and the in-game overlay use the language EU4 is set to: English,
-French, German or Spanish; any other language shows English. From Anvil 1.9 they also speak
-Simplified Chinese, Traditional Chinese, Japanese and Korean. EU4 has none of these itself:
-a translation mod replaces its English text and [Mei](../../plugins/mei/) shows it. So while
-Mei loads, Anvil takes the language Steam is set to, or else the one Windows is set to, when
-it is Chinese, Japanese or Korean. The overlay's setting **Language** (Anvil panel,
-Settings, anvil-overlay) picks one of the eight for the overlay and the Manager; for a test,
-the environment variable `ANVIL_LANGUAGE` (`en`, `fr`, `de`, `es`, `zh-Hans`, `zh-Hant`,
-`ja`, `ko`) wins over both. `anvil.log` and `anvil check` stay in English, as do the names,
-descriptions and setting labels a plugin brings. The translations have not been checked by
-a native speaker yet; corrections are welcome in
-[issue #158](https://github.com/happy-dwarf-team/anvil/issues/158).
+- **Your browser** may say that the file is not commonly downloaded. Choose to keep it.
+- **Windows SmartScreen** may say "Windows protected your PC" on the first start. Choose
+  **More info**, then **Run anyway**.
 
-The Manager can also check GitHub for a newer Anvil release when it starts. It asks once
-whether you want this; it only shows a link and downloads nothing.
+To check the file first, compare its SHA-256 with the one under the download button, or in
+`SHA256SUMS.txt` of the same release. In PowerShell:
+
+```powershell
+Get-FileHash .\AnvilManager.exe -Algorithm SHA256
+```
+
+Each release is built by GitHub Actions from public source, and has a build attestation
+(`gh attestation verify AnvilManager.exe -R happy-dwarf-team/anvil`). If your antivirus
+removes a file, see [Antivirus warnings](../troubleshooting/#antivirus-warnings).
+
+### The Manager's tabs
+
+| Tab | What it does |
+| --- | --- |
+| **Anvil** | Installs, updates, repairs and uninstalls Anvil. |
+| **Catalog** | Installs and updates the team's plugins with a click (Anvil 1.9 and later). |
+| **Plugins** | Shows which plugins will load and why one is skipped, turns them on and off, removes them, and installs a zip. |
+| **Mods** | Approves plugins that come with a mod, such as a Steam Workshop item. |
+| **Settings** | Edits plugin settings. |
+| **Benchmark** | Measures how much faster a plugin makes the game start; see [Start-up benchmark](../benchmark/). |
+| **Crashes** | Shows crash reports. |
+| **Log** | Shows `anvil.log`, and copies a [problem report](../troubleshooting/#reporting-a-problem) for an issue. |
+
+## On GOG
+
+Anvil runs on the GOG build 1.37.5.2, and so do the catalog's plugins: Bellows, Tongs,
+Hamweard and Mei.
+
+1. Update the game to 1.37.5.2 in GOG Galaxy. The other GOG build of 1.37.5 (1.37.5.0) is
+   not known yet ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)): the game
+   starts, but plugins that use game addresses are skipped.
+2. Follow [Install with Anvil Manager](#install-with-anvil-manager). In step 3 click
+   **Choose the folder...** and pick the folder that contains `eu4.exe`. To find it in GOG
+   Galaxy: **Manage installation** → **Show folder**.
+3. Get plugins from the **Catalog** tab. The Steam Workshop does not reach a GOG game. For
+   Mei's own fonts see [its page](../../plugins/mei/).
+4. Start the game from GOG Galaxy or the Paradox launcher. In Anvil 1.9, **Play EU4** starts
+   the game through Steam, so do not use it here.
 
 ## Install by hand
 
@@ -92,6 +117,21 @@ menu, never in a game. To hide it, turn off **Show Anvil in the main menu** on t
 
 The overlay draws on the game's Direct3D 9 renderer; with OpenGL there is no badge and no
 panel, and Anvil Manager shows the same information outside the game.
+
+## Language
+
+From Anvil 1.7, the Manager and the in-game overlay use the language EU4 is set to: English,
+French, German or Spanish; any other language shows English. From Anvil 1.9 they also speak
+Simplified Chinese, Traditional Chinese, Japanese and Korean. EU4 has none of these itself:
+a translation mod replaces its English text and [Mei](../../plugins/mei/) shows it. So while
+Mei loads, Anvil takes the language Steam is set to, or else the one Windows is set to, when
+it is Chinese, Japanese or Korean. The overlay's setting **Language** (Anvil panel,
+Settings, anvil-overlay) picks one of the eight for the overlay and the Manager; for a test,
+the environment variable `ANVIL_LANGUAGE` (`en`, `fr`, `de`, `es`, `zh-Hans`, `zh-Hant`,
+`ja`, `ko`) wins over both. `anvil.log` and `anvil check` stay in English, as do the names,
+descriptions and setting labels a plugin brings. The translations have not been checked by
+a native speaker yet; corrections are welcome in
+[issue #158](https://github.com/happy-dwarf-team/anvil/issues/158).
 
 ## Folder layout
 
@@ -132,15 +172,7 @@ plugins and their settings. By hand, extract the newer archive over the old one.
 **Repair** on the Manager's **Anvil** tab puts back Anvil's own files if one is missing or
 changed.
 
-## Uninstall
-
-With the Manager: **Uninstall Anvil** removes `version.dll`, the standard plugins and
-`AnvilManager.exe`. The game is vanilla at once. Your plugins, their settings and data in
-`anvil/data/`, crash reports, logs and `anvil/anvil.toml` stay, so installing again brings
-everything back. Tick **Also remove my plugins…** to remove the whole `anvil` folder too.
-
-By hand: delete `version.dll`, `AnvilManager.exe` (if there) and the `anvil` folder.
-Nothing else was changed, so the game is back to vanilla.
+## Turn plugins off
 
 To turn plugins off without uninstalling, untick them on the Manager's **Plugins** tab, or
 set `enabled = false` in `anvil/anvil.toml`, or list single plugins in `disabled_plugins`:
@@ -152,6 +184,22 @@ log_level = "info"            # "debug", "info", "warning" or "error"
 ```
 
 `log_level` sets how much `anvil/anvil.log` records; `debug` helps when reporting a problem.
+
+To start once without plugins, see [Troubleshooting](../troubleshooting/#start-once-without-plugins).
+
+## Uninstall
+
+With the Manager: on the **Anvil** tab, **Uninstall Anvil** removes `version.dll`, the
+standard plugins and `AnvilManager.exe`. The game is vanilla at once. Your plugins, their
+settings and data in `anvil/data/`, crash reports, logs and `anvil/anvil.toml` stay, so
+installing again brings everything back. Tick **Also remove my plugins…** to remove the
+whole `anvil` folder too.
+
+By hand: delete `version.dll`, `AnvilManager.exe` (if there) and the `anvil` folder.
+Nothing else was changed, so the game is back to vanilla.
+
+A plugin from the Steam Workshop does nothing without Anvil. To remove it too, unsubscribe
+from it on the Workshop.
 
 ## Game updates
 

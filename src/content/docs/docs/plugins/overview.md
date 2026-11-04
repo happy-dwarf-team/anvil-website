@@ -66,7 +66,7 @@ plugins working.
 - **C++:** `anvil.hpp` with the generated `symbols.gen.hpp` and `settings.gen.hpp`. A
   detour whose signature does not match the declared one does not compile
   ([`examples/hello-cpp`](https://github.com/happy-dwarf-team/anvil/tree/v1.0.0/examples/hello-cpp)).
-- **Rust:** a `cdylib` that depends on [`anvil-sys`](https://crates.io/crates/anvil-sys),
+- **Rust:** a `cdylib` that depends on [`anvil-sys`](https://github.com/happy-dwarf-team/anvil/tree/main/sdk/rust/anvil-sys),
   the raw bindings (its version is Anvil's). `anvil gen --lang rust` writes
   `symbols.gen.rs`, usually from `build.rs`. Link the C runtime statically
   (`-C target-feature=+crt-static`) and catch panics in every function Anvil or the game

@@ -1,7 +1,25 @@
 ---
 title: Troubleshooting
-description: Read anvil.log and find out why a plugin was skipped.
+description: What to do when a plugin does not work, and how to report a problem.
 ---
+
+## Start here
+
+1. Open `AnvilManager.exe` in the game folder. The **Plugins** tab shows which plugins will
+   load and why one is skipped, without starting the game.
+2. Look for what you see in the table below.
+3. Still stuck? [Report it](#reporting-a-problem); the Manager puts what we need on your
+   clipboard.
+
+| What you see | What to do |
+| --- | --- |
+| Windows warns about `AnvilManager.exe` | The file is not code-signed. See [If Windows warns about the file](../install/#if-windows-warns-about-the-file). |
+| No Anvil badge in the main menu | Check that `version.dll` and the `anvil` folder are next to `eu4.exe`, or click **Install Anvil** in the Manager. If your antivirus removed `version.dll`, see [Antivirus warnings](#antivirus-warnings). With OpenGL there is no badge; the Manager shows the same information. |
+| A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset in the Paradox launcher, approve the plugin on the Manager's **Mods** tab, and start the game again: it loads from the next start. |
+| A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version on the **Mods** tab. |
+| A plugin is skipped | The reason is on the **Plugins** tab and in the log; see [Common reasons a plugin is skipped](#common-reasons-a-plugin-is-skipped). |
+| The game crashes or does not start | [Start once without plugins](#start-once-without-plugins), then turn them back on one by one. See also [Safe mode and crash reports](#safe-mode-and-crash-reports). |
+| You want the game back as it was | [Turn plugins off](../install/#turn-plugins-off) or [uninstall Anvil](../install/#uninstall). Both take effect at the next start, and `eu4.exe` was never changed. |
 
 ## Read the log
 
@@ -83,10 +101,8 @@ Anvil is a proxy `version.dll`, a pattern that antivirus heuristics sometimes fl
 Releases are built by GitHub Actions from public source, and each release publishes
 SHA-256 checksums you can compare and a build attestation
 (`gh attestation verify <file> --repo happy-dwarf-team/anvil`). Releases are not
-code-signed, and this is not planned
-([#157](https://github.com/happy-dwarf-team/anvil/issues/157)), so Windows SmartScreen may
-warn about `AnvilManager.exe` on its first start; choose **More info** → **Run anyway**
-after checking its SHA-256. If your antivirus removes `version.dll`, you can report the
+code-signed, so [Windows may warn about the Manager](../install/#if-windows-warns-about-the-file)
+on its first start. If your antivirus removes `version.dll`, you can report the
 false positive to Microsoft through the
 [WDSI submission page](https://www.microsoft.com/wdsi/filesubmission), or to your
 antivirus vendor.
