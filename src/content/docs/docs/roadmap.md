@@ -77,9 +77,10 @@ Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4
 ## Open items now
 
 - Supported game builds: EU4 1.37.5 (Steam, Windows 64-bit) and the GOG build 1.37.5.2.
-  Bellows (0.19.0) and Tongs (0.26.0) run on both, and the GOG build 1.37.5.0 waits for a
-  copy to check ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Other builds
-  start without plugins that use game addresses.
+  Bellows, Tongs, Hamweard and Mei run on both. The GOG build 1.37.5.0 waits for a copy to
+  check ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)); until then Anvil
+  tells its players to update in GOG Galaxy. Other builds start without plugins that use
+  game addresses.
 - Suspending gameplay plugins in ironman and multiplayer is implemented, but has not been
   checked in a live ironman or multiplayer game yet. Achievements: one test with Anvil 0.2
   kept the vanilla checksum and the ironman achievement status

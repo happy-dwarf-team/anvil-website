@@ -66,10 +66,14 @@ GOG partly; the others are not supported:
 - **GOG:** from Anvil 1.7, Anvil knows the GOG build 1.37.5.2 (`eu4-1.37.5.2-gog-win64`),
   and `anvil-game` runs on it, and so do Bellows from 0.19.0, Tongs from 0.26.0, Hamweard
   from 1.1.0 and Mei from 0.2.0; older versions declare only the Steam build, so on GOG
-  they are skipped and the game starts without them. The Manager does not find a GOG game
-  by itself: [On GOG](../install/#on-gog) has the steps. The other GOG build of 1.37.5
-  (1.37.5.0) is not known yet
-  ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)).
+  they are skipped and the game starts without them. From Anvil 1.10 the Manager finds a
+  GOG game by itself, starts it through GOG's launcher, and reads the mods of the GOG
+  game's own folder, `Documents/Paradox Interactive/Europa Universalis IV GOG`; before
+  1.10, [choose the folder](../install/#on-gog) that contains `eu4.exe`, and Anvil reads Steam's mods. The other
+  GOG build of 1.37.5 (1.37.5.0) is not known yet
+  ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)): plugins that use game
+  addresses are skipped there, and from Anvil 1.10 the Manager, the overlay and
+  `anvil/anvil.log` tell you to update the game to 1.37.5.2 in GOG Galaxy.
 - **Microsoft Store (Game Pass):** not tested. Its `eu4.exe` is a different build, so Anvil
   would report it as `unknown` and skip every plugin that uses game addresses; the game
   starts normally.
