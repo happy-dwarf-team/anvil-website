@@ -15,15 +15,17 @@ Anvil needs **Europa Universalis IV 1.37.5 for Windows, 64-bit, from Steam**, or
    [latest release](https://github.com/happy-dwarf-team/anvil/releases/latest).
 2. Run it. If your browser or Windows warns about the file, see
    [If Windows warns about the file](#if-windows-warns-about-the-file).
-3. The Manager finds the game through Steam. If it asks, click **Use** next to the game, or
-   **Choose the folder...** and pick the folder that contains `eu4.exe`.
+3. The Manager finds the game through Steam and, from Anvil 1.10, through GOG. If it asks,
+   click **Use** next to the game, or **Choose the folder...** and pick the folder that
+   contains `eu4.exe`.
 4. Click **Install Anvil**. It copies `version.dll`, the `anvil` folder with the standard
    plugins, and itself (`AnvilManager.exe`) next to `eu4.exe`. From then on, start the
    Manager from the game folder; you can delete the file you downloaded.
 5. Add plugins. The **Catalog** tab installs them with a click. You can also subscribe to
    them on the Steam Workshop and approve them on the **Mods** tab, or install a zip on the
    **Plugins** tab; see [Install plugins](../install-plugins/).
-6. Start the game with **Play EU4**, or from Steam or the Paradox launcher as usual.
+6. Start the game with **Play EU4**, or from Steam, GOG Galaxy or the Paradox launcher as
+   usual.
    [Check that Anvil runs](#check-that-anvil-runs).
 
 The Manager runs without administrator rights; Steam's library folders do not need them.
@@ -73,14 +75,16 @@ Hamweard and Mei.
 
 1. Update the game to 1.37.5.2 in GOG Galaxy. The other GOG build of 1.37.5 (1.37.5.0) is
    not known yet ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)): the game
-   starts, but plugins that use game addresses are skipped.
-2. Follow [Install with Anvil Manager](#install-with-anvil-manager). In step 3 click
-   **Choose the folder...** and pick the folder that contains `eu4.exe`. To find it in GOG
-   Galaxy: **Manage installation** → **Show folder**.
+   starts, but plugins that use game addresses are skipped, and from Anvil 1.10 the Manager,
+   the overlay and `anvil/anvil.log` tell you to update.
+2. Follow [Install with Anvil Manager](#install-with-anvil-manager). From Anvil 1.10 the
+   Manager finds the game. Before that, in step 3 click **Choose the folder...** and pick
+   the folder that contains `eu4.exe`. To find it in GOG Galaxy: **Manage installation** →
+   **Show folder**.
 3. Get plugins from the **Catalog** tab. The Steam Workshop does not reach a GOG game. For
    Mei's own fonts see [its page](../../plugins/mei/).
-4. Start the game from GOG Galaxy or the Paradox launcher. In Anvil 1.9, **Play EU4** starts
-   the game through Steam, so do not use it here.
+4. Start the game from GOG Galaxy or the Paradox launcher. From Anvil 1.10, **Play EU4**
+   starts it through GOG's launcher; in Anvil 1.9 it starts Steam, so do not use it there.
 
 ## Install by hand
 
@@ -99,7 +103,7 @@ Hamweard and Mei.
    folder next to `eu4.exe` (from Anvil 1.2 also `AnvilManager.exe`).
 5. Put plugins into `anvil/plugins/`, one folder per plugin, for example
    `anvil/plugins/bellows/`; see [Install plugins](../install-plugins/).
-6. Start the game as usual, from Steam or the Paradox launcher.
+6. Start the game as usual, from Steam, GOG Galaxy or the Paradox launcher.
 
 After the first start, `anvil/anvil.log` lists what was loaded. See
 [Troubleshooting](../troubleshooting/) if something looks wrong.

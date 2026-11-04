@@ -51,8 +51,9 @@ stops its plugins, but keeps the approval for when you enable the mod again.
   neither loads until you approve one of them. That approval ties the id to that mod.
 - **A plugin you installed yourself wins:** a plugin in `anvil/plugins/` with the same id is
   used instead of every mod's copy, and `anvil/anvil.log` names the mods it hides.
-- **Local mods** (folders in `Documents/Paradox Interactive/Europa Universalis IV/mod`) are
-  approved the same way as Workshop mods.
+- **Local mods** (folders in `Documents/Paradox Interactive/Europa Universalis IV/mod`, or
+  `Europa Universalis IV GOG/mod` for a GOG game from Anvil 1.10) are approved the same way
+  as Workshop mods.
 - **Safe mode** loads no plugins from mods.
 - Zipped mods cannot carry plugins.
 
