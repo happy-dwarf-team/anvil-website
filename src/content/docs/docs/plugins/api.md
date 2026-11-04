@@ -5,9 +5,9 @@ description: What the Anvil host offers to plugins in plugin API 2.
 
 `anvil_plugin_load` receives an `AnvilHost`, a table of functions. The full reference is
 the SDK header
-[`anvil_plugin.h`](https://github.com/happy-dwarf-team/anvil/blob/v1.0.0/include/anvil/anvil_plugin.h);
+[`anvil_plugin.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_plugin.h);
 the C++ wrapper
-[`anvil.hpp`](https://github.com/happy-dwarf-team/anvil/blob/v1.0.0/include/anvil/anvil.hpp)
+[`anvil.hpp`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil.hpp)
 offers the same calls as methods of `anvil::Host`, throwing `anvil::Error` on failure.
 Most calls return an `AnvilResult`: `ANVIL_OK` or an `ANVIL_ERROR_*` code.
 
@@ -125,7 +125,7 @@ events synchronously on the publishing thread. A plugin publishes only events na
 
 The game's own events come from `anvil-game`, a standard plugin shipped with Anvil.
 Depend on it in `plugin.toml` (`id = "anvil-game"`, `version = "^1"`) and include
-[`anvil_game.h`](https://github.com/happy-dwarf-team/anvil/blob/v1.6.0/include/anvil/anvil_game.h).
+[`anvil_game.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_game.h).
 All its events are published on the game's main thread:
 
 | Event | Payload | When |
@@ -133,6 +133,7 @@ All its events are published on the game's main thread:
 | `anvil-game.ready` | none | Once, when the game has finished starting (the main menu is up). |
 | `anvil-game.frame` | `AnvilGameFrame` | After every frame of the main loop. Keep the handler short. |
 | `anvil-game.session` | `AnvilGameSession` | A game session started or ended, with its `ironman` and `multiplayer` flags. |
+| `anvil-game.main_menu` | none | From Anvil 1.8: the main menu came up or went away. Ask the service's `main_menu`. |
 
 Its service `anvil-game.game` (version 1, `AnvilGameService`) has `ready`,
 `main_thread_id`, `frame_number`, `session` and `run_on_main_thread(work, context)`, which
@@ -146,6 +147,25 @@ and returns nonzero; in the main menu it returns 0. It can be called from any th
 shows the date as of the last frame of the main loop. It was added within service version
 1, so check `ANVIL_GAME_HAS(service, date)` before calling it, or depend on `anvil-game`
 with `version = "^1.6.0"`.
+
+In C++, `host.service` looks the service up and `host.subscribe` takes a handler with the
+event's name and its payload:
+
+```cpp
+#include <anvil/anvil_game.h>
+
+const AnvilGameService* game = nullptr;
+
+void load(anvil::Host& host) override {
+    game = host.service<AnvilGameService>(ANVIL_GAME_SERVICE, ANVIL_GAME_SERVICE_VERSION);
+    host.subscribe(ANVIL_GAME_EVENT_SESSION, [host, this](std::string_view, const void* payload) {
+        const auto* session = static_cast<const AnvilGameSession*>(payload);
+        if (session->change != ANVIL_GAME_SESSION_STARTED) return;
+        AnvilGameDate date{};
+        if (game->date(&date)) host.info("session {}: {}-{:02}-{:02}", session->number, date.year, date.month, date.day);
+    });
+}
+```
 
 ## Start-up benchmark
 
@@ -175,5 +195,6 @@ Bellows 0.10.0 is the first participant. The full contract is §5 of the
 
 Within API 2, fields are only appended to `AnvilHost`, after the line "end of API 2.0".
 Check one added later with `ANVIL_HOST_HAS(host, field)` before calling it, or require the
-Anvil version that added it in the manifest's `anvil` range. Anvil 1.5.0 has nothing
-after that line yet; the start-up benchmark is a service, not a host field. A breaking change increases `ANVIL_API_VERSION`.
+Anvil version that added it in the manifest's `anvil` range. Nothing has been added after
+that line yet (Anvil 1.9); the start-up benchmark is a service, not a host field. A breaking
+change increases `ANVIL_API_VERSION`.

@@ -25,9 +25,8 @@ This needs a release shaped like those of Bellows and Tongs:
   and the `symbols.toml` it names, if any.
 
 Other names can be set in the frontmatter. A repository made from the
-[template](../first-plugin/#7-release) keeps `plugin.toml` at the root
-(`manifestPath: plugin.toml`) and names its zips with the version, so it needs the extra
-asset described there.
+[template](../first-plugin/#7-release) keeps `plugin.toml` at the root, so it sets
+`manifestPath: plugin.toml`; the template's releases have the fixed name.
 
 ## The file
 

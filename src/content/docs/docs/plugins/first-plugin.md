@@ -12,7 +12,8 @@ guide in more detail.
 
 You need Windows x64, Visual Studio 2022 (or its Build Tools) with **Desktop development
 with C++**, which brings CMake 3.25 or newer, Git, and EU4 1.37.5 with
-[Anvil 1.0 or newer installed](../../install/).
+[Anvil 1.7 or newer installed](../../install/), the first that reads a `symbols.toml` for
+several builds.
 
 ## 1. Create the repository
 
@@ -34,30 +35,38 @@ then clone it. You get:
 | File | What to change |
 | --- | --- |
 | `plugin.toml` | `id`, `name`, `entry`, `authors`, `description`, `issues`, `repository`, `affects_gameplay` |
-| `CMakeLists.txt` | `project(my_plugin …)` and the target in `anvil_add_plugin(my_plugin …)` |
+| `CMakeLists.txt` | `project(my_plugin …)`; the target follows it |
 | `workshop/descriptor.mod` | `name`, the mod's name in the launcher and on the Workshop: `<Name> - <what it does>` |
 | `workshop/description.md`, `workshop/thumbnail.png` | the Workshop page; see [Publish your plugin on the Steam Workshop](../workshop/#the-workshop-page) |
 
 The id is lowercase letters, digits and `-`. The `my_plugin-check` and `my_plugin-deploy`
-targets below follow the target name.
+targets below follow the project name.
 
 ## 3. Declare the symbols
 
-Every game address the plugin touches is a `[symbol.<name>]` in `symbols.toml`:
+Every game address the plugin touches is a `[symbol.<name>]` in `symbols.toml`. The
+template declares the Steam and GOG builds, so a symbol says where it is in each:
 
 ```toml
-build = "eu4-1.37.5-steam-win64"
+builds = ["eu4-1.37.5-steam-win64", "eu4-1.37.5.2-gog-win64"]
 
 [symbol.speed_object]
-rva = 0x8024D0
-bytes = "48 8B 81 18 04 00 00 C3"      # mov rax, [rcx+0x418]; ret
 memory = "code"
 signature = "void* (void* session)"
+
+[symbol.speed_object.build."eu4-1.37.5-steam-win64"]
+rva = 0x8024D0
+bytes = "48 8B 81 18 04 00 00 C3"      # mov rax, [rcx+0x418]; ret
+
+[symbol.speed_object.build."eu4-1.37.5.2-gog-win64"]
+rva = 0x801850
+bytes = "48 8B 81 08 04 00 00 C3"      # mov rax, [rcx+0x408]; ret
 ```
 
 At build time `anvil gen` turns it into `symbols.gen.hpp`, so the code says
 `sym::speed_object`, and a detour that does not match the signature does not compile. The
-[manifest reference](../manifest/#symbolstoml) lists every key.
+[manifest reference](../manifest/#symbolstoml) lists every key. To support one build only,
+write `build = "<id>"` instead of `builds`, and give `rva` and `bytes` in the symbol itself.
 
 ## 4. Build
 
@@ -78,9 +87,16 @@ cmake --build build --config Release --target my_plugin-check
 ```
 
 This runs `anvil check --exe`: it verifies every symbol against `eu4.exe` (build, bytes,
-memory kind, instruction boundaries) and rewrites `symbols.lock`. Commit `symbols.lock`
-with `symbols.toml`. CI has no game, so it fails when the lock does not match
-`symbols.toml` or records problems.
+memory kind, instruction boundaries) and rewrites `symbols.lock`, with one check per build.
+Run it again with the other build's `eu4.exe`, or drop that build from `builds`:
+
+```powershell
+cmake -S . -B build -DEU4_EXE="C:/GOG Games/Europa Universalis IV/eu4.exe"
+cmake --build build --config Release --target my_plugin-check
+```
+
+Commit `symbols.lock` with `symbols.toml`. CI has no game, so it fails when the lock does
+not match `symbols.toml`, misses a declared build or records problems.
 
 ## 6. Deploy and run
 
@@ -96,7 +112,7 @@ plugin's own lines. If a symbol does not verify, the log names the symbol and th
 the plugin is skipped while the game runs on. See [Troubleshooting](../../troubleshooting/).
 
 Now replace `src/plugin.cpp` with your own code. The [Host API](../api/) page lists what
-the host offers.
+the host offers, such as [the game's events and date](../api/#anvil-game).
 
 ## 7. Release
 
@@ -109,11 +125,11 @@ through the Workshop mod: Anvil loads it after the player approves it (see
 [Plugins from mods](../../plugins-from-mods/)). To publish it on the Steam Workshop from CI,
 see [Publish your plugin on the Steam Workshop](../workshop/).
 
-To be listed in the [catalog](../catalog/), the release also needs an asset with a fixed
-name, `<plugin-id>-windows-x64.zip`, as Bellows and Tongs have. The template names its
-zips with the version (`<id>-<version>.zip`), so let the Package step in
-`.github/workflows/build.yml` also write a copy under the fixed name. The release workflow
-uploads every zip in `dist/` and adds it to `SHA256SUMS.txt`.
+To be listed in the [catalog](../catalog/), the release needs an asset with a fixed name,
+`<plugin-id>-windows-x64.zip`. The template's Package step writes it next to
+`<id>-<version>.zip`. In a repository made before that, add a copy under the fixed name to
+that step in `.github/workflows/build.yml`: the release workflow uploads every zip in
+`dist/` and adds it to `SHA256SUMS.txt`.
 
 ## Next
 
