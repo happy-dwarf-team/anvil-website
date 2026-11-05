@@ -54,17 +54,34 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Players',
+					label: 'Start here',
 					items: [
 						{ slug: 'docs/install' },
-						{ slug: 'docs/install-plugins' },
+						{ slug: 'docs/install-plugins', label: 'Install plugins' },
+						{ slug: 'docs/using-anvil' },
+						{ slug: 'docs/troubleshooting' },
+					],
+				},
+				{
+					// Same order as the cards on the Plugins page (`order` in the frontmatter).
+					label: 'Plugins',
+					items: [
+						{ label: 'All plugins', link: '/plugins/' },
+						{ label: 'Bellows', link: '/plugins/bellows/' },
+						{ label: 'Tongs', link: '/plugins/tongs/' },
+						{ label: 'Hamweard', link: '/plugins/hamweard/' },
+						{ label: 'Mei', link: '/plugins/mei/' },
+					],
+				},
+				{
+					label: 'Good to know',
+					items: [
+						{ slug: 'docs/faq' },
+						{ slug: 'docs/safety' },
+						{ slug: 'docs/multiplayer-ironman' },
 						{ slug: 'docs/plugins-from-mods' },
 						{ slug: 'docs/benchmark' },
-						{ slug: 'docs/benchmark-privacy' },
-						{ slug: 'docs/multiplayer-ironman' },
-						{ slug: 'docs/safety' },
-						{ slug: 'docs/troubleshooting' },
-						{ slug: 'docs/faq' },
+						{ slug: 'docs/benchmark-privacy', label: 'Benchmark privacy' },
 					],
 				},
 				{
@@ -75,7 +92,7 @@ export default defineConfig({
 						{ slug: 'docs/plugins/recipes' },
 						{ slug: 'docs/plugins/manifest' },
 						{ slug: 'docs/plugins/api' },
-						{ slug: 'docs/plugins/workshop' },
+						{ slug: 'docs/plugins/workshop', label: 'Publish on the Steam Workshop' },
 						{ slug: 'docs/plugins/catalog' },
 					],
 				},

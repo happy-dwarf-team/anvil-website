@@ -145,13 +145,13 @@ says a plugin caused it. The report lists the plugins with their `issues` links,
 `issues` in your manifest. Nothing is uploaded.
 
 After two starts in a row that crashed before the game was ready, the next start is in
-safe mode: it loads no plugins at all, and the log says why. The start after that loads
-them again.
+safe mode: it loads only `anvil-game` and `anvil-overlay`, and the log says why. The start
+after that loads the others again.
 
 ## Next
 
 - [Your first plugin](../first-plugin/), from the template
 - [Manifest reference](../manifest/): `plugin.toml`, `symbols.toml`, `settings.toml`
 - [Host API](../api/): changes, chains, services and events
-- [Publish your plugin on the Steam Workshop](../workshop/), from Anvil 1.3
-- [List your plugin](../catalog/) in the catalog
+- [Publish your plugin on the Steam Workshop](../workshop/)
+- [List your plugin](../catalog/) on the Plugins page

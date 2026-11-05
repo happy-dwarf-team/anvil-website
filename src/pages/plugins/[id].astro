@@ -54,7 +54,7 @@ const { Content, headings } = await render(plugin);
 const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', text: 'Supported game builds' }];
 ---
 
-<StarlightPage frontmatter={{ title: name, description: summary, head: [jsonLd] }} headings={pageHeadings} hasSidebar={false}>
+<StarlightPage frontmatter={{ title: name, description: summary, head: [jsonLd] }} headings={pageHeadings}>
 	<a class="back" href={url('plugins/')}><span aria-hidden="true">←</span> All plugins</a>
 	<div class="facts">
 		<PluginIcon id={plugin.id} size={40} />
@@ -120,7 +120,7 @@ const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', te
 					<span class="muted">
 						<a href={url('docs/install/')}>Install Anvil</a> first{manifest?.anvil && <> (<code>{manifest.anvil}</code>)</>}:
 						the Workshop cannot install it. Anvil loads the plugin once you approve it. See{' '}
-						<a href={url('docs/plugins-from-mods/')}>Plugins from mods</a>.
+						<a href={url('docs/install-plugins/')}>Install plugins</a>.
 					</span>
 				</p>
 			)

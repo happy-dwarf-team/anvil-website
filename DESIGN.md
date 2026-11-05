@@ -71,6 +71,8 @@ Starlight's `--sl-color-*` variables and fonts are mapped onto the `--forge-*` t
 
 ## Plugin pages
 
+- Plugin pages and the Plugins page have the docs sidebar, so a reader can move between a
+  plugin and the guides. Each plugin is a link in the sidebar's **Plugins** group.
 - The download button (orange) stays the one primary action. A plugin with a Steam Workshop
   item (`workshop` in the frontmatter) gets a secondary link below it: raised surface, grey
   border, light text, orange border and text on hover or focus, at least 44 px high, with an

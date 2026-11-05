@@ -10,113 +10,31 @@ order: 20
 workshop: '3826695093'
 ---
 
-Tongs lets test agents and scripts talk to a running game through a local named pipe,
-instead of reading pixels from screenshots. Every command answers with the state read
-from the game, so a script can check that its action took effect. Like a smith's tongs,
-it holds the work from outside the forge.
+Tongs lets scripts and AI agents control a running game through a local named pipe, instead of
+reading pixels from screenshots. Every command answers with the state read from the game, so a
+script can check that its action worked. It is a tool for testing and measuring. You do not need
+it to play.
 
-## What it does
+## What you get
 
-- Reads the game state: whether a game is loaded, the date, the speed and the pause.
-- Times the game between two dates (`run_until`, `wait_until`), for measuring how fast
-  the game runs, and reports whether and when the game was paused while waiting.
-- Reports the game window, the game's worker threads and CPU masks, and writes
-  screenshots of the window, also while it is covered.
-- Reads the interface's widgets and the open events, and can stream notifications: state
-  and date changes, events opening and closing, new `error.log` lines.
-- Offers the widget tree to other Anvil plugins in the game's process through the service
-  `tongs.ui` (since 0.17.0; see [For other plugins](#for-other-plugins-tongsui)).
-- When you allow it, presses keys, types text, moves the pointer, clicks and scrolls
-  through the game's own SDL input, as a player would, and clicks widgets and event
-  options by name. The game window does not need focus.
-- When you allow it separately, runs console commands through the game's own code. These
-  change game state.
+- **Read the game:** the date, speed and pause, the window, the worker threads, the interface's
+  widgets, open events, provinces and countries.
+- **Take screenshots** of the window, also while it is covered.
+- **Time the game** between two dates, to measure how fast it runs.
+- **Use the keyboard and mouse** as a player would, and click widgets and event options by name.
+  The window does not need focus. This is off until you allow it.
+- **Run console commands and load saves.** These change the game, and they are off until you
+  allow them separately.
+- **An MCP server** for agents such as Claude Code.
 
-Without console commands it never writes game state, but its keyboard and mouse input acts
-on the game as a player's would, so Tongs declares that it affects gameplay.
+## Install
 
-## Safety
+Tongs needs [Anvil](../../docs/install/) 1.7 or newer, and the standard plugin `anvil-game`, which
+comes with it. Tongs 0.25 and older ran on Steam only.
 
-- **Off by default.** The pipe opens only with `enabled = true` in
-  `anvil/data/tongs/settings.toml`. The keyboard, mouse and navigation commands also need
-  `input = true`, and console commands `game_calls = true`. The read-only service
-  `tongs.ui` for other plugins is registered also with `enabled = false`.
-- **Local only.** Only programs of the Windows user running the game can connect; remote
-  clients are rejected and there is no network listener.
-- **Changes to the game code.** With `enabled = true`, Tongs adds a mid hook that only
-  counts the frames drawn inside a game update. Keys, text and mouse buttons go into the
-  game's SDL event queue. With `input = true` it also hooks the interface's cursor query,
-  so the game sees the pointer at the point set by the mouse commands; the real cursor
-  does not move, and moving the real mouse hands the pointer back. Every game address it
-  uses is declared in its `symbols.toml`, which Anvil checks against `eu4.exe` before
-  loading it.
-- **Console commands.** With `game_calls = true`, `console` runs the game's own console
-  commands, which change the simulation. Some commands are always refused
-  (`enable_all_commands`, the achievement and social commands), other dangerous ones
-  unless `console_allow` lists them. Every call is logged and counted, so a measurement
-  can reject a run with console commands in it.
-- **Ironman and multiplayer.** Tongs affects gameplay, so in an ironman or multiplayer game
-  Anvil suspends it: its hooks are taken out, input commands and console commands answer
-  with an error, reads go on. You can allow it there in `anvil/anvil.toml`
-  (`allow_ironman = ["tongs"]`, `allow_multiplayer = ["tongs"]`); console commands then
-  also need Tongs' own `game_calls_ironman` or `game_calls_multiplayer`.
-- Screenshots are written only to `anvil/data/tongs/screenshots/` (the newest 100 are
-  kept).
-
-## Commands
-
-The pipe is `\\.\pipe\tongs`. A request is one line of text; the answer is one JSON object
-on one line. Up to 8 clients can be connected at once, so one can wait in `run_until`
-while another reads `state` or sends `cancel`.
-
-| Command | Answer |
-| --- | --- |
-| `ping` | plugin version and game process id |
-| `state` | whether a game is loaded; then the date, speed (1–5 as in the interface), pause and session (1 for the first game, +1 at every load) |
-| `window` | size and position of the game window, focus, DPI |
-| `threads` | worker threads in the game's two pools, CPU masks and priority of the main thread |
-| `screenshot [NAME]` | writes a PNG of the game window and answers with its path |
-| `frames` | frames per second of the game's main loop |
-| `ui find SEL`, `ui tree [SEL]` | widgets of the interface, by their names in the game's `.gui` files |
-| `event list` | the open events and their options |
-| `province ID`, `country TAG`, `player`, `selection` | world reads (since 0.20.0): one province's owner, controller, cores and development, one country's provinces and capital, the player's country, and the last selected province and whether its view is open |
-| `wait_until DATE [timeout=S] [max_pause=S]` | waits, without touching the game, until the date is reached; answers with the timing |
-| `cancel` | ends every `wait_until` / `run_until` in progress |
-| `subscribe KINDS` | turns the connection into a stream of notifications |
-| `help` | the commands, whether input commands are enabled and whether Anvil suspended Tongs |
-
-With `input = true`, also:
-
-| Command | What it does |
-| --- | --- |
-| `pause`, `resume` | press Space when needed and wait until the game is paused or running |
-| `speed N` | presses keypad `+` / `-` until the speed is `N` (1–5); works while paused |
-| `run_until DATE [speed=N] [timeout=S] [max_pause=S]` | sets the speed, resumes, waits for the date and pauses again |
-| `key NAME` | presses one key (letters, digits, F-keys, arrows, Space, Esc, the console key, …) |
-| `text STRING` | types into the focused text field |
-| `move X Y`, `click X Y`, `scroll STEPS` | point, click (left, right, middle, double) and turn the wheel at window coordinates |
-| `release` | hands the pointer back to the real mouse |
-| `ui click SEL` | clicks the one widget the selector matches, after checking that nothing covers it |
-| `event choose N` | chooses an option of an open event |
-| `province open ID`, `province goto ID` | navigation (since 0.21.0): opens a province's view and moves the camera to it as the game's own province links do, or only moves the camera; client calls, counted in `client_calls` |
-
-With `game_calls = true`, also `console LINE`, which runs one console command in the game
-and **changes game state**, and `save load NAME` (since 0.22.0), which loads a save from
-`save games` in the running game as the in-game Load dialog does: it **discards the running
-game without saving**, answers once the loaded save's date and player are on screen, and
-counts as a game call.
-
-`wait_until` and `run_until` wait at most 1 hour by default and count the input, client
-calls and console commands of every client meanwhile (`inputs`, `client_calls`,
-`game_calls`), so a measurement can reject a touched run; `timeout=S` sets the limit,
-up to 14 400 s. With `max_pause=S` (since 0.3.0) the wait ends with an error once the game has stayed
-paused for `S` seconds, for example on an event with a choice, instead of running into the
-timeout. Answers report `paused_ms` and, after a pause, `paused_date`, so a measurement
-with a pause in it can be rejected.
-
-Input commands answer once the game has reacted, or with an error after 10 s, and always
-include the state. The full list of keys and answer fields is in the
-[command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md).
+1. [Install the plugin](../../docs/install-plugins/) any way you like.
+2. Turn it on: set `enabled = true` under [Settings](#settings). It does nothing until you do.
+3. Start the game and send a command with one of the [clients](#clients):
 
 ```powershell
 .\tongs.ps1 state
@@ -125,18 +43,83 @@ include the state. The full list of keys and answer fields is in the
 # {"ok":true,"command":"run_until","reached":true,"game_days":76.000,"days_per_second":12.352,"wall_ms":6153,...}
 ```
 
+## Settings
+
+Everything is off by default. Change a setting on the **Settings** tab of Anvil Manager, or in
+`anvil/data/tongs/settings.toml`, one `name = value` per line.
+
+| Setting | What it allows |
+| --- | --- |
+| `enabled` | Opens the pipe, so that scripts can read the game |
+| `input` | Keyboard and mouse commands, and moving the camera and opening province views |
+| `game_calls` | Console commands and loading saves. These **change game state** |
+| `console_allow` | Danger commands that game calls may run, for example `"leak"` |
+| `game_calls_ironman` | Game calls in ironman; Anvil must allow Tongs there too |
+| `game_calls_multiplayer` | Game calls in multiplayer; Anvil must allow Tongs there too |
+
+Settings apply at the next start. For one start, a variable such as `ANVIL_TONGS_ENABLED=true`
+overrides a value. A `config.toml` from Tongs 0.12 or older is moved into `settings.toml` on the
+first start.
+
+## Limitations
+
+- **Marked as changing gameplay.** Keyboard and mouse input acts on the game as a player's would.
+  So in an ironman or multiplayer game Anvil suspends Tongs: input and console commands answer
+  with an error, and reads go on. You can [allow it there](../../docs/multiplayer-ironman/);
+  console commands then also need `game_calls_ironman` or `game_calls_multiplayer`.
+- **Not verified yet:** suspension in a live ironman or multiplayer game, input in text fields, keyboard
+  layouts other than US, right, middle and double clicks, clicks on the map (only interface
+  widgets were tried), a minimized game window, and the release files of 0.16.0 and 0.17.0 and
+  the Workshop mod in the game.
+- **No dragging.** There is no command for it yet.
+- After a load from the in-game menu, that menu stays open and the speed keys do nothing until
+  it is closed.
+- Waits end after 1 hour by default. `timeout=S` raises that to at most 14,400 s.
+
+## Safety
+
+- **Local only.** Only programs of the Windows user running the game can connect. There is no
+  network listener.
+- **Without `game_calls` it never writes game state.** Keys, text and mouse buttons go into the
+  game's own SDL input queue, as a player's would.
+- **Console commands are limited.** `enable_all_commands` and the achievement and social commands
+  are always refused, other dangerous ones unless `console_allow` lists them. Every call is logged
+  and counted, so a measurement can reject a run with one in it.
+- **Screenshots** are written only to `anvil/data/tongs/screenshots/`. The newest 100 are kept.
+- **Changes to game code.** With `enabled = true`, Tongs adds a hook that only counts the frames
+  drawn inside a game update. With `input = true` it also hooks the interface's cursor query, so
+  the game sees the pointer where the mouse commands set it; the real cursor does not move.
+  Anvil checks every address Tongs uses before it loads the plugin.
+
+## Commands
+
+The pipe is `\\.\pipe\tongs`. A request is one line of text, and the answer is one JSON object on
+one line. Up to 8 clients can connect at once, so one can wait in `run_until` while another reads
+`state` or sends `cancel`.
+
+| Needs | Commands |
+| --- | --- |
+| `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `wait_until`, `cancel`, `subscribe`, `help` |
+| `input` | `pause`, `resume`, `speed`, `run_until`, `key`, `text`, `move`, `click`, `scroll`, `release`, `ui click`, `event choose`, `province open`, `province goto` |
+| `game_calls` | `console`, `save load` |
+
+`wait_until` and `run_until` count the input and console commands of every client meanwhile, and
+report pauses, so a measurement can reject a touched run. `max_pause=S` ends a wait that the game
+keeps paused, for example on an event with a choice. `save load` discards the running game
+without saving.
+
+The [command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md) has
+every command, key and answer field.
+
 ## Clients
 
-The repository has two small clients in
+Any program that can open a named pipe can be a client. The repository has two small ones in
 [`scripts/`](https://github.com/happy-dwarf-team/tongs/tree/main/scripts):
 
-- `tongs.ps1` (PowerShell): sends one or more commands over one connection and prints one
-  answer line per command.
-- `tongs.py` (Python 3, standard library only): the same from the command line, or as a
-  module. Since 0.19.0 it is the public client: every call has a read timeout, a wait that
-  times out or is interrupted is cancelled, answers from another game process are refused,
-  `ready()` waits until a started or loaded game takes input, without a fixed sleep, and
-  typed steps such as `province()` and `country()` return the world reads:
+- `tongs.ps1` (PowerShell) sends commands and prints one answer line per command.
+- `tongs.py` (Python 3, standard library only) works from the command line or as a module. It has
+  read timeouts, cancels a wait that is interrupted, refuses answers from another game process,
+  and `ready()` waits until a started or loaded game takes input:
 
   ```python
   import tongs
@@ -147,21 +130,16 @@ The repository has two small clients in
       print(result["days_per_second"])
   ```
 
-Any program that can open a named pipe can be a client.
-
 ## MCP server
 
 For agents such as Claude Code, the repository's
 [`mcp/`](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md) folder has an
-[MCP](https://modelcontextprotocol.io) server with one typed tool per command family
-(`tongs_state`, `tongs_ready`, `tongs_run_until`, `tongs_ui_click`, `tongs_screenshot` and
-others). It
-speaks MCP over stdio only, runs on the same Windows machine as the game, and adds nothing
-the pipe does not have: every tool sends one Tongs command and returns the plugin's answer
-unchanged, and Tongs' own settings still decide what is allowed.
+[MCP](https://modelcontextprotocol.io) server with typed tools, such as `tongs_state`,
+`tongs_run_until` and `tongs_ui_click`. It runs on the same Windows machine as the game and adds
+nothing the pipe does not have: Tongs' own settings still decide what is allowed.
 
-It needs [uv](https://docs.astral.sh/uv/) (or Python 3.11 or newer with pip) and a clone of
-the repository:
+It needs [uv](https://docs.astral.sh/uv/) (or Python 3.11 or newer with pip) and a clone of the
+repository:
 
 ```powershell
 git clone https://github.com/happy-dwarf-team/tongs
@@ -170,108 +148,40 @@ uv sync --frozen
 claude mcp add --transport stdio --scope user tongs -- uv run --frozen --directory C:\path\to\tongs\mcp tongs-mcp
 ```
 
-Other MCP clients take the same command. Long waits report the game days done as MCP
-progress, so a `run_until` over many game years stays within the client's timeouts. Tool
-annotations say which tools only read and which act as the player or change game state. The
-[MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md) has the tool
-list, the timeouts of common clients and its live checks.
+Other MCP clients take the same command. The
+[MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md) lists the tools
+and the timeouts of common clients.
 
-## For other plugins: `tongs.ui`
+## For other plugins
 
-Since 0.17.0, another Anvil plugin in the game's process can read the widget tree without
-the pipe, through the service `tongs.ui` version 1:
-
-- `find` takes a selector, with the same syntax as the pipe's `ui find`, and visits the
-  matching widgets and their ancestors: the same matches in the same order, with the same
-  paths, rectangles and text.
-- `hovered` visits the widget under the game's pointer and its ancestors. Without widget
-  paths it reads only that chain, cheap enough to call every frame; with paths
-  (`TONGS_UI_PATHS`) it reads the whole tree, as `find` does.
-- Each widget carries `definition_file`, the game path of the `.gui` file it was defined in,
-  such as `interface/topbar.gui` (NULL for a stale widget, built from a definition that a
-  reload freed).
-
-The contract is the plain C11 header
-[`include/tongs/tongs_ui.h`](https://github.com/happy-dwarf-team/tongs/blob/main/include/tongs/tongs_ui.h),
-which the release zip also carries in `tongs/include/`. Vendor it, declare a dependency on
-`tongs`, look the service up with `get_service` and call it on the game's main thread, from a
-handler of `anvil-game.frame`; a call from another thread answers `ANVIL_ERROR_WRONG_PHASE`
-and reads nothing. Tongs registers the service on every load, also with `enabled = false`
-(no pipe then). The service only reads: it sends no input and makes no game calls, so
-`input` and `game_calls` do not apply, and Anvil's suspension in ironman or multiplayer
-does not stop it. See
-[For other plugins: `tongs.ui`](https://github.com/happy-dwarf-team/tongs#for-other-plugins-tongsui)
-in the Tongs README and the
-[design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md#the-tongsui-service-0170).
-
-## Install
-
-Tongs 0.26.0 and newer needs [Anvil](../../docs/install/) 1.7.0 or newer, with its standard
-plugin `anvil-game`, which is part of Anvil's package, and runs on EU4 1.37.5 from Steam and on
-the GOG build 1.37.5.2 (0.25 and older: Anvil 1.0.0, Steam only). Get the plugin in one of two ways:
-
-- **From the Steam Workshop**: subscribe to
-  [Tongs on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3826695093)
-  and enable it in your playset. Anvil loads it once you approve that version in its panel
-  (`Ctrl+Shift+F12`, **Mods**) or on the **Mods** tab of Anvil Manager, and asks again after
-  every update; see [Plugins from mods](../../docs/plugins-from-mods/).
-- **From the release zip:** download `tongs-windows-x64.zip` with the button above, or from
-  the [latest release](https://github.com/happy-dwarf-team/tongs/releases/latest)
-  (`SHA256SUMS.txt` next to it holds its checksum), and install it on the **Plugins** tab of
-  Anvil Manager, or extract it into `<EU4>/anvil/plugins/`; it contains the `tongs` folder.
-
-Then turn it on: in `anvil/data/tongs/settings.toml`, one `name = value` per line, set
-`enabled = true`, and `input = true` if scripts should use the keyboard, the mouse and
-navigation (the camera and province views), or use the
-**Settings** tab of Anvil Manager. Start the game. `ANVIL_TONGS_<NAME>` environment variables
-(for example `ANVIL_TONGS_ENABLED=true`) override a value for one start. A `config.toml` from
-Tongs 0.12 or older is moved into `settings.toml` on the first start.
-
-Unsubscribe from the mod, or remove the plugin on the Manager's **Plugins** tab (or delete the
-`tongs` folder), to uninstall.
+Another Anvil plugin in the game's process can use Tongs without the pipe. `tongs.ui` reads the
+widget tree, and `tongs.navigation` selects a province. See
+[For other plugins](https://github.com/happy-dwarf-team/tongs#for-other-plugins-tongsui) in the
+README.
 
 ## Tested
 
-Source: the live checks in Tongs'
-[design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md) and its
-[MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md). All ran in
-the lab on EU4 1.37.5 (Steam) with the original `eu4.exe`, on one development machine, with
-development builds of Tongs from the branch of each change:
+All checks ran in the lab on EU4 1.37.5 (Steam) with the original `eu4.exe`, on one development
+machine, with development builds of Tongs. Details are in the
+[design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md) and the
+[MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md).
 
-- **Plugin API 2:** with Anvil 1.0.0 and `anvil-game` (20 and 21 October 2026), Tongs
-  loaded with its game addresses verified, read the interface's widget tree before and after
-  reloading interface files with `console reload`, and ran console commands; the game did not
-  crash, and the save was unchanged afterwards.
-- **Anvil 1.3.0** (25 October 2026): widget trees in the lobby, in a battle pop-up and in
-  hidden grid boxes, `ui click` in the lobby, `click` on country shields, `event choose` and
-  the `chosen` notifications for events chosen by Tongs, by the player and by the game's
-  deadline.
-- **Agents** (19 October 2026, before plugin API 2): a Claude Code session drove the game through the MCP server with dozens of
-  `ui click`s, keys, text, speed changes, `run_until`, `event choose` and `console`; input
-  in the main menu and with event pop-ups works.
-- `max_pause` was checked in a lab measurement series: a run that an event paused ended
-  after 5 s of pause instead of waiting for its 300 s timeout.
-- **`tongs.ui`** (27 October 2026, with Anvil 1.5.2,
-  [tongs#87](https://github.com/happy-dwarf-team/tongs/issues/87)): a test consumer plugin
-  in the lab's Russia save, paused, about 16 200 widgets. `find` gave the same matches as the
-  pipe's `ui find` in the same frame (count, order, paths, rectangles, text and flags; the
-  first 5 000 where there were more), in the main menu, in the game and after
-  `console reload outliner.gui`. The cheap `hovered` chain over buttons, list rows and a
-  scroll bar equalled the chain read from the whole tree. Calls from another thread answered
-  `ANVIL_ERROR_WRONG_PHASE`; with `enabled = false` the pipe did not exist and the service
-  answered. Cost per call: the cheap `hovered` a median of 48 µs (p99 116 µs), and
-  3.2–3.6 ms once on the first call and after a reload; `find` over the visible widgets of
-  the whole tree 12–14 ms.
-- **Sessions and the ready wait** (28 October 2026, with Anvil 1.5.2,
-  [tongs#115](https://github.com/happy-dwarf-team/tongs/pull/115)): in the lab's Russia save,
-  `session` was 1 after the start and went to 2 and 3 with two loads by the player through
-  the in-game menu; a `wait_until` across a load ended with an error and reported the inputs
-  of the clicks, and the console count started again at 0. The first speed change after
-  `ready()` took 176 ms after the start. After a load from the in-game menu, that menu stays
-  open and the speed keys do nothing until it is closed.
+- **Agents:** a Claude Code session drove the game through the MCP server with dozens of clicks,
+  keys, speed changes, event choices and console commands (19 October 2026).
+- **Plugin API 2:** with Anvil 1.0, Tongs read the widget tree before and after reloading interface
+  files, and ran console commands. The game did not crash, and the save was unchanged afterwards
+  (20 and 21 October 2026).
+- **Widgets and events:** widget trees in the lobby, in a battle pop-up and in hidden grid boxes;
+  clicks in the lobby and on country shields; event choices (25 October 2026, Anvil 1.3).
+- **`tongs.ui`:** `find` gave the same matches as the pipe's `ui find` over about 16,200 widgets.
+  A cheap `hovered` call took a median of 48 µs (27 October 2026, Anvil 1.5.2,
+  [tongs#87](https://github.com/happy-dwarf-team/tongs/issues/87)).
+- **Sessions:** `session` counted two loads through the in-game menu, and a wait across a load
+  ended with an error (28 October 2026, Anvil 1.5.2,
+  [tongs#115](https://github.com/happy-dwarf-team/tongs/pull/115)).
+- **`max_pause`:** a run that an event paused ended after 5 s of pause instead of waiting for its
+  300 s timeout.
 
-Not verified yet: the release files of 0.16.0 and 0.17.0 and the Workshop mod in the game
-(the checks above used builds of the branches), suspension in a live ironman or multiplayer
-game, input in text fields, keyboard layouts other than US, right, middle and double clicks,
-clicks on the map (only interface widgets were tried), dragging, for which there is no
-command yet, and a minimized game window.
+## The name
+
+Like a smith's tongs, it holds the work from outside the forge.
