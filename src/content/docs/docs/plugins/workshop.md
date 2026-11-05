@@ -29,7 +29,7 @@ for the Workshop:
 
 | Path | What |
 | --- | --- |
-| `workshop/descriptor.mod` | the mod's `name`, the same on Steam and in the launcher: `<Name> - <what it does>`, for example `Bellows - Faster Game Start` |
+| `workshop/descriptor.mod` | the mod's `name`, the same on Steam and in the launcher: `<Name> - <what it does>`, for example `Bellows - Faster Start, Faster Game` |
 | `workshop/description.md` | the Workshop description, in Markdown; every publish replaces the one on Steam with it |
 | `workshop/thumbnail.png` | the preview image, a placeholder until you [generate yours](#the-workshop-page) |
 | `workshop.toml` | the `pdx-ws` configuration, with `checksum = "keep"`: `pdx-ws` refuses a mod that would change the game's checksum |
