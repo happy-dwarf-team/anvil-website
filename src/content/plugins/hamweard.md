@@ -11,96 +11,102 @@ workshop: '3832650792'
 manifestPath: plugin.toml
 ---
 
-Without Hamweard, **Exit to Menu** in a campaign and **Back** on the country selection
-screen close Europa Universalis IV and start it again. With it, both return to the main menu
-in the same process, in about 4 seconds in the lab, and **Continue game** points at the
-latest save, as after a restart.
+Without Hamweard, **Exit to Menu** in a campaign and **Back** on the country selection screen close
+Europa Universalis IV and start it again. With it, both take you back to the main menu without a
+restart.
 
-Hamweard is a port of [EU4 Menu Patch](https://github.com/YozoraTempest/EU4-Menu-Patch) by
-VulonLok (MIT), which needs a separate EU4DLL-style loader. The research is the original's:
-where the game restarts and what it leaves behind (the Steam lobby, the minimap controller,
-pending diplomatic notifications, the Continue game record). The port runs on Anvil and also
-destroys the windows each campaign leaves in the interface, which made a later campaign
-crash in the lab.
+## What you get
 
-The name is Old English *hāmweard*, "homeward": back from a campaign to the main menu as if
-back home. The team's other tools are named after the forge (Anvil, Bellows, Tongs, Etch).
-
-## Limitations
-
-- **Affects gameplay.** The next campaign starts in the same process instead of a fresh
-  one, so anything the game's world reset leaves behind could change it; the plugin also
-  writes the world's multiplayer restriction. `affects_gameplay = true`. In the lab a save
-  made after three returns matched one from a fresh process, apart from the campaign id and
-  the random seed. The only thing seen to survive is the achievement list after an ironman
-  campaign, which a normal save made later in the same sitting then carries; such a save
-  loaded and played normally.
-- **Multiplayer: off, and sessions not tested.** While a multiplayer session runs, Anvil
-  takes the plugin's changes out and Exit to Menu restarts the game. After a return the
-  Game Browser opens, but no lobby was hosted or joined, so the Steam lobby clean-up from
-  the original has never run.
-- **Ironman: off unless allowed** in Anvil (opt-in). With the opt-in it worked on Steam and
-  GOG, the save on leaving included; without it Exit to Menu restarts the game. An ironman
-  save does not update Continue game, so load it from the Single Player list.
-- **Mods: tested, not all of them.** The plugin changes no game files, so the checksum stays
-  the same. Anbennar with Proper 2K UI, a playset of ten interface and graphics mods, and
-  Bellows 0.19 with the Anvil overlay ran without trouble.
-- Not seen in a test: some message popups (an heir to name, a new colonial nation), the
-  window of a lost game, custom nations and Random New World. Naval battles, new games and
-  saves after a return, and changing country were tested. About eight windows per campaign
-  still stay behind, about 15 MB of memory per return in 23 returns in a row (lab, 4 November
-  2026).
-- EU4 1.37.5 on Steam and the GOG build 1.37.5.2 (from Hamweard 1.1). On any other build
-  Anvil does not load the plugin. The GOG build has no Steam lobby, so there is nothing to
-  clean up there.
+- **Exit to Menu** returns to the main menu in about 4 seconds in the lab: click it, confirm, then
+  click **Quit** on the end-of-game screen.
+- **Back** on the country selection screen does the same.
+- **Continue game** points at your latest save, as after a restart.
 
 ## Install
 
-Hamweard 1.1 needs [Anvil](../../docs/install/) 1.9 or newer (1.0 needed 1.5). If you use the original EU4 Menu
-Patch, remove its DLL first: both change the same code.
+Hamweard needs [Anvil](../../docs/install/) 1.9 or newer. Hamweard 1.0 needed 1.5.
 
-### From the Steam Workshop
+1. If you use the original EU4 Menu Patch, remove its DLL first. Both change the same code.
+2. [Install the plugin](../../docs/install-plugins/) any way you like.
 
-With Anvil 1.9 or newer (Steam only; on GOG use the **Catalog** tab of Anvil Manager or the release zip):
+## Settings
 
-1. Subscribe to [Hamweard on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832650792)
-   and enable it in your playset in the Paradox launcher.
-2. Start the game. A notice says that a plugin waits for your approval: open the Anvil panel
-   (`Ctrl+Shift+F12`), go to **Mods** and approve Hamweard. You can also approve it before
-   playing, on the **Mods** tab of Anvil Manager.
-3. Hamweard loads from the next start.
+Hamweard has no settings of its own. To use it in ironman, tick **Allow in ironman** on the
+Manager's **Plugins** tab, or add it to `allow_ironman` in
+[`anvil/anvil.toml`](../../docs/using-anvil/#anvils-settings-file).
 
-Anvil asks again after every update of the mod; until then the version you approved keeps
-working. See [Plugins from mods](../../docs/plugins-from-mods/). Unsubscribe, or revoke the
-approval, to remove it.
+## Limitations
 
-### From the release zip
+- **It can affect gameplay.** The next campaign starts in the same process instead of a fresh one,
+  so anything the game's reset leaves behind could change it. In the lab a save made after three
+  returns matched one from a fresh process, apart from the campaign id and the random seed.
+- **Canals restart the game.** A canal rewrites the map, and the map outlives the campaign. Once a
+  save or event has applied a canal, Exit to Menu and Back restart the game for the rest of that
+  sitting.
+- **Multiplayer: off, and sessions not tested.** Exit to Menu and Back restart the game in any
+  multiplayer session, as they do without the plugin. That comes from reading the game's code: no
+  lobby was hosted or joined, so the Steam lobby clean-up from the original has never run.
+- **Multiplayer after a campaign needs a restart.** With a Paradox session online, the game asks
+  for one after the single player screen, and a return keeps that request.
+- **Ironman: off unless you allow it.** Allowed, it worked on Steam and GOG, the save on leaving
+  included. Without it Exit to Menu restarts the game. An ironman save does not update
+  Continue game, so load it from the Single Player list.
+- **Mods: tested, not all of them.** The plugin changes no game files, so the checksum stays the
+  same. Anbennar with Proper 2K UI and a playset of ten interface and graphics mods ran without
+  trouble. A mod that does something unusual when a campaign ends may behave differently.
+- **Memory grows by 5 to 15 MB per return.** The menu stayed at full speed over 23 returns in a
+  row. After many returns in one sitting, restart the game now and then.
+- **Not seen in a test:** some message popups (an heir to name, a new colonial nation), the window
+  of a lost game, the end of the game in 1821, custom nations and Random New World.
+- EU4 1.37.5 on Steam and the GOG build 1.37.5.2. On any other build Anvil does not load the plugin.
 
-1. Download `hamweard-windows-x64.zip` with the button above, or from the
-   [latest release](https://github.com/happy-dwarf-team/hamweard/releases/latest).
-   `SHA256SUMS.txt` next to the archive holds its checksum.
-2. Install it on the **Plugins** tab of Anvil Manager, or extract it into
-   `<EU4>/anvil/plugins/` by hand; it contains the `hamweard` folder.
-3. Start the game as usual.
+A game bug to know about: click a save in the Single Player list and start a new campaign from the
+same screen, and all province triggered modifiers are gone, with or without Hamweard. Press **Back**
+first and the new campaign is clean.
 
-Remove it on the Manager's **Plugins** tab, or delete the `hamweard` folder.
+## Troubleshooting
+
+Every return writes lines that start with `[hamweard]` to `anvil/anvil.log`. The log says when the
+plugin chose a restart, and why.
+
+| What you see | Why | What to do |
+| --- | --- | --- |
+| Exit to Menu or Back restarts the game | The plugin is not loaded, or Anvil suspended it | Check in the Anvil panel that Hamweard is loaded and approved. In ironman, [allow it](#settings). |
+| The same, and the log says `the map has had a canal` | Only a restart gives the old map back | Nothing to fix. |
+| The same, and the log says `multiplayer` | A multiplayer session ends with a restart | Expected. |
+| Anvil refuses to load Hamweard | Another game build, or the original EU4 Menu Patch changed the same code | Use a supported build, and remove the Menu Patch DLL. |
+
+A crash or anything odd after a return: open an
+[issue](https://github.com/happy-dwarf-team/hamweard/issues) with `anvil.log` and `error.log` from
+that sitting.
 
 ## Tested
 
-Source: the plugin's [README](https://github.com/happy-dwarf-team/hamweard#what-was-tested)
-and the lab's test notes. All runs were single player on EU4 1.37.5 (Steam) with a vanilla
-profile, on one development machine (1 and 2 November 2026):
+All runs were in the lab on one development machine. The
+[README](https://github.com/happy-dwarf-team/hamweard#what-was-tested) has every run.
 
-- Back from the country selection, Exit to Menu, loading the same save again and Continue
-  game with the refreshed record reach the main menu without a restart.
-- Seven campaigns in a row (30 days each, seven Exit to Menu and two Back) in one process:
-  no crash and no message popup left in the interface after any return.
-- Five more campaigns in a fresh process, four with a war, a battle and a peace, three of
-  them about two years long and one three years long without a war: the same result. The
-  return to the main menu took 3.5 to 4 seconds after each.
-- On the GOG build 1.37.5.2 (3 November 2026, Hamweard 1.1's code with Anvil 1.9's): five
-  campaigns of 30 days in one process, five Exit to Menu and two Back, each return in 4.0
-  to 4.5 seconds, no crash.
+- **Single player on Steam** (1 and 2 November 2026): 12 campaigns in two processes, up to three
+  years long, with wars, battles and peace deals. No crash, and each return took 3.5 to 4 seconds.
+- **GOG build 1.37.5.2** (3 November 2026): five campaigns in one process, seven returns in 4.0 to
+  4.5 seconds each, no crash.
+- **Hamweard 1.1.0 from the release** (4 November 2026): 66 returns in eight game runs, no crash.
+  They covered new games, saves and loads after a return, changing country, naval battles, the
+  Game Browser, ironman when allowed, on Steam and GOG, and Anbennar (returns in 5.5 to 6.6
+  seconds).
+- **The same seed** gave the same new campaign byte by byte, the campaign id apart, in a fresh
+  process and after returns (4 November 2026).
+- **The achievement list** (4 November 2026): 27 returns in one process, no restart and no crash.
+  After a return the list stayed empty. An ironman save loaded afterwards had its 52 achievements,
+  and a new ironman campaign said achievements can be earned.
 
-Before the plugin destroyed the windows of the last campaign, the game crashed in the
-second to fourth campaign of such a series.
+Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
+fourth campaign of such a series.
+
+## Credits and the name
+
+Hamweard is a port of [EU4 Menu Patch](https://github.com/YozoraTempest/EU4-Menu-Patch) by VulonLok
+(MIT), which needs a separate EU4DLL-style loader. The research is the original's. The port runs on
+Anvil and also destroys the windows each campaign leaves in the interface, which made a later
+campaign crash in the lab.
+
+*Hāmweard* is Old English for "homeward": back from a campaign to the main menu as if back home.
