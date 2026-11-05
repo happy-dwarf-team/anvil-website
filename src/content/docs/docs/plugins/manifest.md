@@ -1,6 +1,6 @@
 ---
 title: Manifest reference
-description: plugin.toml, symbols.toml, symbols.lock and settings.toml for plugin API 2, and the anvil gen and anvil check tools.
+description: plugin.toml, symbols.toml, symbols.lock and settings.toml for plugin API 2, and the anvil gen, anvil check and anvil port tools.
 ---
 
 A plugin folder has up to three TOML files: `plugin.toml` (required), `symbols.toml` and
@@ -336,3 +336,37 @@ anvil check --game <game folder> [--format text|json|github]
   repository root in GitHub Actions.
 
 Exit codes: `0` OK, `1` problems, `2` cannot check.
+
+## anvil port
+
+After a game update, `anvil port` places a plugin's symbols in the new build. It needs the old
+`eu4.exe` as well as the new one, so keep a copy before the game updates:
+
+```powershell
+anvil port symbols.toml --from <old eu4.exe> --to <new eu4.exe> --build <new build id> --out symbols.toml
+```
+
+Add `--from-build <id>` when this Anvil does not know the old `eu4.exe`, and
+`--format json` for a report you can feed to a generator. Without `--out` nothing is written.
+
+It compares the code of both builds with the addresses the linker chose set aside, and adds a
+`build."<id>"` entry to each symbol, keeping your comments and layout. Symbols with `sha256`
+stay digests. The tool never touches `eu4.exe`.
+
+A wrong address is worse than none, so a symbol stays for you to place when:
+
+- its code has no match in the new build, or more than one;
+- the only match is out of order with the functions around it, or refers to other code;
+- an operand differs that no `values` entry declares, because your plugin may depend on it;
+- it fails what `anvil check --exe` would report for the new build.
+
+Each of those gets a comment in the file with the reason and, where one is known, an address to
+look at. The file does not parse until you place the symbol or declare it `absent`. The entry of
+a function whose operands changed is placed, with a warning to read it.
+
+Exit codes: `0` every symbol placed, `1` some left for you, `2` cannot port. Then run
+`anvil check --exe` for each build, which needs an Anvil that knows the new one.
+
+On the two builds we have, Steam 1.37.5 and GOG 1.37.5.2, it placed 98.4% of the symbols in our
+five plugin files with no wrong address, but those builds are close. Expect a longer list after a
+real update, which it has not met yet.

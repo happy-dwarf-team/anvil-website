@@ -22,6 +22,7 @@ This page is a plan, not a promise, and has no dates. Each release is on
 | 1.8 | A [badge in the main menu](../install/#check-that-anvil-runs) |
 | 1.9 | The [**Catalog** tab](../install-plugins/#from-the-catalog-tab); Chinese, Japanese and Korean with [Mei](../../plugins/mei/); a problem report to copy |
 | 1.10 | The Manager finds and starts a GOG game and reads its own user folder; authors can [check symbols by digest](../plugins/manifest/#digests-instead-of-bytes) |
+| 1.11 | Plugins can [read the campaign](../plugins/api/#reading-the-world) without game addresses; [`anvil port`](../plugins/manifest/#anvil-port) moves a plugin's addresses to a new game build; a clear notice [after an EU4 update](../using-anvil/#when-eu4-updates) |
 
 **Ports of older native patches** are out: EU4 Menu Patch as [Hamweard](../../plugins/hamweard/)
 ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)) and EU4 Unicode Patch as
