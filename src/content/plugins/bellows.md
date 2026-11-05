@@ -25,8 +25,10 @@ All numbers are from the lab, on one computer; yours will differ.
 
 - **A faster start.** About 13 seconds instead of 41 with 10 mods, and 22 instead of 85 with
   Anbennar, on warm starts (not the first after a reboot).
-- **Years pass sooner at speed 5.** A simulated year took about a quarter less time.
-- **Faster loading.** "Continue" of a large text save took about 9 seconds instead of 11.
+- **Years pass sooner at speed 5.** With all default settings the year 1720 took about 20 seconds
+  instead of 27.
+- **Faster loading.** "Continue" of a large text save took about 9 seconds instead of 11 with
+  Bellows 1.1, and 1.2 takes off about 2 more.
 - **Slightly faster autosaves** with compressed saves.
 - **The same game.** Every part gives the game's own answers. The game's logs and loaded content
   stay the same. The one thing that can differ is [AI ties](#ai-ties-and-multiplayer).
@@ -54,6 +56,7 @@ start.
 | `frame_pacing_interval_ms` | 100 | Time between frames drawn at speed 5, 0–1000; 0 keeps the game's own |
 | `frame_pacing_input` | `draw` | `draw` shows a frame at once when you press a key or click; `wait` waits for the interval |
 | `save_compress_parallel` | `off` | `on` compresses large saves on several threads. The save is valid, but its compressed bytes differ from the game's |
+| `verifypath_session` | `on` | Keeps `verifypath_listing` answering after the main menu is up, so loading a save finds its textures sooner. A listing is read again once it is 30 s old |
 
 By hand, put one line per changed value in `anvil/data/bellows/settings.toml`:
 
@@ -76,7 +79,7 @@ all of them.
 - **The map redraws less often at speed 5:** about 16 instead of 22 times a second while you do
   nothing. A key press or click still gets a frame at once.
 - **The simulation numbers come from one save** of 1719. Other saves, mod sets and much later dates
-  are not verified yet.
+  are not verified yet, and a late-game year has no comparison without Bellows.
 - **Files must not change while the game starts.** A file that a tool writes into the game or mod
   folders during start-up may be missed until the next start. This matters [to mod
   authors](#for-mod-authors).
@@ -122,8 +125,10 @@ computer ran none: 233 game days without an out-of-sync
 - **Files must not change while the game starts.** `verifypath_listing` and `exists_index` answer
   path checks from listings read once during start-up, and `attr_cache` remembers "not found". A
   file written during loading may be missed, and a deleted one may still be found, until the next
-  start. Edit your files between starts, or turn those modules off while you develop. None of this
-  applies once the main menu is up.
+  start. Edit your files between starts, or turn those modules off while you develop. Once the main
+  menu is up, only `verifypath_session` remains: a file added or deleted in the game or mod folders
+  counts after at most 30 s. Turn it off if you need new files to count at once. Mods in the game's
+  user folder (Documents) are not affected.
 - **Profiles are per mod set,** not per mod version. After an update of your mod the first start
   may gain a little less.
 - **Large scripted effects** with `$parameter$` and `[[parameter]]` blocks are where
@@ -136,7 +141,7 @@ Each part of Bellows is a module with its own setting.
 | Module | What it does | Default |
 | --- | --- | --- |
 | `mimalloc` | A faster memory allocator for the game's C runtime | until the main menu |
-| `verifypath_listing` | Answers the game's path checks from directory listings | on |
+| `verifypath_listing` | Answers the game's path checks from directory listings. With `verifypath_session` it goes on after the main menu is up | on |
 | `exists_index` | Answers "does this file exist?" for the modifier icon check | on |
 | `trigger_intern` | Interns the game's triggers at the end of loading with a faster index | on |
 | `metascript_subst` | Substitutes `$parameter$` placeholders in a single pass | on |
@@ -149,8 +154,11 @@ Each part of Bellows is a module with its own setting.
 | `frame_pacing` | **Simulation.** At the fastest speed, draws frames every 100 ms instead of 50 ms while you do nothing | on |
 | `modifier_merge` | **Simulation.** Adds each country's modifiers to its units with an index instead of a scan; checks every 1,024th merge against the game's code | on |
 | `province_modifier_view` | **Simulation, experimental.** Reads one value in place instead of copying a province's whole modifier list. Off until its effect on the AI is checked | off |
+| `pops_pacing` | **Simulation, experimental.** At the fastest speed, runs the game's Paradox online-service callbacks every 500 ms instead of twice a frame | off |
+| `army_search_memo` | **Simulation, experimental.** In the AI's daily search for each army, works out once per search whether a modifier lets the army ignore forts' zones of control | off |
 | `save_compress` | **Saving.** For compressed saves, computes the checksum eight bytes at a time; the file is byte for byte the game's | on |
 | `transfer_skip` | **Loading.** In single player, "Continue" of a text save no longer compresses the file for a multiplayer transfer nobody receives | on |
+| `history_add` | **Loading.** Adds an entry the game just read to a dated list without first walking the whole list. The list comes out the same, and the gain depends on the mods | on |
 
 The diagnostic modules `zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`,
 `army_search_profile`, `score_probe` and `monthly_probe` only count, and are for development.
@@ -192,7 +200,25 @@ Bellows and with it, and shows the result. Its times are about 1.5 s longer than
 because they run to the end of start-up. You can then send a report, or copy it into a
 [performance report](https://github.com/happy-dwarf-team/bellows/issues/new?template=performance_report.yml).
 
-### Simulation
+### A year at speed 5
+
+Source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#a-year-at-speed-5). All
+default settings together against the same game without Bellows: the save of Russia from 17 March
+1719, warmed up to 1 January 1720, then the year 1720 at speed 5, with the main thread on one
+processor and 8 workers in both pools. Anvil 1.9.0, `anvil-game` and Tongs in both setups. One game
+per run, interleaved, after a check that the processor was idle, 5 November 2026:
+
+| Setup | Year 1720 | Median |
+| --- | --- | ---: |
+| Without Bellows | 26.50 / 27.11 / 24.70 / 28.95 s | 26.80 s |
+| With Bellows, default settings | 18.72 / 21.63 / 20.92 / 20.07 s | **20.49 s** |
+
+About a quarter less, and the two ranges do not overlap. All modules reported 0 differences from
+the game's own answers. Runs in which an event held the game paused were thrown out: 5 of the 16 in
+the series, none of them in these two setups. `pops_pacing` and `army_search_memo` have too few valid
+runs and stay off.
+
+### Single modules
 
 `range_witness` alone, on the save of Russia from 17 March 1719: the year 1720 at speed 5, one game
 per trial, interleaved.
@@ -236,7 +262,24 @@ game ready:
 | Vanilla 1450, text, 40.2 MB | 6.11 s (5.70–6.17) | 5.84 s (5.70–6.14) | **4.47 s** (4.35–4.99) |
 
 Logs and the state read after the load are the same with the module on and off. Compressed saves do
-not change. The [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md)
+not change.
+
+`verifypath_session` and `history_add` were measured the same way, with Bellows' defaults otherwise,
+4 November 2026:
+
+| Save | Setup | Runs | Median (range) |
+| --- | --- | ---: | --- |
+| 1821, text, 64.5 MB, 10 mods | Bellows 1.1 defaults | 5 | 8.55 s (8.32–8.88) |
+| | + `verifypath_session` | 5 | 6.79 s (6.72–7.09) |
+| | + `history_add` as well | 5 | **6.27 s** (6.13–6.92) |
+| Vanilla 1450, text, 40.2 MB | Bellows 1.1 defaults | 3 | 4.43 s (4.28–4.86) |
+| | + both | 3 | **4.22 s** (4.15–4.40) |
+
+Compared with the game's own code in `verify`: 0 differences in about 650,000 path answers on each
+of the saves of 1719 and 1821, and in 154 million list steps on the save of 1821. Not tested: compressed saves, a
+first load after a reboot, multiplayer.
+
+The [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md)
 have every method.
 
 ## Upgrading
