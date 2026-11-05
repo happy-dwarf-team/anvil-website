@@ -40,13 +40,13 @@ the team's plugins in the Manager. Further work is a plan, not a promise, and ha
 8. **Game date and log throttling: Anvil 1.6.** The service of `anvil-game` gives plugins
    the in-game date. The new standard plugin `anvil-log-throttle` writes a line that
    repeats in `error.log` 10 times and then only counts it (see
-   [Install](../install/#folder-layout)). In a lab test with a playset whose script errors
+   [Install](../using-anvil/#a-shorter-errorlog)). In a lab test with a playset whose script errors
    came in bursts of about 125 000 lines, `error.log` stayed at 161 KB after 12.6 minutes,
    against 61.9 MB in 11.3 minutes without the plugin
    ([measurement](https://github.com/happy-dwarf-team/anvil/issues/172)).
 9. **The player's language: Anvil 1.7.** The overlay and the Manager speak the language EU4
    is set to: English, French, German or Spanish (see
-   [Install](../install/#install-with-anvil-manager)). The log and `anvil check` stay in
+   [Install](../using-anvil/#language)). The log and `anvil check` stay in
    English.
 10. **The GOG build 1.37.5.2: Anvil 1.7.** Anvil knows the GOG build, and `anvil-game` runs
     on it. A `symbols.toml` can declare several builds (see
@@ -57,10 +57,10 @@ the team's plugins in the Manager. Further work is a plan, not a promise, and ha
     [Install](../install/#check-that-anvil-runs)).
 12. **Plugin catalog: Anvil 1.9.** The Manager's **Catalog** tab lists the team's plugins
     and installs or updates one with a click, from a release whose SHA-256 the list pins
-    (see [Install plugins](../install-plugins/#install-a-plugin-from-the-managers-catalog)).
+    (see [Install plugins](../install-plugins/#from-the-catalog-tab)).
 13. **Chinese, Japanese and Korean: Anvil 1.9.** With [Mei](../../plugins/mei/), the overlay
     and the Manager speak Simplified or Traditional Chinese, Japanese or Korean, as Steam or
-    Windows is set (see [Install](../install/#install-with-anvil-manager)).
+    Windows is set (see [Install](../using-anvil/#language)).
 
 ## Planned
 
