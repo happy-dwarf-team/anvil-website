@@ -44,7 +44,12 @@ gameBuilds: ['eu4-1.37.5-steam-win64']
 affectsGameplay: false
 ---
 
-What the plugin does, how to install and configure it, and how it was tested.
+What the plugin does for the player, in one or two sentences.
+
+## What you get
+## Install
+## Settings
+## Limitations
 ```
 
 | Field | Required | Meaning |
@@ -75,6 +80,11 @@ The same icon is the base of the plugin's
 ## Content rules
 
 - Write in English and start with what the plugin does for the player.
+- Keep the four sections above, in that order, on every plugin page. **What you get** is in a
+  player's words. **Install** names the Anvil version, links to
+  [Install plugins](../../install-plugins/) and adds only what is special about this plugin.
+  **Settings** says what is worth changing. **Limitations** holds everything you do not promise.
+- Put technical details and measurements below them.
 - Set `affectsGameplay` honestly. Players read it as a multiplayer and Ironman warning.
 - Add the plugin to the table on [Multiplayer, ironman and achievements](../../multiplayer-ironman/).
 - Give every measurement its source and conditions: game build, mods, number of runs,
