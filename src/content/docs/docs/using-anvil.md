@@ -80,6 +80,10 @@ it loads them. After an EU4 update, plugins whose code no longer matches are ski
 starts normally until they are updated. Steam updates and **Verify integrity of game files** are
 not affected, because `eu4.exe` is never modified.
 
+The game tells you: one notice names the plugins that were not loaded and stays until you close
+it, and the Manager shows the same warning. The badge in the main menu is gone until Anvil knows
+the new build, because telling the menu apart needs game addresses too.
+
 ## Where things are
 
 ```

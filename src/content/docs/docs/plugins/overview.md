@@ -28,7 +28,8 @@ Every Anvil release has an asset `anvil-sdk-windows-x64.zip` with the headers, t
 | `include/anvil/anvil_plugin.h` | the plugin API, a plain C11 ABI |
 | `include/anvil/anvil.hpp` | a header-only C++20 wrapper over it |
 | `include/anvil/anvil_game.h` | the service and events of the standard plugin `anvil-game` |
-| `bin/anvil.exe` | `anvil gen` and `anvil check` |
+| `include/anvil/anvil_panel.h` | windows of plugins in the overlay, from `anvil-overlay` |
+| `bin/anvil.exe` | `anvil gen`, `anvil check` and `anvil port` |
 | `cmake/` | the `AnvilPlugin` CMake package with `anvil_add_plugin` |
 
 A plugin repository fetches it in `CMakeLists.txt`, pinned by its hash:
