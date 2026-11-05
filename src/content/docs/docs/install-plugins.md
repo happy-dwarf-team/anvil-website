@@ -1,93 +1,71 @@
 ---
 title: Install, update and remove plugins
-description: Add plugins to Anvil, check that they loaded, update and remove them.
+description: Add plugins to Anvil, check that they loaded, change their settings, update and remove them.
 ---
 
-Plugins are folders in `anvil/plugins/`, one per plugin. Anvil loads them when the game
-starts; nothing else is installed or registered. From Anvil 1.3 a plugin can also come with
-a mod, for example from the Steam Workshop; see [below](#install-a-plugin-from-the-steam-workshop).
+[Install Anvil](../install/) first. Then pick one of these ways. If you are not sure, use the
+**Catalog** tab.
 
-## Before you start
+| Way | Works on | To update |
+| --- | --- | --- |
+| [**Catalog** tab of the Manager](#from-the-catalog-tab) | Steam, GOG | Click **Update** |
+| [Steam Workshop](#from-the-steam-workshop) | Steam | Comes with the mod; approve each new version |
+| [A zip, with the Manager](#from-a-zip) | Steam, GOG | Install the newer zip |
+| [By hand](#by-hand) | Steam, GOG | Replace the folder |
 
-- [Install Anvil](../install/) first.
-- On the plugin's page in the [catalog](../../plugins/), check **Requires** (the Anvil
-  version the plugin needs) and **Game builds**. On another game build Anvil skips the
-  plugin and the game starts normally.
+A plugin is native code that runs inside the game with your rights, like any program. Install
+plugins only from authors you trust.
 
-## Install a plugin from the Manager's catalog
+Each [plugin's page](../../plugins/) shows **Requires** (the Anvil version it needs) and **Game
+builds**. On another game build Anvil skips the plugin and the game starts normally.
 
-From Anvil 1.9, the **Catalog** tab of `AnvilManager.exe` lists the team's plugins
-([Bellows](../../plugins/bellows/), [Tongs](../../plugins/tongs/),
-[Hamweard](../../plugins/hamweard/) and [Mei](../../plugins/mei/)) with a short summary, the
-game builds each runs on, a link to its page and, for a Steam game, to its Workshop item.
+## From the Catalog tab
 
-1. Click **Install** next to the plugin. The Manager names the file, its size and the
-   GitHub repository it comes from, and waits for you to click **Download**.
-2. It downloads the zip of the release the list pins and installs nothing unless the zip's
-   SHA-256 equals the one in the list. Then it shows the same check as for a zip you pick
-   yourself (below), and you click **Install** again.
-3. When a newer release is pinned than the one you have, the button says **Update**.
-
-The list comes with the Manager. **Get the current list** fetches the newest one from
-Anvil's repository on GitHub; nothing goes to the network before you click. Every release
-in the list was checked when it was added: its size, its SHA-256 and the build attestation
-of the plugin's own release workflow. Mei's zip holds the plugin: its fonts come with its
-Workshop item or, on GOG, as `mei-fonts.zip` in its release, for a local mod
-([Mei's page](../../plugins/mei/)). Why it works this way:
-[ADR 0002](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0002-manager-plugin-catalog.md).
-
-## Install a plugin from a zip with Anvil Manager
-
-1. Download the plugin's archive, for example `bellows-windows-x64.zip`.
-2. In `AnvilManager.exe`, open the **Plugins** tab and click **Install a plugin from a
-   zip…**, or drop the zip on the window.
-3. Before anything is copied, the Manager checks the plugin the way `anvil check` does:
-   its manifest, and its game addresses against your `eu4.exe`. It shows the name,
-   version, authors, whether the plugin changes gameplay, any problems, and whether Anvil
-   would skip it on your game build.
-4. Click **Install**. The plugin goes to `anvil/plugins/<plugin-id>/` and replaces an
-   older version there; `anvil/data/<plugin-id>/` with its settings stays.
-
-A plugin is native code that runs inside the game with your rights, like any program:
-install plugins only from authors you trust. Files next to the plugin's folder in the zip,
-such as `SHA256SUMS.txt`, are not installed.
-
-The **Plugins** tab also shows which plugins will load, in which order, and why one is
-skipped, without starting the game. It turns plugins on and off, allows the ones that
-offer it in ironman or multiplayer, and removes them; **Settings** edits a plugin's
-settings.
-
-## Install a plugin from the Steam Workshop
-
-From Anvil 1.3, a plugin can come with a mod that you enable in the Paradox launcher.
+The **Catalog** tab of `AnvilManager.exe` lists the team's plugins:
 [Bellows](../../plugins/bellows/), [Tongs](../../plugins/tongs/),
-[Hamweard](../../plugins/hamweard/) and [Mei](../../plugins/mei/) are on the Steam Workshop; a plugin's page links its Workshop item when it has one.
+[Hamweard](../../plugins/hamweard/) and [Mei](../../plugins/mei/). It needs Anvil 1.9 or newer.
 
-1. Subscribe to the plugin's Workshop item and enable the mod in your playset.
-2. Start the game. A notice lists the plugins that wait for your approval: open the Anvil
-   panel (`Ctrl+Shift+F12`), go to **Mods** and approve the plugin. Or approve it before
-   playing, on the **Mods** tab of `AnvilManager.exe`.
+1. Click **Install** next to the plugin. The Manager names the file, its size and the GitHub
+   repository it comes from.
+2. Click **Download**. The Manager installs nothing unless the file's SHA-256 equals the one in
+   the list.
+3. It shows the plugin's details. Click **Install** again.
+
+When a newer release is listed than the one you have, the button says **Update**. The list comes
+with the Manager; **Get the current list** fetches the newest one from GitHub. Nothing goes to
+the network before you click.
+
+## From the Steam Workshop
+
+1. Subscribe to the plugin's Workshop item, and enable the mod in your playset in the Paradox
+   launcher. A plugin's page links its item.
+2. Start the game. A notice says that a plugin waits for your approval. Open the Anvil panel
+   (`Ctrl+Shift+F12`), go to **Mods** and approve it. You can also do this before playing, on
+   the **Mods** tab of `AnvilManager.exe`.
 3. The plugin loads from the next start.
 
-Anvil installs nothing into `anvil/plugins/` for a mod: it loads the approved version from
-its own copy, and asks again after every update of the mod. A plugin with the same id in
-`anvil/plugins/` wins over the mod's copy. Details: [Plugins from mods](../plugins-from-mods/).
-The Workshop cannot install Anvil itself; [install Anvil](../install/) first. It does not
-reach a GOG game either: there, use the catalog ([On GOG](../install/#on-gog)).
+Anvil asks again after every update of the mod. Until then the version you approved keeps
+working. [Plugins from mods](../plugins-from-mods/) says why.
 
-## Install a plugin by hand
+The Workshop cannot install Anvil itself, so install Anvil first. It does not reach a GOG game
+either; there, use the **Catalog** tab.
 
-1. Download the plugin's archive, for example `bellows-windows-x64.zip`, with the download
-   button on its page.
-2. Optional: compare the archive's SHA-256 with the one shown under the button. In
-   PowerShell:
+## From a zip
 
-   ```powershell
-   Get-FileHash .\bellows-windows-x64.zip -Algorithm SHA256
-   ```
+1. Download the plugin's archive, for example `bellows-windows-x64.zip`, with the button on its
+   page.
+2. In `AnvilManager.exe`, open the **Plugins** tab and click **Install a plugin from a zip…**, or
+   drop the zip on the window.
+3. The Manager checks the plugin against your game. It shows the name, version, authors, whether
+   the plugin changes gameplay, any problems, and whether Anvil would skip it.
+4. Click **Install**. The plugin goes to `anvil/plugins/<plugin-id>/`.
 
-3. Extract the archive into `anvil/plugins/` in the game folder. It contains one folder
-   named after the plugin, so you get:
+## By hand
+
+1. Download the plugin's archive, for example `bellows-windows-x64.zip`, with the button on its
+   page.
+2. Extract it into `anvil/plugins/` in the game folder. It contains one folder named after the
+   plugin, so you get:
 
    ```
    <game folder>/anvil/plugins/bellows/
@@ -95,56 +73,52 @@ reach a GOG game either: there, use the catalog ([On GOG](../install/#on-gog)).
      bellows.dll
    ```
 
-4. Start the game as usual.
+3. Start the game as usual.
+
+To check a file before you install it, see
+[Check a download yourself](../safety/#check-a-download-yourself).
 
 ## Check that it loaded
 
 In the game's main menu, point at the **Anvil** badge to see how many plugins loaded. The
-Manager's **Plugins** tab shows the same without starting the game. For details, open
-`anvil/anvil.log` after the start. A loaded plugin has a line with its id, version and
-`loaded`, for example:
+Manager's **Plugins** tab shows the same without starting the game, and why a plugin is skipped.
+
+For details, open `anvil/anvil.log` after the start. A loaded plugin has a line with its id,
+version and `loaded`:
 
 ```
-bellows 0.10.0: loaded (early, …)
+bellows 1.1.0: loaded (early, …)
 ```
 
-A plugin that was not loaded has `skipped —` and the reason, or an error from
-`anvil_plugin_load`; see [Troubleshooting](../troubleshooting/).
+A plugin that was not loaded has `skipped —` and the reason; see
+[Troubleshooting](../troubleshooting/).
 
-The same log shows which game build Anvil detected, in the line that starts with
-`game build:`. Compare it with the plugin's **Game builds**; `unknown` means a build that
-no plugin knows yet, for example after an EU4 update.
+The line that starts with `game build:` shows which game build Anvil detected. `unknown` means a
+build no plugin knows yet, for example after an EU4 update.
 
 ## Settings
 
-A plugin keeps its settings and other files it writes in `anvil/data/<plugin-id>/`, for
-example `anvil/data/bellows/settings.toml`. That file holds only the values you changed;
-the defaults come from the plugin's own `settings.toml`. Change them on the **Settings** tab
-of Anvil Manager, in the Anvil panel in the game, or by hand; the plugin's page describes
-them.
+Change a plugin's settings on the **Settings** tab of the Manager, or in the Anvil panel in the
+game. The plugin's page describes them.
+
+By hand: `anvil/data/<plugin-id>/settings.toml` holds only the values you changed. The defaults
+come from the plugin itself.
 
 ## Update a plugin
 
-A plugin from the Steam Workshop updates with its mod; approve the new version in the
-**Mods** tab. A plugin from the catalog: click **Update** on the Manager's **Catalog** tab after
-**Get the current list**. A plugin from a zip: install the new zip with the Manager, which
-replaces the old version, or by hand:
+- **From the Catalog tab:** click **Get the current list**, then **Update**.
+- **From the Workshop:** the mod updates by itself. Approve the new version on the **Mods** tab.
+- **From a zip:** install the new zip with the Manager. It replaces the old version.
+- **By hand:** delete the plugin's folder in `anvil/plugins/`, then extract the new archive.
 
-1. Delete the plugin's folder in `anvil/plugins/`, so no files of the old version remain.
-2. Extract the new archive as above.
-
-`anvil/data/<plugin-id>/` stays, so your settings are kept. Read the plugin's page before
-updating: it lists the rare cases that need more, such as a renamed plugin.
+Your settings in `anvil/data/<plugin-id>/` stay. Read the plugin's page first: it lists the rare
+cases that need more, such as a renamed plugin.
 
 ## Turn a plugin off or remove it
 
-A plugin from a mod stops when you disable or unsubscribe from the mod, or revoke its
-approval in the **Mods** tab.
-
-With the Manager, untick the plugin on the **Plugins** tab, or click **Remove** (its
-settings in `anvil/data/<plugin-id>/` stay). By hand:
-
-- **Off for now:** add its id to `disabled_plugins` in `anvil/anvil.toml`, for example
-  `disabled_plugins = ["bellows"]`. The log then says `disabled in anvil.toml`.
-- **Remove:** delete its folder in `anvil/plugins/`. Delete `anvil/data/<plugin-id>/` too
-  if you do not want to keep its settings.
+- **Off for now:** untick it on the Manager's **Plugins** tab. By hand, add its id to
+  `disabled_plugins` in [`anvil/anvil.toml`](../using-anvil/#anvils-settings-file).
+- **Remove:** click **Remove** on the **Plugins** tab, or delete its folder in `anvil/plugins/`.
+  Its settings in `anvil/data/<plugin-id>/` stay; delete that folder too if you do not want them.
+- **From a mod:** disable the mod in the launcher, unsubscribe from it, or revoke its approval on
+  the **Mods** tab.

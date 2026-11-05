@@ -3,15 +3,18 @@ title: Publish your plugin on the Steam Workshop
 description: Distribute an Anvil plugin as a Steam Workshop mod and publish every release from CI with paradox-workshop-publish.
 ---
 
-From Anvil 1.3, a plugin can reach players as a Steam Workshop mod. Players subscribe to it,
-enable it in the Paradox launcher and approve the plugin in Anvil; see
-[Plugins from mods](../../plugins-from-mods/) for what they see. Players with an older Anvil
-install the plugin zip from your release as before.
+A plugin can reach players as a Steam Workshop mod. Players subscribe to it, enable it in the
+Paradox launcher and approve the plugin in Anvil; see
+[Plugins from mods](../../plugins-from-mods/) for what they see.
 
-The mod holds only `descriptor.mod` and `anvil/<plugin-id>/`, the plugin folder. In Anvil's
-lab tests on EU4 1.37.5
+The mod holds `descriptor.mod` and, next to it, `anvil/<plugin-id>/` for each plugin it carries:
+the plugin folder as `anvil_add_plugin` lays it out. Every change to any file in that folder is
+a new version that players have to approve.
+
+In Anvil's lab tests on EU4 1.37.5
 ([design notes, §14](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#14-workshop-distribution-and-trust)),
-such a mod kept the game's checksum and ironman achievements.
+such a mod kept the game's checksum and ironman achievements, and a private Workshop upload
+delivered the DLL byte for byte.
 
 Publishing goes through
 [paradox-workshop-publish](https://github.com/happy-dwarf-team/paradox-workshop-publish)
@@ -31,7 +34,7 @@ for the Workshop:
 | `workshop/thumbnail.png` | the preview image, a placeholder until you [generate yours](#the-workshop-page) |
 | `workshop.toml` | the `pdx-ws` configuration, with `checksum = "keep"`: `pdx-ws` refuses a mod that would change the game's checksum |
 | `.github/workflows/build.yml` | on every pull request, a dry run that shows in the job summary what a release would publish |
-| `.github/workflows/release.yml` | release-please: merging its pull request creates a **draft** release with the zips |
+| `.github/workflows/release.yml` | release-please: merging its pull request creates a **draft** release with the zips, among them the mod as `<id>-<version>-workshop.zip` |
 | `.github/workflows/workshop-publish.yml` | publishes the mod when you publish a release; off until the variable `WORKSHOP_PUBLISH` is `true` |
 
 The built plugin in `workshop/anvil/<plugin-id>/` is not in Git: CI copies it there. The

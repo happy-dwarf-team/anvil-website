@@ -58,6 +58,7 @@ export default defineConfig({
 					items: [
 						{ slug: 'docs/install' },
 						{ slug: 'docs/install-plugins', label: 'Install plugins' },
+						{ slug: 'docs/using-anvil' },
 						{ slug: 'docs/troubleshooting' },
 					],
 				},

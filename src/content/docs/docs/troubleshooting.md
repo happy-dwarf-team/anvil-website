@@ -21,7 +21,7 @@ description: What to do when a plugin does not work, and how to report a problem
 | Orange lines on the **Plugins** tab: `code range of symbol … overlaps symbol …` | With the catalog's plugins in Anvil 1.10.0 they mean nothing: those plugins declare the same function, and the status column says whether each one loads. The next Anvil no longer shows them. |
 | A plugin is skipped | The reason is on the **Plugins** tab and in the log; see [Common reasons a plugin is skipped](#common-reasons-a-plugin-is-skipped). |
 | The game crashes or does not start | [Start once without plugins](#start-once-without-plugins), then turn them back on one by one. See also [Safe mode and crash reports](#safe-mode-and-crash-reports). |
-| You want the game back as it was | [Turn plugins off](../install/#turn-plugins-off) or [uninstall Anvil](../install/#uninstall). Both take effect at the next start, and `eu4.exe` was never changed. |
+| You want the game back as it was | [Turn plugins off](../install-plugins/#turn-a-plugin-off-or-remove-it) or [uninstall Anvil](../install/#uninstall). Both take effect at the next start, and `eu4.exe` was never changed. |
 
 ## Read the log
 
