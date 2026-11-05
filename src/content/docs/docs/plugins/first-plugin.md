@@ -71,6 +71,10 @@ At build time `anvil gen` turns it into `symbols.gen.hpp`, so the code says
 [manifest reference](../manifest/#symbolstoml) lists every key. To support one build only,
 write `build = "<id>"` instead of `builds`, and give `rva` and `bytes` in the symbol itself.
 
+These two symbols are examples. For your own, you find the function and its bytes in `eu4.exe` with
+a disassembler such as Ghidra; `anvil check` then verifies what you wrote. To read the campaign or
+open a window you need no symbols at all: start from [Recipes](../recipes/) instead.
+
 ## 4. Build
 
 Point `EU4_EXE` at the game's `eu4.exe` and `EU4_DIR` at its folder:

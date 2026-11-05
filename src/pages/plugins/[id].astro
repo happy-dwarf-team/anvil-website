@@ -50,6 +50,13 @@ const jsonLd = softwareApplication({
 	release,
 });
 
+// ">=1.7.0" in a player's words; any other range stays as the manifest has it.
+function anvilRange(range: string): string {
+	const match = /^>=\s*(\d+\.\d+)(\.\d+)?$/.exec(range.trim());
+	if (!match) return range;
+	return `${match[2] && match[2] !== '.0' ? match[1] + match[2] : match[1]} or newer`;
+}
+
 const { Content, headings } = await render(plugin);
 const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', text: 'Supported game builds' }];
 ---
@@ -79,18 +86,17 @@ const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', te
 					<div>
 						<dt>Requires</dt>
 						<dd>
-							<a href={url('docs/install/')}>Anvil</a>
-							<code>{manifest.anvil}</code>
+							<a href={url('docs/install/')}>Anvil</a> {anvilRange(manifest.anvil)}
 						</dd>
 					</div>
 				)
 			}
 			<div>
 				<dt>Game builds</dt>
-				<dd>{gameBuilds.map((b) => <code>{b}</code>)}</dd>
+				<dd>{gameBuilds.map((b) => <span class="build">{b === '*' ? 'Any' : describeGameBuild(b)}</span>)}</dd>
 			</div>
 			<div>
-				<dt>Changes gameplay</dt>
+				<dt>Declares gameplay changes</dt>
 				<dd>{affectsGameplay ? 'Yes: may affect multiplayer and ironman' : 'No'}</dd>
 			</div>
 			<div>
@@ -100,6 +106,10 @@ const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', te
 		</dl>
 	</div>
 	<div class="get">
+		<p class="how">
+			The easiest way is the <a href={url('docs/install-plugins/#from-the-catalog-tab')}>Catalog tab of Anvil Manager</a>.
+			The zip below is for <a href={url('docs/install-plugins/#from-a-zip')}>installing by hand</a>.
+		</p>
 		<DownloadButton name={name} repo={slug} asset={asset} align="start" />
 		{
 			workshop && (
@@ -118,9 +128,10 @@ const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', te
 						Subscribe on the Steam Workshop
 					</a>
 					<span class="muted">
-						<a href={url('docs/install/')}>Install Anvil</a> first{manifest?.anvil && <> (<code>{manifest.anvil}</code>)</>}:
+						<a href={url('docs/install/')}>Install Anvil</a> first{manifest?.anvil && <> ({anvilRange(manifest.anvil)})</>}:
 						the Workshop cannot install it. Anvil loads the plugin once you approve it. See{' '}
-						<a href={url('docs/install-plugins/')}>Install plugins</a>.
+						<a href={url('docs/install-plugins/#from-the-steam-workshop')}>Install plugins</a>. The
+						Workshop does not reach a GOG game.
 					</span>
 				</p>
 			)
@@ -145,6 +156,14 @@ const pageHeadings = [...headings, { depth: 2, slug: 'supported-game-builds', te
 </StarlightPage>
 
 <style>
+	.how {
+		margin: 0 0 0.5rem;
+		color: var(--forge-text-muted);
+		font-size: var(--sl-text-sm);
+	}
+	.build {
+		display: block;
+	}
 	.back {
 		display: inline-flex;
 		align-items: center;

@@ -40,10 +40,21 @@ Mei needs [Anvil](../../docs/install/) 1.9 or newer. Mei 0.1 needed 1.8.
    and to your translation mod, and enable both in your playset. The Workshop item carries the
    plugin and its fonts. Then [approve it](../../docs/install-plugins/#from-the-steam-workshop).
 3. On GOG, or [from a zip](../../docs/install-plugins/#from-a-zip), the plugin comes without its
-   fonts. They are in `mei-fonts.zip` of the same
-   [release](https://github.com/happy-dwarf-team/mei/releases/latest), and the game reads them only
-   from a mod's `gfx/fonts/mei/` folder, so put them in a local mod. Without them, a translation
+   fonts. The game reads them only from a mod, so make a small local mod. Without it, a translation
    mod's own fonts still work.
+   1. Download `mei-fonts.zip` from the same
+      [release](https://github.com/happy-dwarf-team/mei/releases/latest).
+   2. Open `Documents/Paradox Interactive/Europa Universalis IV GOG/mod` (without ` GOG` on Steam).
+      Extract the zip into a new folder there, `mei-fonts/gfx/fonts/mei/`.
+   3. Next to the `mei-fonts` folder, make a text file `mei-fonts.mod` with these lines:
+
+      ```
+      name="Mei fonts"
+      path="mod/mei-fonts"
+      supported_version="1.37.*"
+      ```
+
+   4. Enable **Mei fonts** in your playset in the Paradox launcher.
 
 ## Settings
 

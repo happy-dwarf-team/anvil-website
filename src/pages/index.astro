@@ -7,7 +7,7 @@ import { softwareApplication } from '../lib/structured-data';
 import { url } from '../lib/url';
 
 const description =
-	'Anvil is a plugin loader for Europa Universalis IV. Native plugins, no changes to eu4.exe.';
+	'Anvil is a plugin loader for Europa Universalis IV: a faster start, the way back to the menu without a restart, Chinese, Japanese and Korean text. No changes to eu4.exe.';
 const jsonLd = softwareApplication({
 	name: 'Anvil',
 	description,
@@ -44,7 +44,7 @@ const steps = [
 	},
 	{
 		title: 'Add plugins and play',
-		text: 'Pick plugins on the Catalog tab, or subscribe to them on the Steam Workshop and approve them on the Mods tab. Then start EU4 as usual or with Play EU4.',
+		text: 'Pick plugins on the Catalog tab of the Manager. On Steam you can also subscribe to them on the Workshop, enable the mod in your playset and approve it on the Mods tab. Then start EU4 as usual or with Play EU4.',
 	},
 ];
 ---
@@ -57,7 +57,7 @@ const steps = [
 		head: [{ tag: 'meta', attrs: { property: 'og:type', content: 'website' } }, jsonLd],
 		hero: {
 			title: 'Anvil',
-			tagline: 'Native plugins for Europa Universalis IV, without touching <code>eu4.exe</code>.',
+			tagline: 'Plugins for Europa Universalis IV: a faster start, the way back to the menu without a restart, Chinese, Japanese and Korean text. <code>eu4.exe</code> stays untouched.',
 		},
 	}}
 >
