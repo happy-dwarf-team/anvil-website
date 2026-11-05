@@ -54,7 +54,7 @@ To choose one of the eight yourself, use the setting **Language** (Anvil panel, 
 
 `anvil.log` and `anvil check` stay in English, as do the names, descriptions and setting labels
 a plugin brings. No native speaker has checked the translations yet. Corrections are welcome in
-[issue #158](https://github.com/happy-dwarf-team/anvil/issues/158).
+an [Anvil issue](https://github.com/happy-dwarf-team/anvil/issues/new/choose).
 
 ## A shorter error.log
 
