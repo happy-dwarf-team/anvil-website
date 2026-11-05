@@ -276,7 +276,7 @@ not change.
 | | + both | 3 | **4.22 s** (4.15–4.40) |
 
 Compared with the game's own code in `verify`: 0 differences in about 650,000 path answers on each
-of the saves of 1719 and 1821, and in 154 million list steps on each. Not tested: compressed saves, a
+of the saves of 1719 and 1821, and in 154 million list steps on the save of 1821. Not tested: compressed saves, a
 first load after a reboot, multiplayer.
 
 The [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md)
