@@ -95,8 +95,9 @@ changes where they end up, so such a tie can go the other way than without it. T
 valid as the game's own, and from then on that game takes its own course. Two computers without
 Bellows differ in the same way.
 
-Ties do not explain everything. On a vanilla save of 1444, 8 of 22 runs with Bellows' default
-modules became a different game, against 0 of 8 without Bellows. The cause is not found yet.
+Ties do not explain everything. In the lab, runs of one vanilla save of 1444 sometimes became a
+different game with the same seed, also with no Bellows at all. The cause is not found yet, and
+neither is whether Bellows changes how often it happens.
 
 In multiplayer the known ties are safe. The host's AI makes these choices and sends them to every player, so
 all games stay the same whoever runs Bellows. In the lab the host ran Bellows 0.17.0 and the other
