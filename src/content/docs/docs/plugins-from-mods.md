@@ -21,7 +21,8 @@ updated by its author at any time, so Anvil never loads plugin code you have not
   when the new one is broken.
 
 The prompt shows the plugin's name, authors, version, the mod it comes with, whether it changes
-gameplay, how many game addresses it uses, its hash and its repository. Only approve plugins from
+gameplay, how many game addresses it uses, its hash and its repository. The name, the authors and
+the repository are what the mod says, and Anvil cannot check them. Only approve plugins from
 authors you trust.
 
 ## Where to approve
