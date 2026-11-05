@@ -30,8 +30,8 @@ All numbers are from the lab, on one computer; yours will differ.
 - **Faster loading.** "Continue" of a large text save took about 9 seconds instead of 11 with
   Bellows 1.1, and 1.2 takes off about 2 more.
 - **Slightly faster autosaves** with compressed saves.
-- **The same game.** Every part gives the game's own answers. The game's logs and loaded content
-  stay the same. The one thing that can differ is [AI ties](#ai-ties-and-multiplayer).
+- **The same rules.** The game's logs and loaded content stay the same. The AI can still
+  [play out differently](#ai-ties-and-multiplayer).
 
 ## Install
 
@@ -88,14 +88,17 @@ all of them.
 
 ### AI ties and multiplayer
 
-Bellows changes no rule and no result the game computes. One thing can still come out differently
-in single player. When the AI chooses between options with exactly the same score, for example two
+Bellows changes no rule, but a game can still come out differently in single player, and not all
+of it is explained yet. The known cause is a tie. When the AI chooses between options with exactly the same score, for example two
 leaders with the same pips, the game breaks the tie by where the two objects lie in memory. Bellows
 changes where they end up, so such a tie can go the other way than without it. The choice is as
 valid as the game's own, and from then on that game takes its own course. Two computers without
 Bellows differ in the same way.
 
-In multiplayer this is safe. The host's AI makes these choices and sends them to every player, so
+Ties do not explain everything. On a vanilla save of 1444, 8 of 22 runs with Bellows' default
+modules became a different game, against 0 of 8 without Bellows. The cause is not found yet.
+
+In multiplayer the known ties are safe. The host's AI makes these choices and sends them to every player, so
 all games stay the same whoever runs Bellows. In the lab the host ran Bellows 0.17.0 and the other
 computer ran none: 233 game days without an out-of-sync
 ([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)).
