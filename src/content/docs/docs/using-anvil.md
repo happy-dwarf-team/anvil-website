@@ -84,6 +84,10 @@ The game tells you: one notice names the plugins that were not loaded and stays 
 it, and the Manager shows the same warning. The badge in the main menu is gone until Anvil knows
 the new build, because telling the menu apart needs game addresses too.
 
+Anvil comes first, and each plugin follows with its own update. From Anvil 1.12, once Anvil knows
+the build and a plugin does not yet, one notice names the plugins that wait for this game version,
+and the badge is back with an amber dot. A plugin that needs one of them waits with it.
+
 ## Where things are
 
 ```
