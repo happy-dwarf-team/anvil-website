@@ -15,8 +15,10 @@ const plugins = (await getCollection('plugins')).sort((a, b) => a.data.order - b
 	}}
 >
 	<p class="lead">
-		Plugins are native DLLs that Anvil loads into the game. Each one declares the EU4 builds it
-		supports; on any other build it is skipped and the game starts as usual.
+		Plugins add what mods cannot. Bellows and Hamweard are for any player, Mei is for Chinese,
+		Japanese and Korean translation mods, and Tongs is for scripts and tools. Install them on the
+		<a href={url('docs/install-plugins/')}>Catalog tab of Anvil Manager</a>. On a game build a plugin
+		does not know, it is skipped and the game starts as usual.
 	</p>
 	<div class="plugin-grid">
 		{plugins.map((plugin) => <PluginCard plugin={plugin} />)}

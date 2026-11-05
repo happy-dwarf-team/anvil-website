@@ -42,7 +42,7 @@ the network before you click.
 2. Start the game. A notice says that a plugin waits for your approval. Open the Anvil panel
    (`Ctrl+Shift+F12`), go to **Mods** and approve it. You can also do this before playing, on
    the **Mods** tab of `AnvilManager.exe`.
-3. The plugin loads from the next start.
+3. Start the game again: the plugin loads from then on.
 
 Anvil asks again after every update of the mod. Until then the version you approved keeps
 working. [Plugins from mods](../plugins-from-mods/) says why.
@@ -87,7 +87,7 @@ For details, open `anvil/anvil.log` after the start. A loaded plugin has a line 
 version and `loaded`:
 
 ```
-bellows 1.1.0: loaded (early, …)
+bellows 1.2.0: loaded (early, …)
 ```
 
 A plugin that was not loaded has `skipped —` and the reason; see

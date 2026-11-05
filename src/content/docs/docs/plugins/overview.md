@@ -40,7 +40,7 @@ project(my_plugin LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(anvil_sdk
-    URL https://github.com/happy-dwarf-team/anvil/releases/download/v1.10.0/anvil-sdk-windows-x64.zip
+    URL https://github.com/happy-dwarf-team/anvil/releases/download/v1.11.0/anvil-sdk-windows-x64.zip
     URL_HASH SHA256=<the archive's line in the release's SHA256SUMS.txt>)
 FetchContent_MakeAvailable(anvil_sdk)
 
@@ -74,7 +74,7 @@ plugins working.
   (`-C target-feature=+crt-static`) and catch panics in every function Anvil or the game
   calls: unwinding into them aborts the game
   ([`examples/hello-rust`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-rust)).
-  A safe `anvil` crate is planned, not released.
+  A safe `anvil` crate is not scheduled.
 
 ## Plugin layout
 

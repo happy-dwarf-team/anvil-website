@@ -20,8 +20,9 @@ You need **EU4 1.37.5 for Windows (64-bit) from Steam**, or the **GOG build 1.37
 3. The Manager finds the game through Steam or GOG. If it asks, click **Use** next to the
    game, or **Choose the folder...** and pick the folder that contains `eu4.exe`.
 4. Click **Install Anvil**. It puts `version.dll`, an `anvil` folder and a copy of the Manager
-   next to `eu4.exe`. From now on, start the Manager from the game folder. You can delete the
-   file you downloaded.
+   next to `eu4.exe`. From now on, start the Manager from the game folder: in Steam, right-click
+   Europa Universalis IV → **Manage** → **Browse local files**; in GOG Galaxy, **Manage installation**
+   → **Show folder**. You can delete the file you downloaded.
 5. [Add plugins](../install-plugins/). The **Catalog** tab installs them with a click.
 6. Start the game with **Play EU4**, or from Steam, GOG Galaxy or the Paradox launcher as usual.
 7. [Check that Anvil runs](#check-that-anvil-runs).
