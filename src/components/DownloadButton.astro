@@ -17,31 +17,24 @@ const allReleases = releasesUrl(repo);
 ---
 
 <div class:list={['download', align]}>
-	{
-		release ? (
-			<a class="forge-button" href={release.downloadUrl}>
-				<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
-					<path
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"
-					/>
-				</svg>
-				Download {name} {release.version}
-				<span class="spark s1" aria-hidden="true" />
-				<span class="spark s2" aria-hidden="true" />
-				<span class="spark s3" aria-hidden="true" />
-				<span class="spark s4" aria-hidden="true" />
-			</a>
-		) : (
-			<span class="forge-button is-pending" role="note">
-				First public release coming soon
-			</span>
-		)
-	}
+	{/* Without release data (the request failed at build time) the button still leads to the downloads. */}
+	<a class="forge-button" href={release?.downloadUrl ?? allReleases}>
+		<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+			<path
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"
+			/>
+		</svg>
+		{release ? `Download ${name} ${release.version}` : `Download ${name} from GitHub`}
+		<span class="spark s1" aria-hidden="true" />
+		<span class="spark s2" aria-hidden="true" />
+		<span class="spark s3" aria-hidden="true" />
+		<span class="spark s4" aria-hidden="true" />
+	</a>
 	<p class="meta">
 		{
 			release ? (
@@ -51,9 +44,7 @@ const allReleases = releasesUrl(repo);
 					<a href={allReleases}>All releases</a>
 				</>
 			) : (
-				<>
-					Releases will appear on <a href={allReleases}>GitHub</a>.
-				</>
+				<>Windows 64-bit · opens the list of releases</>
 			)
 		}
 	</p>
@@ -111,13 +102,6 @@ const allReleases = releasesUrl(repo);
 		background: var(--forge-accent-strong);
 		box-shadow: 0 0 28px 2px rgb(245 146 42 / 0.35);
 		transform: translateY(-1px);
-	}
-	.forge-button.is-pending {
-		background: var(--forge-surface-raised);
-		color: var(--forge-text);
-		border: 1px solid var(--forge-border);
-		animation: none;
-		font-size: var(--sl-text-base);
 	}
 	.meta {
 		margin: 0;
