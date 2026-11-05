@@ -15,8 +15,8 @@ highlight:
 ---
 
 Bellows (formerly EU4 Startup Boost) shortens the time from launching the game to the main
-menu, and since 0.7.0 it also speeds up the running game: a simulated year takes about a
-quarter less time. Every module gives the game's own answers, and logs and loaded content
+menu, and since 0.7.0 it also speeds up the running game: with all default settings the year
+1720 at speed 5 took about 20 s instead of 27 in the lab. Every module gives the game's own answers, and logs and loaded content
 stay identical to vanilla; only the time changes (one exception in single player: AI ties,
 [below](#ai-ties-and-multiplayer)). Like a smith's bellows, it gets the forge hot sooner.
 
@@ -28,7 +28,7 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | Module | What it does | Default |
 | --- | --- | --- |
 | `mimalloc` | Replaces the memory allocator of the game's C runtime with a faster one until the main menu; later allocations use the Windows heap. `on` keeps it for the whole session, which made the simulation about 5% slower in the lab | start-up only |
-| `verifypath_listing` | Answers the game's path checks from directory listings | on |
+| `verifypath_listing` | Answers the game's path checks from directory listings. With `verifypath_session` (on by default since 1.2) it goes on after the main menu is up, so loading a save finds its textures sooner | on |
 | `exists_index` | Answers "does this file exist?" for the modifier icon check | on |
 | `trigger_intern` | Interns the game's triggers at the end of loading with a faster index | on |
 | `metascript_subst` | Substitutes `$parameter$` placeholders in scripted effects and triggers in a single pass | on |
@@ -39,10 +39,13 @@ repeats on every start, and one check the game repeats every day. Each part is a
 | `token_dict_cache` | Caches the script tokenizer's keyword lookups instead of walking a large tree character by character | on |
 | `range_witness` | **Simulation, not start-up.** Answers the country range check (can a country still reach a province?) from the province that was in range last time, instead of walking all of the country's provinces again; same answers as the game's own code | on |
 | `frame_pacing` | **Simulation.** At the fastest speed, draws frames from inside the daily tick every 100 ms instead of the game's 50 ms while you do nothing, and at once when you press a key, click or turn the wheel. The simulation is the same; while you just watch, the map is drawn about 16 instead of 22 times a second | on |
+| `pops_pacing` | **Simulation, experimental.** At the fastest speed, runs the game's Paradox online-service callbacks every 500 ms instead of twice a frame; with nothing to deliver, each run makes the main thread sleep 1 ms | off |
 | `modifier_merge` | **Simulation.** In the monthly update the game adds every country's modifiers (about 700) to each of its units by scanning a list entry by entry; Bellows does the same with an index. The lists come out exactly as the game's own, and the module checks every 1,024th merge against the game's code while you play | on |
 | `province_modifier_view` | **Simulation, experimental.** Every day each country looks up one value in the modifiers of every province it owns, and the game first copies the province's whole modifier list for that; Bellows reads the value in place. The same value as the game's own code; `verify` compares every call. Off until its effect on the AI is checked (below) | off |
+| `army_search_memo` | **Simulation, experimental.** In the AI's daily search for each army, works out once per search whether a modifier lets the army ignore forts' zones of control, instead of for every move | off |
 | `save_compress` | **Saving.** For compressed saves (`compress_autosave = yes` and the like): compresses each part of the save with the game's own zlib, call for call as the game does, but computes its checksum eight bytes at a time instead of one; the file is byte for byte the game's. `save_compress_parallel` (off by default) compresses the large gamestate on several threads instead: a valid save with the same content, which the game loads and save tools read, but with other compressed bytes | on |
 | `transfer_skip` | **Loading, on by default since 1.1.** In single player, "Continue" of a text save no longer compresses the whole file at level 9 for a multiplayer transfer nobody receives; the game loads the same file as before. Hosted multiplayer is left as it is. `verify` keeps the game's copy and checks that it is the save, that the load does not use it and that nothing is sent. |
+| `history_add` | **Loading, on by default since 1.2.** Adds an entry the game just read to a dated list without first walking the whole list to see whether that new entry is in it; the list comes out the same. The gain depends on the mods | on |
 
 `open_warmup` and `ram_prefetch` learn which files to read per mod set, so they pay off from
 the second start on a new mod set. `range_witness` keeps what it learns only for the current
@@ -113,7 +116,9 @@ interval of `frame_pacing` (0–1000, default 100; 0 keeps the game's own).
 `frame_pacing_input` says what `frame_pacing` does with a key press or click: `draw` (the
 default since 0.13.0) draws a frame at once, `wait` waits for the interval as 0.12.0 did.
 `save_compress_parallel` (`off`, the default, `on` or `verify`) compresses large members of
-a compressed save on several threads while `save_compress` is on.
+a compressed save on several threads while `save_compress` is on. `verifypath_session` (`on`,
+the default since 1.2, or `off`) keeps `verifypath_listing` answering after the main menu is
+up; a listing is then read again once it is 30 s old.
 The defaults, labels and descriptions are in the plugin's
 [`settings.toml`](https://github.com/happy-dwarf-team/bellows/blob/main/plugin/settings.toml).
 
@@ -130,8 +135,8 @@ it: `ANVIL_BELLOWS_<NAME>`, for example `ANVIL_BELLOWS_EXISTS_INDEX=verify` (Anv
 override). When the game is ready, the plugin writes its counters to `anvil/anvil.log`.
 
 From 1.0 on, every 1.x release keeps the module settings and their values,
-`ram_prefetch_budget_mb`, `frame_pacing_*`, `save_compress_parallel` and the oldest Anvil it
-needs, so a `settings.toml` written for 1.0 means the same in any later 1.x. The diagnostics
+`ram_prefetch_budget_mb`, `frame_pacing_*`, `save_compress_parallel`, `verifypath_session` and
+the oldest Anvil it needs, so a `settings.toml` written for 1.0 means the same in any later 1.x. The diagnostics
 (`zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`, `army_search_profile`,
 `score_probe`, `monthly_probe`), the log lines, counters and `.tsv` files may change in any
 release. Details:
@@ -189,7 +194,10 @@ release. Details:
   folders while the game is loading may be missed, and one it deletes may still be found,
   until the next start. Edit your files between starts, or turn those modules off while you
   develop. Nothing of this applies after the main menu is up: the start-up modules stop
-  there.
+  there. The exception is `verifypath_session` (on by default since 1.2): a file added or
+  deleted in the game or mod folders during a session counts after at most 30 s. Turn it off
+  while you develop if you need new files to count at once. Mods in the game's user folder
+  (Documents) are not affected.
 - Learned profiles are per mod set (the enabled mods in `dlc_load.json` and the game build),
   not per mod version. After an update of your mod the profile adds the new files on the next
   start and drops the ones no longer used, so the first start after an update may gain a
@@ -264,6 +272,28 @@ Benchmark times run to the end of start-up (`anvil-game.ready`), so they are abo
 longer than the times above, which stop at `Running application`. See
 [Start-up benchmark](../../docs/benchmark/) and
 [what a report contains](../../docs/benchmark-privacy/).
+
+### A year at speed 5
+
+Source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#a-year-at-speed-5). All
+default settings together against the same game without Bellows: EU4 1.37.5 (Steam), the
+original `eu4.exe`, the save of Russia on 17 March 1719, warmed up to 1 January 1720, then the
+year 1720 at speed 5, with the main thread on one processor and 8 workers in both pools. Anvil
+1.9.0, `anvil-game` and Tongs in both setups. One game per run, interleaved, after a check
+that the processor was idle, 5 November 2026:
+
+| Setup | Year 1720 | Median |
+| --- | --- | ---: |
+| Without Bellows | 26.50 / 27.11 / 24.70 / 28.95 s | 26.80 s |
+| With Bellows, default settings | 18.72 / 21.63 / 20.92 / 20.07 s | **20.49 s** |
+
+About a quarter less, and the two ranges do not overlap. All modules reported 0 differences
+from the game's own answers. Runs in which an event held the game paused were thrown out: 5
+of the 16 in the series, none of them in these two setups.
+
+Not measured: a late-game year without Bellows (those runs failed on a dialog, so there is no
+comparison for 1821), other saves and mod sets. `pops_pacing` and `army_search_memo` have too
+few valid runs and stay off.
 
 ### Simulation
 
@@ -357,3 +387,19 @@ bytes and nothing was sent: 0 differences. Logs and the state read after the loa
 with the module on and off. Compressed saves have no such copy and do not change. Not tested
 yet: a host in a real multiplayer game (the module leaves a host alone), ironman and cloud saves
 (see the [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md#transfer_skip-loading)).
+
+`verifypath_session` and `history_add` (on by default since 1.2) were measured the same way,
+with the settings shown and Bellows' defaults otherwise, 4 November 2026:
+
+| Save | Setup | Runs | Median (range) |
+| --- | --- | ---: | --- |
+| 1821, text, 64.5 MB, 10 mods | Bellows 1.1 defaults | 5 | 8.55 s (8.32–8.88) |
+| | + `verifypath_session` | 5 | 6.79 s (6.72–7.09) |
+| | + `history_add` as well | 5 | **6.27 s** (6.13–6.92) |
+| Vanilla 1450, text, 40.2 MB | Bellows 1.1 defaults | 3 | 4.43 s (4.28–4.86) |
+| | + both | 3 | **4.22 s** (4.15–4.40) |
+
+Compared with the game's own code in `verify`: 0 differences in about 650,000 path answers on
+each of the saves of 1719 and 1821, and in 154 million list steps on each. Logs, the random
+count and the values read after the load are the same with and without the two. Not tested: compressed
+saves, a first load after a reboot, multiplayer.
