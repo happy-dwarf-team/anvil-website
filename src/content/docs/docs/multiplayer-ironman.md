@@ -30,7 +30,7 @@ Each plugin's page has the details and the source of each test.
 Anvil loads it, then takes its changes out of the game while an ironman or multiplayer session
 runs, and puts them back afterwards. The log says
 `[<plugin-id>] suspended: affects gameplay and …`. If the plugin offers it, you can allow it
-there in `anvil/anvil.toml`:
+there: tick it on the Manager's **Plugins** tab, or edit `anvil/anvil.toml`:
 
 ```toml
 allow_ironman = ["hamweard"]

@@ -1,103 +1,58 @@
 ---
 title: Roadmap
-description: What Anvil has, what comes next, and what is not planned.
+description: What Anvil has, what is still open, and what is not planned.
 ---
 
-Anvil 1.9 is released: plugin API 2, the in-game overlay, Anvil Manager, plugins from mods,
-the start-up benchmark, a shorter `error.log`, the overlay and the Manager in eight
-languages, the GOG build of EU4 1.37.5, a badge in the game's main menu, and a catalog of
-the team's plugins in the Manager. Further work is a plan, not a promise, and has no dates. Source: the delivery plan in Anvil's
+This page is a plan, not a promise, and has no dates. Each release is on
+[What's new](../../whats-new/). The delivery plan is in Anvil's
 [design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#22-delivery).
 
-## Done
+## What Anvil has
 
-1. **Core loader: Anvil 0.2.** The `version.dll` proxy, local plugins in `anvil/plugins/`,
-   the manifest, game build detection, the log, services and events. Plugin API 1.
-2. **Plugin API 2: Anvil 1.0.** Game addresses declared and verified in `symbols.toml`;
-   seven kinds of change that chain between plugins; settings; crash reports and safe
-   mode; suspension of gameplay plugins in ironman and multiplayer; the standard plugin
-   `anvil-game`; the `anvil gen` and `anvil check` tools; the SDK archive; `anvil-sys`
-   for Rust; and the [plugin template](https://github.com/happy-dwarf-team/anvil-plugin-template).
-   [Bellows](../../plugins/bellows/) and [Tongs](../../plugins/tongs/) moved to API 2 with
-   it.
-3. **In-game overlay: Anvil 1.1.** Notifications for skipped plugins, crashes and safe
-   mode, and a panel with the plugins' status and a settings editor.
-4. **Anvil Manager: Anvil 1.2.** `AnvilManager.exe` installs, repairs and uninstalls Anvil,
-   installs plugins from zips and shows what will load and why, before the game starts.
-5. **Plugins from mods: Anvil 1.3.** Plugins that come with mods enabled in the Paradox
-   launcher (Steam Workshop or local mods), each version only after the player approves it.
-   See [Plugins from mods](../plugins-from-mods/). Bellows and Tongs are published on the
-   Steam Workshop this way.
-6. **Benchmark service for plugins: Anvil 1.4.** The core service `anvil.benchmark`, through
-   which plugins report their own fields for a start-up benchmark, and benchmark starts that
-   leave the compared plugin out or quit by themselves once the game is ready. Nothing a
-   player sees. Bellows 0.10.0 takes part.
-7. **Benchmark tab: Anvil 1.5.** Anvil Manager runs a series of game starts without a plugin
-   and with it, shows the result with warm and cold starts apart, and lets the player send an
-   anonymous report to the maintainers or copy it. See
-   [Start-up benchmark](../benchmark/) and
-   [Benchmark reports and your privacy](../benchmark-privacy/).
-8. **Game date and log throttling: Anvil 1.6.** The service of `anvil-game` gives plugins
-   the in-game date. The new standard plugin `anvil-log-throttle` writes a line that
-   repeats in `error.log` 10 times and then only counts it (see
-   [Install](../using-anvil/#a-shorter-errorlog)). In a lab test with a playset whose script errors
-   came in bursts of about 125 000 lines, `error.log` stayed at 161 KB after 12.6 minutes,
-   against 61.9 MB in 11.3 minutes without the plugin
-   ([measurement](https://github.com/happy-dwarf-team/anvil/issues/172)).
-9. **The player's language: Anvil 1.7.** The overlay and the Manager speak the language EU4
-   is set to: English, French, German or Spanish (see
-   [Install](../using-anvil/#language)). The log and `anvil check` stay in
-   English.
-10. **The GOG build 1.37.5.2: Anvil 1.7.** Anvil knows the GOG build, and `anvil-game` runs
-    on it. A `symbols.toml` can declare several builds (see
-    [Plugin manifest](../plugins/manifest/#several-builds)); Bellows and Tongs stay on Steam
-    until their own ports.
-11. **Anvil in the main menu: Anvil 1.8.** A badge with Anvil's version in the game's main
-    menu shows that Anvil runs; a click opens the Anvil panel (see
-    [Install](../install/#check-that-anvil-runs)).
-12. **Plugin catalog: Anvil 1.9.** The Manager's **Catalog** tab lists the team's plugins
-    and installs or updates one with a click, from a release whose SHA-256 the list pins
-    (see [Install plugins](../install-plugins/#from-the-catalog-tab)).
-13. **Chinese, Japanese and Korean: Anvil 1.9.** With [Mei](../../plugins/mei/), the overlay
-    and the Manager speak Simplified or Traditional Chinese, Japanese or Korean, as Steam or
-    Windows is set (see [Install](../using-anvil/#language)).
+| Anvil | What came |
+| --- | --- |
+| 1.0 | Plugin API 2: game addresses checked before a plugin loads, settings, crash reports and safe mode, suspension of gameplay plugins in ironman and multiplayer, `anvil-game`, the SDK and the [plugin template](https://github.com/happy-dwarf-team/anvil-plugin-template) |
+| 1.1 | The panel in the game |
+| 1.2 | Anvil Manager |
+| 1.3 | [Plugins from mods](../plugins-from-mods/) |
+| 1.4 | The benchmark service for plugins |
+| 1.5 | The [Benchmark tab](../benchmark/) |
+| 1.6 | The game date for plugins and a [shorter `error.log`](../using-anvil/#a-shorter-errorlog) |
+| 1.7 | The panel and the Manager in [French, German and Spanish](../using-anvil/#language); the GOG build 1.37.5.2 |
+| 1.8 | A [badge in the main menu](../install/#check-that-anvil-runs) |
+| 1.9 | The [**Catalog** tab](../install-plugins/#from-the-catalog-tab); Chinese, Japanese and Korean with [Mei](../../plugins/mei/); a problem report to copy |
+| 1.10 | The Manager finds and starts a GOG game and reads its own user folder; authors can [check symbols by digest](../plugins/manifest/#digests-instead-of-bytes) |
 
-## Planned
+**Ports of older native patches** are out: EU4 Menu Patch as [Hamweard](../../plugins/hamweard/)
+([#105](https://github.com/happy-dwarf-team/anvil/issues/105)) and EU4 Unicode Patch as
+[Mei](../../plugins/mei/) ([#104](https://github.com/happy-dwarf-team/anvil/issues/104)).
 
-- **Ports of older native patches.** EU4 Menu Patch is out as
-  [Hamweard](../../plugins/hamweard/)
-  ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)), and EU4 Unicode Patch as
-  [Mei](../../plugins/mei/)
-  ([#104](https://github.com/happy-dwarf-team/anvil/issues/104)).
+## Still open
 
-Not planned: code signing of releases; they keep SHA-256 checksums and a build attestation
-instead ([#157](https://github.com/happy-dwarf-team/anvil/issues/157)). Not scheduled: a safe
-Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4 1.37.5.
-
-## Open items now
-
-- Supported game builds: EU4 1.37.5 (Steam, Windows 64-bit) and the GOG build 1.37.5.2.
-  Bellows, Tongs, Hamweard and Mei run on both. The GOG build 1.37.5.0 waits for a copy to
-  check ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)); until then Anvil
-  tells its players to update in GOG Galaxy. Other builds start without plugins that use
-  game addresses.
-- Suspending gameplay plugins has been seen in a live ironman game (Hamweard, 4 November
-  2026), not yet in a live multiplayer session. No achievement has been earned in a full
-  campaign with Anvil yet
-  ([what was tested](../multiplayer-ironman/#what-has-not-been-tested)).
-- Bellows: the first start after a reboot has not been measured with the plugin yet. The
-  Benchmark tab shows the cold starts a series happens to contain, but cannot make one on
-  demand.
-- The French, German, Spanish, Chinese, Japanese and Korean texts of the overlay and the
-  Manager have not been checked by a native speaker yet.
-- Tongs: input in text fields, keyboard layouts other than US and clicks on the map are not
+- **Game builds.** The GOG build 1.37.5.0 waits for a copy to check
+  ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Until then Anvil tells its
+  players to update in GOG Galaxy. Other builds start without plugins that use game addresses.
+- **Ironman and multiplayer.** Suspending gameplay plugins has been seen in a live ironman game,
+  not yet in a live multiplayer session. No achievement has been earned in a full campaign with
+  Anvil yet ([what was tested](../multiplayer-ironman/#what-has-not-been-tested)).
+- **Bellows.** The first start after a reboot has not been measured with the plugin. The
+  Benchmark tab shows the cold starts a series happens to contain, but cannot make one on demand.
+- **Translations.** No native speaker has checked the French, German, Spanish, Chinese, Japanese
+  and Korean texts of the panel and the Manager yet.
+- **Tongs.** Input in text fields, keyboard layouts other than US and clicks on the map are not
   verified yet.
 
-## Not planned for now
+## Not scheduled
 
-Linux and macOS builds of EU4, 32-bit, other Paradox games, other EU4 versions than 1.37.5,
-and scripting languages inside plugins.
+A safe Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4 1.37.5.
+
+## Not planned
+
+- Code signing. Releases keep SHA-256 checksums and a build attestation instead
+  ([#157](https://github.com/happy-dwarf-team/anvil/issues/157)).
+- Linux and macOS builds of EU4, 32-bit, other Paradox games, and EU4 versions other than 1.37.5.
+- Scripting languages inside plugins.
 
 Ideas and requests go to the
-[Anvil issues](https://github.com/happy-dwarf-team/anvil/issues/new/choose) or the issues of
-the plugin.
+[Anvil issues](https://github.com/happy-dwarf-team/anvil/issues/new/choose) or the issues of the
+plugin.

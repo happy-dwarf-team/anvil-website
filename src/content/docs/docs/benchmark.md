@@ -3,31 +3,24 @@ title: Start-up benchmark
 description: Measure on your own computer how much faster a plugin makes Europa Universalis IV start, with the Benchmark tab of Anvil Manager.
 ---
 
-From Anvil 1.5, Anvil Manager has a **Benchmark** tab. It measures on your computer how
-long the game takes to start without a plugin and with it, for example
-[Bellows](../../plugins/bellows/). The game starts again and again, each start quits by
-itself once the game is ready, and nothing in your saves, mods or `anvil/anvil.toml`
-changes. When the series ends you see the result and may send an anonymous report to the
-Anvil maintainers, copy it, or do neither.
+The **Benchmark** tab of Anvil Manager measures how long the game takes to start on your
+computer, without a plugin and with it, for example [Bellows](../../plugins/bellows/).
 
-Source: the
-[start-up benchmark specification](https://github.com/happy-dwarf-team/anvil/blob/main/docs/spec/benchmark-v1.md)
-in the Anvil repository.
+The game starts again and again, and each start quits by itself once the game is ready. Nothing
+in your saves, mods or `anvil/anvil.toml` changes. At the end you see the result and may send an
+anonymous report, copy it, or do neither.
 
 ## Before you start
 
-- Anvil 1.5 or newer, installed with [Anvil Manager](../install/). Start the Manager from the
-  game folder (`AnvilManager.exe` next to `eu4.exe`).
-- The plugin you compare must be enabled and, if it comes from a mod, approved, with no
-  update waiting for approval. It must also take part in the benchmark: Bellows does from
-  0.10.0. Older plugins stop the series with a note to update them.
-- Steam running, and the game not running.
-- Time: with 5 warm starts per setup the series has at least ten game starts, each of them a
-  full start to the main menu; the tab shows how long to expect. Leave the computer alone
-  while it runs.
+- Start `AnvilManager.exe` from the game folder.
+- The plugin you compare must be enabled and, if it comes from a mod, approved, with no update
+  waiting. It must take part in the benchmark. Bellows does.
+- Steam must run, and the game must not.
+- Leave the computer alone while the series runs. With 5 warm starts per setup that is at least
+  ten full starts to the main menu. The tab shows how long to expect.
 
-The Manager checks these conditions before the series and lists each one with what to do
-when it fails. Running on battery only gives a warning. No administrator rights are needed.
+The Manager checks these before the series, and says what to do when one fails. You do not need
+administrator rights.
 
 ## Run a series
 
@@ -37,14 +30,12 @@ when it fails. Running on battery only gives a warning. No administrator rights 
    shows how many starts and minutes to expect.
 4. Click **Start the series**.
 
-The Manager then starts `eu4.exe` directly from the game folder, alternating between the
-two setups (without, with, with, without, …). Each start ends by itself, the way the menu's
-**Quit** ends the game, and the next one follows after a short pause. The tab shows which
-start runs, its phase and every finished start. While a series runs, **Play EU4** and the
-other tabs are locked.
+The Manager starts the game alternating between the two setups (without, with, with, without,
+…). The tab shows which start runs and every finished one. **Play EU4** and the other tabs are
+locked meanwhile.
 
-**Stop** lets the running start finish and quit cleanly, then ends the series. Keyboard
-and mouse use during a start does not discard it, but is noted next to it.
+**Stop** lets the running start finish, then ends the series. Using the keyboard or mouse during
+a start does not discard it, but it is noted next to the start.
 
 ## Read the result
 
@@ -59,9 +50,8 @@ and mouse use during a start does not discard it, but is noted next to it.
   measured.
 
 A start's time runs from the creation of the game process to the end of start-up
-(`anvil-game.ready`). That is about 1.5 s later than the `Running application` line in the
-game's `system.log`, so benchmark times are a little longer than the measurements on the
-plugin pages.
+(`anvil-game.ready`). That ends about 1.5 s after the `Running application` line in the game's
+`system.log`, so benchmark times are a little longer than those on the plugin pages.
 
 ### Warm and cold starts
 
@@ -100,9 +90,5 @@ What a report contains, where it goes, how long it is kept and how to have it de
 The Manager keeps the last ten reports in `anvil/data/anvil/benchmarks/` in the game folder;
 **Kept reports** on the tab opens them.
 
-## For plugin authors
-
-A plugin takes part through the core service `anvil.benchmark` (Anvil 1.4 and newer): it
-reports its own numbers, options and flags, says when its work after the game is ready is
-done, and marks starts that are not representative for it. See
-[Host API](../plugins/api/#start-up-benchmark).
+The full rules are in the
+[start-up benchmark specification](https://github.com/happy-dwarf-team/anvil/blob/main/docs/spec/benchmark-v1.md).
