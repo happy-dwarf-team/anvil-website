@@ -11,7 +11,7 @@ you ship.
 Real files: the
 [hello examples](https://github.com/happy-dwarf-team/anvil/tree/main/examples), the
 [template](https://github.com/happy-dwarf-team/anvil-plugin-template) and the plugins in
-the [catalog](../../../plugins/).
+the [Plugins page](../../../plugins/).
 
 ## plugin.toml
 

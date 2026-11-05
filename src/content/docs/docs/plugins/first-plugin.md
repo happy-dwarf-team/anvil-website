@@ -124,12 +124,10 @@ The template's CI builds with warnings as errors, runs `anvil check . --format g
 packages the plugin. Its release workflow uses
 [release-please](https://github.com/googleapis/release-please): merging the release pull
 request tags `vX.Y.Z` and attaches a zip of the plugin folder, a Workshop mod zip and
-`SHA256SUMS.txt`, with build attestations. From Anvil 1.3 players can also get the plugin
-through the Workshop mod: Anvil loads it after the player approves it (see
-[Plugins from mods](../../plugins-from-mods/)). To publish it on the Steam Workshop from CI,
+`SHA256SUMS.txt`, with build attestations. To publish the mod on the Steam Workshop from CI,
 see [Publish your plugin on the Steam Workshop](../workshop/).
 
-To be listed in the [catalog](../catalog/), the release needs an asset with a fixed name,
+To be [listed on the Plugins page](../catalog/), the release needs an asset with a fixed name,
 `<plugin-id>-windows-x64.zip`. The template's Package step writes it next to
 `<id>-<version>.zip`. In a repository made before that, add a copy under the fixed name to
 that step in `.github/workflows/build.yml`: the release workflow uploads every zip in
@@ -138,5 +136,5 @@ that step in `.github/workflows/build.yml`: the release workflow uploads every z
 ## Next
 
 - [Publish your plugin on the Steam Workshop](../workshop/)
-- [List your plugin](../catalog/) in the catalog
+- [List your plugin](../catalog/) on the Plugins page
 - [Manifest reference](../manifest/) and [Host API](../api/)

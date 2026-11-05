@@ -93,4 +93,4 @@ The Windows API is yours to use too, for example to copy a file or watch a folde
 | Change what the game does | [Your first plugin](../first-plugin/) and the [Host API](../api/) |
 | Find a function on Steam and GOG | [Steam and GOG](https://github.com/happy-dwarf-team/anvil-plugin-template#steam-and-gog) in the template |
 | Say what your plugin does in multiplayer and ironman | [`affects_gameplay`](../manifest/#ironman-and-multiplayer) |
-| Give it to players | [The catalog](../catalog/) and [the Steam Workshop](../workshop/) |
+| Give it to players | [The Plugins page](../catalog/) and [the Steam Workshop](../workshop/) |

@@ -1,12 +1,13 @@
 ---
 title: List your plugin
-description: Add a plugin to the catalog on this website.
+description: Add a plugin to the Plugins page of this website.
 ---
 
-The [plugin catalog](../../../plugins/) lists plugins that have a public release. To add
-yours, open a pull request on
-[anvil-website](https://github.com/happy-dwarf-team/anvil-website) with one Markdown file;
-the maintainer reviews it and decides on merging.
+The [Plugins page](../../../plugins/) lists plugins that have a public release. To add yours,
+open a pull request on [anvil-website](https://github.com/happy-dwarf-team/anvil-website) with
+one Markdown file. The maintainer reviews it and decides on merging.
+
+The **Catalog** tab of Anvil Manager is a separate list. It holds the team's plugins only.
 
 ## What the page shows by itself
 
@@ -61,13 +62,13 @@ What the plugin does for the player, in one or two sentences.
 | `status` | yes | `planned`, `in-development` or `released`. |
 | `gameBuilds` | yes | The `build` from the plugin's `symbols.toml`, or `['*']` if the plugin has none and runs on every build; used when GitHub cannot be reached. |
 | `affectsGameplay` | yes | `affects_gameplay` from `plugin.toml`; used when GitHub cannot be reached. |
-| `order` | no | Position in the catalog, lower first; default 100. |
+| `order` | no | Position on the Plugins page, lower first; default 100. |
 | `highlight` | no | One measured result for the card: `label`, `before`, `after`. |
 | `asset` | no | Release asset name, if not `<plugin-id>-windows-x64.zip`. |
 | `manifestPath` | no | Path of `plugin.toml` in the repository, if not `plugin/plugin.toml`. |
 | `workshop` | no | Steam Workshop item id of the plugin's mod, in quotes (`'3823747170'`). The page and the card then link the Workshop item; see [Publish your plugin on the Steam Workshop](../workshop/). |
 
-The catalog is also published as data at [`plugins.json`](../../../plugins.json), with each
+The list is also published as data at [`plugins.json`](../../../plugins.json), with each
 plugin's id, name, tagline, repository, status, order, page URL, icon and Steam Workshop URL
 (`workshop`, or `null`).
 [happydwarf.dev](https://happydwarf.dev/) reads it to list the team's plugins.
