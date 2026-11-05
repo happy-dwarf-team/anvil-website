@@ -134,6 +134,9 @@ All its events are published on the game's main thread:
 | `anvil-game.frame` | `AnvilGameFrame` | After every frame of the main loop. Keep the handler short. |
 | `anvil-game.session` | `AnvilGameSession` | A game session started or ended, with its `ironman` and `multiplayer` flags. |
 | `anvil-game.main_menu` | none | From Anvil 1.8: the main menu came up or went away. Ask the service's `main_menu`. |
+| `anvil-game.day`, `.month`, `.year` | `AnvilGameDateChange` | From Anvil 1.11: the date moved past that step, with `date`, `previous` and `days`. At most one of each per frame, and `days` says how many it covers. |
+| `anvil-game.player` | `AnvilGamePlayerChange` | From Anvil 1.11: the player's country changed within a session. |
+| `anvil-game.war` | `AnvilGameWarChange` | From Anvil 1.11: a war started or ended, checked once a game day. Not for the wars a session starts with. |
 
 Its service `anvil-game.game` (version 1, `AnvilGameService`) has `ready`,
 `main_thread_id`, `frame_number`, `session` and `run_on_main_thread(work, context)`, which
@@ -166,6 +169,81 @@ void load(anvil::Host& host) override {
     });
 }
 ```
+
+### The world
+
+From Anvil 1.11 the service `anvil-game.world` (version 1, `AnvilGameWorldService`) reads the
+running campaign, with no game addresses of your own:
+
+| Call | Gives |
+| --- | --- |
+| `player(&tag)` | The country the game treats as the player's |
+| `province_limit()` | Valid province IDs are 1 up to this, exclusive |
+| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland |
+| `province_name(id, buffer, capacity, &length)` | The name the game shows, in UTF-8 |
+| `province_cores(id, tags, capacity, &count)` | The countries with a core |
+| `country(tag, &out)` | Capital, province count, treasury, stability, prestige, manpower, income |
+| `country_provinces(tag, ids, capacity, &count)` | The provinces it owns |
+| `war_ids(ids, capacity, &count)` | The running wars |
+| `war(id, &out)`, `war_name`, `war_side` | Who started it, its name, and who is on each side |
+
+- **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
+  `run_on_main_thread` work, while a session runs. Anywhere else a call answers
+  `ANVIL_ERROR_WRONG_PHASE` and reads nothing.
+- **Structs:** set `size` to `sizeof` the struct before a call. Values marked x 1000 in the
+  header are as the game stores them, so 4500 is 4.5.
+- **Lists and names:** the buffers are yours. They are filled as far as they fit and the count
+  or length gets the whole size, so a capacity of 0 asks for it.
+- **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms.
+- **Not on every build:** after a port some values may be missing. A country's `values` field
+  says which it has, and the war calls answer `ANVIL_ERROR_NOT_DECLARED`.
+
+```cpp
+const auto* world = host.service<AnvilGameWorldService>(ANVIL_GAME_WORLD_SERVICE, ANVIL_GAME_WORLD_SERVICE_VERSION);
+
+host.subscribe(ANVIL_GAME_EVENT_MONTH, [host, world](std::string_view, const void*) {
+    AnvilGameTag me{};
+    AnvilGameCountry country{};
+    country.size = sizeof(country);
+    if (world->player(&me) == ANVIL_OK && world->country(me.text, &country) == ANVIL_OK) {
+        host.info("{}: {} ducats", me.text, country.treasury / 1000);
+    }
+});
+```
+
+It only reads, so it needs no `affects_gameplay = true`. It shows everything, also what fog of
+war hides from a player; a plugin that shows such values in multiplayer does not enter the
+[Plugins page](../catalog/).
+
+### Windows
+
+From Anvil 1.11 the service `anvil-overlay.panel` (version 1, `AnvilPanelService`, in
+[`anvil_panel.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_panel.h))
+shows a window of yours in Anvil's overlay. You hand over rows and the overlay draws them:
+
+```cpp
+const auto* panels = host.service<AnvilPanelService>(ANVIL_PANEL_SERVICE, ANVIL_PANEL_SERVICE_VERSION);
+AnvilPanel* panel = nullptr;
+panels->create("My window", &panel);
+
+const AnvilPanelRow rows[] = {{ANVIL_PANEL_TEXT, 0, "Treasury", "100.0", 0},
+                              {ANVIL_PANEL_SEPARATOR, 0, nullptr, nullptr, 0},
+                              {ANVIL_PANEL_BUTTON, 0, "Refresh", nullptr, 1}};
+panels->set_rows(panel, rows, 3, sizeof(AnvilPanelRow));
+panels->on_click(panel, [](void* context, uint64_t id) { /* a button */ }, nullptr);
+panels->show(panel, 1);
+```
+
+- Every call may come from any thread, and rows are copied.
+- A click runs on the main thread after a frame, so the handler may read the world. Without
+  `anvil-game` no click arrives.
+- The player can close the window; the switch in the panel's status tab brings it back.
+- Text is UTF-8 and yours to translate: `language()` gives the player's language. Chinese,
+  Japanese and Korean come from the fonts Windows ships.
+- The overlay runs on Direct3D 9: on the OpenGL renderer the calls work and nothing is drawn.
+
+For a window in the game's own interface you need your own addresses; there is no service for
+that yet.
 
 ## Start-up benchmark
 
