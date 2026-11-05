@@ -67,10 +67,9 @@ first start.
   So in an ironman or multiplayer game Anvil suspends Tongs: input and console commands answer
   with an error, and reads go on. You can [allow it there](../../docs/multiplayer-ironman/);
   console commands then also need `game_calls_ironman` or `game_calls_multiplayer`.
-- **Not verified yet:** suspension in a live ironman or multiplayer game, input in text fields, keyboard
+- **Not verified yet:** suspension in a live multiplayer game, input in text fields, keyboard
   layouts other than US, right, middle and double clicks, clicks on the map (only interface
-  widgets were tried), a minimized game window, and the release files of 0.16.0 and 0.17.0 and
-  the Workshop mod in the game.
+  widgets were tried), a minimized game window, and the Workshop mod in the game.
 - **No dragging.** There is no command for it yet.
 - After a load from the in-game menu, that menu stays open and the speed keys do nothing until
   it is closed.
@@ -161,8 +160,8 @@ README.
 
 ## Tested
 
-All checks ran in the lab on EU4 1.37.5 (Steam) with the original `eu4.exe`, on one development
-machine, with development builds of Tongs. Details are in the
+All checks ran in the lab on one development machine, on EU4 1.37.5 (Steam) with the original
+`eu4.exe` unless a line says otherwise. Details are in the
 [design notes](https://github.com/happy-dwarf-team/tongs/blob/main/docs/design.md) and the
 [MCP README](https://github.com/happy-dwarf-team/tongs/blob/main/mcp/README.md).
 
@@ -181,6 +180,10 @@ machine, with development builds of Tongs. Details are in the
   [tongs#115](https://github.com/happy-dwarf-team/tongs/pull/115)).
 - **`max_pause`:** a run that an event paused ended after 5 s of pause instead of waiting for its
   300 s timeout.
+- **GOG build 1.37.5.2:** one game loaded a save through the interface, ran to a date and read the
+  game; console commands and events were not tried there (2 November 2026).
+- **Ironman:** Anvil suspended Tongs in a live ironman game and reads went on (4 November 2026,
+  Tongs 0.26.0, Anvil 1.9.0).
 
 ## The name
 

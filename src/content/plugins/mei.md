@@ -25,9 +25,9 @@ together with Anvil. Mei does the same job as an Anvil plugin.
   line, and a long paragraph crashed it.
 - **Fonts.** A translation mod's own fonts stay. Where the game would use its own fonts, Mei brings
   fonts made from Source Han Sans, with about 13,000 characters.
-- **Search.** The diplomacy country list and the province finder match Chinese characters, full
-  pinyin, initials and mixed input.
-- **Typing.** Typed and IME-committed text reaches text fields. Backspace, the arrow keys,
+- **Search.** The province finder matches Chinese characters, full pinyin, initials and mixed
+  input. The diplomacy country list uses the same search, but was not checked in the game.
+- **Typing.** Finished text reaches text fields, as an IME commits it. Backspace, the arrow keys,
   selecting, undo and paste work by character.
 
 ## Install
@@ -55,15 +55,15 @@ pinyin, and each applies at the next start.
 | `utf8_localization` | Keeps the game's text in UTF-8 and draws it. Keep `search` on with it: the game's own search misses accented names |
 | `utf8_scripts` | Reads script files and saves in UTF-8, so names from a supplementary translation mod show |
 | `bundled_fonts` | Uses Mei's fonts where the game would use its own |
-| `utf8_input` | Lets you type Chinese, Japanese and Korean |
+| `utf8_input` | Lets finished Chinese, Japanese and Korean text reach text fields |
 | `search` | Chinese and pinyin search |
 | `typo_tolerance` | Full pinyin of 5 or more letters still matches with one typo |
 | `fuzzy_pinyin` | zh/z, ch/c, sh/s, n/l, en/eng and in/ing match each other. Off by default |
 
 ## Limitations
 
-- **IME:** only committed text was checked. The candidate window and the text being composed were
-  not.
+- **IME:** no real IME was used. The tests sent finished text to the window, so the candidate window
+  and the text being composed were not checked.
 - **Japanese kanji** in Mei's own fonts take their Simplified Chinese shapes.
 - **No Japanese translation** for 1.37 was found on the Workshop. Only test text was drawn.
 - **Not checked yet:** the diplomacy country list in the game, a text field of several rows, and
