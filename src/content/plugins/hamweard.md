@@ -39,7 +39,9 @@ Manager's **Plugins** tab, or add it to `allow_ironman` in
 
 - **It can affect gameplay.** The next campaign starts in the same process instead of a fresh one,
   so anything the game's reset leaves behind could change it. In the lab a save made after three
-  returns matched one from a fresh process, apart from the campaign id and the random seed.
+  returns matched one from a fresh process, apart from the campaign id and the random seed. With
+  Anbennar a new campaign after a return differed from one in a fresh process, and the cause is not
+  known yet.
 - **Canals restart the game.** A canal rewrites the map, and the map outlives the campaign. Once a
   save or event has applied a canal, Exit to Menu and Back restart the game for the rest of that
   sitting.
@@ -94,7 +96,7 @@ All runs were in the lab on one development machine. The
   Game Browser, ironman when allowed, on Steam and GOG, and Anbennar (returns in 5.5 to 6.6
   seconds).
 - **The same seed** gave the same new campaign byte by byte, the campaign id apart, in a fresh
-  process and after returns (4 November 2026).
+  process and after returns, without Anbennar (4 November 2026).
 - **The achievement list** (4 November 2026): 27 returns in one process, no restart and no crash.
   After a return the list stayed empty. An ironman save loaded afterwards had its 52 achievements,
   and a new ironman campaign said achievements can be earned.

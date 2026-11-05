@@ -9,19 +9,21 @@ gameplay, and Anvil acts on that.
 
 ## Plugin by plugin
 
-| Plugin | Changes gameplay | Multiplayer | Ironman |
+| Plugin | Declares gameplay changes | Multiplayer | Ironman |
 | --- | --- | --- | --- |
-| [Bellows](../../plugins/bellows/) | No | Stays on, tested | Stays on |
+| [Bellows](../../plugins/bellows/) | No | Stays on, tested on the host only | Stays on |
 | [Mei](../../plugins/mei/) | No | Stays on, not tested | Stays on |
 | [Hamweard](../../plugins/hamweard/) | Yes | Off | Off, unless you allow it |
 | [Tongs](../../plugins/tongs/) | Yes | Off, unless you allow it | Off, unless you allow it |
 | Standard plugins (`anvil-game`, `anvil-overlay`, `anvil-log-throttle`) | No | Stay on | Stay on |
 
-- **Bellows in multiplayer:** the host ran Bellows, the other computer did not: 233 game days
-  without an out-of-sync.
+- **Bellows in multiplayer:** the host ran Bellows 0.17.0, the other computer did not: 233 game
+  days on one save without an out-of-sync. Bellows on another player's computer, and later versions,
+  are not tested.
 - **Mei in multiplayer:** every player needs the same mods anyway, and a player without Mei
   sees names written with it wrongly.
-- **Hamweard in multiplayer:** Exit to Menu restarts the game as usual.
+- **Hamweard in multiplayer:** Exit to Menu restarts the game as usual. That comes from reading the
+  game's code: no session was run.
 
 Each plugin's page has the details and the source of each test.
 
@@ -55,7 +57,7 @@ allowed in ironman, two new ironman games in a row showed that achievements can 
 - No achievement has been earned in a full ironman campaign with Anvil yet.
 - Anvil's suspension has been seen in a live ironman game (Hamweard, 4 November 2026), not yet
   in a live multiplayer session.
-- Multiplayer has been tested with Bellows only.
+- Multiplayer has been tested only with Bellows 0.17.0 on the host.
 
 If you play these and something goes wrong, or goes right where we say "not tested",
 [tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose).

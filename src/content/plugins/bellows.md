@@ -1,7 +1,7 @@
 ---
 name: Bellows
-summary: Faster Europa Universalis IV start-up, simulation and saves. Makes the game start and run faster with the game's own results and without changing game files.
-tagline: Makes the game start faster and the years pass sooner, without changing game files or what the game computes.
+summary: Faster Europa Universalis IV start-up, simulation and saves. Makes the game start and run faster without changing game files or rules.
+tagline: Makes the game start faster and the years pass sooner, without changing game files or the rules of the game.
 repo: https://github.com/happy-dwarf-team/bellows
 status: released
 gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
@@ -78,13 +78,14 @@ all of them.
 - **It uses up to 1 GB of extra memory** during start-up.
 - **The map redraws less often at speed 5:** about 16 instead of 22 times a second while you do
   nothing. A key press or click still gets a frame at once.
-- **The simulation numbers come from one save** of 1719. Other saves, mod sets and much later dates
-  are not verified yet, and a late-game year has no comparison without Bellows.
+- **The simulation numbers come from one save** of 1719. Other saves and mod sets are not verified
+  yet, and a late-game year has no comparison without Bellows under the same conditions.
 - **Files must not change while the game starts.** A file that a tool writes into the game or mod
   folders during start-up may be missed until the next start. This matters [to mod
   authors](#for-mod-authors).
 - **Not tested yet:** a save written with `save_compress_parallel` in multiplayer, ironman and cloud
-  saves, and `transfer_skip` on a real multiplayer host, in ironman and with cloud saves.
+  saves, `transfer_skip` on a real multiplayer host, in ironman and with cloud saves, and in
+  multiplayer Bellows on a computer other than the host's, or any version after 0.17.0.
 
 ### AI ties and multiplayer
 
@@ -99,10 +100,11 @@ Ties do not explain everything. In the lab, runs of one vanilla save of 1444 som
 different game with the same seed, also with no Bellows at all. The cause is not found yet, and
 neither is whether Bellows changes how often it happens.
 
-In multiplayer the known ties are safe. The host's AI makes these choices and sends them to every player, so
-all games stay the same whoever runs Bellows. In the lab the host ran Bellows 0.17.0 and the other
-computer ran none: 233 game days without an out-of-sync
-([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)).
+In multiplayer the known ties cannot put games out of sync: the host's AI makes these choices and
+sends them to every player. In the lab the host ran Bellows 0.17.0 and the other computer ran none:
+233 game days without an out-of-sync
+([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)). That is the only multiplayer
+test so far: one save, Bellows on the host only, an older version.
 
 ## Troubleshooting
 
@@ -252,7 +254,8 @@ More than 1.4 million answers compared with the game's own code: 0 differences.
 | `save_compress` on | 0.831 s | 0.823–0.842 s |
 | on, with `save_compress_parallel` | **0.612 s** | 0.575–0.637 s |
 
-Every autosave with the module on is byte for byte what the game's code gives. A save written with
+With `"verify"`, every member of the compressed autosaves was byte for byte what the game's code
+gives (0 differences in 10 members of the save of 1719). A save written with
 `save_compress_parallel` loaded in a game without Bellows, and other tools read it.
 
 ### Loading
