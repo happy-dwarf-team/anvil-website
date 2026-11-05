@@ -151,35 +151,6 @@ shows the date as of the last frame of the main loop. It was added within servic
 1, so check `ANVIL_GAME_HAS(service, date)` before calling it, or depend on `anvil-game`
 with `version = "^1.6.0"`.
 
-#### Reading the world
-
-From Anvil 1.11 a plugin with no `symbols.toml` can read the campaign through the service
-`anvil-game.world` (version 1, `AnvilGameWorldService`): `player`, `province_limit`, `province`,
-`province_name`, `province_cores`, `country`, `country_provinces`, `war_ids`, `war`, `war_name`
-and `war_side`. Depend on `anvil-game` with
-`version = "^1.11.0"`, and treat a NULL service as "not on this build": a port of `anvil-game` to
-a new game build may leave the world out.
-
-A call works only on the main thread, in a handler of an `anvil-game` event or in
-`run_on_main_thread`, while a session runs. Anything else returns `ANVIL_ERROR_WRONG_PHASE`.
-Strings and lists are your buffers, filled as far as they fit, with the whole size answered, and
-text is UTF-8. The reads show everything, terra incognita included, so a plugin that shows such
-values in multiplayer does not enter the catalog.
-
-#### A window in the overlay
-
-From Anvil 1.11 a plugin can show a window without game addresses, a mod or an ImGui context,
-through `anvil-overlay.panel` (version 1, `AnvilPanelService` in
-[`anvil_panel.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_panel.h)).
-It hands over rows (text, a value, a button, a separator) and the overlay draws them. A panel
-changes nothing in the game, so it needs no `affects_gameplay = true`. The player can close it
-and bring it back from the panel's status tab.
-
-Depend on `anvil-overlay` with `optional = true` if the plugin also works without a window. Calls
-may come from any thread, and clicks run on the main thread after a frame, so a click handler may
-read the world. Anvil translates none of the text: ask `language()` and choose your own words.
-The overlay runs on Direct3D 9, so on the OpenGL renderer nothing is drawn.
-
 In C++, `host.service` looks the service up and `host.subscribe` takes a handler with the
 event's name and its payload:
 
@@ -202,7 +173,9 @@ void load(anvil::Host& host) override {
 ### The world
 
 From Anvil 1.11 the service `anvil-game.world` (version 1, `AnvilGameWorldService`) reads the
-running campaign, with no game addresses of your own:
+running campaign, with no game addresses of your own. Depend on `anvil-game` with
+`version = "^1.11.0"`, and treat a NULL service as "not on this build": a port of `anvil-game` to
+a new game build may leave the world out.
 
 | Call | Gives |
 | --- | --- |
@@ -248,7 +221,8 @@ war hides from a player; a plugin that shows such values in multiplayer does not
 
 From Anvil 1.11 the service `anvil-overlay.panel` (version 1, `AnvilPanelService`, in
 [`anvil_panel.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_panel.h))
-shows a window of yours in Anvil's overlay. You hand over rows and the overlay draws them:
+shows a window of yours in Anvil's overlay, with no game addresses, mod or ImGui context of your
+own. You hand over rows and the overlay draws them:
 
 ```cpp
 const auto* panels = host.service<AnvilPanelService>(ANVIL_PANEL_SERVICE, ANVIL_PANEL_SERVICE_VERSION);
@@ -263,6 +237,9 @@ panels->on_click(panel, [](void* context, uint64_t id) { /* a button */ }, nullp
 panels->show(panel, 1);
 ```
 
+- Depend on `anvil-overlay` with `version = "^1.11.0"`, and with `optional = true` if the plugin
+  also works without a window.
+- A window changes nothing in the game, so it needs no `affects_gameplay = true`.
 - Every call may come from any thread, and rows are copied.
 - A click runs on the main thread after a frame, so the handler may read the world. Without
   `anvil-game` no click arrives.
