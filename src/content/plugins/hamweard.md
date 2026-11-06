@@ -45,6 +45,10 @@ no longer does anything.
 - **Canals.** A canal changes the map itself, and the map outlives the campaign. The plugin copies
   the map before the first canal and puts it back on a return. If it cannot be put back, that
   return restarts the game, as it does without the plugin.
+- **Random New World restarts.** After a Random New World map, from a new campaign or a loaded
+  save, Exit to Menu and Back restart the game, as they do without the plugin. The game's own
+  restore of the map misses part of it: in the lab Tortuga was no longer in the Caribbean colonial
+  region, and the next campaign's missions differed.
 - **Multiplayer: no return, and sessions not tested.** Exit to Menu and Back restart the game in
   any multiplayer session, as they do without the plugin. The plugin checks that itself and stays
   loaded. That comes from reading the game's code: no lobby was hosted or joined, so the Steam
@@ -63,7 +67,7 @@ no longer does anything.
   after 40 in a row as at the start. When less than 1 GB of the system's commit limit is left, a
   return restarts the game instead.
 - **Not seen in a test:** some message popups (an heir to name, a new colonial nation), the window
-  of a lost game, the end of the game in 1821, custom nations and Random New World.
+  of a lost game and custom nations.
 - EU4 1.37.5 on Steam and the GOG build 1.37.5.2. On any other build Anvil does not load the plugin.
 
 A game bug to know about: click a save in the Single Player list and start a new campaign from the
@@ -80,6 +84,8 @@ plugin chose a restart, and why.
 | Exit to Menu or Back restarts the game | The plugin is not loaded | Check in the Anvil panel that Hamweard is loaded and approved. |
 | The same, and the log says `the map could not be put back` | A canal changed the map and the saved copy no longer fits it | Nothing to fix: a campaign does not start on the changed map, so the plugin restarts the game. |
 | The same, and the log says `multiplayer` | A multiplayer session ends with a restart | Expected. |
+| The same, and the log says `Random New World` | Such a map changes more than a return can put back | Expected. |
+| The same, and the log says `too little memory` | Less than 1 GB of the system's commit limit was left | Expected: the restart gives the memory back. |
 | Anvil refuses to load Hamweard | Another game build, or the original EU4 Menu Patch changed the same code | Use a supported build, and remove the Menu Patch DLL. |
 
 A crash or anything odd after a return: open an
