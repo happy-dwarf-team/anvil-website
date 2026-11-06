@@ -66,8 +66,8 @@ no longer does anything.
   campaign without mods, about 60 MB and 220 MB with Anbennar in the lab. A return took as long
   after 40 in a row as at the start. When less than 1 GB of the system's commit limit is left, a
   return restarts the game instead.
-- **Not seen in a test:** some message popups (an heir to name, a new colonial nation), the window
-  of a lost game and custom nations.
+- **Not seen in a test:** some message popups (an heir to name, a new colonial nation) and the
+  window of a lost game.
 - EU4 1.37.5 on Steam and the GOG build 1.37.5.2. On any other build Anvil does not load the plugin.
 
 A game bug to know about: click a save in the Single Player list and start a new campaign from the
@@ -101,6 +101,10 @@ All runs were in the lab on one development machine. The
   years long, with wars, battles and peace deals. No crash, and each return took 3.5 to 4 seconds.
 - **GOG build 1.37.5.2** (3 November 2026): five campaigns in one process, seven returns in 4.0 to
   4.5 seconds each, no crash.
+- **Hard return test** (6 November 2026): 40 returns in one process on Steam, 16 on GOG, 7 with
+  Anbennar, 3 in ironman with Anbennar, 4 with Warhammer Fantasy Universalis, and the end of the
+  game in 1821 from a 64.5 MB save. A new campaign after them matched a fresh one, apart from the
+  campaign id. The same test found the Random New World and custom nation bugs, both fixed.
 - **Hamweard 1.1.0 from the release** (4 November 2026): 66 returns in eight game runs, no crash.
   They covered new games, saves and loads after a return, changing country, naval battles, the
   Game Browser, ironman, on Steam and GOG, and Anbennar (returns in 5.5 to 6.6 seconds).
