@@ -13,17 +13,19 @@ gameplay, and Anvil acts on that.
 | --- | --- | --- | --- |
 | [Bellows](../../plugins/bellows/) | No | Stays on, tested on the host only | Stays on |
 | [Mei](../../plugins/mei/) | No | Stays on, not tested | Stays on |
-| [Hamweard](../../plugins/hamweard/) | Yes | Off | Off, unless you allow it |
+| [Hamweard](../../plugins/hamweard/) | No | Stays on, restarts as usual | Stays on |
 | [Tongs](../../plugins/tongs/) | Yes | Off, unless you allow it | Off, unless you allow it |
 | Standard plugins (`anvil-game`, `anvil-overlay`, `anvil-log-throttle`) | No | Stay on | Stay on |
 
-- **Bellows in multiplayer:** the host ran Bellows 0.17.0, the other computer did not: 233 game
-  days on one save without an out-of-sync. Bellows on another player's computer, and later versions,
-  are not tested.
+- **Bellows in multiplayer:** the host ran Bellows, the other computer did not: 233 game days on
+  0.17.0 and 231 on the code of 1.3.0, on one save, without an out-of-sync. The second run was at
+  speed 3, because the other computer could not keep up at 5. Bellows on another player's computer
+  is not tested.
 - **Mei in multiplayer:** every player needs the same mods anyway, and a player without Mei
   sees names written with it wrongly.
-- **Hamweard in multiplayer:** Exit to Menu restarts the game as usual. That comes from reading the
-  game's code: no session was run.
+- **Hamweard in multiplayer:** Exit to Menu restarts the game as usual, by the plugin's own check.
+  Tested on Steam on 6 November 2026 with Hamweard on both computers: about four months of game
+  without an out-of-sync, a client rejoining the running campaign included.
 
 Each plugin's page has the details and the source of each test.
 
@@ -35,7 +37,7 @@ runs, and puts them back afterwards. The log says
 there: tick it on the Manager's **Plugins** tab, or edit `anvil/anvil.toml`:
 
 ```toml
-allow_ironman = ["hamweard"]
+allow_ironman = ["tongs"]
 allow_multiplayer = []
 ```
 
@@ -50,14 +52,14 @@ team's plugin mods are published with a check that refuses such a change.
 In one test (EU4 1.37.5 from Steam, Anvil 0.2 with a plugin in the game folder, and a mod that
 holds only an `anvil/` folder), the checksum in the main menu stayed the vanilla one, and a new
 ironman game did not name a modified game. On 4 November 2026, with Anvil 1.9 and Hamweard
-allowed in ironman, two new ironman games in a row showed that achievements can be earned.
+in ironman, two new ironman games in a row showed that achievements can be earned.
 
 ## What has not been tested
 
 - No achievement has been earned in a full ironman campaign with Anvil yet.
-- Anvil's suspension has been seen in a live ironman game (Hamweard, 4 November 2026), not yet
-  in a live multiplayer session.
-- Multiplayer has been tested only with Bellows 0.17.0 on the host.
+- Anvil's suspension has been seen in a live ironman game (Hamweard 1.1.0, 4 November 2026), not
+  yet in a live multiplayer session.
+- Multiplayer has been tested with Bellows on the host and with Hamweard on both computers.
 
 If you play these and something goes wrong, or goes right where we say "not tested",
 [tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose).
