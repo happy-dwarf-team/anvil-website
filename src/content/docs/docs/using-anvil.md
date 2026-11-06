@@ -119,7 +119,7 @@ a game session starts, and plugins that depend on it are skipped without it.
 enabled = true                # false starts the game without plugins
 disabled_plugins = ["bellows"]
 log_level = "info"            # "debug", "info", "warning" or "error"
-allow_ironman = ["hamweard"]  # plugins you allow in ironman
+allow_ironman = ["tongs"]     # plugins you allow in ironman
 allow_multiplayer = []        # plugins you allow in multiplayer
 ```
 

@@ -5,7 +5,7 @@ tagline: Takes you from a campaign back to the main menu in seconds, without res
 repo: https://github.com/happy-dwarf-team/hamweard
 status: released
 gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
-affectsGameplay: true
+affectsGameplay: false
 order: 30
 workshop: '3832650792'
 manifestPath: plugin.toml
@@ -31,27 +31,30 @@ Hamweard needs [Anvil](../../docs/install/) 1.9 or newer. Hamweard 1.0 needed 1.
 
 ## Settings
 
-Hamweard has no settings of its own. To use it in ironman, tick **Allow in ironman** on the
-Manager's **Plugins** tab, or add it to `allow_ironman` in
-[`anvil/anvil.toml`](../../docs/using-anvil/#anvils-settings-file).
+Hamweard has no settings of its own. It works in ironman with nothing to allow. An
+`allow_ironman` entry for it in [`anvil/anvil.toml`](../../docs/using-anvil/#anvils-settings-file)
+no longer does anything.
 
 ## Limitations
 
-- **It can affect gameplay.** The next campaign starts in the same process instead of a fresh one,
-  so anything the game's reset leaves behind could change it. In the lab a save made after three
-  returns matched one from a fresh process, apart from the campaign id and the random seed. A new
-  campaign after a return matched a fresh one with Anbennar too, and after a save with canals.
+- **A return does not change the simulation.** The next campaign starts in the same process
+  instead of a fresh one, and in the lab a save made after three returns matched one from a fresh
+  process, apart from the campaign id and the random seed. A new campaign after a return matched a
+  fresh one with Anbennar too, and after a save with canals. That is a comparison of the campaigns
+  and mods tested, not a proof for every mod.
 - **Canals.** A canal changes the map itself, and the map outlives the campaign. The plugin copies
   the map before the first canal and puts it back on a return. If it cannot be put back, that
   return restarts the game, as it does without the plugin.
-- **Multiplayer: off, and sessions not tested.** Exit to Menu and Back restart the game in any
-  multiplayer session, as they do without the plugin. That comes from reading the game's code: no
-  lobby was hosted or joined, so the Steam lobby clean-up from the original has never run.
+- **Multiplayer: no return, and sessions not tested.** Exit to Menu and Back restart the game in
+  any multiplayer session, as they do without the plugin. The plugin checks that itself and stays
+  loaded. That comes from reading the game's code: no lobby was hosted or joined, so the Steam
+  lobby clean-up from the original has never run.
 - **Multiplayer after a campaign needs a restart.** With a Paradox session online, the game asks
   for one after the single player screen, and a return keeps that request.
-- **Ironman: off unless you allow it.** Allowed, it worked on Steam and GOG, the save on leaving
-  included. Without it Exit to Menu restarts the game. An ironman save does not update
-  Continue game, so load it from the Single Player list.
+- **Ironman: on, with nothing to allow.** It works on Steam and GOG, the save on leaving included,
+  and a new ironman campaign after a return says achievements can be earned. No achievement has
+  been earned in a test yet: the proof comes from the game's own state, not from Steam. An ironman
+  save does not update Continue game, so load it from the Single Player list.
 - **Mods: tested, not all of them.** The plugin changes no game files, so the checksum stays the
   same. Anbennar with Proper 2K UI and a playset of ten interface and graphics mods ran without
   trouble. A mod that does something unusual when a campaign ends may behave differently.
@@ -72,7 +75,7 @@ plugin chose a restart, and why.
 
 | What you see | Why | What to do |
 | --- | --- | --- |
-| Exit to Menu or Back restarts the game | The plugin is not loaded, or Anvil suspended it | Check in the Anvil panel that Hamweard is loaded and approved. In ironman, [allow it](#settings). |
+| Exit to Menu or Back restarts the game | The plugin is not loaded | Check in the Anvil panel that Hamweard is loaded and approved. |
 | The same, and the log says `the map could not be put back` | A canal changed the map and the saved copy no longer fits it | Nothing to fix: a campaign does not start on the changed map, so the plugin restarts the game. |
 | The same, and the log says `multiplayer` | A multiplayer session ends with a restart | Expected. |
 | Anvil refuses to load Hamweard | Another game build, or the original EU4 Menu Patch changed the same code | Use a supported build, and remove the Menu Patch DLL. |
@@ -92,14 +95,16 @@ All runs were in the lab on one development machine. The
   4.5 seconds each, no crash.
 - **Hamweard 1.1.0 from the release** (4 November 2026): 66 returns in eight game runs, no crash.
   They covered new games, saves and loads after a return, changing country, naval battles, the
-  Game Browser, ironman when allowed, on Steam and GOG, and Anbennar (returns in 5.5 to 6.6
-  seconds).
+  Game Browser, ironman, on Steam and GOG, and Anbennar (returns in 5.5 to 6.6 seconds).
 - **The same seed** gave the same new campaign byte by byte, the campaign id apart, in a fresh
   process and after returns, without Anbennar (4 November 2026), and with Anbennar and after a save
   with canals, on Steam and GOG (5 November 2026).
 - **The achievement list** (4 November 2026): 27 returns in one process, no restart and no crash.
   After a return the list stayed empty. An ironman save loaded afterwards had its 52 achievements,
   and a new ironman campaign said achievements can be earned.
+- **Ironman by default** (5 November 2026): no `anvil.toml` entry, no warning, achievements can be
+  earned and a return needs no restart, on Steam and GOG. On GOG a month of play after a return ran
+  the game's achievement check on all 175 achievements, as in a fresh process.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
 fourth campaign of such a series.
