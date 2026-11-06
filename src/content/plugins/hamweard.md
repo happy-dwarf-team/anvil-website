@@ -58,8 +58,10 @@ no longer does anything.
 - **Mods: tested, not all of them.** The plugin changes no game files, so the checksum stays the
   same. Anbennar with Proper 2K UI and a playset of ten interface and graphics mods ran without
   trouble. A mod that does something unusual when a campaign ends may behave differently.
-- **Memory grows by 5 to 15 MB per return.** The menu stayed at full speed over 23 returns in a
-  row. After many returns in one sitting, restart the game now and then.
+- **Memory grows with each return, more with a big mod:** about 2 MB per **Back** and 8 MB per
+  campaign without mods, about 60 MB and 220 MB with Anbennar in the lab. A return took as long
+  after 40 in a row as at the start. When less than 1 GB of the system's commit limit is left, a
+  return restarts the game instead.
 - **Not seen in a test:** some message popups (an heir to name, a new colonial nation), the window
   of a lost game, the end of the game in 1821, custom nations and Random New World.
 - EU4 1.37.5 on Steam and the GOG build 1.37.5.2. On any other build Anvil does not load the plugin.
