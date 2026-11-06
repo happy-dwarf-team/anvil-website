@@ -15,6 +15,8 @@ the [Plugins page](../../../plugins/).
 
 ## plugin.toml
 
+From Anvil 1.12, a `plugin.toml` over 1 MB, or a `symbols.toml` or `settings.toml` over 16 MB, is not read.
+
 ```toml
 id = "my-plugin"                  # [a-z0-9-]+, max 64 characters, unique
 name = "My Plugin"
