@@ -51,10 +51,11 @@ no longer does anything.
   region, and the next campaign's missions differed.
 - **Multiplayer: no return, and one test with a second player.** Exit to Menu and Back restart the game in
   any multiplayer session, as they do without the plugin. The plugin checks that itself and stays
-  loaded. That comes from reading the game's code: no lobby was hosted or joined, so the Steam
-  lobby clean-up from the original has never run.
-- **Multiplayer after a campaign needs a restart.** With a Paradox session online, the game asks
-  for one after the single player screen, and a return keeps that request.
+  loaded. Tested on Steam with a host and a client, both with Hamweard: no desync in about four
+  months of game, a client who left and came back into the running campaign included.
+- **Multiplayer after a campaign needs a restart.** A process that has played is not meant to go
+  on to multiplayer. After a return the Multiplayer button does nothing, and its tooltip says why.
+  Restart the game once.
 - **Ironman: on, with nothing to allow.** It works on Steam and GOG, the save on leaving included,
   and a new ironman campaign after a return says achievements can be earned. One achievement was
   earned for real on Steam in a campaign after a return, so the proof is one case and the game's own state. An ironman
