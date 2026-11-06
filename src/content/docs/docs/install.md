@@ -22,7 +22,8 @@ You need **EU4 1.37.5 for Windows (64-bit) from Steam**, or the **GOG build 1.37
 4. Click **Install Anvil**. It puts `version.dll`, an `anvil` folder and a copy of the Manager
    next to `eu4.exe`. From now on, start the Manager from the game folder: in Steam, right-click
    Europa Universalis IV → **Manage** → **Browse local files**; in GOG Galaxy, **Manage installation**
-   → **Show folder**. You can delete the file you downloaded.
+   → **Show folder**. **Add to the Start menu** on the **Anvil** tab saves you that walk. You can
+   delete the file you downloaded.
 5. [Add plugins](../install-plugins/). The **Catalog** tab installs them with a click.
 6. Start the game with **Play EU4**, or from Steam, GOG Galaxy or the Paradox launcher as usual.
 7. [Check that Anvil runs](#check-that-anvil-runs).
@@ -79,12 +80,12 @@ changed.
 ## Uninstall
 
 With the Manager: on the **Anvil** tab, click **Uninstall Anvil**. It removes `version.dll`,
-the standard plugins and `AnvilManager.exe`, and the game is vanilla at once. Your plugins,
+the standard plugins, `AnvilManager.exe` and its Start menu entry, and the game is vanilla at once. Your plugins,
 their settings, crash reports and logs stay, so installing again brings everything back. Tick
 **Also remove my plugins…** to remove the whole `anvil` folder too.
 
-By hand: delete `version.dll`, `AnvilManager.exe` and the `anvil` folder. Nothing else was
-changed.
+By hand: delete `version.dll`, `AnvilManager.exe` and the `anvil` folder, and the Start menu
+entry if you added one. Nothing else was changed.
 
 A plugin from the Steam Workshop does nothing without Anvil. To remove it too, unsubscribe
 from it.
