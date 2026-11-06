@@ -346,6 +346,10 @@ After a game update, `anvil port` places a plugin's symbols in the new build. It
 anvil port symbols.toml --from <old eu4.exe> --to <new eu4.exe> --build <new build id> --out symbols.toml
 ```
 
+From Anvil 1.12, `--build` must be the id this Anvil has for the new `eu4.exe`, since a file with
+any other id never loads. Add `--unknown-build` for a build it does not know yet; the id then needs
+the form `eu4-<version>-<store>-win64`.
+
 Add `--from-build <id>` when this Anvil does not know the old `eu4.exe`, and
 `--format json` for a report you can feed to a generator. Without `--out` nothing is written.
 
