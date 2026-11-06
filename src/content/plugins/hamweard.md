@@ -49,15 +49,15 @@ no longer does anything.
   save, Exit to Menu and Back restart the game, as they do without the plugin. The game's own
   restore of the map misses part of it: in the lab Tortuga was no longer in the Caribbean colonial
   region, and the next campaign's missions differed.
-- **Multiplayer: no return, and sessions not tested.** Exit to Menu and Back restart the game in
+- **Multiplayer: no return, and one test with a second player.** Exit to Menu and Back restart the game in
   any multiplayer session, as they do without the plugin. The plugin checks that itself and stays
   loaded. That comes from reading the game's code: no lobby was hosted or joined, so the Steam
   lobby clean-up from the original has never run.
 - **Multiplayer after a campaign needs a restart.** With a Paradox session online, the game asks
   for one after the single player screen, and a return keeps that request.
 - **Ironman: on, with nothing to allow.** It works on Steam and GOG, the save on leaving included,
-  and a new ironman campaign after a return says achievements can be earned. No achievement has
-  been earned in a test yet: the proof comes from the game's own state, not from Steam. An ironman
+  and a new ironman campaign after a return says achievements can be earned. One achievement was
+  earned for real on Steam in a campaign after a return, so the proof is one case and the game's own state. An ironman
   save does not update Continue game, so load it from the Single Player list.
 - **Mods: tested, not all of them.** The plugin changes no game files, so the checksum stays the
   same. Anbennar with Proper 2K UI and a playset of ten interface and graphics mods ran without
