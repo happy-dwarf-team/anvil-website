@@ -46,7 +46,8 @@ second start.
 
 You do not need to change anything. The numbers above are with the default settings. Change a
 setting on the **Settings** tab of Anvil Manager or in the Anvil panel. It applies at the next
-start.
+start, except `frame_pacing_interval_ms` and `frame_pacing_input`: changed in the Anvil panel while
+`frame_pacing` is on, they apply at once (since Bellows 1.4.0).
 
 | Setting | Default | What it does |
 | --- | --- | --- |
