@@ -33,7 +33,9 @@ Each plugin's page has the details and the source of each test.
 
 Anvil loads it, then takes its changes out of the game while an ironman or multiplayer session
 runs, and puts them back afterwards. The log says
-`[<plugin-id>] suspended: affects gameplay and …`. If the plugin offers it, you can allow it
+`[<plugin-id>] suspended: affects gameplay and …`. A host alone in a multiplayer game does not
+count yet: the game's own check asks for other players, so suspension starts when the first one
+joins. If the plugin offers it, you can allow it
 there: tick it on the Manager's **Plugins** tab, or edit `anvil/anvil.toml`:
 
 ```toml
@@ -56,7 +58,9 @@ in ironman, two new ironman games in a row showed that achievements can be earne
 
 ## What has not been tested
 
-- No achievement has been earned in a full ironman campaign with Anvil yet.
+- No achievement has been earned in a full ironman campaign with Anvil yet, or on GOG. One was
+  earned on Steam on 6 November 2026, 6.5 months into a campaign started after a Hamweard return,
+  with Tongs allowed in ironman.
 - Anvil's suspension has been seen in a live ironman game (Hamweard 1.1.0, 4 November 2026), not
   yet in a live multiplayer session.
 - Multiplayer has been tested with Bellows on the host and with Hamweard on both computers.

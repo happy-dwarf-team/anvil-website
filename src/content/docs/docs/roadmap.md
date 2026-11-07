@@ -34,8 +34,8 @@ This page is a plan, not a promise, and has no dates. Each release is on
   ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Until then Anvil tells its
   players to update in GOG Galaxy. Other builds start without plugins that use game addresses.
 - **Ironman and multiplayer.** Suspending gameplay plugins has been seen in a live ironman game,
-  not yet in a live multiplayer session. No achievement has been earned in a full campaign with
-  Anvil yet ([what was tested](../multiplayer-ironman/#what-has-not-been-tested)).
+  not yet in a live multiplayer session. One achievement has been earned in an ironman game with
+  Anvil, none yet in a full campaign ([what was tested](../multiplayer-ironman/#what-has-not-been-tested)).
 - **Bellows.** The first start after a reboot has not been measured with the plugin. The
   Benchmark tab shows the cold starts a series happens to contain, but cannot make one on demand.
 - **Translations.** No native speaker has checked the French, German, Spanish, Chinese, Japanese
