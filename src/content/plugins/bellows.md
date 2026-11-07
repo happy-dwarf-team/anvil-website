@@ -155,7 +155,7 @@ Each part of Bellows is a module with its own setting.
 | `mimalloc` | A faster memory allocator for the game's C runtime | until the main menu |
 | `verifypath_listing` | Answers the game's path checks from directory listings. With `verifypath_session` it goes on after the main menu is up | on |
 | `exists_index` | Answers "does this file exist?" for the modifier icon check | on |
-| `trigger_intern` | Interns the game's triggers at the end of loading with a faster index | on |
+| `trigger_intern` | Looks each trigger up in the game's trigger profile at the end of loading, through a faster index | on |
 | `metascript_subst` | Substitutes `$parameter$` placeholders in a single pass | on |
 | `metascript_blocks` | Resolves `[[parameter] ...]` blocks in a single pass; matters for mods such as Anbennar | on |
 | `open_warmup` | Opens the files the game will need on parallel threads | on |
