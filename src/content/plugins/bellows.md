@@ -75,7 +75,8 @@ all of them.
 
 - **The first start after a reboot has not been measured** with the plugin, so Bellows makes no
   claim for it.
-- **It uses up to 1 GB of extra memory** during start-up.
+- **It uses up to 1 GB of extra memory** during start-up, and at most a quarter of the memory free
+  at that moment.
 - **The map redraws less often at speed 5:** about 16 instead of 22 times a second while you do
   nothing. A key press or click still gets a frame at once.
 - **The simulation numbers come from one save** of 1719. Other saves and mod sets are not verified
@@ -85,7 +86,7 @@ all of them.
   authors](#for-mod-authors).
 - **Not tested yet:** a save written with `save_compress_parallel` in multiplayer, ironman and cloud
   saves, `transfer_skip` on a real multiplayer host, in ironman and with cloud saves, and in
-  multiplayer Bellows on a computer other than the host's, or any version after 0.17.0.
+  multiplayer Bellows on a computer other than the host's.
 
 ### AI ties and multiplayer
 
@@ -105,10 +106,11 @@ time at the same point of that save. That is one save, one speed and one compute
 how often it happens over a whole campaign. Both orders are normal games.
 
 In multiplayer the known ties cannot put games out of sync: the host's AI makes these choices and
-sends them to every player. In the lab the host ran Bellows 0.17.0 and the other computer ran none:
-233 game days without an out-of-sync
-([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)). That is the only multiplayer
-test so far: one save, Bellows on the host only, an older version.
+sends them to every player. In the lab the host ran Bellows and the other computer ran none: 233
+game days on 0.17.0 ([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)) and 231 on
+the code of 1.3.0, the second run at speed 3 because the other computer could not keep up at 5, both
+without an out-of-sync. Those are the only multiplayer tests so far: one save, Bellows on the host
+only.
 
 ## Troubleshooting
 
@@ -163,9 +165,10 @@ Each part of Bellows is a module with its own setting.
 | `range_witness` | **Simulation.** Answers the country range check from the province that was in range last time | on |
 | `frame_pacing` | **Simulation.** At the fastest speed, draws frames every 100 ms instead of 50 ms while you do nothing | on |
 | `modifier_merge` | **Simulation.** Adds each country's modifiers to its units with an index instead of a scan; checks every 1,024th merge against the game's code | on |
+| `port_table` | **Simulation, experimental.** Rebuilds a country's table of the nearest port from one list of its ports instead of walking its provinces and relations again for every province of the map | off |
 | `province_modifier_view` | **Simulation, experimental.** Reads one value in place instead of copying a province's whole modifier list. Off until its effect on the AI is checked | off |
 | `pops_pacing` | **Simulation, experimental.** At the fastest speed, runs the game's Paradox online-service callbacks every 500 ms instead of twice a frame | off |
-| `army_search_memo` | **Simulation, experimental.** In the AI's daily search for each army, works out once per search whether a modifier lets the army ignore forts' zones of control | off |
+| `army_search_memo` | **Simulation, experimental.** In the AI's daily search for each army, in a path search and when a unit's moves are listed, works out once whether a modifier lets the army ignore forts' zones of control and what its speed modifier is | off |
 | `save_compress` | **Saving.** For compressed saves, computes the checksum eight bytes at a time; the file is byte for byte the game's | on |
 | `transfer_skip` | **Loading.** In single player, "Continue" of a text save no longer compresses the file for a multiplayer transfer nobody receives | on |
 | `history_add` | **Loading.** Adds an entry the game just read to a dated list without first walking the whole list. The list comes out the same, and the gain depends on the mods | on |
