@@ -60,6 +60,12 @@ skips them.
 live game comes with its own pinned builds of Anvil and the plugins it needs, so you do not need
 to install anything here for it.
 
+## Where can I ask a question?
+
+On the team's [Discord server](https://discord.happydwarf.dev/): `#help-and-bugs` for problems
+and questions (tag the project), `#ideas` for suggestions. Bugs are tracked in GitHub issues;
+[Reporting a problem](../troubleshooting/#reporting-a-problem) says what to include.
+
 ## Who makes Anvil?
 
 Happy Dwarf Team, under the MIT license. Anvil and its plugins are an unofficial community

@@ -117,6 +117,10 @@ Starlight's `--sl-color-*` variables and fonts are mapped onto the `--forge-*` t
   line with "Anvil" in place of "Etch". Screenshots of the game are crops that show what
   Anvil adds, through `astro:assets`. The FAQ answer "Who makes Anvil?" uses the
   non-affiliation line.
+- The footer links the team's Discord server through `https://discord.happydwarf.dev/` (the
+  hub's redirect to the invite, hub spec section 7.1) as a plain text link: no Discord logo,
+  widget or request from the page. Troubleshooting and the FAQ point to `#help-and-bugs`;
+  GitHub issues stay the tracker and security reports stay private.
 
 ## Open items
 
