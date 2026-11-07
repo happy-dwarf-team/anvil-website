@@ -1,6 +1,7 @@
 ---
-// Starlight's footer, then the team link, the licence and the family disclaimer, on every page
-// (404 included). The site shows no game art, so the disclaimer has no game-art line.
+// Starlight's footer, then the team link, the licence, the team's Discord server and the family
+// disclaimer, on every page (404 included). The Discord link goes through the hub's
+// discord.happydwarf.dev redirect, so a new invite changes no page.
 import { Image } from 'astro:assets';
 import Default from '@astrojs/starlight/components/Footer.astro';
 import dwarf from '../../assets/happy-dwarf.svg';
@@ -14,6 +15,7 @@ import dwarf from '../../assets/happy-dwarf.svg';
 		<span>Happy Dwarf Team</span>
 	</a>
 	<p>Anvil and its plugins are MIT-licensed.</p>
+	<p>Questions? Ask on the team's <a href="https://discord.happydwarf.dev/">Discord server</a>.</p>
 	<p class="disclaimer">
 		Anvil and its plugins are an unofficial community project, not affiliated with or endorsed
 		by Paradox Interactive. Europa Universalis and Paradox Interactive are trademarks or

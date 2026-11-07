@@ -9,7 +9,8 @@ description: What to do when a plugin does not work, and how to report a problem
    and why one is skipped, without starting the game.
 2. Look for what you see in the table below.
 3. Still stuck? [Report it](#reporting-a-problem). The Manager puts what we need on your
-   clipboard.
+   clipboard. To ask first, post in `#help-and-bugs` on the team's
+   [Discord server](https://discord.happydwarf.dev/).
 
 | What you see | What to do |
 | --- | --- |
@@ -97,3 +98,9 @@ plugin's page links its repository, and the **Crashes** tab opens its tracker.
 Without the Manager, open an [issue](https://github.com/happy-dwarf-team/anvil/issues/new/choose)
 and attach `anvil/anvil.log`, and after a crash the `.txt` report from `anvil/crashes/`. Check the
 log first for anything you do not want to share, such as your Windows user name in paths.
+
+Not sure it is a bug, or want to ask first? Post in the `#help-and-bugs` forum on the team's
+[Discord server](https://discord.happydwarf.dev/), tag the project, and paste the same problem
+report. The team tracks confirmed problems in GitHub issues, so a bug found on Discord ends up in
+an issue. Report a security problem privately, never on Discord or in a public issue: see
+[Report a security problem](../safety/#report-a-security-problem).
