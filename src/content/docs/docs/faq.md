@@ -21,8 +21,8 @@ load only after you approve them; see [Plugins from mods](../plugins-from-mods/)
 ## Does it work with ironman, multiplayer and achievements?
 
 It depends on the plugin. One that changes gameplay is off there, unless it offers a choice and
-you allow it. In a test a new ironman game kept the vanilla checksum and could earn achievements,
-but no achievement has been earned in a full ironman campaign with Anvil yet.
+you allow it. In a test a new ironman game kept the vanilla checksum and could earn achievements.
+One achievement has been earned for real in an ironman game with Anvil, none yet in a full campaign.
 [Multiplayer, ironman and achievements](../multiplayer-ironman/) has the table.
 
 ## How much faster does a plugin make my game?
