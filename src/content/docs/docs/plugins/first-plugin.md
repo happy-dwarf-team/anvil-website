@@ -41,6 +41,9 @@ then clone it. You get:
 | `CMakeLists.txt` | `project(my_plugin …)`; the target follows it |
 | `workshop/descriptor.mod` | `name`, the mod's name in the launcher and on the Workshop: `<Name> - <what it does>` |
 | `workshop/description.md`, `workshop/thumbnail.png` | the Workshop page; see [Publish your plugin on the Steam Workshop](../workshop/#the-workshop-page) |
+| `LICENSE` | the copyright holder, or another license |
+| `SECURITY.md` | replace it: as it stands, it sends reports to the template |
+| `AGENTS.md`, `CLAUDE.md` | the rules for coding agents, written for the template: rewrite or delete them |
 
 The id is lowercase letters, digits and `-`. The `my_plugin-check` and `my_plugin-deploy`
 targets below follow the project name.
@@ -126,10 +129,15 @@ game addresses, and the [Host API](../api/) page lists what the host offers, suc
 
 The template's CI builds with warnings as errors, runs `anvil check . --format github` and
 packages the plugin. Its release workflow uses
-[release-please](https://github.com/googleapis/release-please): merging the release pull
-request tags `vX.Y.Z` and attaches a zip of the plugin folder, a Workshop mod zip and
-`SHA256SUMS.txt`, with build attestations. To publish the mod on the Steam Workshop from CI,
-see [Publish your plugin on the Steam Workshop](../workshop/).
+[release-please](https://github.com/googleapis/release-please). First turn on the repository
+settings in the template's
+[CI and releases](https://github.com/happy-dwarf-team/anvil-plugin-template#ci-and-releases):
+without them it cannot open its pull request. A commit of a type that releases, such as `feat:`
+or `fix:`, then opens the release pull request. Merging it tags `vX.Y.Z` and creates a **draft**
+release with a zip of the plugin folder, a Workshop mod zip and `SHA256SUMS.txt`, and in a public
+repository build attestations. Publish the draft on GitHub to make the release public. To publish
+the mod on the Steam Workshop from CI, see
+[Publish your plugin on the Steam Workshop](../workshop/).
 
 To be [listed on the Plugins page](../catalog/), the release needs an asset with a fixed name,
 `<plugin-id>-windows-x64.zip`. The template's Package step writes it next to
