@@ -40,7 +40,7 @@ project(my_plugin LANGUAGES CXX)
 
 include(FetchContent)
 FetchContent_Declare(anvil_sdk
-    URL https://github.com/happy-dwarf-team/anvil/releases/download/v1.11.0/anvil-sdk-windows-x64.zip
+    URL https://github.com/happy-dwarf-team/anvil/releases/download/vX.Y.Z/anvil-sdk-windows-x64.zip
     URL_HASH SHA256=<the archive's line in the release's SHA256SUMS.txt>)
 FetchContent_MakeAvailable(anvil_sdk)
 

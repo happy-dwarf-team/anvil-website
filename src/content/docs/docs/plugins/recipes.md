@@ -200,8 +200,8 @@ The whole plugin is in the template, in
    ANVIL_PLUGIN(CampaignPanel)
    ```
 
-3. Set the SDK in `CMakeLists.txt` to Anvil 1.11 or newer, then build and deploy as in
-   [your first plugin](../first-plugin/).
+3. Build and deploy as in [your first plugin](../first-plugin/). The SDK in `CMakeLists.txt`
+   must be Anvil 1.11 or newer; the template's is.
 
 Three rules keep it safe:
 
