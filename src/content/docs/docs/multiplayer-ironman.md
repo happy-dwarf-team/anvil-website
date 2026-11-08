@@ -19,8 +19,9 @@ gameplay, and Anvil acts on that.
 
 - **Bellows in multiplayer:** the host ran Bellows, the other computer did not: 233 game days on
   0.17.0 and 231 on the code of 1.3.0, on one save, without an out-of-sync. The second run was at
-  speed 3, because the other computer could not keep up at 5. Bellows on another player's computer
-  is not tested.
+  speed 3, because the other computer could not keep up at 5. Both runs used the defaults of their
+  code, so the four simulation modules that Bellows 1.4 turns on by default were off. The 1.4
+  defaults and Bellows on another player's computer are not tested.
 - **Mei in multiplayer:** every player needs the same mods anyway, and a player without Mei
   sees names written with it wrongly.
 - **Hamweard in multiplayer:** Exit to Menu restarts the game as usual, by the plugin's own check.
@@ -63,7 +64,8 @@ in ironman, two new ironman games in a row showed that achievements can be earne
   with Tongs allowed in ironman.
 - Anvil's suspension has been seen in a live ironman game (Hamweard 1.1.0, 4 November 2026), not
   yet in a live multiplayer session.
-- Multiplayer has been tested with Bellows on the host and with Hamweard on both computers.
+- Multiplayer has been tested with Bellows on the host (with the defaults of 1.3 or earlier) and
+  with Hamweard on both computers.
 
 If you play these and something goes wrong, or goes right where we say "not tested",
 [tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose).
