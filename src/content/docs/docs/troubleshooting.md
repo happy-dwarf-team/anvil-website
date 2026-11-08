@@ -42,12 +42,16 @@ If there is no log at all, Anvil did not run: see the next section.
 ## If Anvil does not run at all
 
 Anvil writes `anvil/anvil.log` on every start, even with all plugins off. No log after a start
-means Windows did not load Anvil's `version.dll`. Check, in this order:
+means Windows did not load Anvil's `version.dll`. From Anvil 1.14, the Manager notices this:
+after a game from its folder ends without a fresh log, it says **The game ran, but Anvil did not
+load.**, and **What to check** opens this section. Check, in this order:
 
 1. **The game runs from the Manager's folder.** With more than one copy of EU4 (several Steam
    libraries, a moved install, a backup copy), Steam may start a copy other than the one Anvil is
    installed in. On Steam, **Play EU4** in the Manager starts Steam's copy, whatever folder the
-   Manager shows. Find the folder of the `eu4.exe` that runs (Task Manager: right-click
+   Manager shows. From Anvil 1.14, the Manager names the folder the game runs from when it is
+   another one, and **Switch to that folder** moves the Manager there; then install Anvil in it.
+   With an older Manager, find the folder of the `eu4.exe` that runs (Task Manager: right-click
    `eu4.exe`, **Open file location**) and, if it is another one, click **Change...** in the
    Manager and install Anvil there.
 2. **The files are in the right place.** `version.dll` and the `anvil` folder sit directly next
@@ -117,7 +121,9 @@ that start. Anvil then only writes the log.
 
 On the Manager's **Log** tab, click **Copy a problem report**. It puts on the clipboard what the
 issue form asks for: the versions, the game build, each plugin and why it is skipped, the newest
-crash report and the end of `anvil.log`. It leaves out the game folder, your user folder and your
+crash report and the end of `anvil.log`. From Anvil 1.14 it also says how many game folders
+Steam and GOG have, which one the Manager uses, whether `eu4.exe` runs from another one, and
+whether the last game from this folder ran without Anvil. It leaves out the game folder, your user folder and your
 Windows user name, and nothing is uploaded. **Open an Anvil issue** opens the form to paste it
 into.
 

@@ -22,7 +22,10 @@ Start `AnvilManager.exe` from the game folder.
 | **Log** | Shows `anvil.log`, and copies a [problem report](../troubleshooting/#reporting-a-problem) for an issue. |
 | **About** | Shows the versions, and lets you turn the check for a newer Anvil on or off. |
 
-While the game runs, the Manager only shows the state and changes nothing. It downloads only
+While the game runs, the Manager only shows the state and changes nothing. From Anvil 1.14 it
+also says when the game runs from another folder than the one Anvil is installed in, and when a
+game ran without loading Anvil; both lead to
+[If Anvil does not run at all](../troubleshooting/#if-anvil-does-not-run-at-all). It downloads only
 what you click. It asks once whether it may check GitHub for a newer Anvil when it starts; if
 you say yes, it only shows a link.
 
