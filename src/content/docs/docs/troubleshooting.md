@@ -17,6 +17,7 @@ description: What to do when a plugin does not work, and how to report a problem
 | Windows warns about `AnvilManager.exe` | The file is not code-signed. See [If Windows warns about the file](../install/#if-windows-warns-about-the-file). |
 | Your antivirus removed a file | Check the file and allow only that file. See [If your antivirus objects](../safety/#if-your-antivirus-objects). |
 | No Anvil badge in the main menu | Check that `version.dll` and the `anvil` folder are next to `eu4.exe`, or click **Install Anvil** in the Manager. With OpenGL there is no badge; the Manager shows the same information. |
+| No badge and no `anvil/anvil.log`, although the files are there | Windows did not load Anvil's `version.dll`. See [If Anvil does not run at all](#if-anvil-does-not-run-at-all). |
 | A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset, approve the plugin on the Manager's **Mods** tab, and start the game again. |
 | A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version on the **Mods** tab. |
 | **Play EU4** on GOG seems to do nothing | It opens the Paradox launcher: press **Play** there. On its first start the launcher shows Paradox's EULA before **Play**, also without Anvil, and only you can accept it. |
@@ -36,8 +37,36 @@ Every start writes `anvil/anvil.log` in the game folder. The previous start is k
 - for each plugin: `loaded`, `skipped — <reason>`, or an error if its load failed,
 - how many changes each plugin made, and how long loading took.
 
-If there is no log at all, Anvil did not run. Check that `version.dll` and the `anvil` folder are
-directly next to `eu4.exe`, not in a subfolder.
+If there is no log at all, Anvil did not run: see the next section.
+
+## If Anvil does not run at all
+
+Anvil writes `anvil/anvil.log` on every start, even with all plugins off. No log after a start
+means Windows did not load Anvil's `version.dll`. Check, in this order:
+
+1. **The game runs from the Manager's folder.** With more than one copy of EU4 (several Steam
+   libraries, a moved install, a backup copy), Steam may start a copy other than the one Anvil is
+   installed in. On Steam, **Play EU4** in the Manager starts Steam's copy, whatever folder the
+   Manager shows. Find the folder of the `eu4.exe` that runs (Task Manager: right-click
+   `eu4.exe`, **Open file location**) and, if it is another one, click **Change...** in the
+   Manager and install Anvil there.
+2. **The files are in the right place.** `version.dll` and the `anvil` folder sit directly next
+   to `eu4.exe`, not in a subfolder. With file extensions hidden, check that the file is not
+   named `version.dll.dll`.
+3. **The file is still there after a start.** If `version.dll` is gone, your antivirus removed
+   it; see [If your antivirus objects](../safety/#if-your-antivirus-objects).
+4. **What the game loaded.** In [Process Explorer](https://learn.microsoft.com/sysinternals/downloads/process-explorer),
+   select `eu4.exe` (not the Paradox launcher) and open its DLL list. One `version.dll` from
+   `C:\Windows\System32` is always there: Anvil loads it and passes calls on to it. With Anvil
+   running there is a second one, from the game folder. If only the System32 one is there,
+   Windows chose not to use the file next to `eu4.exe`. One setting that does this, untested
+   with Anvil, is the exploit-protection option `PreferSystem32`:
+   `Get-ProcessMitigation -Name eu4.exe` in PowerShell shows it under `ImageLoad`.
+
+Anvil needs no Visual C++ runtime. Still stuck? Post in `#help-and-bugs` with the path of
+`eu4.exe`, the path of each `version.dll` in its DLL list, the folder the Manager shows and where
+the game comes from (Steam, GOG, another store). Anvil supports EU4 1.37.5 from Steam and the
+GOG build 1.37.5.2 ([Install](../install/)).
 
 ## Why a plugin is skipped
 
