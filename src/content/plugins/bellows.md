@@ -89,7 +89,8 @@ all of them.
   authors](#for-mod-authors).
 - **Not tested yet:** a save written with `save_compress_parallel` in multiplayer, ironman and cloud
   saves, `transfer_skip` on a real multiplayer host, in ironman and with cloud saves, in
-  multiplayer Bellows on a computer other than the host's, and the defaults of 1.4 in multiplayer.
+  multiplayer Bellows on a computer other than the host's, and the defaults of 1.4 in multiplayer
+  at speed 5 or with mods.
 
 ### AI ties and multiplayer
 
@@ -112,9 +113,9 @@ In multiplayer the known ties cannot put games out of sync: the host's AI makes 
 sends them to every player. In the lab the host ran Bellows and the other computer ran none: 233
 game days on 0.17.0 ([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)) and 231 on
 the code of 1.3.0, the second run at speed 3 because the other computer could not keep up at 5, both
-without an out-of-sync. Those are the only multiplayer tests so far: one save, Bellows on the host
-only, with the defaults of 1.3 or earlier. The four simulation modules that 1.4 turns on have not
-run in multiplayer yet.
+without an out-of-sync. On 9 November 2026 a build of 1.4 with its defaults, the four simulation
+modules on, ran 203 game days the same way at speed 3, also without an out-of-sync. Those are the
+only multiplayer tests so far: one vanilla save, Bellows on the host only.
 
 ## Troubleshooting
 
