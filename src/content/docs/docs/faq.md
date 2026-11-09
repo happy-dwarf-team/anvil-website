@@ -90,13 +90,13 @@ page says what to remove first.
 
 ### Multiplayer
 
-Every player needs the same plugins, at the same versions. During a multiplayer game, Anvil's
-notice names the active plugins that change gameplay with a short hash of that set, which every
-player should see the same. Plugins that declare no gameplay change, such as Bellows and Mei, are
-not in the hash, so compare them by hand.
+Give every player the same plugins, at the same versions. Plugins that change gameplay are off in
+multiplayer unless you allow them. During a multiplayer game, Anvil's notice names the active ones
+with a short hash of that set, which every player should see the same. Plugins that declare no
+gameplay change, such as Bellows and Mei, are not in the hash, so compare them by hand.
 
-Our multiplayer tests ran with the game's usual out-of-sync check, the one every game uses, which
-compares the random-number count and seed. We did not run them with `-hardoos`, which compares
+Our multiplayer tests ran with the game's usual out-of-sync check, the one players get by default,
+which compares the random-number count and seed. We did not run them with `-hardoos`, which compares
 all 140 checksums of the game state, so they do not show that the state stayed identical.
 [Multiplayer, ironman and achievements](../multiplayer-ironman/) has what was tested.
 
