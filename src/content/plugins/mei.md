@@ -35,7 +35,9 @@ together with Anvil. Mei does the same job as an Anvil plugin.
 Mei needs [Anvil](../../docs/install/) 1.9 or newer. Mei 0.1 needed 1.8.
 
 1. Remove an old double-byte patch first: the `version.dll`, `d3d9.dll` and `plugins` folder it put
-   in the game folder. It and Anvil both use `version.dll`.
+   in the game folder. It and Anvil both use `version.dll`. From Anvil 1.16 the Manager does this
+   for you with **Replace EU4DLL** and keeps the files in `anvil-legacy-backup`
+   ([how](../../docs/install/#if-eu4dll-or-eu4-unicode-patch-is-installed)).
 2. On Steam, subscribe to [Mei on the Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832685486)
    and to your translation mod, and enable both in your playset. The Workshop item carries the
    plugin and its fonts. Then [approve it](../../docs/install-plugins/#from-the-steam-workshop).

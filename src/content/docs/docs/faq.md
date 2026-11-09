@@ -85,9 +85,10 @@ Proton version and `anvil/anvil.log`. The native Linux and macOS builds of EU4 a
 The double-byte patch EU4DLL, which many Chinese, Japanese and Korean translation mods ask for,
 puts its own `version.dll` in the game folder. Anvil is also a `version.dll`, so the two cannot be
 installed together: unpacking EU4DLL over Anvil replaces it, and the game then runs without Anvil
-and its plugins. The Manager does not replace a `version.dll` that is not Anvil's unless you tell
-it to. [Mei](../../plugins/mei/) shows the text of these translation mods as an Anvil plugin; its
-page says what to remove first.
+and its plugins. From Anvil 1.16 the Manager recognizes EU4DLL and EU4 Unicode Patch and
+[replaces them](../install/#if-eu4dll-or-eu4-unicode-patch-is-installed), keeping their files in
+`anvil-legacy-backup`. [Mei](../../plugins/mei/) shows the text of these translation mods as an
+Anvil plugin; its page says what to remove first.
 
 ### Multiplayer
 

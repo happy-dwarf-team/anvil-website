@@ -31,6 +31,23 @@ You need **EU4 1.37.5 for Windows (64-bit) from Steam**, or the **GOG build 1.37
 You do not need administrator rights. If Windows refuses access to the game folder, the
 Manager offers to start again as administrator.
 
+### If EU4DLL or EU4 Unicode Patch is installed
+
+Both are a `version.dll` like Anvil, so they cannot run together. From Anvil 1.16 the Manager
+names the patch it finds, and the button reads **Replace EU4DLL** (or **Replace EU4 Unicode
+Patch**). It moves the patch's files, its `version.dll` included, to a new folder
+`anvil-legacy-backup` in the game folder and installs Anvil. Other files in the patch's
+`plugins` folder stay where they are, and the Manager lists them.
+[Mei](../../plugins/mei/) shows the Chinese, Japanese or Korean text of your translation mod
+instead.
+
+If you install EU4DLL again later, as some translation mods' guides say, the Manager says that
+it replaced Anvil; your plugins and settings are still in the `anvil` folder, and the same button
+brings Anvil back.
+
+A `version.dll` of another tool still needs **Replace the other version.dll** ticked; from
+Anvil 1.16 it also goes to `anvil-legacy-backup` instead of being overwritten.
+
 ### If Windows warns about the file
 
 Anvil's files are not code-signed, so Windows does not know them yet:
@@ -84,7 +101,9 @@ changed.
 With the Manager: on the **Anvil** tab, click **Uninstall Anvil**. It removes `version.dll`,
 the standard plugins, `AnvilManager.exe` and its Start menu entry, and the game is vanilla at once. Your plugins,
 their settings, crash reports and logs stay, so installing again brings everything back. Tick
-**Also remove my plugins…** to remove the whole `anvil` folder too.
+**Also remove my plugins…** to remove the whole `anvil` folder too. If the Manager replaced
+EU4DLL or another `version.dll`, tick **Restore … from the backup** to put it back. Saves made
+with Mei may then show garbled text.
 
 By hand: delete `version.dll`, `AnvilManager.exe` and the `anvil` folder, and the Start menu
 entry if you added one. Nothing else was changed.
