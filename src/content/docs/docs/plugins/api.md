@@ -137,6 +137,7 @@ All its events are published on the game's main thread:
 | `anvil-game.day`, `.month`, `.year` | `AnvilGameDateChange` | From Anvil 1.11: the date moved on, after the outer frame. `date`, `previous` and `days` say by how much, and the monthly and yearly updates are done by then. At most one of each per frame. Not for the first date of a session or across a load. |
 | `anvil-game.player` | `AnvilGamePlayerChange` | From Anvil 1.11: the player's country changed within a session. Not for the first country of a session. |
 | `anvil-game.war` | `AnvilGameWarChange` | From Anvil 1.11: a war started or ended, compared once a game day. Not for the wars a session starts with: ask `war_ids` then. |
+| `anvil-game.oos` | `AnvilGameOosChange` | From Anvil 1.14: the session's [out-of-sync flags](#out-of-sync) changed, after the outer frame. `flags` and `previous` hold them now and before, `session` is the session's number. |
 
 Its service `anvil-game.game` (version 1, `AnvilGameService`) has `ready`,
 `main_thread_id`, `frame_number`, `session` and `run_on_main_thread(work, context)`, which
@@ -169,6 +170,29 @@ void load(anvil::Host& host) override {
     });
 }
 ```
+
+#### Out of sync
+
+From Anvil 1.14.0 the service also has `out_of_sync()`, which tells a plugin that the
+machines of a multiplayer game no longer agree. It only reads. It returns the session's
+`ANVIL_GAME_OOS_*` flags as of the last frame of the main loop, and 0 when the game is in
+sync, when no session runs, or on a game build without the addresses it reads. It can be
+called from any thread.
+
+| Flag | Meaning |
+| --- | --- |
+| `ANVIL_GAME_OOS_DETECTED` | This game's checksums differed from the host's. Only a client compares them, so the host never has this flag. |
+| `ANVIL_GAME_OOS_PAUSED` | The game is paused because a machine went out of sync. |
+
+`anvil-game.oos` comes after the outer frame in which the flags changed, while a session
+runs. A session starts from 0, and its end publishes nothing: `anvil-game.session` says
+that. The function was added within service version 1, so check
+`ANVIL_GAME_HAS(service, out_of_sync)` before calling it, or depend on `anvil-game` with
+`version = "^1.14.0"`.
+
+Unverified: the flags have not yet been seen set in a real desync, which takes two
+computers. [Anvil's design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#131-anvil-game)
+say where they are read.
 
 ### The world
 
