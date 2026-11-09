@@ -32,8 +32,11 @@ The **Catalog** tab of `AnvilManager.exe` lists the team's plugins:
 3. It shows the plugin's details. Click **Install** again.
 
 When a newer release is listed than the one you have, the button says **Update**. The list comes
-with the Manager; **Get the current list** fetches the newest one from GitHub. Nothing goes to
-the network before you click.
+with the Manager; **Get the current list** fetches the newest one from GitHub. From Anvil 1.15, if
+you agreed that Anvil checks GitHub for new releases, the Manager also reads the list when it
+starts: the tab's name then shows how many of your plugins have an update, as in
+**Catalog (1)**, and the **Plugins** tab names the new version. A plugin is still downloaded only
+when you click.
 
 ## From the Steam Workshop
 
@@ -106,7 +109,8 @@ come from the plugin itself.
 
 ## Update a plugin
 
-- **From the Catalog tab:** click **Get the current list**, then **Update**.
+- **From the Catalog tab:** click **Update**. Without the release check, click **Get the current
+  list** first; otherwise the Manager compares your plugins with the list it came with.
 - **From the Workshop:** the mod updates by itself. Approve the new version on the **Mods** tab.
 - **From a zip:** install the new zip with the Manager. It replaces the old version.
 - **By hand:** delete the plugin's folder in `anvil/plugins/`, then extract the new archive.

@@ -26,8 +26,10 @@ While the game runs, the Manager only shows the state and changes nothing. From 
 also says when the game runs from another folder than the one Anvil is installed in, and when a
 game ran without loading Anvil; both lead to
 [If Anvil does not run at all](../troubleshooting/#if-anvil-does-not-run-at-all). It downloads only
-what you click. It asks once whether it may check GitHub for a newer Anvil when the Manager or
-the game starts; if you say yes, it only shows a link.
+what you click. It asks once whether it may check GitHub for new releases when the Manager or
+the game starts. If you say yes, it shows a link to a newer Anvil, and from Anvil 1.15 it also
+reads the list of the team's plugins and marks the ones with an update; it downloads none of
+them by itself.
 
 ## A newer Anvil
 
