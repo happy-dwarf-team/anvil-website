@@ -1,0 +1,149 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { url } from '../../lib/url';
+
+// The one page in Simplified Chinese (eu4-engine-lab#96, decision 9 of #27): installing Anvil
+// and Mei, replacing EU4DLL and a table of symptoms, for players in mainland China. GitHub Pages
+// loads there (eu4-engine-lab#91); raw.githubusercontent.com, Discord and steamcommunity.com
+// often do not, so nothing here loads from them and no step depends on them. The download goes to
+// GitHub Releases until a mirror exists (eu4-engine-lab#95).
+const managerUrl = 'https://github.com/happy-dwarf-team/anvil/releases/latest/download/AnvilManager.exe';
+const releasesUrl = 'https://github.com/happy-dwarf-team/anvil/releases/latest';
+const meiReleasesUrl = 'https://github.com/happy-dwarf-team/mei/releases/latest';
+const meiIssuesUrl = 'https://github.com/happy-dwarf-team/mei/issues/new/choose';
+const meiWorkshopId = '3832685486';
+---
+
+<StarlightPage
+	frontmatter={{
+		title: '安装 Anvil 和 Mei',
+		description: '为 Europa Universalis IV 1.37.5 安装 Anvil 和 Mei，替换旧的双字节补丁（EU4DLL），以及常见问题的解决方法。',
+	}}
+>
+	<div lang="zh-CN" class="zh">
+		<p class="lead">
+			本页用简体中文说明如何安装 Anvil 和 Mei。Anvil 是《欧陆风云 IV》的插件加载器，Mei 是它的插件：它让游戏显示、换行、搜索和输入汉化
+			Mod 的中文。有了 Mei，就不再需要旧的双字节补丁（EU4DLL）。
+		</p>
+		<p class="note">
+			本页由团队翻译，尚未经过以中文为母语的人审校。其他页面只有英文：<a href={url('docs/install/')} lang="en">Install Anvil</a>。
+		</p>
+
+		<h2 id="before">开始之前</h2>
+		<ul>
+			<li>EU4 1.37.5（Steam），或 GOG 版 1.37.5.2。</li>
+			<li>一个汉化 Mod，例如创意工坊中的 Chinese Language Mod for 1.37。Mei 本身不是汉化。</li>
+			<li>不需要管理员权限。</li>
+		</ul>
+
+		<h2 id="manager">1. 下载 Anvil Manager</h2>
+		<p>
+			<a href={managerUrl}><code>AnvilManager.exe</code></a>（来自 GitHub Releases，<a href={releasesUrl}>所有文件</a>）。如果下载失败，请稍后再试。
+		</p>
+		<p>
+			Anvil 的文件没有代码签名。浏览器可能提示“此文件不常被下载”，请选择保留。Windows 首次运行时可能显示“Windows 已保护你的电脑”，请选择<strong>更多信息</strong>，再选择<strong>仍要运行</strong>。
+		</p>
+
+		<h2 id="anvil">2. 安装 Anvil</h2>
+		<ol>
+			<li>运行 <code>AnvilManager.exe</code>。它会通过 Steam 或 GOG 找到游戏。如果它询问，请点击游戏旁边的<strong>使用</strong>，或点击<strong>选择文件夹…</strong>并选择包含 <code>eu4.exe</code> 的文件夹。</li>
+			<li>
+				点击<strong>安装 Anvil</strong>。它会把 <code>version.dll</code>、<code>anvil</code> 文件夹和管理器的副本放到 <code>eu4.exe</code> 旁边。以后请从游戏文件夹启动管理器。
+			</li>
+		</ol>
+		<p>Anvil 1.16 起，如果 Steam 或 Windows 设置为中文，管理器第一次启动就显示中文。较早的版本在安装 Mei 之前显示英文。</p>
+
+		<h3 id="eu4dll">如果装过 EU4DLL 或 EU4 Unicode Patch</h3>
+		<p>
+			它们和 Anvil 一样都是游戏文件夹中的 <code>version.dll</code>，所以只能保留一个。安装 Anvil 之前请先替换它：
+		</p>
+		<ul>
+			<li>
+				<strong>Anvil 1.16 起：</strong>管理器会认出这个补丁，按钮变为<strong>替换 EU4DLL</strong>（或<strong>替换 EU4 Unicode Patch</strong>）。补丁的文件，包括它的
+				<code>version.dll</code>，会被移动到游戏文件夹中的 <code>anvil-legacy-backup</code>，然后安装 Anvil。卸载 Anvil 时可以把它们放回原处。
+			</li>
+			<li>
+				<strong>较早的版本：</strong>请先手动删除补丁放进游戏文件夹的 <code>version.dll</code>、<code>d3d9.dll</code>、<code>.dist.v1.json</code> 和
+				<code>plugins</code> 文件夹（如果 <code>plugins</code> 中有其他插件，只删除补丁自己的文件）。
+			</li>
+		</ul>
+		<p>
+			有些汉化 Mod 的说明会让你重新安装 EU4DLL。这样做会替换掉 Anvil，游戏随后就不加载 Anvil 和 Mei。你的插件和设置仍在
+			<code>anvil</code> 文件夹中，在管理器中再次替换 EU4DLL 即可恢复 Anvil。
+		</p>
+
+		<h2 id="mei">3. 安装 Mei</h2>
+		<ol>
+			<li>
+				在 Steam 客户端的创意工坊中订阅 <strong>Mei</strong>（物品编号 <code>{meiWorkshopId}</code>）和你的汉化 Mod，并在 Paradox 启动器的播放集中同时启用它们。
+			</li>
+			<li>
+				批准 Mei：在管理器的<strong>模组</strong>选项卡中点击 Mei 旁边的<strong>批准</strong>。也可以在游戏中按 <code>Ctrl+Shift+F12</code> 打开 Anvil
+				面板，在<strong>模组</strong>中批准。Mei 是在游戏内运行的程序，所以 Anvil 要先得到你的同意。
+			</li>
+			<li>重新启动游戏。从此 Mei 会在每次启动时加载。Mod 更新后，Anvil 会再次请求批准，在此之前继续加载你批准过的版本。</li>
+		</ol>
+		<p>
+			GOG 版没有创意工坊：请在管理器的<strong>目录</strong>选项卡中安装 Mei，或从 <a href={meiReleasesUrl}>GitHub Releases</a> 下载。这样安装的 Mei
+			不带字体，详见 <a href={url('plugins/mei/')} lang="en">Mei</a> 页面（英文）。
+		</p>
+
+		<h2 id="symptoms">常见问题</h2>
+		<table>
+			<thead>
+				<tr>
+					<th scope="col">症状</th>
+					<th scope="col">原因和解决方法</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>中文显示为方块、问号或乱码</td>
+					<td>Mei 没有加载。确认 Mei 和汉化 Mod 都在播放集中启用，并且 Mei 已在<strong>模组</strong>选项卡中批准。</td>
+				</tr>
+				<tr>
+					<td>游戏启动或读档时直接退回桌面</td>
+					<td>
+						中文段落没有空格，没有 Mei 或 EU4DLL 时游戏找不到换行的位置，遇到长段落就会崩溃。确认 Mei 已批准并且已加载（游戏中的 Anvil 面板会列出它）。
+					</td>
+				</tr>
+				<tr>
+					<td>管理器说 <code>version.dll</code> 不属于 Anvil</td>
+					<td>游戏文件夹中还有旧补丁或其他工具的 <code>version.dll</code>。见<a href="#eu4dll">如果装过 EU4DLL</a>。</td>
+				</tr>
+				<tr>
+					<td>Mei 显示“等待批准”</td>
+					<td>在管理器或 Anvil 面板的<strong>模组</strong>中批准 Mei，然后重新启动游戏。</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2 id="uninstall">卸载</h2>
+		<p>
+			在管理器的 <strong>Anvil</strong> 选项卡中点击<strong>卸载 Anvil</strong>，游戏会立即恢复原版。Anvil 1.16 起，如果之前替换过 EU4DLL，可以勾选<strong>从备份恢复
+			EU4DLL</strong>把它放回原处。注意：用 Mei 制作的存档在旧补丁中可能无法正确显示文字。
+		</p>
+
+		<h2 id="help">获取帮助</h2>
+		<p>
+			请在 Mei 创意工坊页面的评论或讨论区提问，也可以用中文在 <a href={meiIssuesUrl}>GitHub</a> 上提交问题。请附上游戏版本、Mod 列表和游戏文件夹中的
+			<code>anvil/anvil.log</code>。
+		</p>
+	</div>
+</StarlightPage>
+
+<style>
+	.lead {
+		max-width: 42rem;
+		color: var(--forge-text-muted);
+	}
+	.note {
+		padding: 0.75rem 1rem;
+		border: 1px solid var(--forge-border);
+		border-radius: var(--forge-radius);
+		color: var(--forge-text-muted);
+	}
+	.zh {
+		line-height: 1.8;
+	}
+</style>
