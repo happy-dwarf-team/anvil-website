@@ -71,6 +71,7 @@ export default defineConfig({
 						{ label: 'Tongs', link: '/plugins/tongs/' },
 						{ label: 'Hamweard', link: '/plugins/hamweard/' },
 						{ label: 'Mei', link: '/plugins/mei/' },
+						{ label: 'Hoard', link: '/plugins/hoard/' },
 					],
 				},
 				{
