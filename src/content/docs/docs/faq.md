@@ -55,6 +55,58 @@ skips them.
 - **macOS and the native Linux build of EU4:** not supported, and not planned
   ([roadmap](../roadmap/#not-planned)).
 
+## Known limits
+
+What Anvil and its plugins do not do yet, or have not been tested on. Each item links to the
+longer answer.
+
+### Game version
+
+Only EU4 1.37.5 for 64-bit Windows. After an EU4 update, plugins whose code no longer matches are
+skipped until they are updated, and the game starts as usual
+([When EU4 updates](../using-anvil/#when-eu4-updates)).
+
+### GOG
+
+Anvil runs on the GOG builds that [Does it work on GOG?](#does-it-work-on-gog) lists. On another
+GOG build the game starts, but plugins that use game addresses are skipped and Anvil tells you to
+update ([On GOG](../install/#on-gog)).
+
+### Linux and Steam Deck
+
+Not tested yet, so there are no install steps for Proton here. Reports are welcome: if you try it,
+[tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose) what worked, with your
+Proton version and `anvil/anvil.log`. The native Linux and macOS builds of EU4 are not planned
+([roadmap](../roadmap/#not-planned)).
+
+### EU4DLL
+
+The double-byte patch EU4DLL, which many Chinese, Japanese and Korean translation mods ask for,
+puts its own `version.dll` in the game folder. Anvil is also a `version.dll`, so the two cannot be
+installed together: unpacking EU4DLL over Anvil replaces it, and the game then runs without Anvil
+and its plugins. The Manager does not replace a `version.dll` that is not Anvil's unless you tell
+it to. [Mei](../../plugins/mei/) shows the text of these translation mods as an Anvil plugin; its
+page says what to remove first.
+
+### Multiplayer
+
+Give every player the same plugins, at the same versions. Plugins that change gameplay are off in
+multiplayer unless you allow them. During a multiplayer game, Anvil's notice names the active ones
+with a short hash of that set, which every player should see the same. Plugins that declare no
+gameplay change, such as Bellows and Mei, are not in the hash, so compare them by hand.
+
+Our multiplayer tests ran with the game's usual out-of-sync check, the one players get by default,
+which compares the random-number count and seed. We did not run them with `-hardoos`, which compares
+all 140 checksums of the game state, so they do not show that the state stayed identical.
+[Multiplayer, ironman and achievements](../multiplayer-ironman/) has what was tested.
+
+### Where to report a problem
+
+Bugs go to the GitHub issues of the plugin, or of [Anvil](https://github.com/happy-dwarf-team/anvil/issues/new/choose)
+when you are not sure which; each plugin's page links to its repository, and the issue forms ask
+for what we need ([Reporting a problem](../troubleshooting/#reporting-a-problem)). Questions go to
+`#help-and-bugs` on the team's [Discord server](https://discord.happydwarf.dev/).
+
 ## What else is built on Anvil?
 
 [Etch](https://etch.happydwarf.dev/), a preview for EU4 interface mods in Visual Studio Code. Its
