@@ -44,8 +44,9 @@ This page is a plan, not a promise, and has no dates. Each release is on
   Benchmark tab shows the cold starts a series happens to contain, but cannot make one on demand.
 - **Translations.** No native speaker has checked the French, German, Spanish, Chinese, Japanese
   and Korean texts of the panel and the Manager yet.
-- **Tongs.** Input in text fields, keyboard layouts other than US and clicks on the map are not
-  verified yet.
+- **Tongs.** Pause and speed in a multiplayer game with a second player are not verified yet.
+  Text fields, a French keyboard layout, clicks on the map and a minimized window were checked
+  in the game in November 2026.
 
 ## Not scheduled
 
