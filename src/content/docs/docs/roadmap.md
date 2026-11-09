@@ -33,9 +33,9 @@ This page is a plan, not a promise, and has no dates. Each release is on
 
 ## Still open
 
-- **Game builds.** The GOG build 1.37.5.0 waits for a copy to check
-  ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Until then Anvil tells its
-  players to update in GOG Galaxy. Other builds start without plugins that use game addresses.
+- **Game builds.** Steam 1.37.5 and GOG 1.37.5.2 and 1.37.5.0 are known (1.37.5.0 from 1.16,
+  [#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Other builds start without
+  plugins that use game addresses.
 - **Ironman and multiplayer.** Suspending gameplay plugins has been seen in a live ironman game,
   not yet in a live multiplayer session. One achievement has been earned in an ironman game with
   Anvil, none yet in a full campaign ([what was tested](../multiplayer-ironman/#what-has-not-been-tested)).

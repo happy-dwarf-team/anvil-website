@@ -4,7 +4,7 @@ summary: Control Europa Universalis IV from scripts and agents. A local command 
 tagline: 'Lets scripts and agents control a running game: read its state, take screenshots, use keyboard and mouse.'
 repo: https://github.com/happy-dwarf-team/tongs
 status: released
-gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
+gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64', 'eu4-1.37.5.0-gog-win64']
 affectsGameplay: true
 order: 20
 workshop: '3826695093'

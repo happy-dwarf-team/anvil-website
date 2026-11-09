@@ -6,7 +6,7 @@ description: Install, update and uninstall Anvil, the plugin loader for Europa U
 Anvil loads plugins into Europa Universalis IV. It does not change `eu4.exe`, and
 [uninstalling](#uninstall) puts the game back at once.
 
-You need **EU4 1.37.5 for Windows (64-bit) from Steam**, or the **GOG build 1.37.5.2**
+You need **EU4 1.37.5 for Windows (64-bit) from Steam**, or the **GOG build 1.37.5.2 or 1.37.5.0**
 ([On GOG](#on-gog)).
 
 ## Install with Anvil Manager
@@ -45,11 +45,13 @@ If your antivirus removes a file, see
 
 ## On GOG
 
-Anvil and the plugins on the **Catalog** tab run on the GOG build 1.37.5.2.
+Anvil and the plugins on the **Catalog** tab run on both GOG builds of 1.37.5, 1.37.5.2 and
+1.37.5.0 (from Anvil 1.16.0).
 
-1. Update the game to 1.37.5.2 in GOG Galaxy. The other GOG build of 1.37.5 (1.37.5.0) is not
-   known yet ([#187](https://github.com/happy-dwarf-team/anvil/issues/187)): the game starts,
-   but plugins that use game addresses are skipped, and Anvil tells you to update.
+1. Check the build: GOG Galaxy can keep 1.37.5.0 or update to 1.37.5.2, and the Paradox launcher
+   shows `v1.37.5.0` on both. The `game build:` line in `anvil/anvil.log` names the real one. On
+   another GOG build the game starts, but plugins that use game addresses are skipped, and Anvil
+   tells you to update in GOG Galaxy.
 2. Follow [Install with Anvil Manager](#install-with-anvil-manager). If the Manager asks for
    the folder, GOG Galaxy shows it under **Manage installation** → **Show folder**.
 3. Get plugins from the **Catalog** tab. The Steam Workshop does not reach a GOG game. For

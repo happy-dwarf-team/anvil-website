@@ -71,7 +71,7 @@ load.**, and **What to check** opens this section. Check, in this order:
 Anvil needs no Visual C++ runtime. Still stuck? Post in `#help-and-bugs` with the path of
 `eu4.exe`, the path of each `version.dll` in its DLL list, the folder the Manager shows and where
 the game comes from (Steam, GOG, another store). Anvil supports EU4 1.37.5 from Steam and the
-GOG build 1.37.5.2 ([Install](../install/)).
+GOG builds 1.37.5.2 and 1.37.5.0 ([Install](../install/)).
 
 ## Why a plugin is skipped
 

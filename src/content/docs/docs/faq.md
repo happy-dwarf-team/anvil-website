@@ -37,14 +37,15 @@ once they are updated. See [When EU4 updates](../using-anvil/#when-eu4-updates).
 
 ## Which game versions are supported?
 
-EU4 1.37.5 on Windows, 64-bit, from Steam, and the GOG build 1.37.5.2. Each plugin's page lists
+EU4 1.37.5 on Windows, 64-bit, from Steam, and the GOG builds 1.37.5.2 and 1.37.5.0. Each plugin's page lists
 its builds. The `game build:` line in `anvil/anvil.log` shows which build Anvil detected.
 
 ## Does it work on GOG?
 
-Yes, on the build 1.37.5.2; see [On GOG](../install/#on-gog). Plugins need a recent version:
-Bellows 0.19.0, Tongs 0.26.0, Hamweard 1.1.0 and Mei 0.2.0 or newer. On older versions Anvil
-skips them.
+Yes, on the builds 1.37.5.2 and 1.37.5.0; see [On GOG](../install/#on-gog). Plugins need a recent
+version: on 1.37.5.2 Bellows 0.19.0, Tongs 0.26.0, Hamweard 1.1.0 and Mei 0.2.0 or newer; on
+1.37.5.0 Anvil 1.16.0, Bellows 1.5.0, Tongs 0.28.0, Hamweard 1.3.0 and Mei 0.4.0 or newer. On older
+versions Anvil skips them.
 
 ## Does it work on the Microsoft Store, Linux or macOS?
 
