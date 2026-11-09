@@ -4,7 +4,7 @@ summary: Back to the main menu without restarting the game. Exit to Menu in a ca
 tagline: Takes you from a campaign back to the main menu in seconds, without restarting the game.
 repo: https://github.com/happy-dwarf-team/hamweard
 status: released
-gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
+gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64', 'eu4-1.37.5.0-gog-win64']
 affectsGameplay: false
 order: 30
 workshop: '3832650792'
@@ -71,7 +71,8 @@ no longer does anything.
   return restarts the game instead.
 - **Not seen in a test:** some message popups (an heir to name, a new colonial nation) and the
   window of a lost game.
-- EU4 1.37.5 on Steam and the GOG build 1.37.5.2. On any other build Anvil does not load the plugin.
+- EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 and 1.37.5.0 (from Hamweard 1.3). On any other
+  build Anvil does not load the plugin.
 
 A game bug to know about: click a save in the Single Player list and start a new campaign from the
 same screen, and all province triggered modifiers are gone, with or without Hamweard. Press **Back**

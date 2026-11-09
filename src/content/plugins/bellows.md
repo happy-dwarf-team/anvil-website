@@ -4,7 +4,7 @@ summary: Faster Europa Universalis IV start-up, simulation and saves. Makes the 
 tagline: Makes the game start faster and the years pass sooner, without changing game files or the rules of the game.
 repo: https://github.com/happy-dwarf-team/bellows
 status: released
-gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
+gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64', 'eu4-1.37.5.0-gog-win64']
 affectsGameplay: false
 order: 10
 workshop: '3823747170'

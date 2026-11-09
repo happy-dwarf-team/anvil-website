@@ -4,7 +4,7 @@ summary: Chinese, Japanese and Korean text for a translation mod, without the ol
 tagline: Shows, wraps, searches and types the text of a Chinese, Japanese or Korean translation mod.
 repo: https://github.com/happy-dwarf-team/mei
 status: released
-gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64']
+gameBuilds: ['eu4-1.37.5-steam-win64', 'eu4-1.37.5.2-gog-win64', 'eu4-1.37.5.0-gog-win64']
 affectsGameplay: false
 order: 40
 workshop: '3832685486'
@@ -81,8 +81,8 @@ pinyin, and each applies at the next start.
   selecting with a mouse drag.
 - **Not ported yet:** the original's own font atlases, which draw from your system's fonts, and its
   dates, Rich Presence and save names.
-- EU4 1.37.5 on Steam and the GOG build 1.37.5.2 (from Mei 0.2). On any other build Anvil does not
-  load the plugin.
+- EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 (from Mei 0.2) and 1.37.5.0 (from Mei 0.4). On
+  any other build Anvil does not load the plugin.
 
 ## Tested
 
