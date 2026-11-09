@@ -25,7 +25,7 @@ All numbers are from the lab, on one computer; yours will differ.
 
 - **A faster start.** About 13 seconds instead of 41 with 10 mods, and 22 instead of 85 with
   Anbennar, on warm starts (not the first after a reboot).
-- **Years pass sooner at speed 5.** With all default settings the year 1720 took about 20 seconds
+- **Years pass sooner at speed 5.** With all default settings the year 1720 took about 17 seconds
   instead of 27.
 - **Faster loading.** "Continue" of a large text save took about 9 seconds instead of 11 with
   Bellows 1.1, and 1.2 takes off about 2 more.
@@ -79,14 +79,18 @@ all of them.
   at that moment.
 - **The map redraws less often at speed 5:** about 16 instead of 22 times a second while you do
   nothing. A key press or click still gets a frame at once.
-- **The simulation numbers come from one save** of 1719. Other saves and mod sets are not verified
-  yet, and a late-game year has no comparison without Bellows under the same conditions.
+- **The simulation numbers come from two vanilla saves,** of 1719 and of a late game in 1821, on one
+  computer. Mod sets are not verified yet, apart from one year of Anbennar with `frame_pacing`.
+- **Online-service messages can arrive up to half a second later** in single player at speed 5:
+  `pops_pacing` runs the game's Paradox callbacks (account, friends and chat, the news feed) every
+  500 ms. Achievements, mods and multiplayer are not affected.
 - **Files must not change while the game starts.** A file that a tool writes into the game or mod
   folders during start-up may be missed until the next start. This matters [to mod
   authors](#for-mod-authors).
 - **Not tested yet:** a save written with `save_compress_parallel` in multiplayer, ironman and cloud
-  saves, `transfer_skip` on a real multiplayer host, in ironman and with cloud saves, and in
-  multiplayer Bellows on a computer other than the host's.
+  saves, `transfer_skip` on a real multiplayer host, in ironman and with cloud saves, in
+  multiplayer Bellows on a computer other than the host's, and the defaults of 1.4 in multiplayer
+  at speed 5 or with mods.
 
 ### AI ties and multiplayer
 
@@ -100,7 +104,7 @@ Bellows differ in the same way.
 Ties do not explain everything. In the lab, runs of one vanilla save of 1444 sometimes became a
 different game with the same seed, also with no Bellows at all. In every case we traced, one AI
 command landed on the other side of the game's daily tick, so the order depends on timing. Bellows
-makes that happen more often: in a planned series at speed 2, 11 of 30 runs with default settings
+makes that happen more often: in a planned series at speed 2, 11 of 30 runs with the default settings of 1.2
 went the other way, against 1 of 30 without Bellows (sign test over paired blocks, p = 0.002), each
 time at the same point of that save. That is one save, one speed and one computer, and we don't know
 how often it happens over a whole campaign. Both orders are normal games.
@@ -109,8 +113,9 @@ In multiplayer the known ties cannot put games out of sync: the host's AI makes 
 sends them to every player. In the lab the host ran Bellows and the other computer ran none: 233
 game days on 0.17.0 ([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)) and 231 on
 the code of 1.3.0, the second run at speed 3 because the other computer could not keep up at 5, both
-without an out-of-sync. Those are the only multiplayer tests so far: one save, Bellows on the host
-only.
+without an out-of-sync. On 9 November 2026 a build of 1.4 with its defaults, the four simulation
+modules on, ran 203 game days the same way at speed 3, also without an out-of-sync. Those are the
+only multiplayer tests so far: one vanilla save, Bellows on the host only.
 
 ## Troubleshooting
 
@@ -118,6 +123,10 @@ only.
   for example `modules: mimalloc=startup, open_warmup=on, …`. A module shown as `FAILED` turned
   itself off, and the line above it says why.
 - **Turn one module off** to see whether it causes a problem, for example `range_witness = "off"`.
+- **A module you turned off before 1.4 is on again?** Anvil saves only values that differ from the
+  default. If you set `port_table`, `province_modifier_view`, `army_search_memo` or `pops_pacing`
+  to `off` while that was the default, there is no line for it, and 1.4 turns it on. Set it to `off`
+  again; it applies at the next start.
 - **Not faster?** `open_warmup` and `ram_prefetch` pay off from the second start on a mod set. Each
   set has its profile in `anvil/data/bellows/profiles/`; deleting that folder makes Bellows learn
   again. The [Benchmark tab](#measure-your-own) gives a fair number.
@@ -165,10 +174,10 @@ Each part of Bellows is a module with its own setting.
 | `range_witness` | **Simulation.** Answers the country range check from the province that was in range last time | on |
 | `frame_pacing` | **Simulation.** At the fastest speed, draws frames every 100 ms instead of 50 ms while you do nothing | on |
 | `modifier_merge` | **Simulation.** Adds each country's modifiers to its units with an index instead of a scan; checks every 1,024th merge against the game's code | on |
-| `port_table` | **Simulation, experimental.** Rebuilds a country's table of the nearest port from one list of its ports instead of walking its provinces and relations again for every province of the map | off |
-| `province_modifier_view` | **Simulation, experimental.** Reads one value in place instead of copying a province's whole modifier list. Off until its effect on the AI is checked | off |
-| `pops_pacing` | **Simulation, experimental.** At the fastest speed, runs the game's Paradox online-service callbacks every 500 ms instead of twice a frame | off |
-| `army_search_memo` | **Simulation, experimental.** In the AI's daily search for each army, in a path search and when a unit's moves are listed, works out once whether a modifier lets the army ignore forts' zones of control and what its speed modifier is | off |
+| `port_table` | **Simulation, since 1.4 on by default.** Rebuilds a country's table of the nearest port from one list of its ports instead of walking its provinces and relations again for every province of the map; checks every 32nd rebuild against the game's code | on |
+| `province_modifier_view` | **Simulation, since 1.4 on by default.** Reads one value in place instead of copying a province's whole modifier list | on |
+| `pops_pacing` | **Simulation, since 1.4 on by default.** At the fastest speed, runs the game's Paradox online-service callbacks every 500 ms instead of twice a frame | on |
+| `army_search_memo` | **Simulation, since 1.4 on by default.** In the AI's daily search for each army, in a path search and when a unit's moves are listed, works out once whether a modifier lets the army ignore forts' zones of control and what its speed modifier is | on |
 | `save_compress` | **Saving.** For compressed saves, computes the checksum eight bytes at a time; the file is byte for byte the game's | on |
 | `transfer_skip` | **Loading.** In single player, "Continue" of a text save no longer compresses the file for a multiplayer transfer nobody receives | on |
 | `history_add` | **Loading.** Adds an entry the game just read to a dated list without first walking the whole list. The list comes out the same, and the gain depends on the mods | on |
@@ -216,20 +225,23 @@ because they run to the end of start-up. You can then send a report, or copy it 
 ### A year at speed 5
 
 Source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#a-year-at-speed-5). All
-default settings together against the same game without Bellows: the save of Russia from 17 March
-1719, warmed up to 1 January 1720, then the year 1720 at speed 5, with the main thread on one
-processor and 8 workers in both pools. Anvil 1.9.0, `anvil-game` and Tongs in both setups. One game
-per run, interleaved, after a check that the processor was idle, 5 November 2026:
+default settings together against the same game without Bellows, with the main thread on one
+processor and 8 workers in both pools. Two years at speed 5: 1720, from the save of Russia of
+17 March 1719 warmed up to 1 January 1720, and the year from 1 March 1821 on an autosave of a late
+game, in observer mode. Anvil 1.13.0, `anvil-game` and Tongs in all three setups. One game per run,
+interleaved, after a check that the processor was idle, 7 November 2026. Bellows 1.3.0 ran once
+with its own defaults and once with the four modules that 1.4 turns on:
 
-| Setup | Year 1720 | Median |
-| --- | --- | ---: |
-| Without Bellows | 26.50 / 27.11 / 24.70 / 28.95 s | 26.80 s |
-| With Bellows, default settings | 18.72 / 21.63 / 20.92 / 20.07 s | **20.49 s** |
+| Setup | Year 1720, median | Year from March 1821, median |
+| --- | ---: | ---: |
+| Without Bellows | 27.27 s (24.95–30.86, 6 games) | 34.05 s (33.79–36.81, 3 games) |
+| With Bellows, the defaults of 1.3 | 19.41 s (18.41–20.27, 6 games) | 24.94 s (22.21–25.30, 4 games) |
+| With Bellows, the defaults of 1.4 | **16.86 s** (16.16–17.35, 6 games) | **21.09 s** (19.06–22.19, 4 games) |
 
-About a quarter less, and the two ranges do not overlap. All modules reported 0 differences from
-the game's own answers. Runs in which an event held the game paused were thrown out: 5 of the 16 in
-the series, none of them in these two setups. `pops_pacing` and `army_search_memo` have too few valid
-runs and stay off.
+More than a third less in both years. The four modules together took 13.1% off 1720 and 15.4% off
+1821 against the defaults of 1.3; that is for the four together and says nothing about each of
+them. All modules reported 0 differences from the game's own answers. Two games of 1720 in which an
+event held the game paused were thrown out. One machine and two saves: your years will differ.
 
 ### Single modules
 
@@ -247,9 +259,8 @@ More than 1.4 million answers compared with the game's own code: 0 differences.
   instead of 51.5 ms (medians).
 - `modifier_merge`: the year 1720 in 19.45 s instead of 20.64 s (medians). A save from 1821 took
   26.2 s against 30.2 s, but late-game years vary by about 3 s, so that is not conclusive.
-- `province_modifier_view` is off and has not been timed by game year. It compared 12.17 million
-  values with 0 differences. It changes how the game's memory is laid out, so it waits for a
-  determinism check.
+- `province_modifier_view` has not been timed alone by game year; it is part of the set above. It
+  compared 12.17 million values with 0 differences.
 
 ### Saving
 
