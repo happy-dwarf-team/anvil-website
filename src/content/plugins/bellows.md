@@ -184,6 +184,8 @@ Each part of Bellows is a module with its own setting.
 | `save_compress` | **Saving.** For compressed saves, computes the checksum eight bytes at a time; the file is byte for byte the game's | on |
 | `transfer_skip` | **Loading.** In single player, "Continue" of a text save no longer compresses the file for a multiplayer transfer nobody receives | on |
 | `history_add` | **Loading.** Adds an entry the game just read to a dated list without first walking the whole list. The list comes out the same, and the gain depends on the mods | on |
+| `checksum_defer` | **Loading, since 1.6, off by default.** Starts the game's version checksum (the code next to the version on the main menu) once the databases are loaded, instead of alongside them; the same files and checksum. About 1 s off the start of Anbennar, nothing measurable on the base game | off |
+| `never_throttle` | **Simulation, since 1.6, off by default.** While a single-player game runs at speed 5, skips the main loop's waits that the game makes while its window is minimized, so a minimized year takes about 40–60% less time. A visible window does not change | off |
 
 The diagnostic modules `zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`,
 `army_search_profile`, `score_probe` and `monthly_probe` only count, and are for development.
@@ -309,6 +311,23 @@ not change.
 Compared with the game's own code in `verify`: 0 differences in about 650,000 path answers on each
 of the saves of 1719 and 1821, and in 154 million list steps on the save of 1821. Not tested: compressed saves, a
 first load after a reboot, multiplayer.
+
+`checksum_defer` (since 1.6, off by default) was measured on warm starts to the main menu, EU4 1.37.5
+(Steam), Anvil 1.13.0, Bellows' defaults otherwise, 5 interleaved starts each, in two series on
+9 November 2026: on Anbennar 22.09 → 20.98 s and 22.56 → 21.55 s (medians), on the base game
+11.58 → 11.47 s and 11.72 → 11.44 s, which is within the noise there. The game's logs had the same lines and the main menu showed
+the same version code in every start. Not measured: the first start after a reboot, a slow disk,
+multiplayer with the module on.
+
+### Minimized at speed 5
+
+`never_throttle` (since 1.6, off by default), with the game window minimized for the measured year,
+EU4 1.37.5 (Steam), Anvil 1.13.0, Bellows with the 1.4 defaults otherwise, 5 interleaved games per
+setting, 9 November 2026: the year 1720 of the save of Russia took 34.37 s instead of 82.94 s
+(medians), and the year 1445 on Anbennar 65.26 s instead of 107.11 s. With the window visible the
+medians differ by +1.9% and −3.0%, with overlapping ranges. A minimized game at speed 5 uses more
+processor time per second (about 1.15 cores instead of 0.5–0.7). Not tested: a window covered but not
+minimized, full screen with alt-tab, laptops on battery, multiplayer.
 
 The [design notes](https://github.com/happy-dwarf-team/bellows/blob/main/docs/design.md)
 have every method.
