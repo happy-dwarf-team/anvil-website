@@ -113,10 +113,12 @@ how often it happens over a whole campaign. Both orders are normal games.
 In multiplayer the known ties cannot put games out of sync: the host's AI makes these choices and
 sends them to every player. In the lab the host ran Bellows and the other computer ran none: 233
 game days on 0.17.0 ([bellows#79](https://github.com/happy-dwarf-team/bellows/issues/79)) and 231 on
-the code of 1.3.0, the second run at speed 3 because the other computer could not keep up at 5, both
-without an out-of-sync. On 9 November 2026 a build of 1.4 with its defaults, the four simulation
-modules on, ran 203 game days the same way at speed 3, also without an out-of-sync. Those are the
-only multiplayer tests so far: one vanilla save, Bellows on the host only.
+the code of 1.3.0, the second run at speed 3 because the other computer could not keep up at 5. On
+9 November 2026 a build of 1.4 with its defaults, the four simulation modules on, ran 203 game days
+the same way at speed 3. In all three runs the game's usual out-of-sync check, the one players get,
+which compares the random-number count and seed, reported nothing. They did not use `-hardoos`,
+which compares all 140 checksums of the game state, so they do not show that the whole state stayed
+the same. Those are the only multiplayer tests so far: one vanilla save, Bellows on the host only.
 
 ## Troubleshooting
 

@@ -18,16 +18,21 @@ gameplay, and Anvil acts on that.
 | Standard plugins (`anvil-game`, `anvil-overlay`, `anvil-log-throttle`) | No | Stay on | Stay on |
 
 - **Bellows in multiplayer:** the host ran Bellows, the other computer did not: 233 game days on
-  0.17.0 and 231 on the code of 1.3.0, on one save, without an out-of-sync. The second run was at
-  speed 3, because the other computer could not keep up at 5. Both runs used the defaults of their
-  code, so the four simulation modules that Bellows 1.4 turns on by default were off. On
-  9 November 2026 a build of 1.4 with those modules on ran 203 days at speed 3 the same way,
-  without an out-of-sync. Bellows on another player's computer is not tested.
+  0.17.0 and 231 on the code of 1.3.0, on one save. The second run was at speed 3, because the
+  other computer could not keep up at 5. Both runs used the defaults of their code, so the four
+  simulation modules that Bellows 1.4 turns on by default were off. On 9 November 2026 a build of
+  1.4 with those modules on ran 203 days at speed 3 the same way. In all three runs the game's
+  usual out-of-sync check, which compares the random-number count and seed, reported nothing.
+  Bellows on another player's computer is not tested.
 - **Mei in multiplayer:** every player needs the same mods anyway, and a player without Mei
   sees names written with it wrongly.
 - **Hamweard in multiplayer:** Exit to Menu restarts the game as usual, by the plugin's own check.
-  Tested on Steam on 6 November 2026 with Hamweard on both computers: about four months of game
-  without an out-of-sync, a client rejoining the running campaign included.
+  Tested on Steam on 6 November 2026 with Hamweard on both computers: in about four months of game
+  the game's usual out-of-sync check reported nothing, a client rejoining the running campaign
+  included.
+
+None of these tests used `-hardoos`, which compares all 140 checksums of the game state, so they
+do not show that the state stayed identical ([FAQ](../faq/)).
 
 Each plugin's page has the details and the source of each test.
 
@@ -77,7 +82,8 @@ in ironman, two new ironman games in a row showed that achievements can be earne
 - Anvil's suspension has been seen in a live ironman game (Hamweard 1.1.0, 4 November 2026), not
   yet in a live multiplayer session.
 - Multiplayer has been tested with Bellows on the host (one vanilla save, the defaults of 1.4 at
-  speed 3 only) and with Hamweard on both computers.
+  speed 3 only) and with Hamweard on both computers, always with the game's usual out-of-sync
+  check, never with `-hardoos`.
 
 If you play these and something goes wrong, or goes right where we say "not tested",
 [tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose).
