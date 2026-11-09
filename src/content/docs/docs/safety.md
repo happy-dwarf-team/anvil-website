@@ -27,7 +27,8 @@ antivirus objects.
   if its SHA-256 equals the one in the list, and each release in the list had its size, hash
   and build attestation checked when it was added.
 - **Nothing happens on the network by itself.** Anvil never downloads anything. The Manager
-  downloads only what you click, and checks for a newer Anvil only if you say yes when it asks.
+  downloads only what you click. The Manager and the game check GitHub for a newer Anvil only
+  if you say yes when one of them asks, and then only show a link.
   A [benchmark report](../benchmark-privacy/) leaves your computer only when you click **Send**
   after seeing it.
 

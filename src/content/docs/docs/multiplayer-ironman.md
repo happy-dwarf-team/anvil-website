@@ -47,6 +47,17 @@ allow_multiplayer = []
 
 A session that is both ironman and multiplayer needs both.
 
+## Notices in the game
+
+During a session, a notice in the top right corner says what Anvil does there:
+
+- **Multiplayer** shows in every multiplayer game. It names the plugins that change the game
+  with a short hash of the set, which every player should see the same, or says that none acts.
+  From Anvil 1.14 its **x** closes it until that session ends; the next session shows it again.
+- **Ironman with gameplay plugins** shows while a plugin you allowed in ironman acts. It says
+  that achievements stay enabled but such plugins may break Paradox's rules for them, and it
+  cannot be closed.
+
 ## Checksum and achievements
 
 A mod that holds only `descriptor.mod` and an `anvil/` folder does not change the game's
