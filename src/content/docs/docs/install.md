@@ -13,6 +13,8 @@ You need **EU4 1.37.5 for Windows (64-bit) from Steam**, or the **GOG build 1.37
 
 `AnvilManager.exe` installs Anvil and manages its plugins.
 
+<span lang="zh-CN">简体中文说明：[安装 Anvil 和 Mei](../../zh-cn/install/)。</span>
+
 1. Download `AnvilManager.exe` with the button on the [home page](../../), or from the
    [latest release](https://github.com/happy-dwarf-team/anvil/releases/latest).
 2. Run it. If your browser or Windows warns about the file, see

@@ -8,7 +8,10 @@ Decisions for the Anvil website. Change them here first, then in code.
 - **Style:** "dark forge". Dark only, minimal, developer-tool look (dark mode + minimalism).
   The only strong colour is the orange of the Happy Dwarf Team beard; greys from the helmet
   are used for borders.
-- **Language:** English only.
+- **Language:** English, with one exception: `/zh-cn/install/` in Simplified Chinese for players
+  in mainland China (eu4-engine-lab#96). Its text sits in a `lang="zh-CN"` block, and it loads
+  nothing from hosts that are blocked or unreliable there (raw.githubusercontent.com, Discord,
+  steamcommunity.com).
 - **Layout of the home page:** centred hero with one primary action (download) → three
   features → plugin cards → install in three steps → footer. No carousels, no testimonials.
 

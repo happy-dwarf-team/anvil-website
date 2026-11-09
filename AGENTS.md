@@ -7,7 +7,9 @@
   and respect `prefers-reduced-motion`. Update DESIGN.md when a design decision changes.
 - Internal links in components go through `url()` from `src/lib/url.ts`; in Markdown use
   relative links. The site must work both at the custom domain and under `/anvil-website/`.
-- Content is English. State the source of every measurement and mark unverified claims.
+- Content is English, except the one Simplified Chinese page `src/pages/zh-cn/install.astro`
+  (install, replacing EU4DLL, symptoms; eu4-engine-lab#96), which loads nothing from
+  raw.githubusercontent.com, Discord or steamcommunity.com. State the source of every measurement and mark unverified claims.
   Do not imply affiliation with Paradox Interactive.
 - Check `npm run check`, `npm run build`, `npm run check:links` and `npm run check:a11y`
   before finishing a change; CI runs all four.
