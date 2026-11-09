@@ -26,9 +26,12 @@ antivirus objects.
 - **The Manager's catalog pins each file.** A plugin from the **Catalog** tab is installed only
   if its SHA-256 equals the one in the list, and each release in the list had its size, hash
   and build attestation checked when it was added.
-- **Nothing happens on the network by itself.** Anvil never downloads anything. The Manager
-  downloads only what you click. The Manager and the game check GitHub for a newer Anvil only
-  if you say yes when one of them asks, and then only show a link.
+- **Nothing happens on the network by itself.** Anvil never downloads a file by itself. The
+  Manager downloads a plugin only when you click. The Manager and the game check GitHub for a
+  newer Anvil only if you say yes when one of them asks, and then only show a link. With the
+  same yes, the Manager from Anvil 1.15 also reads the list of the team's plugins from GitHub
+  when it starts, to show which installed plugins have an update. GitHub sees your address and
+  the Manager's version, not which plugins you have.
   A [benchmark report](../benchmark-privacy/) leaves your computer only when you click **Send**
   after seeing it.
 
