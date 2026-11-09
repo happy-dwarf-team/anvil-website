@@ -212,6 +212,17 @@ a new game build may leave the world out.
 | `country_provinces(tag, ids, capacity, &count)` | The provinces it owns |
 | `war_ids(ids, capacity, &count)` | The running wars |
 | `war(id, &out)`, `war_name`, `war_side` | Who started it, its name, and who is on each side |
+| `modifier_id(key, &id)` | The id of a modifier from its script key, such as `"land_morale"` (1.15) |
+| `country_modifier(tag, id, &value)` | A country's total of that modifier, as the game uses it (1.15) |
+| `province_modifier(id, modifier, &value)` | What the province has of it itself, without its owner's (1.15) |
+| `country_units(tag, ids, capacity, &count)` | The ids of a country's armies and navies (1.15) |
+| `unit(tag, id, &out)` | Army or navy, province, mission, regiments or ships, strength, leader (1.15) |
+| `unit_name`, `unit_leader_name` | The name the game shows, and its leader's (1.15) |
+| `selected_units(refs, capacity, &count)` | The armies and navies the player has selected (1.15) |
+
+The calls marked 1.15 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, or check `ANVIL_GAME_WORLD_HAS(world, modifier_id)` and
+`ANVIL_GAME_WORLD_HAS(world, selected_units)` before calling them.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -220,9 +231,18 @@ a new game build may leave the world out.
   header are as the game stores them, so 4500 is 4.5.
 - **Lists and names:** the buffers are yours. They are filled as far as they fit and the count
   or length gets the whole size, so a capacity of 0 asks for it.
-- **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms.
+- **Modifiers:** ask for an id once, at the start of a session or the first time you need it; it
+  holds as long as the game runs, while `modifier_id` walks every definition. A value is x 1000
+  and already has the game's adjustment for a DLC that is off, so it is what the game's windows
+  use: `discipline` 50 is +5%, and a yes-or-no modifier is 1000 or 0.
+- **Units:** a unit is read by its country and its id. `ANVIL_ERROR_NOT_FOUND` means it is gone
+  (disbanded, merged or destroyed), and `unit_leader_name` answers it also for a unit without a
+  leader. `strength` is x 1000, so for an army it is the number of men. The selection can hold
+  units of other countries, since the game lets a player select them to look.
+- **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms. A modifier
+  read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine).
 - **Not on every build:** after a port some values may be missing. A country's `values` field
-  says which it has, and the war calls answer `ANVIL_ERROR_NOT_DECLARED`.
+  says which it has, and the war, modifier and unit calls answer `ANVIL_ERROR_NOT_DECLARED`.
 
 ```cpp
 const auto* world = host.service<AnvilGameWorldService>(ANVIL_GAME_WORLD_SERVICE, ANVIL_GAME_WORLD_SERVICE_VERSION);
@@ -237,8 +257,23 @@ host.subscribe(ANVIL_GAME_EVENT_MONTH, [host, world](std::string_view, const voi
 });
 ```
 
+```cpp
+AnvilGameUnitRef selected[64];
+uint32_t count = 0;
+if (ANVIL_GAME_WORLD_HAS(world, selected_units) &&
+    world->selected_units(selected, 64, &count) == ANVIL_OK) {
+    for (uint32_t i = 0; i < count && i < 64; ++i) {
+        AnvilGameUnit unit{};
+        unit.size = sizeof(unit);
+        if (world->unit(selected[i].country.text, selected[i].id, &unit) == ANVIL_OK) {
+            host.info("{}: {} men in province {}", selected[i].country.text, unit.strength, unit.location);
+        }
+    }
+}
+```
+
 It only reads, so it needs no `affects_gameplay = true`. It shows everything, also what fog of
-war hides from a player; a plugin that shows such values in multiplayer does not enter the
+war hides from a player, a rival's modifiers and units in multiplayer included; a plugin that shows such values in multiplayer does not enter the
 [Plugins page](../catalog/).
 
 ### Windows
