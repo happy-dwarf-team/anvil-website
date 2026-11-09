@@ -45,7 +45,12 @@ This page is a plan, not a promise, and has no dates. Each release is on
 
 ## Not scheduled
 
-A safe Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4 1.37.5.
+- A safe Rust crate on top of `anvil-sys`, and the Microsoft Store and Epic builds of EU4 1.37.5.
+- Changing a province's terrain during a campaign, and the map's look with it, so that a mod
+  no longer has to draw over the map or add modifiers that only imitate a new terrain
+  ([#258](https://github.com/happy-dwarf-team/anvil/issues/258)). An idea, not researched yet.
+  Such a plugin changes the game, so Anvil would suspend it in ironman and multiplayer like
+  other gameplay plugins.
 
 ## Not planned
 
