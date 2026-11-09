@@ -5,8 +5,13 @@ import { url } from '../../lib/url';
 // The one page in Simplified Chinese (eu4-engine-lab#96, decision 9 of #27): installing Anvil
 // and Mei, replacing EU4DLL and a table of symptoms, for players in mainland China. GitHub Pages
 // loads there (eu4-engine-lab#91); raw.githubusercontent.com, Discord and steamcommunity.com
-// often do not, so nothing here loads from them and no step depends on them. The download goes to
-// GitHub Releases until a mirror exists (eu4-engine-lab#95).
+// often do not, so nothing here loads from them and no step depends on them. The first download
+// link is the mirror on Cloudflare R2 (eu4-engine-lab#95): github.com/.../releases/download answered
+// 13 of 22 probes from China, Cloudflare on happydwarf.dev 21 of 22 (#91). The mirror is a copy that
+// Anvil's mirror.yml makes after each release and checks byte for byte against the GitHub release,
+// so the page calls it a mirror (镜像) and keeps the GitHub link beside it as the source.
+const mirrorUrl = 'https://dl.happydwarf.dev/anvil/latest/AnvilManager.exe';
+const mirrorSumsUrl = 'https://dl.happydwarf.dev/anvil/latest/SHA256SUMS.txt';
 const managerUrl = 'https://github.com/happy-dwarf-team/anvil/releases/latest/download/AnvilManager.exe';
 const releasesUrl = 'https://github.com/happy-dwarf-team/anvil/releases/latest';
 const meiReleasesUrl = 'https://github.com/happy-dwarf-team/mei/releases/latest';
@@ -37,9 +42,16 @@ const meiWorkshopId = '3832685486';
 		</ul>
 
 		<h2 id="manager">1. 下载 Anvil Manager</h2>
-		<p>
-			<a href={managerUrl}><code>AnvilManager.exe</code></a>（来自 GitHub Releases，<a href={releasesUrl}>所有文件</a>）。如果下载失败，请稍后再试。
-		</p>
+		<ul>
+			<li>
+				<strong>镜像：</strong><a href={mirrorUrl}><code>AnvilManager.exe</code></a>（<code>dl.happydwarf.dev</code>，<a href={mirrorSumsUrl}>SHA256SUMS.txt</a>）。这是
+				GitHub Releases 上同一文件的副本，每次发布后自动复制，并核对 SHA-256 与 GitHub 上的文件一致。
+			</li>
+			<li>
+				<strong>原始地址：</strong><a href={managerUrl}><code>AnvilManager.exe</code></a>（GitHub Releases，<a href={releasesUrl}>所有文件</a>）。
+			</li>
+		</ul>
+		<p>两个链接是同一个文件。如果一个下载失败，请试另一个，或稍后再试。</p>
 		<p>
 			Anvil 的文件没有代码签名。浏览器可能提示“此文件不常被下载”，请选择保留。Windows 首次运行时可能显示“Windows 已保护你的电脑”，请选择<strong>更多信息</strong>，再选择<strong>仍要运行</strong>。
 		</p>
