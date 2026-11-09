@@ -68,13 +68,13 @@ plugins working.
 - **C++:** `anvil.hpp` with the generated `symbols.gen.hpp` and `settings.gen.hpp`. A
   detour whose signature does not match the declared one does not compile
   ([`examples/hello-cpp`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-cpp)).
-- **Rust:** a `cdylib` that depends on [`anvil-sys`](https://github.com/happy-dwarf-team/anvil/tree/main/sdk/rust/anvil-sys),
-  the raw bindings (its version is Anvil's). `anvil gen --lang rust` writes
-  `symbols.gen.rs`, usually from `build.rs`. Link the C runtime statically
-  (`-C target-feature=+crt-static`) and catch panics in every function Anvil or the game
-  calls: unwinding into them aborts the game
-  ([`examples/hello-rust`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-rust)).
-  A safe `anvil` crate is not scheduled.
+- **Rust:** a `cdylib` that depends on the safe crate
+  [`anvil-sdk`](https://crates.io/crates/anvil-sdk) and says `anvil::plugin!(MyPlugin);`
+  ([Rust](../api/#rust) in the host API). `anvil gen --lang rust` writes `symbols.gen.rs`,
+  usually from `build.rs`. Link the C runtime statically (`-C target-feature=+crt-static`)
+  ([`examples/hello-rust`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-rust),
+  [`examples/panel-rust`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/panel-rust)).
+  The raw bindings are [`anvil-sys`](https://crates.io/crates/anvil-sys).
 
 ## Plugin layout
 
