@@ -64,8 +64,11 @@ Any other language shows English.
 
 They also speak Simplified Chinese, Traditional Chinese, Japanese and Korean. EU4 has none of
 these itself: a translation mod replaces its English text and [Mei](../../plugins/mei/) shows
-it. So while Mei loads, Anvil takes the language Steam is set to, or else the one Windows is set
-to, when it is Chinese, Japanese or Korean.
+it. So while Mei loads, the panel takes the language Steam is set to, or else the one Windows is
+set to, when it is Chinese, Japanese or Korean. From Anvil 1.16 the Manager does so from its first
+start, before Mei or Anvil is installed, so the install and the
+[replacement of EU4DLL](../install/#if-eu4dll-or-eu4-unicode-patch-is-installed) are in your
+language.
 
 To choose one of the eight yourself, use the setting **Language** (Anvil panel, **Settings**,
 `anvil-overlay`). For a test, the environment variable `ANVIL_LANGUAGE` (`en`, `fr`, `de`, `es`,
