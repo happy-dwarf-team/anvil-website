@@ -46,7 +46,8 @@ second start.
 
 You do not need to change anything. The numbers above are with the default settings. Change a
 setting on the **Settings** tab of Anvil Manager or in the Anvil panel. It applies at the next
-start.
+start, except `frame_pacing_interval_ms` and `frame_pacing_input`: changed in the Anvil panel while
+`frame_pacing` is on, they apply at once (since Bellows 1.4.0).
 
 | Setting | Default | What it does |
 | --- | --- | --- |
@@ -256,7 +257,10 @@ per trial, interleaved.
 More than 1.4 million answers compared with the game's own code: 0 differences.
 
 - `frame_pacing`: a year in 20.8 s instead of 23.4 s, and a key press at speed 5 handled after 21 ms
-  instead of 51.5 ms (medians).
+  instead of 51.5 ms (medians). On Anbennar (a save of Verne from 1444, the year 1445 at speed 5,
+  four games each, interleaved, with the defaults of 1.4): 48.42 s instead of 55.42 s
+  (medians, one computer, one save; see
+  [A year of Anbennar at speed 5](https://github.com/happy-dwarf-team/bellows#a-year-of-anbennar-at-speed-5)).
 - `modifier_merge`: the year 1720 in 19.45 s instead of 20.64 s (medians). A save from 1821 took
   26.2 s against 30.2 s, but late-game years vary by about 3 s, so that is not conclusive.
 - `province_modifier_view` has not been timed alone by game year; it is part of the set above. It
