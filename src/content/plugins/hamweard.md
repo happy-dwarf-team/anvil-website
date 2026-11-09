@@ -51,8 +51,10 @@ no longer does anything.
   region, and the next campaign's missions differed.
 - **Multiplayer: no return, and one test with a second player.** Exit to Menu and Back restart the game in
   any multiplayer session, as they do without the plugin. The plugin checks that itself and stays
-  loaded. Tested on Steam with a host and a client, both with Hamweard: no desync in about four
-  months of game, a client who left and came back into the running campaign included.
+  loaded. Tested on Steam with a host and a client, both with Hamweard: the game's usual
+  out-of-sync check, which compares the random-number count and seed, reported nothing in about
+  four months of game, a client who left and came back into the running campaign included. The
+  test did not use `-hardoos`, which compares all 140 checksums of the game state.
 - **Multiplayer after a campaign needs a restart.** A process that has played is not meant to go
   on to multiplayer. After a return the Multiplayer button does nothing, and its tooltip says why.
   Restart the game once.
