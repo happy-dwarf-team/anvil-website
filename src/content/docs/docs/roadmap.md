@@ -23,6 +23,9 @@ This page is a plan, not a promise, and has no dates. Each release is on
 | 1.9 | The [**Catalog** tab](../install-plugins/#from-the-catalog-tab); Chinese, Japanese and Korean with [Mei](../../plugins/mei/); a problem report to copy |
 | 1.10 | The Manager finds and starts a GOG game and reads its own user folder; authors can [check symbols by digest](../plugins/manifest/#digests-instead-of-bytes) |
 | 1.11 | Plugins can [read the campaign](../plugins/api/#the-world) and [open a window](../plugins/api/#windows) without game addresses; [`anvil port`](../plugins/manifest/#anvil-port) moves a plugin's addresses to a new game build; a clear notice [after an EU4 update](../using-anvil/#when-eu4-updates) |
+| 1.12 | Once Anvil knows a new game build, [one notice names the plugins that wait for it](../using-anvil/#when-eu4-updates) and the badge comes back with an amber dot; [`anvil port`](../plugins/manifest/#anvil-port) takes the new build's id from Anvil's own list |
+| 1.13 | The Manager can [add itself to the Start menu](../install/#install-with-anvil-manager) |
+| 1.14 | The game [tells you about a newer Anvil](../using-anvil/#a-newer-anvil); the Manager says when [the game ran without Anvil](../troubleshooting/#if-anvil-does-not-run-at-all); the [Multiplayer notice](../multiplayer-ironman/#notices-in-the-game) can be closed; plugins can tell that a multiplayer game [went out of sync](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_game.h) |
 
 **Ports of older native patches** are out: EU4 Menu Patch as [Hamweard](../../plugins/hamweard/)
 ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)) and EU4 Unicode Patch as
@@ -36,6 +39,7 @@ This page is a plan, not a promise, and has no dates. Each release is on
 - **Ironman and multiplayer.** Suspending gameplay plugins has been seen in a live ironman game,
   not yet in a live multiplayer session. One achievement has been earned in an ironman game with
   Anvil, none yet in a full campaign ([what was tested](../multiplayer-ironman/#what-has-not-been-tested)).
+  The out-of-sync report of 1.14 has not seen a real desync yet, which takes two computers.
 - **Bellows.** The first start after a reboot has not been measured with the plugin. The
   Benchmark tab shows the cold starts a series happens to contain, but cannot make one on demand.
 - **Translations.** No native speaker has checked the French, German, Spanish, Chinese, Japanese
@@ -56,7 +60,9 @@ This page is a plan, not a promise, and has no dates. Each release is on
 
 - Code signing. Releases keep SHA-256 checksums and a build attestation instead
   ([#157](https://github.com/happy-dwarf-team/anvil/issues/157)).
-- Linux and macOS builds of EU4, 32-bit, other Paradox games, and EU4 versions other than 1.37.5.
+- The native Linux and macOS builds of EU4, 32-bit, other Paradox games, and EU4 versions other
+  than 1.37.5. The Windows game on Linux with Proton is not tested
+  ([FAQ](../faq/#does-it-work-on-the-microsoft-store-linux-or-macos)).
 - Scripting languages inside plugins.
 
 Ideas and requests go to the

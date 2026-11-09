@@ -52,7 +52,8 @@ skips them.
   report it as `unknown` and skip every plugin that uses game addresses. The game starts normally.
 - **Linux with Proton:** not tested. Proton runs the Windows game, but Anvil has not been tried
   there.
-- **macOS and the native Linux build of EU4:** not supported, and not a goal for now.
+- **macOS and the native Linux build of EU4:** not supported, and not planned
+  ([roadmap](../roadmap/#not-planned)).
 
 ## What else is built on Anvil?
 
