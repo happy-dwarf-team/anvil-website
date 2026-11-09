@@ -56,14 +56,15 @@ gh attestation verify .\AnvilManager.exe -R happy-dwarf-team/anvil
 | Anvil | `happy-dwarf-team/anvil` | `AnvilManager.exe`, `anvil-windows-x64.zip` |
 | Bellows | `happy-dwarf-team/bellows` | `bellows-windows-x64.zip` |
 | Hamweard | `happy-dwarf-team/hamweard` | `hamweard-windows-x64.zip` |
+| Hoard | `happy-dwarf-team/hoard` | `hoard-windows-x64.zip` |
 | Mei | `happy-dwarf-team/mei` | `mei-windows-x64.zip` |
 | Tongs | `happy-dwarf-team/tongs` | `tongs-windows-x64.zip` |
 
 A file that passes came from that repository's release workflow, and you can read the source
 of that commit. It does not prove that the code is free of bugs.
 
-A Workshop item has no attestation of its own. The release workflows of Bellows, Hamweard and
-Tongs upload the checked release zip to it; to check by hand, take the zip from GitHub instead.
+A Workshop item has no attestation of its own. The release workflows of Bellows, Hamweard,
+Hoard and Tongs upload the checked release zip to it; to check by hand, take the zip from GitHub instead.
 
 ## Why Windows warns
 

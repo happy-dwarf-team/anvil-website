@@ -23,7 +23,8 @@ builds**. On another game build Anvil skips the plugin and the game starts norma
 
 The **Catalog** tab of `AnvilManager.exe` lists the team's plugins:
 [Bellows](../../plugins/bellows/), [Tongs](../../plugins/tongs/),
-[Hamweard](../../plugins/hamweard/) and [Mei](../../plugins/mei/). It needs Anvil 1.9 or newer.
+[Hamweard](../../plugins/hamweard/), [Mei](../../plugins/mei/) and [Hoard](../../plugins/hoard/).
+It needs Anvil 1.9 or newer.
 
 1. Click **Install** next to the plugin. The Manager names the file, its size and the GitHub
    repository it comes from.
