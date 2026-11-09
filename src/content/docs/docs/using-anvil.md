@@ -20,11 +20,27 @@ Start `AnvilManager.exe` from the game folder.
 | **Benchmark** | Measures how much faster a plugin makes the game start; see [Start-up benchmark](../benchmark/). |
 | **Crashes** | Shows crash reports. |
 | **Log** | Shows `anvil.log`, and copies a [problem report](../troubleshooting/#reporting-a-problem) for an issue. |
-| **About** | Shows the versions, and lets you turn the check for a newer Anvil on or off. |
+| **About** | Shows the versions, and lets you turn the check for a newer Anvil on or off (for the Manager and the game). |
 
 While the game runs, the Manager only shows the state and changes nothing. It downloads only
-what you click. It asks once whether it may check GitHub for a newer Anvil when it starts; if
-you say yes, it only shows a link.
+what you click. It asks once whether it may check GitHub for a newer Anvil when the Manager or
+the game starts; if you say yes, it only shows a link.
+
+## A newer Anvil
+
+If you agree, the game tells you when a newer Anvil is out. When the game reaches its main menu,
+the panel asks GitHub once for Anvil's latest release, in the background. If it is newer than
+your Anvil, a notice in the top right corner names it, with **Open its page** and **Copy link**.
+To update, download `AnvilManager.exe` from that page and run it. Nothing is downloaded by the
+game.
+
+- **Your answer.** If you already answered the Manager's question, the game follows it.
+  Otherwise the main menu asks once: **Yes, check for releases** or **No**. One answer counts for
+  the Manager and the game.
+- **Turning it off.** Set **Check for new Anvil releases** on the panel's **Settings** tab
+  (plugin `anvil-overlay`) to **Off**. **On** checks without asking; **Ask** follows the Manager.
+- **How often.** The notice comes back at each start until you close it with **x** or open the
+  release page. After that it stays away until the next release.
 
 ## The Anvil panel
 
