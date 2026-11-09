@@ -334,6 +334,58 @@ fields to the report. Include
 Bellows 0.10.0 is the first participant. The full contract is §5 of the
 [benchmark specification](https://github.com/happy-dwarf-team/anvil/blob/main/docs/spec/benchmark-v1.md#5-anvilbenchmark-v1).
 
+## Rust
+
+The safe crate [`anvil-sdk`](https://crates.io/crates/anvil-sdk) (library `anvil`,
+[documentation on docs.rs](https://docs.rs/anvil-sdk)) offers the calls above to a Rust
+plugin. It sits on the raw bindings of
+[`anvil-sys`](https://crates.io/crates/anvil-sys), which also bind the service headers.
+
+```rust
+use anvil::{Host, Plugin};
+use anvil::game::{self, SessionChange};
+use anvil::world::World;
+
+struct Hello;
+
+impl Plugin for Hello {
+    fn load(host: &mut Host) -> anvil::Result<Self> {
+        let world = World::get(host);
+        let log = *host;
+        host.subscribe(game::SESSION, move |session| {
+            if session.change == SessionChange::Started {
+                if let Some(tag) = world.and_then(|w| w.player().ok().flatten()) {
+                    log.info(format_args!("playing {tag}"));
+                }
+            }
+        })?;
+        Ok(Hello)
+    }
+}
+
+anvil::plugin!(Hello);
+```
+
+- `anvil::plugin!(Type)` exports `anvil_plugin_load`. `load` returns the plugin or an
+  `anvil::Error`, and Anvil rolls back what the plugin staged when it fails or panics.
+- A panic in a mid hook, an event, a setting or a panel click is logged once and the game
+  carries on. A function-hook detour is called by the game directly, so wrap its work in
+  `anvil::catch_panic`.
+- A `Change` removes its change when it is dropped. A `FunctionHook` lives in a `static`,
+  where Anvil writes the rest of the chain.
+- `anvil::game`, `anvil::world`, `anvil::panel` and `anvil::benchmark` wrap the services
+  above. A function the running service is too old to have answers `Unsupported`.
+- Host and service calls are safe Rust. What touches the game's memory by address stays
+  `unsafe`: calling the rest of a hook's chain or a game function, reading game data,
+  writing the registers in a mid hook, byte patches, pointer swaps and raw addresses.
+
+Examples:
+[`hello-rust`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-rust)
+(hooks on declared symbols) and
+[`panel-rust`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/panel-rust)
+(the player's country from the world service in a panel, with no game addresses). The crate
+has its own 0.x versions; Anvil's compatibility promise covers it from 1.0.
+
 ## Versions
 
 Within API 2, fields are only appended to `AnvilHost`, after the line "end of API 2.0".
