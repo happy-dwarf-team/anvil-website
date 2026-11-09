@@ -44,7 +44,7 @@ its builds. The `game build:` line in `anvil/anvil.log` shows which build Anvil 
 
 Yes, on the build 1.37.5.2; see [On GOG](../install/#on-gog). Plugins need a recent version:
 Bellows 0.19.0, Tongs 0.26.0, Hamweard 1.1.0 and Mei 0.2.0 or newer. On older versions Anvil
-skips them.
+skips them. Hoard has no game addresses and runs on both builds from its first version.
 
 ## Does it work on the Microsoft Store, Linux or macOS?
 

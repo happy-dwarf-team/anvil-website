@@ -14,6 +14,7 @@ gameplay, and Anvil acts on that.
 | [Bellows](../../plugins/bellows/) | No | Stays on, tested on the host only | Stays on |
 | [Mei](../../plugins/mei/) | No | Stays on, not tested | Stays on |
 | [Hamweard](../../plugins/hamweard/) | No | Stays on, restarts as usual | Stays on |
+| [Hoard](../../plugins/hoard/) | No | Stays on, not tested | Stays on; copies ironman saves only if you turn it on |
 | [Tongs](../../plugins/tongs/) | Yes | Off, unless you allow it | Off, unless you allow it |
 | Standard plugins (`anvil-game`, `anvil-overlay`, `anvil-log-throttle`) | No | Stay on | Stay on |
 
