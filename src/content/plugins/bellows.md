@@ -246,7 +246,7 @@ More than 1.4 million answers compared with the game's own code: 0 differences.
 
 - `frame_pacing`: a year in 20.8 s instead of 23.4 s, and a key press at speed 5 handled after 21 ms
   instead of 51.5 ms (medians). On Anbennar (a save of Verne from 1444, the year 1445 at speed 5,
-  four games each, interleaved, with the defaults proposed for 1.4): 48.42 s instead of 55.42 s
+  four games each, interleaved, with the defaults of 1.4): 48.42 s instead of 55.42 s
   (medians, one computer, one save; see
   [A year of Anbennar at speed 5](https://github.com/happy-dwarf-team/bellows#a-year-of-anbennar-at-speed-5)).
 - `modifier_merge`: the year 1720 in 19.45 s instead of 20.64 s (medians). A save from 1821 took
