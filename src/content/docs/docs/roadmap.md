@@ -30,6 +30,7 @@ This page is a plan, not a promise, and has no dates. Each release is on
 | 1.16 | The Manager [replaces EU4DLL or EU4 Unicode Patch](../install/#if-eu4dll-or-eu4-unicode-patch-is-installed) and keeps a backup; the panel and the Manager in [Polish](../using-anvil/#language), and the Manager in Chinese, Japanese or Korean from its first start; plugins can add [map modes](../plugins/api/#map-modes) and [script effects](../plugins/api/#script-effects-and-the-day-end); the safe [Rust crate](../plugins/api/#rust) |
 | 1.17 | Plugins can post the unit panel's [commands](../plugins/api/#commands) and choose an event's option; the overlay no longer crashes the game at start with [DXVK in Fullscreen](../faq/#dxvk-and-fullscreen) |
 | 1.18 | Plugins can have [keys of their own](../plugins/api/#keys) and a callback at [the end of each game day](../plugins/api/#script-effects-and-the-day-end) |
+| 1.19 | Rust plugins can add [script effects](../plugins/api/#rust); an effect's tooltip line shows as the plugin wrote it, as a map mode's lines do |
 
 **Ports of older native patches** are out: EU4 Menu Patch as [Hamweard](../../plugins/hamweard/)
 ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)) and EU4 Unicode Patch as
