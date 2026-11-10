@@ -108,7 +108,15 @@ command landed on the other side of the game's daily tick, so the order depends 
 makes that happen more often: in a planned series at speed 2, 11 of 30 runs with the default settings of 1.2
 went the other way, against 1 of 30 without Bellows (sign test over paired blocks, p = 0.002), each
 time at the same point of that save. That is one save, one speed and one computer, and we don't know
-how often it happens over a whole campaign. Both orders are normal games.
+how often it happens over a whole campaign. That series ran the defaults of 1.2. The defaults of
+1.4, which have not changed since, went through a stricter lab check instead: at speed 5 with the
+game's `-seed` option, so the AI's daily work runs on one thread, and with the known ties broken by
+a stable rule instead of the memory address. On a save of Russia of 1719, over 60 game days, every
+run gave the same random draws and commands byte for byte, six without Bellows and three more with
+and without Bellows 1.4.1 at its defaults (9 November 2026). So the default modules change no draw
+of the game, but that does not show a game without `-seed`, where timing matters, comes out the
+same ([Bellows README](https://github.com/happy-dwarf-team/bellows#ai-ties-and-multiplayer)). Both
+orders are normal games.
 
 In multiplayer the known ties cannot put games out of sync: the host's AI makes these choices and
 sends them to every player. In the lab the host ran Bellows and the other computer ran none: 233
