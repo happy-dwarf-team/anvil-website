@@ -362,7 +362,8 @@ From Anvil 1.16 the standard plugin `anvil-map` offers `anvil-map.modes` (versio
 a map mode of your own, with a button on the minimap's list, a colour for each province and lines
 in the province's tooltip.
 
-- `register_mode` in the plugin's load, with an id `<plugin-id>.<name>`, a label and a tab. The
+- `register_mode` with an id `<plugin-id>.<name>`, a label and a tab, from any thread and at any
+  time, usually in the plugin's load; the button shows the next time the game builds the tab. The
   game's list is closed, so a mode borrows one of 13 numbers of the game's enum (unused and debug
   modes) for the process; know your mode by its id, not by the number.
 - Colours are a buffer you hand over with `set_colors`, one `0x00RRGGBB` per province ID, or
