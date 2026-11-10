@@ -68,6 +68,12 @@ of that commit. It does not prove that the code is free of bugs.
 A Workshop item has no attestation of its own. The release workflows of Bellows, Hamweard and
 Tongs upload the checked release zip to it; to check by hand, take the zip from GitHub instead.
 
+The [Chinese install page](../../zh-cn/install/) also links a copy of `AnvilManager.exe` and
+`SHA256SUMS.txt` at `dl.happydwarf.dev`, our mirror on Cloudflare for players who reach GitHub
+slowly. Anvil's release workflow copies both files there from the GitHub release and checks that
+their SHA-256 matches, so the mirror's file has the same hash and passes the same attestation
+check as the one from GitHub.
+
 ## Why Windows warns
 
 Anvil's files are not code-signed, and this is not planned
