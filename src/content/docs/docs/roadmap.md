@@ -26,6 +26,10 @@ This page is a plan, not a promise, and has no dates. Each release is on
 | 1.12 | Once Anvil knows a new game build, [one notice names the plugins that wait for it](../using-anvil/#when-eu4-updates) and the badge comes back with an amber dot; [`anvil port`](../plugins/manifest/#anvil-port) takes the new build's id from Anvil's own list |
 | 1.13 | The Manager can [add itself to the Start menu](../install/#install-with-anvil-manager) |
 | 1.14 | The game [tells you about a newer Anvil](../using-anvil/#a-newer-anvil); the Manager says when [the game ran without Anvil](../troubleshooting/#if-anvil-does-not-run-at-all); the [Multiplayer notice](../multiplayer-ironman/#notices-in-the-game) can be closed; plugins can tell that a multiplayer game [went out of sync](../plugins/api/#out-of-sync) |
+| 1.15 | The Manager reads the plugin list at start and shows [plugin updates](../install-plugins/#update-a-plugin) when the release check is on; the GOG build [1.37.5.0](../install/#on-gog); plugins can read modifiers, units and the selection from [the world](../plugins/api/#the-world) |
+| 1.16 | The Manager [replaces EU4DLL or EU4 Unicode Patch](../install/#if-eu4dll-or-eu4-unicode-patch-is-installed) and keeps a backup; the panel and the Manager in [Polish](../using-anvil/#language), and the Manager in Chinese, Japanese or Korean from its first start; plugins can add [map modes](../plugins/api/#map-modes) and [script effects](../plugins/api/#script-effects-and-the-day-end); the safe [Rust crate](../plugins/api/#rust) |
+| 1.17 | Plugins can post the unit panel's [commands](../plugins/api/#commands) and choose an event's option; the overlay no longer crashes the game at start with [DXVK in Fullscreen](../faq/#dxvk-and-fullscreen) |
+| 1.18 | Plugins can have [keys of their own](../plugins/api/#keys) and a callback at [the end of each game day](../plugins/api/#script-effects-and-the-day-end) |
 
 **Ports of older native patches** are out: EU4 Menu Patch as [Hamweard](../../plugins/hamweard/)
 ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)) and EU4 Unicode Patch as
