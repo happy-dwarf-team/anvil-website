@@ -41,7 +41,10 @@ no longer does anything.
   instead of a fresh one, and in the lab a save made after three returns matched one from a fresh
   process, apart from the campaign id and the random seed. A new campaign after a return matched a
   fresh one with Anbennar too, and after a save with canals. That is a comparison of the campaigns
-  and mods tested, not a proof for every mod.
+  and mods tested, not a proof for every mod. With Anbennar a campaign after a return can drift
+  from a fresh one after some days: in the lab, after 2 returns, it differed after 10 days, first
+  in its rebel factions, with Hamweard 1.3.1 as with 1.3.2. The cause is not known yet. Without
+  mods a campaign after 5 returns was still the same after 30 days.
 - **Canals.** A canal changes the map itself, and the map outlives the campaign. The plugin copies
   the map before the first canal and puts it back on a return. If it cannot be put back, that
   return restarts the game, as it does without the plugin.
@@ -72,6 +75,10 @@ no longer does anything.
   without mods, and in a row of returns the game grew by about 45 MB per return with Anbennar and
   20 MB without mods. A return took as long after 40 in a row as at the start. When less than 1 GB
   of the system's commit limit is left, a return restarts the game instead.
+- **A long campaign kept memory it no longer used, until 1.3.2.** Each time the game recalculated
+  an overlord's modifiers it made one per subject and never freed the old ones: about 2 MB a year
+  without mods and 4.8 MB with Anbennar, in the lab's heap trace. From 1.3.2 Hamweard frees them,
+  with or without a return; a year of the base game then lost 0.16 MB.
 - **Not seen in a test:** some message popups (an heir to name, a new colonial nation) and the
   window of a lost game.
 - EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 and 1.37.5.0 (from Hamweard 1.3). On any other
@@ -129,6 +136,9 @@ All runs were in the lab on one development machine. The
   Steam with Anbennar and 33 on GOG 1.37.5.2 without mods (22 of each before the fix for loaded
   saves), with new and loaded campaigns. No crash, and the save of a new campaign after the returns
   was the same as one from a fresh start with the same seed.
+- **The long-campaign fix of 1.3.2** (10 November 2026): a heap trace of one year of the base game
+  and of Anbennar, and saves compared line by line with saves made without Hamweard, at day 0 and
+  after 10 and 30 days, on Steam. No crash, and `error.log` had the same lines as without it.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
 fourth campaign of such a series.
