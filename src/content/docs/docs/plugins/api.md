@@ -464,8 +464,8 @@ anvil::plugin!(Hello);
 - A `Change` removes its change when it is dropped. A `FunctionHook` lives in a `static`,
   where Anvil writes the rest of the chain.
 - `anvil::game`, `anvil::world`, `anvil::commands`, `anvil::panel`, `anvil::input`,
-  `anvil::map`, `anvil::script` (the day end) and `anvil::benchmark` wrap the services above;
-  script effects have only their raw types in `anvil::sys` so far. A function the running service
+  `anvil::map`, `anvil::script` (the day end, and from `anvil-sdk` 0.1.7 the script effects as
+  `anvil::script::Effects`) and `anvil::benchmark` wrap the services above. A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
   `unsafe`: calling the rest of a hook's chain or a game function, reading game data,
