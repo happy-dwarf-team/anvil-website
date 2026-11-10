@@ -72,9 +72,12 @@ start, before Mei or Anvil is installed, so the install and the
 [replacement of EU4DLL](../install/#if-eu4dll-or-eu4-unicode-patch-is-installed) are in your
 language.
 
-To choose one of the eight yourself, use the setting **Language** (Anvil panel, **Settings**,
+From Anvil 1.16 they also speak Polish when Steam is set to Polish. EU4 has no Polish of its own,
+so this follows Steam, not the game.
+
+To choose one of the nine yourself, use the setting **Language** (Anvil panel, **Settings**,
 `anvil-overlay`). For a test, the environment variable `ANVIL_LANGUAGE` (`en`, `fr`, `de`, `es`,
-`zh-Hans`, `zh-Hant`, `ja`, `ko`) wins over both.
+`zh-Hans`, `zh-Hant`, `ja`, `ko`, `pl`) wins over both.
 
 `anvil.log` and `anvil check` stay in English, as do the names, descriptions and setting labels
 a plugin brings. No native speaker has checked the translations yet. Corrections are welcome in

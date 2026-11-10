@@ -310,6 +310,93 @@ panels->show(panel, 1);
 For a window in the game's own interface you need your own addresses; there is no service for
 that yet.
 
+### Keys
+
+From Anvil 1.18 the service `anvil-overlay.input` (version 1, `AnvilInputService`, in
+[`anvil_input.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_input.h))
+calls a plugin back when the player presses a key or a mouse button, with no hook on the game
+window of your own.
+
+- A code is what a setting of type `key` holds (the Windows virtual key, with
+  `ANVIL_INPUT_SHIFT`, `_CTRL` and `_ALT` above it); mouse buttons are their virtual keys. Declare
+  the key as a setting, `bind` its value, and call `set_code` from the setting's callback, so the
+  player picks the key in the panel.
+- The first binding of a code keeps it. A second one, or the panel key, answers
+  `ANVIL_ERROR_CONFLICT` and stays inert until it gets a free code.
+- `ANVIL_INPUT_CONSUME` keeps the press from the game, `ANVIL_INPUT_REPEAT` also delivers the
+  auto-repeat. `held(code)` is for keys polled every frame, such as a camera key.
+- Nothing is delivered while the player types in the game (anvil-game's `keyboard()`, also 1.18)
+  or uses Anvil's panel; `state()` says what holds keys back.
+- The handler runs on the main thread after the next frame, so it may read the world.
+- It only reads input, so it needs no `affects_gameplay = true`. Depend on `anvil-overlay` with
+  `version = "^1.18.0"`, `optional = true` if the plugin also works without it.
+
+### Commands
+
+From Anvil 1.17 the service `anvil-game.commands` (versions 1 and 2, `AnvilGameCommandsService`
+in `anvil_game.h`) posts the commands a player's click would post, built by the game's own
+constructors and queued as the buttons queue them, so they reach every machine of a
+multiplayer game the same way.
+
+| Type | Does what |
+| --- | --- |
+| `ANVIL_GAME_COMMAND_DRILL` | Armies start or stop drilling: an intent, so armies already in that state are skipped |
+| `ANVIL_GAME_COMMAND_MERGE` | Two or more armies, or navies, in one province merge into the first |
+| `ANVIL_GAME_COMMAND_SPLIT` | One army or navy splits in half, rounded up, as the button does |
+| `ANVIL_GAME_COMMAND_EVENT_OPTION` | Version 2: chooses an option of the local player's pending event, as its button does |
+
+- Only a plugin with `affects_gameplay = true` that Anvil has not suspended, and only the
+  player's own units (`AnvilGameUnitRef` from [the world](#the-world)).
+- Call on the main thread after a frame, in a session; elsewhere, or during a hot-join, the
+  answer is `ANVIL_ERROR_WRONG_PHASE`. At most 64 units a call and 256 commands a frame.
+- `posted` means queued, not done: read the world a few frames later. An event option needs its
+  button enabled now, so try again a frame later after `ANVIL_ERROR_WRONG_PHASE`.
+- Ask for version 2 first and fall back to version 1. Depend on `anvil-game` with
+  `version = "^1.17.0"`.
+
+### Map modes
+
+From Anvil 1.16 the standard plugin `anvil-map` offers `anvil-map.modes` (version 1, in
+[`anvil_map.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_map.h)):
+a map mode of your own, with a button on the minimap's list, a colour for each province and lines
+in the province's tooltip.
+
+- `register_mode` in the plugin's load, with an id `<plugin-id>.<name>`, a label and a tab. The
+  game's list is closed, so a mode borrows one of 13 numbers of the game's enum (unused and debug
+  modes) for the process; know your mode by its id, not by the number.
+- Colours are a buffer you hand over with `set_colors`, one `0x00RRGGBB` per province ID, or
+  `ANVIL_MAP_NO_COLOR` for the political colour. Compute it in your own step, such as on the
+  `anvil-map.shown` event or a monthly event, since the game paints also where the world cannot be
+  read.
+- A tooltip callback gives the mode's lines for a province. Text is UTF-8; it goes to the game
+  as UTF-8 when [Mei](../../../plugins/mei/) keeps the game's text in UTF-8, otherwise in
+  Windows-1252 with `?` for what does not fit.
+- It changes nothing in the game, so it needs no `affects_gameplay = true`. Depend on `anvil-map`
+  with `version = "^1"`. Example:
+  [`player-cores`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/player-cores).
+
+### Script effects and the day end
+
+The standard plugin `anvil-script`, in
+[`anvil_script.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_script.h),
+is for gameplay plugins (`affects_gameplay = true`):
+
+- **Script effects** (from Anvil 1.16, `anvil-script.effects`): a plugin with `phase = "early"`
+  registers keys such as `my_plugin_set_terrain` in its load, and a mod writes
+  `my_plugin_set_terrain = mountain` in an event option, a decision or a scripted effect. The
+  game parses it as one of its own effects and calls the plugin's `execute` with the value and the
+  scope, and `describe` for the tooltip line. A key is the plugin's id with `-` as `_`, then
+  `_<name>`. Example:
+  [`hello-script`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/hello-script).
+- **The day end** (from Anvil 1.18, `anvil-script.day_end`): a callback once a game day, on the
+  main thread after the game has finished the day, before it compares checksums in multiplayer,
+  with flags for a new month and a new year. Subscribe in the plugin's load.
+
+In multiplayer every machine runs the same effects and day ends, so the plugin must be on every
+machine and give the same result. While Anvil suspends the plugin, its effects do nothing and its
+callback is not called. Inside both, the world answers `ANVIL_ERROR_WRONG_PHASE`. Depend on
+`anvil-script` with `version = "^1.16.0"` for effects and `"^1.18.0"` for the day end.
+
 ## Start-up benchmark
 
 From Anvil 1.4 the core offers the service `anvil.benchmark` (version 1), through which a
@@ -373,8 +460,10 @@ anvil::plugin!(Hello);
   `anvil::catch_panic`.
 - A `Change` removes its change when it is dropped. A `FunctionHook` lives in a `static`,
   where Anvil writes the rest of the chain.
-- `anvil::game`, `anvil::world`, `anvil::panel` and `anvil::benchmark` wrap the services
-  above. A function the running service is too old to have answers `Unsupported`.
+- `anvil::game`, `anvil::world`, `anvil::commands`, `anvil::panel`, `anvil::input`,
+  `anvil::map`, `anvil::script` (the day end) and `anvil::benchmark` wrap the services above;
+  script effects have only their raw types in `anvil::sys` so far. A function the running service
+  is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
   `unsafe`: calling the rest of a hook's chain or a game function, reading game data,
   writing the registers in a mid hook, byte patches, pointer swaps and raw addresses.
@@ -391,5 +480,5 @@ has its own 0.x versions; Anvil's compatibility promise covers it from 1.0.
 Within API 2, fields are only appended to `AnvilHost`, after the line "end of API 2.0".
 Check one added later with `ANVIL_HOST_HAS(host, field)` before calling it, or require the
 Anvil version that added it in the manifest's `anvil` range. Nothing has been added after
-that line yet (Anvil 1.9); the start-up benchmark is a service, not a host field. A breaking
+that line yet (Anvil 1.18); the start-up benchmark is a service, not a host field. A breaking
 change increases `ANVIL_API_VERSION`.
