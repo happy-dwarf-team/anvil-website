@@ -29,6 +29,10 @@ Every Anvil release has an asset `anvil-sdk-windows-x64.zip` with the headers, t
 | `include/anvil/anvil.hpp` | a header-only C++20 wrapper over it |
 | `include/anvil/anvil_game.h` | the service and events of the standard plugin `anvil-game` |
 | `include/anvil/anvil_panel.h` | windows of plugins in the overlay, from `anvil-overlay` |
+| `include/anvil/anvil_input.h` | keys and mouse buttons for plugins, from `anvil-overlay` (1.18) |
+| `include/anvil/anvil_map.h` | map modes of plugins, from the standard plugin `anvil-map` (1.16) |
+| `include/anvil/anvil_script.h` | script effects (1.16) and the day end (1.18), from the standard plugin `anvil-script` |
+| `include/anvil/anvil_benchmark.h` | the start-up benchmark service (C++: `anvil_benchmark.hpp`) |
 | `bin/anvil.exe` | `anvil gen`, `anvil check` and `anvil port` |
 | `cmake/` | the `AnvilPlugin` CMake package with `anvil_add_plugin` |
 
