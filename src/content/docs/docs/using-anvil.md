@@ -129,10 +129,13 @@ and the badge is back with an amber dot. A plugin that needs one of them waits w
     plugins/anvil-game/          standard plugins that ship with Anvil
     plugins/anvil-overlay/
     plugins/anvil-log-throttle/
+    plugins/anvil-map/           (from 1.16) map modes of other plugins
+    plugins/anvil-script/        (from 1.16) script effects and the day end of other plugins
     plugins/<plugin-id>/         plugin manifest and DLL
     data/<plugin-id>/            files a plugin writes (caches, settings)
     data/anvil/                  approved plugins from mods, kept benchmark reports
     trust.toml                   your approvals of plugins from mods
+  anvil-legacy-backup/           EU4DLL or another version.dll the Manager replaced (from 1.16)
 ```
 
 Keep `anvil-game` installed and enabled. It tells other plugins when the game is ready and when
