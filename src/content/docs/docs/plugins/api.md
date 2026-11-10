@@ -335,8 +335,9 @@ window of your own.
 
 From Anvil 1.17 the service `anvil-game.commands` (versions 1 and 2, `AnvilGameCommandsService`
 in `anvil_game.h`) posts the commands a player's click would post, built by the game's own
-constructors and queued as the buttons queue them, so they reach every machine of a
-multiplayer game the same way.
+constructors and queued as the buttons queue them. In multiplayer a command goes to the host like
+a click; that every machine then runs it alike has not been tested in a live multiplayer game yet
+([anvil#256](https://github.com/happy-dwarf-team/anvil/issues/256)).
 
 | Type | Does what |
 | --- | --- |
