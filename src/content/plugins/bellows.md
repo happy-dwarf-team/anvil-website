@@ -185,6 +185,7 @@ Each part of Bellows is a module with its own setting.
 | `transfer_skip` | **Loading.** In single player, "Continue" of a text save no longer compresses the file for a multiplayer transfer nobody receives | on |
 | `history_add` | **Loading.** Adds an entry the game just read to a dated list without first walking the whole list. The list comes out the same, and the gain depends on the mods | on |
 | `checksum_defer` | **Loading, since 1.6, off by default.** Starts the game's version checksum (the code next to the version on the main menu) once the databases are loaded, instead of alongside them; the same files and checksum. About 1 s off the start of Anbennar, nothing measurable on the base game | off |
+| `listing_lookup` | **Start-up, since 1.7, off by default.** Answers the file system's second look at a mod folder (is the file there, open a file that is not there) from the folder listings Bellows already reads; every existing file is still opened by the game. About 3 s off the start of Anbennar, nothing measurable on the base game | off |
 | `never_throttle` | **Simulation, since 1.6, off by default.** While a single-player game runs at speed 5, skips the main loop's waits that the game makes while its window is minimized, so a minimized year takes about 40–60% less time. A visible window does not change | off |
 
 The diagnostic modules `zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`,
@@ -318,6 +319,13 @@ first load after a reboot, multiplayer.
 11.58 → 11.47 s and 11.72 → 11.44 s, which is within the noise there. The game's logs had the same lines and the main menu showed
 the same version code in every start. Not measured: the first start after a reboot, a slow disk,
 multiplayer with the module on.
+
+`listing_lookup` (since 1.7, off by default) was measured the same way on 10 November 2026
+(source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#physfs-lookups-from-listings)):
+on Anbennar 22.08 → 18.86 s (medians, the ranges apart), on the base game 11.65 → 11.58 s, which is
+within the noise. The game's logs had the same lines and the main menu showed the same version code
+in every start, and a start with `"verify"` per mod set found 0 differences from the game's own
+answers. Not measured: the first start after a reboot, other mod sets, the GOG build in the game.
 
 ### Minimized at speed 5
 
