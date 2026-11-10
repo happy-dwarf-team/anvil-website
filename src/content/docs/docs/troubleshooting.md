@@ -25,7 +25,7 @@ description: What to do when a plugin does not work, and how to report a problem
 | A **Multiplayer** notice covers the top right corner | It shows the plugins that change the game, for players to compare. From Anvil 1.14 click its **x**; it stays closed until that session ends. See [Notices in the game](../multiplayer-ironman/#notices-in-the-game). |
 | A plugin is skipped | The reason is on the **Plugins** tab and in the log; see [Why a plugin is skipped](#why-a-plugin-is-skipped). |
 | A plugin does nothing in ironman or multiplayer | One that changes gameplay is suspended there; the log says `[<plugin-id>] suspended: affects gameplay and …`. See [Multiplayer, ironman and achievements](../multiplayer-ironman/). |
-| The game crashes or does not start | [Start once without plugins](#start-once-without-plugins), then turn them back on one by one. See also [Crash reports and safe mode](#crash-reports-and-safe-mode). |
+| The game crashes or does not start | [Start once without plugins](#start-once-without-plugins), then turn them back on one by one. See also [Crash reports and safe mode](#crash-reports-and-safe-mode). With DXVK (Proton, or installed on Windows) in EU4's **Fullscreen** mode, choose **Windowed (Fullscreen)**: see [DXVK and Fullscreen](../faq/#dxvk-and-fullscreen). |
 | You want the game back as it was | [Turn plugins off](../install-plugins/#turn-a-plugin-off-or-remove-it) or [uninstall Anvil](../install/#uninstall). Both take effect at the next start, and `eu4.exe` was never changed. |
 
 ## Read the log
