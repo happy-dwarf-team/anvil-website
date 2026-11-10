@@ -73,6 +73,7 @@ pinyin, and each applies at the next start.
 | `utf8_scripts` | Reads script files and saves in UTF-8, so names from a supplementary translation mod show |
 | `bundled_fonts` | Uses Mei's fonts where the game would use its own |
 | `utf8_input` | Lets finished Chinese, Japanese and Korean text reach text fields |
+| `utf8_save_names` | From Mei 0.5: saves keep the country's name and the name you type instead of Latin letters. Needs `utf8_localization` |
 | `search` | Chinese and pinyin search |
 | `typo_tolerance` | Full pinyin of 5 or more letters still matches with one typo |
 | `fuzzy_pinyin` | zh/z, ch/c, sh/s, n/l, en/eng and in/ing match each other. Off by default |
