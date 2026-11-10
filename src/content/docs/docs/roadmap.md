@@ -33,7 +33,7 @@ This page is a plan, not a promise, and has no dates. Each release is on
 
 ## Still open
 
-- **Game builds.** Steam 1.37.5 and GOG 1.37.5.2 and 1.37.5.0 are known (1.37.5.0 from 1.16,
+- **Game builds.** Steam 1.37.5 and GOG 1.37.5.2 and 1.37.5.0 are known (1.37.5.0 from 1.15,
   [#187](https://github.com/happy-dwarf-team/anvil/issues/187)). Other builds start without
   plugins that use game addresses.
 - **Ironman and multiplayer.** Suspending gameplay plugins has been seen in a live ironman game,

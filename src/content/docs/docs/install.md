@@ -65,7 +65,7 @@ If your antivirus removes a file, see
 ## On GOG
 
 Anvil and the plugins on the **Catalog** tab run on both GOG builds of 1.37.5, 1.37.5.2 and
-1.37.5.0 (from Anvil 1.16.0).
+1.37.5.0 (from Anvil 1.15.0).
 
 1. Check the build: GOG Galaxy can keep 1.37.5.0 or update to 1.37.5.2, and the Paradox launcher
    shows `v1.37.5.0` on both. The `game build:` line in `anvil/anvil.log` names the real one. On
