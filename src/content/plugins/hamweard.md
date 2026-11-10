@@ -65,10 +65,13 @@ no longer does anything.
 - **Mods: tested, not all of them.** The plugin changes no game files, so the checksum stays the
   same. Anbennar with Proper 2K UI and a playset of ten interface and graphics mods ran without
   trouble. A mod that does something unusual when a campaign ends may behave differently.
-- **Memory grows with each return, more with a big mod:** about 2 MB per **Back** and 8 MB per
-  campaign without mods, about 60 MB and 220 MB with Anbennar in the lab. A return took as long
-  after 40 in a row as at the start. When less than 1 GB of the system's commit limit is left, a
-  return restarts the game instead.
+- **Memory still grows with each return, more with a big mod.** The game's reset does not free
+  all it read. From 1.3.1 Hamweard frees what the lab found in the history and the country files,
+  which with Anbennar was about 60 MB per **Back** and per campaign. What stays is mostly the last
+  campaign's world and interface: in the lab a **Back** left about 5 MB with Anbennar and 8 MB
+  without mods, and in a row of returns the game grew by about 45 MB per return with Anbennar and
+  20 MB without mods. A return took as long after 40 in a row as at the start. When less than 1 GB
+  of the system's commit limit is left, a return restarts the game instead.
 - **Not seen in a test:** some message popups (an heir to name, a new colonial nation) and the
   window of a lost game.
 - EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 and 1.37.5.0 (from Hamweard 1.3). On any other
@@ -121,6 +124,11 @@ All runs were in the lab on one development machine. The
 - **Ironman by default** (5 November 2026): no `anvil.toml` entry, no warning, achievements can be
   earned and a return needs no restart, on Steam and GOG. On GOG a month of play after a return ran
   the game's achievement check on all 175 achievements, as in a fresh process.
+
+- **The memory fixes of 1.3.1** (9 November 2026): with a heap tracer, and 33 returns in a row on
+  Steam with Anbennar and 33 on GOG 1.37.5.2 without mods (22 of each before the fix for loaded
+  saves), with new and loaded campaigns. No crash, and the save of a new campaign after the returns
+  was the same as one from a fresh start with the same seed.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
 fourth campaign of such a series.

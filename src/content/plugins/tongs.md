@@ -98,8 +98,8 @@ one line. Up to 8 clients can connect at once, so one can wait in `run_until` wh
 
 | Needs | Commands |
 | --- | --- |
-| `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `wait_until`, `cancel`, `subscribe`, `help` |
-| `input` | `pause`, `resume`, `speed`, `run_until`, `key`, `text`, `move`, `click`, `scroll`, `release`, `ui click`, `event choose`, `province open`, `province goto` |
+| `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `wait_until`, `cancel`, `subscribe`, `unsubscribe`, `help` |
+| `input` | `pause`, `resume`, `speed`, `run_until`, `key`, `text`, `move`, `click`, `scroll`, `release`, `ui click`, `event choose`, `province open`, `province goto`, `map_mode` |
 | `game_calls` | `console`, `save load` |
 
 `wait_until` and `run_until` count the input and console commands of every client meanwhile, and
