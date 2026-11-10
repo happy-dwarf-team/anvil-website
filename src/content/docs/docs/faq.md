@@ -80,6 +80,22 @@ Not tested yet, so there are no install steps for Proton here. Reports are welco
 Proton version and `anvil/anvil.log`. The native Linux and macOS builds of EU4 are not planned
 ([roadmap](../roadmap/#not-planned)).
 
+#### DXVK and Fullscreen
+
+DXVK is the Direct3D 9 layer that Proton uses, and some players install it on Windows too.
+
+- **Anvil 1.17.0 and later:** the overlay is no longer part of a crash at start with DXVK in EU4's
+  **Fullscreen** display mode. Before 1.17.0 it could be
+  ([release notes](https://github.com/happy-dwarf-team/anvil/releases/tag/v1.17.0)).
+- **EU4 itself:** on Windows, EU4 with DXVK in Fullscreen still crashed at start in our test, also
+  without Anvil. That crash is between DXVK and the system's OpenGL driver, not Anvil.
+- **What to use:** with DXVK, choose **Windowed (Fullscreen)**, EU4's borderless mode. It started
+  without a crash in the same test.
+- **Proton and the Steam Deck:** not tested yet, in either mode.
+
+The test ran on Windows 11 with DXVK 2.7.1 from its official release, EU4 1.37.5 (Steam) and an
+NVIDIA RTX 4090. With Microsoft's own Direct3D 9, both Fullscreen and Windowed (Fullscreen) worked.
+
 ### EU4DLL
 
 The double-byte patch EU4DLL, which many Chinese, Japanese and Korean translation mods ask for,
