@@ -370,10 +370,12 @@ in the province's tooltip.
   `ANVIL_MAP_NO_COLOR` for the political colour. Compute it in your own step, such as on the
   `anvil-map.shown` event or a monthly event, since the game paints also where the world cannot be
   read.
-- A tooltip callback gives the mode's lines for a province. Text is UTF-8; it goes to the game
-  as UTF-8 when [Mei](../../../plugins/mei/) says it keeps the game's text in UTF-8 (its
-  `mei.text` service, in Mei's next release after 0.6), otherwise in Windows-1252 with `?` for
-  what does not fit. The tooltip lines of script effects follow the same rule.
+- A tooltip callback gives the mode's lines for a province. Text is UTF-8 and shows as written:
+  `$` needs no escaping, and `§`, the game's colour code, which it cannot escape, shows as `?`.
+  It goes to the game as UTF-8 when [Mei](../../../plugins/mei/) says it keeps the game's text in
+  UTF-8 (its `mei.text` service, in Mei's next release after 0.6), otherwise in Windows-1252 with
+  `?` for what does not fit. The tooltip lines of script effects follow the same rule from
+  Anvil 1.19; Anvil 1.16 to 1.18 drop `$` and the `§` from them and keep the colour letter.
 - It changes nothing in the game, so it needs no `affects_gameplay = true`. Depend on `anvil-map`
   with `version = "^1"`. Example:
   [`player-cores`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/player-cores).
