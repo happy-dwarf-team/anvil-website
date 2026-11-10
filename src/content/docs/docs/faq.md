@@ -129,7 +129,9 @@ for what we need ([Reporting a problem](../troubleshooting/#reporting-a-problem)
 
 [Etch](https://etch.happydwarf.dev/), a preview for EU4 interface mods in Visual Studio Code. Its
 live game comes with its own pinned builds of Anvil and the plugins it needs, so you do not need
-to install anything here for it.
+to install anything here for it. From Etch 2.7, its **Compare with Live Game** command compares
+an interface window open in the running game with Etch's preview of the same file, and lists in
+VS Code's Problems panel the widgets the game places, sizes or shows differently.
 
 ## Where can I ask a question?
 
