@@ -18,11 +18,13 @@ it to play.
 ## What you get
 
 - **Read the game:** the date, speed and pause, the window, the worker threads, the interface's
-  widgets, open events, provinces and countries.
+  widgets, open events, provinces, countries and a country's armies and navies.
 - **Take screenshots** of the window, also while it is covered.
 - **Time the game** between two dates, to measure how fast it runs.
 - **Use the keyboard and mouse** as a player would, and click widgets and event options by name.
   The window does not need focus. This is off until you allow it.
+- **Drill, split and merge units** as the unit panel's buttons do, from Tongs 0.31 with Anvil
+  1.17 or newer. These are inputs too, off until you allow them.
 - **Run console commands and load saves.** These change the game, and they are off until you
   allow them separately.
 - **An MCP server** for agents such as Claude Code.
@@ -30,7 +32,8 @@ it to play.
 ## Install
 
 Tongs needs [Anvil](../../docs/install/) 1.7 or newer, and the standard plugin `anvil-game`, which
-comes with it. Tongs 0.25 and older ran on Steam only.
+comes with it. Tongs 0.25 and older ran on Steam only. The unit reads need Anvil 1.15 and the unit
+commands Anvil 1.17; with an older Anvil they answer `unavailable` and the rest works.
 
 1. [Install the plugin](../../docs/install-plugins/) any way you like.
 2. Turn it on: set `enabled = true` under [Settings](#settings). It does nothing until you do.
@@ -51,7 +54,7 @@ Everything is off by default. Change a setting on the **Settings** tab of Anvil 
 | Setting | What it allows |
 | --- | --- |
 | `enabled` | Opens the pipe, so that scripts can read the game |
-| `input` | Keyboard and mouse commands, and moving the camera and opening province views |
+| `input` | Keyboard and mouse commands, unit commands, and moving the camera and opening province views |
 | `game_calls` | Console commands and loading saves. These **change game state** |
 | `console_allow` | Danger commands that game calls may run, for example `"leak"` |
 | `game_calls_ironman` | Game calls in ironman; Anvil must allow Tongs there too |
@@ -98,14 +101,21 @@ one line. Up to 8 clients can connect at once, so one can wait in `run_until` wh
 
 | Needs | Commands |
 | --- | --- |
-| `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `wait_until`, `cancel`, `subscribe`, `unsubscribe`, `help` |
-| `input` | `pause`, `resume`, `speed`, `run_until`, `key`, `text`, `move`, `click`, `scroll`, `release`, `ui click`, `event choose`, `province open`, `province goto`, `map_mode` |
+| `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `units`, `wait_until`, `cancel`, `subscribe`, `unsubscribe`, `help` |
+| `input` | `pause`, `resume`, `speed`, `run_until`, `key`, `text`, `move`, `click`, `scroll`, `release`, `ui click`, `event choose`, `unit drill`, `unit split`, `unit merge`, `province open`, `province goto`, `map_mode` |
 | `game_calls` | `console`, `save load` |
 
 `wait_until` and `run_until` count the input and console commands of every client meanwhile, and
 report pauses, so a measurement can reject a touched run. `max_pause=S` ends a wait that the game
 keeps paused, for example on an event with a choice. `save load` discards the running game
 without saving.
+
+`units` lists the armies and navies of the player's country, or of another country by tag, with
+their ids. `unit drill start|stop`, `unit split` and `unit merge` take those ids, or `selected` for
+what the player has selected, and post the command the unit panel's button posts, through Anvil's
+`anvil-game` plugin. The answer says how many commands were posted; the game checks each one again
+when it runs it, so read `units` a moment later to see the result. A drill while the country is at
+war, for example, is posted and then dropped, because the game does not offer drilling during a war.
 
 The [command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md) has
 every command, key and answer field.
@@ -184,6 +194,11 @@ All checks ran in the lab on one development machine, on EU4 1.37.5 (Steam) with
   game; console commands and events were not tried there (2 November 2026).
 - **Ironman:** Anvil suspended Tongs in a live ironman game and reads went on (4 November 2026,
   Tongs 0.26.0, Anvil 1.9.0).
+- **Units:** in a save of Russia at war, `units` read 62 armies and navies; `unit split` and
+  `unit merge` changed an army as the panel's buttons do; an unknown id, a navy for a drill and units in two provinces were refused; a posted command counted as one input of a
+  wait. Drilling at peace and `selected` with a real selection were not tried in this test
+  (10 November 2026, Tongs 0.31.0 before its release, Anvil 1.18.0,
+  [tongs#180](https://github.com/happy-dwarf-team/tongs/pull/180)).
 
 ## The name
 
