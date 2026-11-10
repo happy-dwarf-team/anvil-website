@@ -27,6 +27,7 @@ Every Anvil release has an asset `anvil-sdk-windows-x64.zip` with the headers, t
 | --- | --- |
 | `include/anvil/anvil_plugin.h` | the plugin API, a plain C11 ABI |
 | `include/anvil/anvil.hpp` | a header-only C++20 wrapper over it |
+| `include/anvil/anvil_symbols.hpp` | the types the generated `symbols.gen.hpp` is made of |
 | `include/anvil/anvil_game.h` | the service and events of the standard plugin `anvil-game` |
 | `include/anvil/anvil_panel.h` | windows of plugins in the overlay, from `anvil-overlay` |
 | `include/anvil/anvil_input.h` | keys and mouse buttons for plugins, from `anvil-overlay` (1.18) |
