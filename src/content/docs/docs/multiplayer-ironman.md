@@ -15,7 +15,7 @@ gameplay, and Anvil acts on that.
 | [Mei](../../plugins/mei/) | No | Stays on, not tested | Stays on |
 | [Hamweard](../../plugins/hamweard/) | No | Stays on, restarts as usual | Stays on |
 | [Tongs](../../plugins/tongs/) | Yes | Off, unless you allow it | Off, unless you allow it |
-| Standard plugins (`anvil-game`, `anvil-overlay`, `anvil-log-throttle`) | No | Stay on | Stay on |
+| Standard plugins (`anvil-game`, `anvil-overlay`, `anvil-log-throttle`, `anvil-map`, `anvil-script`) | No | Stay on | Stay on |
 
 - **Bellows in multiplayer:** the host ran Bellows, the other computer did not: 233 game days on
   0.17.0 and 231 on the code of 1.3.0, on one save. The second run was at speed 3, because the
