@@ -29,6 +29,10 @@ together with Anvil. Mei does the same job as an Anvil plugin.
   input. The diplomacy country list uses the same search, but was not checked in the game.
 - **Typing.** Finished text reaches text fields, as an IME commits it. Backspace, the arrow keys,
   selecting, undo and paste work by character.
+- **Save names** (from Mei 0.5). A save keeps the country's name and the name you type, such as
+  `奥斯曼1444_11_11.eu4`, instead of Latin letters (`aaa1444_11_11.eu4`).
+- **Steam status** (from Mei 0.4). The Rich Presence text that Steam friends see reaches Steam in
+  UTF-8, so a Chinese country name reads as it should (Steam only).
 
 ## Install
 
@@ -82,7 +86,7 @@ pinyin, and each applies at the next start.
 - **Not checked yet:** the diplomacy country list in the game, a text field of several rows, and
   selecting with a mouse drag.
 - **Not ported yet:** the original's own font atlases, which draw from your system's fonts, and its
-  dates, Rich Presence and save names.
+  dates.
 - EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 (from Mei 0.2) and 1.37.5.0 (from Mei 0.4). On
   any other build Anvil does not load the plugin.
 
