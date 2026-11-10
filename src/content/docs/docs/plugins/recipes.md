@@ -225,6 +225,10 @@ Chinese, Japanese and Korean come from the fonts Windows ships.
 | Know when the game is ready, or the main menu comes up | [`anvil-game` events](../api/#anvil-game) |
 | Read provinces, countries and wars | [The world](../api/#the-world) |
 | Show a window | [Windows](../api/#windows) |
+| React to a key or a mouse button the player picks | [Keys](../api/#keys) (Anvil 1.18) |
+| Show a value per province on the map | [Map modes](../api/#map-modes) (Anvil 1.16) |
+| Have the player's armies drill, merge or split, or choose an event's option | [Commands](../api/#commands) (Anvil 1.17) |
+| Give mods an effect of your own, or run once a game day | [Script effects and the day end](../api/#script-effects-and-the-day-end) (Anvil 1.16 and 1.18) |
 | Keep files between starts | `host.data_dir()`, `anvil/data/<plugin-id>/` |
 | Let the player change something | [`settings.toml`](../manifest/#settingstoml); the Anvil panel shows it |
 | Change what the game does | [Your first plugin](../first-plugin/) and the [Host API](../api/) |
