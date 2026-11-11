@@ -219,10 +219,16 @@ a new game build may leave the world out.
 | `unit(tag, id, &out)` | Army or navy, province, mission, regiments or ships, strength, leader (1.15) |
 | `unit_name`, `unit_leader_name` | The name the game shows, and its leader's (1.15) |
 | `selected_units(refs, capacity, &count)` | The armies and navies the player has selected (1.15) |
+| `monarch(tag, kind, &out)` | A country's ruler, heir or consort: id, skills, sex, regency, birth, an heir's claim, the leader they are (1.20) |
+| `monarch_name`, `monarch_dynasty` | Their name, and the dynasty as the game shows it (1.20) |
+| `flag_id(name, &id)`, `flag_name(id, ...)` | A flag's id from its name, and back (1.20) |
+| `country_flags`, `province_flags`, `monarch_flags`, `global_flags` | The flags set now, each with the date it was set (1.20) |
+| `country_variable(tag, name, &value)`, `province_variable` | A variable by its name (1.20) |
+| `country_variable_names`, `province_variable_names` | The names of all of a country's or province's variables (1.20) |
 
-The calls marked 1.15 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"`, or check `ANVIL_GAME_WORLD_HAS(world, modifier_id)` and
-`ANVIL_GAME_WORLD_HAS(world, selected_units)` before calling them.
+The calls marked 1.15 and 1.20 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"` or `"^1.20.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`
+or `ANVIL_GAME_WORLD_HAS(world, province_variable_names)` before calling them.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -239,10 +245,26 @@ The calls marked 1.15 were added within version 1: depend on `anvil-game` with
   (disbanded, merged or destroyed), and `unit_leader_name` answers it also for a unit without a
   leader. `strength` is x 1000, so for an army it is the number of men. The selection can hold
   units of other countries, since the game lets a player select them to look.
+- **Rulers, heirs and consorts:** `kind` is `ANVIL_GAME_MONARCH_RULER`, `_HEIR` or `_CONSORT`.
+  A country without an heir or consort answers `ANVIL_ERROR_NOT_FOUND`. The game keeps a shared
+  placeholder person there, which an effect on a missing heir can change; Anvil never reads it,
+  so you never get its values. Skills and the name are the person's own, also under a regency
+  council, and the dynasty is the one the game shows: a regency council shows its heir's. A
+  country with no provinces left keeps its last ruler, as `country` keeps it.
+- **Flags:** ask for a flag's id by its name once; `ANVIL_ERROR_NOT_FOUND` means no effect or
+  save has set that name yet in this run of the game. Ids are the game's order of registration,
+  which differs between game builds and runs, so never store them. `province_flags` gives what
+  `has_province_flag` sees, the permanent flags included.
+- **Variables:** a value is x 1000, so `set_variable = { which = my_var value = 2.5 }` reads
+  2500. `ANVIL_ERROR_NOT_FOUND` means the scope has no such variable, which the game's triggers
+  take as 0. The names come one after the other, each followed by a NUL.
 - **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms. A modifier
-  read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine).
+  read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine). A ruler takes
+  about 80 ns, and a country's 110 flags about 3 µs (Steam 1.37.5 and GOG 1.37.5.2, lab machine,
+  November 2026).
 - **Not on every build:** after a port some values may be missing. A country's `values` field
-  says which it has, and the war, modifier and unit calls answer `ANVIL_ERROR_NOT_DECLARED`.
+  says which it has, and the war, modifier, unit, ruler, flag and variable calls answer
+  `ANVIL_ERROR_NOT_DECLARED`.
 
 ```cpp
 const auto* world = host.service<AnvilGameWorldService>(ANVIL_GAME_WORLD_SERVICE, ANVIL_GAME_WORLD_SERVICE_VERSION);
@@ -269,6 +291,15 @@ if (ANVIL_GAME_WORLD_HAS(world, selected_units) &&
             host.info("{}: {} men in province {}", selected[i].country.text, unit.strength, unit.location);
         }
     }
+}
+```
+
+```cpp
+AnvilGameMonarch heir{};
+heir.size = sizeof(heir);
+if (ANVIL_GAME_WORLD_HAS(world, monarch) &&
+    world->monarch("RUS", ANVIL_GAME_MONARCH_HEIR, &heir) == ANVIL_OK) {
+    host.info("heir {}/{}/{}, claim {}", heir.adm, heir.dip, heir.mil, heir.claim / 1000);
 }
 ```
 
@@ -384,7 +415,8 @@ in the province's tooltip.
 
 The standard plugin `anvil-script`, in
 [`anvil_script.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_script.h),
-is for gameplay plugins (`affects_gameplay = true`):
+is for gameplay plugins (`affects_gameplay = true`), and from 1.20 it also tells mods which
+plugins are on:
 
 - **Script effects** (from Anvil 1.16, `anvil-script.effects`): a plugin with `phase = "early"`
   registers keys such as `my_plugin_set_terrain` in its load, and a mod writes
@@ -396,11 +428,26 @@ is for gameplay plugins (`affects_gameplay = true`):
 - **The day end** (from Anvil 1.18, `anvil-script.day_end`): a callback once a game day, on the
   main thread after the game has finished the day, before it compares checksums in multiplayer,
   with flags for a new month and a new year. Subscribe in the plugin's load.
+- **`has_dlc` for plugins** (from Anvil 1.20, for any plugin, with no code in it): a mod writes
+  `has_dlc = "anvil:<id>"` with a plugin's id as its `plugin.toml` writes it, quoted and in
+  lowercase. It is true in a single-player campaign when that plugin is loaded and not
+  suspended, and false otherwise: in multiplayer, in the menu, while a save loads, and without
+  Anvil, where the game takes it as a DLC it does not know and says nothing in `error.log`.
+  Anvil changes no file and no DLC list, so the game's checksum stays the same.
+
+  ```
+  if = {
+      limit = { has_dlc = "anvil:my-plugin" }
+      my_plugin_set_terrain = forest
+  }
+  ```
 
 In multiplayer every machine runs the same effects and day ends, so the plugin must be on every
 machine and give the same result. While Anvil suspends the plugin, its effects do nothing and its
 callback is not called. Inside both, the world answers `ANVIL_ERROR_WRONG_PHASE`. Depend on
-`anvil-script` with `version = "^1.16.0"` for effects and `"^1.18.0"` for the day end.
+`anvil-script` with `version = "^1.16.0"` for effects and `"^1.18.0"` for the day end. A
+plugin that only wants mods to see it needs no dependency: the player needs Anvil 1.20 or
+newer, and with an older one the gate is false.
 
 ## Start-up benchmark
 
@@ -467,7 +514,9 @@ anvil::plugin!(Hello);
   where Anvil writes the rest of the chain.
 - `anvil::game`, `anvil::world`, `anvil::commands`, `anvil::panel`, `anvil::input`,
   `anvil::map`, `anvil::script` (the day end, and from `anvil-sdk` 0.1.7 the script effects as
-  `anvil::script::Effects`) and `anvil::benchmark` wrap the services above. A function the running service
+  `anvil::script::Effects`) and `anvil::benchmark` wrap the services above; from `anvil-sdk`
+  0.1.8 `anvil::world` also reads rulers, flags and variables (`World::monarch`,
+  `World::country_flags`, `World::country_variable` and the rest). A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
   `unsafe`: calling the rest of a hook's chain or a game function, reading game data,

@@ -30,6 +30,9 @@ gameplay, and Anvil acts on that.
   Tested on Steam on 6 November 2026 with Hamweard on both computers: in about four months of game
   the game's usual out-of-sync check reported nothing, a client rejoining the running campaign
   included.
+- **`has_dlc` for plugins in multiplayer:** from Anvil 1.20 a mod can ask
+  `has_dlc = "anvil:<id>"` whether a plugin is on. In multiplayer it is false on every computer,
+  as without Anvil, so every computer takes the same branch. Tested in single player only.
 
 None of these tests used `-hardoos`, which compares all 140 checksums of the game state, so they
 do not show that the state stayed identical ([FAQ](../faq/)).
