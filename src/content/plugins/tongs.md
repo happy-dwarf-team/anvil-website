@@ -48,7 +48,7 @@ commands Anvil 1.17; with an older Anvil they answer `unavailable` and the rest 
 
 ## Settings
 
-Everything is off by default. Change a setting on the **Settings** tab of Anvil Manager, or in
+Everything but the journal is off by default. Change a setting on the **Settings** tab of Anvil Manager, or in
 `anvil/data/tongs/settings.toml`, one `name = value` per line.
 
 | Setting | What it allows |
@@ -59,6 +59,7 @@ Everything is off by default. Change a setting on the **Settings** tab of Anvil 
 | `console_allow` | Danger commands that game calls may run, for example `"leak"` |
 | `game_calls_ironman` | Game calls in ironman; Anvil must allow Tongs there too |
 | `game_calls_multiplayer` | Game calls in multiplayer; Anvil must allow Tongs there too |
+| `journal` | On by default: writes every command sent on the pipe, with its outcome and the game date, to `anvil/data/tongs/journal/` |
 
 Settings apply at the next start. For one start, a variable such as `ANVIL_TONGS_ENABLED=true`
 overrides a value. A `config.toml` from Tongs 0.12 or older is moved into `settings.toml` on the
@@ -70,9 +71,14 @@ first start.
   So in an ironman or multiplayer game Anvil suspends Tongs: input and console commands answer
   with an error, and reads go on. You can [allow it there](../../docs/multiplayer-ironman/);
   console commands then also need `game_calls_ironman` or `game_calls_multiplayer`.
-- **Not verified yet:** suspension in a live multiplayer game, input in text fields, keyboard
-  layouts other than US, right, middle and double clicks, clicks on the map (only interface
-  widgets were tried), a minimized game window, and the Workshop mod in the game.
+- **Not verified yet:** suspension in a live multiplayer game, pause and speed with a second
+  player, keyboard layouts with an IME, the game's copy and paste keys, and the Workshop mod in
+  the game. Text fields, the French, German and Polish layouts, clicks on the map and a minimized
+  window were tried in the game.
+- **Text fields are the game's own.** Home and End select to the start or the end of the text;
+  the game has no Shift+arrow selection and no Ctrl+A.
+- **A minimized window** takes no keys or clicks: those commands answer an error and send
+  nothing. Reads, the speed buttons and opening a province go on.
 - **No dragging.** There is no command for it yet.
 - After a load from the in-game menu, that menu stays open and the speed keys do nothing until
   it is closed.
@@ -88,6 +94,8 @@ first start.
   are always refused, other dangerous ones unless `console_allow` lists them. Every call is logged
   and counted, so a measurement can reject a run with one in it.
 - **Screenshots** are written only to `anvil/data/tongs/screenshots/`. The newest 100 are kept.
+- **The command journal** is written only to `anvil/data/tongs/journal/`, a file per game start,
+  the newest 20 kept. Nothing of it goes into the game, its saves or multiplayer.
 - **Changes to game code.** With `enabled = true`, Tongs adds a hook that only counts the frames
   drawn inside a game update. With `input = true` it also hooks the interface's cursor query, so
   the game sees the pointer where the mouse commands set it; the real cursor does not move.
@@ -101,7 +109,7 @@ one line. Up to 8 clients can connect at once, so one can wait in `run_until` wh
 
 | Needs | Commands |
 | --- | --- |
-| `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `units`, `wait_until`, `cancel`, `subscribe`, `unsubscribe`, `help` |
+| `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `units`, `cursor`, `journal`, `wait_until`, `cancel`, `subscribe`, `unsubscribe`, `help` |
 | `input` | `pause`, `resume`, `speed`, `run_until`, `key`, `text`, `move`, `click`, `scroll`, `release`, `ui click`, `event choose`, `unit drill`, `unit split`, `unit merge`, `province open`, `province goto`, `map_mode` |
 | `game_calls` | `console`, `save load` |
 
@@ -116,6 +124,11 @@ what the player has selected, and post the command the unit panel's button posts
 `anvil-game` plugin. The answer says how many commands were posted; the game checks each one again
 when it runs it, so read `units` a moment later to see the result. A drill while the country is at
 war, for example, is posted and then dropped, because the game does not offer drilling during a war.
+
+`cursor` says what the game has under its pointer: the widget, the province and the army or navy
+there, read from the game itself rather than from a screenshot. `key` holds Shift, Ctrl and Alt
+too (`key shift+left`, `key ctrl+a`). `journal` says where this start's command journal is: one
+line per command, so a test can be followed and repeated.
 
 The [command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md) has
 every command, key and answer field.
@@ -199,6 +212,15 @@ All checks ran in the lab on one development machine, on EU4 1.37.5 (Steam) with
   wait. Drilling at peace and `selected` with a real selection were not tried in this test
   (10 November 2026, Tongs 0.31.0 before its release, Anvil 1.18.0,
   [tongs#180](https://github.com/happy-dwarf-team/tongs/pull/180)).
+- **Input, round 2:** in text fields typing, Backspace, Delete, the arrows, Ctrl+Backspace and a
+  click worked, and Home and End selected as the game's fields do; the German and Polish (214)
+  layouts typed the same characters with `key` and `text`; on land a click selected the
+  province `cursor` named at that point, also right after zooming, and `cursor` named an army
+  that a click then selected; with the window minimized every command answered within 0.2 s.
+  Each start wrote its own command journal (11 November 2026, Tongs 0.32.0 before its release,
+  Anvil 1.19.0, [tongs#183](https://github.com/happy-dwarf-team/tongs/pull/183),
+  [tongs#184](https://github.com/happy-dwarf-team/tongs/pull/184),
+  [tongs#185](https://github.com/happy-dwarf-team/tongs/pull/185)).
 
 ## The name
 
