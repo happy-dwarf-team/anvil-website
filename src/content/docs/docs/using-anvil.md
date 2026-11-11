@@ -79,8 +79,10 @@ To choose one of the nine yourself, use the setting **Language** (Anvil panel, *
 `anvil-overlay`). For a test, the environment variable `ANVIL_LANGUAGE` (`en`, `fr`, `de`, `es`,
 `zh-Hans`, `zh-Hant`, `ja`, `ko`, `pl`) wins over both.
 
-`anvil.log` and `anvil check` stay in English, as do the names, descriptions and setting labels
-a plugin brings. No native speaker has checked the translations yet. Corrections are welcome in
+`anvil.log` and `anvil check` stay in English, as do a plugin's name and, before Anvil 1.20,
+its description and setting labels. From 1.20 a plugin can bring them in these languages
+([translations](../plugins/manifest/#translations)); Anvil's own plugins and the Catalog tab
+do. No native speaker has checked the translations yet. Corrections are welcome in
 an [Anvil issue](https://github.com/happy-dwarf-team/anvil/issues/new/choose).
 
 ## A shorter error.log

@@ -1,12 +1,13 @@
 ---
 title: Manifest reference
-description: plugin.toml, symbols.toml, symbols.lock and settings.toml for plugin API 2, and the anvil gen, anvil check and anvil port tools.
+description: plugin.toml, symbols.toml, symbols.lock, settings.toml and translations for plugin API 2, and the anvil gen, anvil check and anvil port tools.
 ---
 
 A plugin folder has up to three TOML files: `plugin.toml` (required), `symbols.toml` and
 `settings.toml`. All three are strict: **an unknown key is an error** and the plugin is
 skipped, with the file and line in the log. `anvil check` reports the same errors before
-you ship.
+you ship. From Anvil 1.20 a plugin may also carry [translations](#translations) of its
+texts, which never make Anvil skip it.
 
 Real files: the
 [hello examples](https://github.com/happy-dwarf-team/anvil/tree/main/examples), the
@@ -296,6 +297,35 @@ The plugin reads validated values through the generated headers: `cfg::<name>.ge
 C++, `host->setting_bool(self, CFG_<NAME>)` and its siblings in C. See
 [Settings](../api/#settings) in the Host API.
 
+## Translations
+
+From Anvil 1.20, the overlay and Anvil Manager show a plugin's `description` and its
+settings' `label`, `description`, `group` and option labels in the player's language when
+the plugin carries `translations/<code>.toml`: one file per language, named `fr`, `de`,
+`es`, `zh-Hans`, `zh-Hant`, `ja`, `ko` or `pl`. Each maps the English words of
+`plugin.toml` and `settings.toml` to that language's words:
+
+```toml
+# translations/fr.toml
+status = "draft"            # "checked" once a native speaker checked it
+[text]
+"Log each return to the menu" = "Noter chaque retour au menu"
+"Writes a line to anvil.log whenever the game returns to the main menu." = "Écrit une ligne dans anvil.log chaque fois que le jeu revient au menu principal."
+```
+
+- A text without a translation, and every text in a language without a file, is shown in
+  English. The plugin's `name` always is.
+- The key is the English text itself: when you change an English text, change its key and
+  translation in every file. Until then the player sees the new English words, never a
+  translation of the old ones.
+- Chinese, Japanese and Korean words are drawn with the fonts of Windows.
+- `plugin.toml` does not name the folder, so an Anvil before 1.20 ignores it: translations
+  need no newer `anvil` range. A file that does not parse is left out with a warning in
+  `anvil.log`; the plugin still loads.
+- `anvil_add_plugin` copies `translations/*.toml` into the built plugin folder.
+- The [template](https://github.com/happy-dwarf-team/anvil-plugin-template) carries all eight
+  files for its one setting.
+
 ## anvil gen
 
 `anvil gen` (in the SDK's `bin/`) writes headers from `symbols.toml` and `settings.toml`.
@@ -321,12 +351,16 @@ and `type` before including the header.
 `anvil check` validates a plugin without starting the game:
 
 ```powershell
-anvil check <plugin folder> [--exe <eu4.exe>] [--format text|json|github]
+anvil check <plugin folder> [--exe <eu4.exe>] [--format text|json|github] [--complete-translations]
 anvil check --game <game folder> [--format text|json|github]
 ```
 
 - **Without `--exe`:** the schemas of the three files, names that `anvil gen` would refuse,
   and the `symbols.lock` check. This is what CI runs.
+- **Translations** (Anvil 1.20): a file that does not parse, a file name that is not one
+  of the eight codes and an entry no text of the plugin has any more are errors; a text
+  without a translation, and a language without a file, are warnings.
+  **`--complete-translations`** makes them errors, for a plugin that ships every language.
 - **With `--exe`:** also the build, every symbol's bytes, memory kind, pointers, exports
   and values, and instruction boundaries: the declared bytes of a function or site must be
   whole instructions, and a hook must not relocate `JRCXZ`, `JECXZ` or `LOOP*`. It
