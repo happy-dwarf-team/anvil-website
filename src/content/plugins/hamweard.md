@@ -41,10 +41,12 @@ no longer does anything.
   instead of a fresh one, and in the lab a save made after three returns matched one from a fresh
   process, apart from the campaign id and the random seed. A new campaign after a return matched a
   fresh one with Anbennar too, and after a save with canals. That is a comparison of the campaigns
-  and mods tested, not a proof for every mod. With Anbennar a campaign after a return can drift
-  from a fresh one after some days: in the lab, after 2 returns, it differed after 10 days, first
-  in its rebel factions, with Hamweard 1.3.1 as with 1.3.2. The cause is not known yet. Without
-  mods a campaign after 5 returns was still the same after 30 days.
+  and mods tested, not a proof for every mod. Until 1.3.3 a campaign with Anbennar could drift
+  from a fresh one after some days, first in its rebel factions: the game's one "no heir"
+  character, shared by every country without an heir, kept the culture a mod event gave it in
+  the last campaign. From 1.3.3 Hamweard puts it back on each return, with the "no ruler" and "no
+  consort" ones, and in the lab a campaign after 2 returns matched a fresh start draw by draw for
+  10 days of play. Without mods a campaign after 6 returns was still the same after 30 days.
 - **Canals.** A canal changes the map itself, and the map outlives the campaign. The plugin copies
   the map before the first canal and puts it back on a return. If it cannot be put back, that
   return restarts the game, as it does without the plugin.
@@ -139,6 +141,11 @@ All runs were in the lab on one development machine. The
 - **The long-campaign fix of 1.3.2** (10 November 2026): a heap trace of one year of the base game
   and of Anbennar, and saves compared line by line with saves made without Hamweard, at day 0 and
   after 10 and 30 days, on Steam. No crash, and `error.log` had the same lines as without it.
+- **The return fix of 1.3.3** (11 November 2026): Anbennar on Steam with the same seed, a campaign
+  after 2 returns against a fresh start, twice. The game's log of random draws was the same for
+  10 days of play, and so was the save. On GOG 1.37.5.2 without mods a campaign after 6 returns
+  matched a fresh one after 30 days. Steam without mods and GOG 1.37.5.0 were checked by their
+  game addresses only.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
 fourth campaign of such a series.
