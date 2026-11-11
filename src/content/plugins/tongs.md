@@ -116,7 +116,8 @@ one line. Up to 8 clients can connect at once, so one can wait in `run_until` wh
 `wait_until` and `run_until` count the input and console commands of every client meanwhile, and
 report pauses, so a measurement can reject a touched run. `max_pause=S` ends a wait that the game
 keeps paused, for example on an event with a choice. `save load` discards the running game
-without saving.
+without saving. Since 0.32.0 it also loads from the main menu the game starts to, through the
+menu's own Continue, so a test can run several saves on one start of the game.
 
 `units` lists the armies and navies of the player's country, or of another country by tag, with
 their ids. `unit drill start|stop`, `unit split` and `unit merge` take those ids, or `selected` for
