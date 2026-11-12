@@ -31,6 +31,7 @@ This page is a plan, not a promise, and has no dates. Each release is on
 | 1.17 | Plugins can post the unit panel's [commands](../plugins/api/#commands) and choose an event's option; the overlay no longer crashes the game at start with [DXVK in Fullscreen](../faq/#dxvk-and-fullscreen) |
 | 1.18 | Plugins can have [keys of their own](../plugins/api/#keys) and a callback at [the end of each game day](../plugins/api/#script-effects-and-the-day-end) |
 | 1.19 | Rust plugins can add [script effects](../plugins/api/#rust); an effect's tooltip line shows as the plugin wrote it, as a map mode's lines do |
+| 1.20 | Plugins can read rulers, heirs, consorts, flags and variables from [the world](../plugins/api/#the-world); mods can ask with [`has_dlc`](../plugins/api/#script-effects-and-the-day-end) whether a plugin is on |
 
 **Ports of older native patches** are out: EU4 Menu Patch as [Hamweard](../../plugins/hamweard/)
 ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)) and EU4 Unicode Patch as
