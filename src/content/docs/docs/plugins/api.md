@@ -230,10 +230,14 @@ a new game build may leave the world out.
 | `pending_event(id, &out)` | Its country, province, number of options, whether it is hidden, and the date the game chooses for the player (1.21) |
 | `pending_event_key`, `pending_event_title` | The event's key, such as `flavor_tur.203`, and its title's localisation key (1.21) |
 | `country_statistics(tag, kind, points, capacity, &count)` | A country's yearly income, score, nation size or inflation, as the game's graphs show them (1.21) |
+| `country_timed_modifiers(tag, list, capacity, &count)`, `province_timed_modifiers` | The named modifiers an effect gave for a time, with their end dates, hidden and ruler flags (1.21) |
+| `country_timed_modifier_keys`, `province_timed_modifier_keys` | Their keys in the same order, such as `recently_annexed_other_religion_timer` (1.21) |
+| `province_view(&id)` | The province the game's province view shows while that window is open (1.21) |
 
 The calls marked 1.15, 1.20 and 1.21 were added within version 1: depend on `anvil-game` with
 `version = "^1.15.0"`, `"^1.20.0"` or `"^1.21.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
 `ANVIL_GAME_WORLD_HAS(world, province_variable_names)` or `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
+(`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view)
 before calling them.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
@@ -280,14 +284,24 @@ before calling them.
   for 1720 is the value at the end of 1719. The game keeps 0 for the years before the country had
   a value, which its save leaves out. The series only changes at `anvil-game.year`; for this
   year's value read the country.
+- **Timed modifiers:** what `add_country_modifier`, `add_province_modifier` and `add_ruler_modifier`
+  gave, which `has_country_modifier` and `has_province_modifier` look for, in the order of the save.
+  Ask for the list and its keys in the same handler or work, since they come from two calls. A
+  modifier given for good (`duration = -1`, `date=-1.1.1` in the save) has `ANVIL_GAME_TIMED_NO_END`.
+  The list is the game's own, so it also holds a few the game sets up by itself and leaves out of
+  the save, such as `world_port`. Triggered and static modifiers are not in it; their values come
+  from `country_modifier`.
+- **The province view:** `province_view` answers `ANVIL_ERROR_NOT_FOUND` while no province view is
+  open, however the player or a plugin opened it.
 - **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms. A modifier
   read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine). A ruler takes
   about 80 ns, and a country's 110 flags about 3 µs (Steam 1.37.5 and GOG 1.37.5.2, lab machine,
   November 2026). A statistics series takes about 15 µs, since it walks every country's, and an
-  empty list of pending events well under a microsecond (the same machine and builds).
+  empty list of pending events well under a microsecond. A country's 101 timed modifiers take
+  about 6.5 µs and `province_view` about 30 ns (the same machine and builds).
 - **Not on every build:** after a port some values may be missing. A country's `values` field
-  says which it has, and the war, modifier, unit, ruler, flag, variable, pending event and
-  statistics calls answer `ANVIL_ERROR_NOT_DECLARED`.
+  says which it has, and the war, modifier, unit, ruler, flag, variable, pending event,
+  statistics, timed modifier and province view calls answer `ANVIL_ERROR_NOT_DECLARED`.
 
 ```cpp
 const auto* world = host.service<AnvilGameWorldService>(ANVIL_GAME_WORLD_SERVICE, ANVIL_GAME_WORLD_SERVICE_VERSION);
