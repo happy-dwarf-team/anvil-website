@@ -136,6 +136,10 @@ province's flags, with the date each was set, and its variables, as the game's t
 Tongs reads them through Anvil's `anvil-game` plugin. With an older Anvil the answer says the lists
 are missing instead of showing them empty.
 
+From Tongs 0.34 with Anvil 1.21 or newer, `country` also lists the events waiting for that country's
+choice: each event's id (the one `event choose` and the event window use), key, title key, province,
+number of options, whether it is hidden, and the date the game chooses for the player.
+
 The [command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md) has
 every command, key and answer field.
 
@@ -233,6 +237,12 @@ All checks ran in the lab on one development machine, on EU4 1.37.5 (Steam) with
   said the lists need Anvil 1.20 (11 and 12 November 2026, Tongs 0.33.0 before its release,
   Anvil 1.20.0 on GOG and Anvil built from its code just before the release on Steam,
   [tongs#188](https://github.com/happy-dwarf-team/tongs/pull/188)).
+- **Pending events:** in the same save, with Anvil 1.21.0 on Steam and GOG 1.37.5.2, `country RUS`
+  listed the two events a lab event opened for the player with the same ids as their windows, never the
+  hidden one or the one it fired for an AI; with Anvil built from its code after 1.21.0 it dropped an
+  event once `event choose` chose it. With
+  Anvil 1.20 the answer said the list needs Anvil 1.21 (12 November 2026, Tongs before its release,
+  [tongs#192](https://github.com/happy-dwarf-team/tongs/pull/192)).
 
 ## The name
 
