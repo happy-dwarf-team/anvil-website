@@ -429,6 +429,7 @@ a click; that every machine then runs it alike has not been tested in a live mul
 | `ANVIL_GAME_COMMAND_SPEED` | Version 3 (Anvil 1.22): sets the game speed (`speed`, 1 to 5) as clicks on the speed bar would; nothing while the in-game menu is open, and in multiplayer only the host can |
 | `ANVIL_GAME_COMMAND_EXPLORE` | Version 3: armies explore the land, fleets circumnavigate, or units that explore stop (`explore`); an intent, as for drill. A fleet's sea or coast exploration is not offered yet |
 | `ANVIL_GAME_COMMAND_MOVE` | Version 3: armies or fleets move to `province`, as a right-click's plain move; `ANVIL_GAME_COMMAND_QUEUE` adds to the path as Shift. A move the game does not allow now counts as `refused` |
+| `ANVIL_GAME_COMMAND_SIEGE_AREA`, `_SUPPRESS_AREA` | Version 3: for each army, a click on the map area of `province` in the siege or rebel-suppression map mode: the area joins the army's autonomous siege or rebel hunt, or leaves it; the game checks it and posts the command, otherwise `refused` |
 
 - Only a plugin with `affects_gameplay = true` that Anvil has not suspended, and only the
   player's own units (`AnvilGameUnitRef` from [the world](#the-world)).
@@ -438,7 +439,7 @@ a click; that every machine then runs it alike has not been tested in a live mul
   button enabled now, so try again a frame later after `ANVIL_ERROR_WRONG_PHASE`.
 - Ask for the newest version first (3, then 2, then 1). Depend on `anvil-game` with
   `version = "^1.17.0"`, or `"^1.22.0"` for the version 3 types. In Rust:
-  `Commands::set_speed`, `explore` and `move_to` (`anvil-sdk` 0.1.10).
+  `Commands::set_speed`, `explore`, `move_to`, `siege_area` and `suppress_area` (`anvil-sdk` 0.1.10).
 
 ### Map modes
 
