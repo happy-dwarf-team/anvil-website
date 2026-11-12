@@ -170,10 +170,9 @@ measurement early; the file is still written and marked interrupted (on a quit o
 exits normally). It works in ironman and multiplayer, where it warns that it slows your game and
 every player waits for the slowest.
 
-In the lab on Steam 1.37.5 and GOG 1.37.5.2 it named the same events, decisions and casus belli
+In the lab on Steam 1.37.5 and GOG 1.37.5.2 and 1.37.5.0 it named the same events, decisions and casus belli
 as the prototype did, for Russia in 1719 and for Verne in Anbennar, and a load and the menu's
-**Exit Game** wrote their files marked interrupted. Not tried yet: GOG 1.37.5.0 in the game,
-ironman and multiplayer. The window's texts in languages other than English are drafts that
+**Exit Game** wrote their files marked interrupted. Not tried yet: ironman and multiplayer. The window's texts in languages other than English are drafts that
 native speakers have not checked yet.
 
 ## When EU4 updates
