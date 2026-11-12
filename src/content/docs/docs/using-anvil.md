@@ -155,14 +155,17 @@ effects cost the game its time. It is installed with Anvil and does nothing unti
 measurement: open **Script profiler** from the **Status** tab of the Anvil panel, load a game and
 press **Start** (then **Stop**) or **Measure 30 days** (the number of days is the **Days to
 measure** setting). The game runs slower while it measures: in the lab, 1.7% fewer days per
-second on a base-game campaign and 1% on Anbennar, within the spread of the runs.
+second on a base-game campaign and 1% on Anbennar at most, within the spread of the runs.
 
 When the measurement ends the window lists the longest **triggers** and **effects**, each row an
-event, event option (`#2`), decision, on_action, casus belli, triggered modifier or mission with
+event, event option (`#2`), decision, on_action, casus belli, triggered modifier, mission, church
+aspect or scripted trigger with
 the block's role there, such as `trigger`, `mean_time_to_happen`, `potential`, `allow`,
 `ai_will_do` or `effect`. A row shows the total time, the calls, the mean and the longest single
 run, which catches a rare option that takes tens of milliseconds at once. Blocks it cannot place,
-such as scripted triggers and church aspects for now, are one row **No owner found**.
+such as the AI's own decision checks, are one row **No owner found**: on Anbennar 30% of the
+trigger time, on a base-game campaign 23%. A third list, **Scripted triggers**, times every call
+of a scripted trigger by its name, also inside an event's or a decision's trigger.
 
 Every measurement is also written to `logs/script_profile_<date>_<time>.csv` in the game's user
 folder, with every row. Loading a save, leaving to the menu or quitting the game ends a
