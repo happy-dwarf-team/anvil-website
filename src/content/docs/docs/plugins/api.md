@@ -283,7 +283,8 @@ before calling them.
 - **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms. A modifier
   read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine). A ruler takes
   about 80 ns, and a country's 110 flags about 3 µs (Steam 1.37.5 and GOG 1.37.5.2, lab machine,
-  November 2026).
+  November 2026). A statistics series takes about 15 µs, since it walks every country's, and an
+  empty list of pending events well under a microsecond (the same machine and builds).
 - **Not on every build:** after a port some values may be missing. A country's `values` field
   says which it has, and the war, modifier, unit, ruler, flag, variable, pending event and
   statistics calls answer `ANVIL_ERROR_NOT_DECLARED`.
