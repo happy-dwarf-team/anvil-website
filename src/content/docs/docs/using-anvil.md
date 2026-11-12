@@ -122,6 +122,32 @@ copy or find, turning the setting on while the game runs, and OpenGL, where noth
 The panel's texts in languages other than English are drafts that native speakers have not
 checked yet.
 
+## The inspector
+
+From Anvil 1.21 the standard plugin `anvil-inspector` shows modders what the game holds for the
+province on screen, its owner and your country. Turn on **Inspector window** (`window`, off by
+default) in the overlay's settings tab or in Anvil Manager. The window then opens at each start,
+and once closed it comes back from the **Status** tab.
+
+Open a province's view and the window lists, for the province, its owner and your country:
+
+- the **flags** with the date each was set, a province's permanent ones included;
+- the **variables** with their values, as scripts write them (`2.5`);
+- the **timed modifiers** that `add_country_modifier` and its kin gave, by key, with their end
+  date or *no end date*, and marked *hidden* or *ruler modifier*;
+- for a country, the **ruler, heir and consort** with their skills and flags.
+
+Each heading folds. The window reads the game when it opens, at a new date (at most once a
+second), at another province view and with **Refresh**, and from scratch after you load a save.
+It only reads, and with the setting off it does nothing at all.
+
+In the lab on Steam 1.37.5 and GOG 1.37.5.2, every timed modifier, flag and variable it read
+matched the save, for Russia in 1719 and for Verne in Anbennar. The game also keeps a few
+modifiers it sets up itself, such as `world_port`, which the save leaves out; the window shows
+them as the game holds them. Not tried in the game yet: the **Refresh** button and folding a
+heading. The window's texts in languages other than English are drafts that native speakers
+have not checked yet.
+
 ## When EU4 updates
 
 Plugins declare the game code they rely on, and Anvil checks it against the running game before
@@ -153,6 +179,7 @@ and the badge is back with an amber dot. A plugin that needs one of them waits w
     plugins/anvil-log-throttle/
     plugins/anvil-map/           (from 1.16) map modes of other plugins
     plugins/anvil-script/        (from 1.16) script effects and the day end of other plugins
+    plugins/anvil-inspector/     (from 1.21) the inspector for modders
     plugins/<plugin-id>/         plugin manifest and DLL
     data/<plugin-id>/            files a plugin writes (caches, settings)
     data/anvil/                  approved plugins from mods, kept benchmark reports
