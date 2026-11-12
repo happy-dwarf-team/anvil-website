@@ -102,6 +102,26 @@ In a [lab test](https://github.com/happy-dwarf-team/anvil/issues/172) with scrip
 bursts of about 125,000 lines, `error.log` stayed at 161 KB after 12.6 minutes, against 61.9 MB
 in 11.3 minutes without the plugin.
 
+### The script errors panel
+
+From Anvil 1.20 the same plugin can show the game's script errors in a window while you play,
+for modders. Turn on **Script errors panel** (`panel`, off by default) in the overlay's settings
+tab or in Anvil Manager. The window then opens with the main menu at each start, and once closed
+it comes back from the **Status** tab.
+
+It groups the messages by kind with their counts as they happen, not a minute later as in the
+file. First come the few that name a file and line, which **Open in VS Code** and **Copy** take
+you to. An undefined event target is one row, and **Find** looks for it, or for an unknown tag,
+in the playset's files. The start-up noise of missing files comes last, folded into one item per
+kind: in Anbennar that was 18,740 of 18,831 messages. **Show only new** and **Mark all seen**
+help after you change a file and reload it.
+
+In the lab on Steam 1.37.5 its counts matched `error.log` for all 159 messages of a base-game
+campaign and all 18,760 of Anbennar's start-up. Not tried in the game yet: the buttons that open,
+copy or find, turning the setting on while the game runs, and OpenGL, where nothing is drawn.
+The panel's texts in languages other than English are drafts that native speakers have not
+checked yet.
+
 ## When EU4 updates
 
 Plugins declare the game code they rely on, and Anvil checks it against the running game before
