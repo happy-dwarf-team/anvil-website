@@ -137,6 +137,7 @@ All its events are published on the game's main thread:
 | `anvil-game.day`, `.month`, `.year` | `AnvilGameDateChange` | From Anvil 1.11: the date moved on, after the outer frame. `date`, `previous` and `days` say by how much, and the monthly and yearly updates are done by then. At most one of each per frame. Not for the first date of a session or across a load. |
 | `anvil-game.player` | `AnvilGamePlayerChange` | From Anvil 1.11: the player's country changed within a session. Not for the first country of a session. |
 | `anvil-game.war` | `AnvilGameWarChange` | From Anvil 1.11: a war started or ended, compared once a game day. Not for the wars a session starts with: ask `war_ids` then. |
+| `anvil-game.pending_event` | `AnvilGamePendingChange` | From Anvil 1.21: an event of the player's own country came (`ANVIL_GAME_PENDING_ADDED`) or left (`ANVIL_GAME_PENDING_REMOVED`: chosen by the player, a plugin or the game), after the outer frame, also while the game is paused. Not for the events a session starts with, nor when the player's country changes: ask `pending_events` then. |
 | `anvil-game.oos` | `AnvilGameOosChange` | From Anvil 1.14: the session's [out-of-sync flags](#out-of-sync) changed, after the outer frame. `flags` and `previous` hold them now and before, `session` is the session's number. |
 
 Its service `anvil-game.game` (version 1, `AnvilGameService`) has `ready`,
@@ -225,10 +226,15 @@ a new game build may leave the world out.
 | `country_flags`, `province_flags`, `monarch_flags`, `global_flags` | The flags set now, each with the date it was set (1.20) |
 | `country_variable(tag, name, &value)`, `province_variable` | A variable by its name (1.20) |
 | `country_variable_names`, `province_variable_names` | The names of all of a country's or province's variables (1.20) |
+| `pending_events(tag, ids, capacity, &count)` | The events waiting for a country's choice; `NULL` for the player's own country (1.21) |
+| `pending_event(id, &out)` | Its country, province, number of options, whether it is hidden, and the date the game chooses for the player (1.21) |
+| `pending_event_key`, `pending_event_title` | The event's key, such as `flavor_tur.203`, and its title's localisation key (1.21) |
+| `country_statistics(tag, kind, points, capacity, &count)` | A country's yearly income, score, nation size or inflation, as the game's graphs show them (1.21) |
 
-The calls marked 1.15 and 1.20 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"` or `"^1.20.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`
-or `ANVIL_GAME_WORLD_HAS(world, province_variable_names)` before calling them.
+The calls marked 1.15, 1.20 and 1.21 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, `"^1.20.0"` or `"^1.21.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
+`ANVIL_GAME_WORLD_HAS(world, province_variable_names)` or `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
+before calling them.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -258,13 +264,26 @@ or `ANVIL_GAME_WORLD_HAS(world, province_variable_names)` before calling them.
 - **Variables:** a value is x 1000, so `set_variable = { which = my_var value = 2.5 }` reads
   2500. `ANVIL_ERROR_NOT_FOUND` means the scope has no such variable, which the game's triggers
   take as 0. The names come one after the other, each followed by a NUL.
+- **Pending events:** the id is the one `ANVIL_GAME_COMMAND_EVENT_OPTION` takes, so a plugin
+  can read an event and choose its option without addresses ([Commands](#commands)). The game
+  keeps every country's events in one list, and an AI's choice or a hidden event leaves it at
+  once, so Anvil counts an event only from its second frame: a real one shows up at most one
+  frame late. The same event can wait twice, so keep the id, not the key. The title is a
+  localisation key; the translated texts, and whether a button is enabled, stay the window's.
+  `NULL` is the country the player commands, and in observe mode `ANVIL_ERROR_NOT_FOUND`.
+- **Statistics:** `kind` is `ANVIL_GAME_STATISTIC_INCOME`, `_SCORE`, `_NATION_SIZE` or
+  `_INFLATION`. Unlike the rest of the world the values are **not x 1000**: income, score and
+  inflation are whole numbers after the game's own division, and the nation size is a count of
+  provinces. There is one point per year end, oldest first, and the game keeps 0 for the years
+  before the country had a value, which its save leaves out. The series only changes at
+  `anvil-game.year`; for this year's value read the country.
 - **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms. A modifier
   read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine). A ruler takes
   about 80 ns, and a country's 110 flags about 3 µs (Steam 1.37.5 and GOG 1.37.5.2, lab machine,
   November 2026).
 - **Not on every build:** after a port some values may be missing. A country's `values` field
-  says which it has, and the war, modifier, unit, ruler, flag and variable calls answer
-  `ANVIL_ERROR_NOT_DECLARED`.
+  says which it has, and the war, modifier, unit, ruler, flag, variable, pending event and
+  statistics calls answer `ANVIL_ERROR_NOT_DECLARED`.
 
 ```cpp
 const auto* world = host.service<AnvilGameWorldService>(ANVIL_GAME_WORLD_SERVICE, ANVIL_GAME_WORLD_SERVICE_VERSION);
@@ -303,8 +322,21 @@ if (ANVIL_GAME_WORLD_HAS(world, monarch) &&
 }
 ```
 
+```cpp
+host.subscribe(ANVIL_GAME_EVENT_PENDING, [host, world](std::string_view, const void* payload) {
+    const auto* change = static_cast<const AnvilGamePendingChange*>(payload);
+    char key[128];
+    uint32_t length = 0;
+    if (change->change == ANVIL_GAME_PENDING_ADDED &&
+        world->pending_event_key(change->pending_id, key, sizeof(key), &length) == ANVIL_OK) {
+        host.info("{} waits for {}", key, change->country.text);
+    }
+});
+```
+
 It only reads, so it needs no `affects_gameplay = true`. It shows everything, also what fog of
-war hides from a player, a rival's modifiers and units in multiplayer included; a plugin that shows such values in multiplayer does not enter the
+war hides from a player, a rival's modifiers and units and another player's pending events in
+multiplayer included; a plugin that shows such values in multiplayer does not enter the
 [Plugins page](../catalog/).
 
 ### Windows
@@ -534,7 +566,9 @@ anvil::plugin!(Hello);
   `anvil::script::Effects`), `anvil::log_throttle` (from `anvil-sdk` 0.1.8) and `anvil::benchmark`
   wrap the services above; from `anvil-sdk`
   0.1.8 `anvil::world` also reads rulers, flags and variables (`World::monarch`,
-  `World::country_flags`, `World::country_variable` and the rest). A function the running service
+  `World::country_flags`, `World::country_variable` and the rest), and from 0.1.9 pending events
+  and statistics (`World::pending_events`, `World::country_statistics` and the event
+  `game::PENDING_EVENT`). A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
   `unsafe`: calling the rest of a hook's chain or a game function, reading game data,
