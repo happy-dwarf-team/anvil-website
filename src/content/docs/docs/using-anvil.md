@@ -148,6 +148,34 @@ them as the game holds them. Not tried in the game yet: the **Refresh** button a
 heading. The window's texts in languages other than English are drafts that native speakers
 have not checked yet.
 
+## The script profiler
+
+From Anvil 1.22 the standard plugin `anvil-script-profiler` shows modders which triggers and
+effects cost the game its time. It is installed with Anvil and does nothing until you start a
+measurement: open **Script profiler** from the **Status** tab of the Anvil panel, load a game and
+press **Start** (then **Stop**) or **Measure 30 days** (the number of days is the **Days to
+measure** setting). The game runs slower while it measures: in the lab, 1.7% fewer days per
+second on a base-game campaign and 1% on Anbennar, within the spread of the runs.
+
+When the measurement ends the window lists the longest **triggers** and **effects**, each row an
+event, event option (`#2`), decision, on_action, casus belli, triggered modifier or mission with
+the block's role there, such as `trigger`, `mean_time_to_happen`, `potential`, `allow`,
+`ai_will_do` or `effect`. A row shows the total time, the calls, the mean and the longest single
+run, which catches a rare option that takes tens of milliseconds at once. Blocks it cannot place,
+such as scripted triggers and church aspects for now, are one row **No owner found**.
+
+Every measurement is also written to `logs/script_profile_<date>_<time>.csv` in the game's user
+folder, with every row. Loading a save, leaving to the menu or quitting the game ends a
+measurement early; the file is still written and marked interrupted (on a quit only when the game
+exits normally). It works in ironman and multiplayer, where it warns that it slows your game and
+every player waits for the slowest.
+
+In the lab on Steam 1.37.5 and GOG 1.37.5.2 it named the same events, decisions and casus belli
+as the prototype did, for Russia in 1719 and for Verne in Anbennar, and a load and the menu's
+**Exit Game** wrote their files marked interrupted. Not tried yet: GOG 1.37.5.0 in the game,
+ironman and multiplayer. The window's texts in languages other than English are drafts that
+native speakers have not checked yet.
+
 ## When EU4 updates
 
 Plugins declare the game code they rely on, and Anvil checks it against the running game before
@@ -180,6 +208,7 @@ and the badge is back with an amber dot. A plugin that needs one of them waits w
     plugins/anvil-map/           (from 1.16) map modes of other plugins
     plugins/anvil-script/        (from 1.16) script effects and the day end of other plugins
     plugins/anvil-inspector/     (from 1.21) the inspector for modders
+    plugins/anvil-script-profiler/ (from 1.22) the script profiler for modders
     plugins/<plugin-id>/         plugin manifest and DLL
     data/<plugin-id>/            files a plugin writes (caches, settings)
     data/anvil/                  approved plugins from mods, kept benchmark reports
