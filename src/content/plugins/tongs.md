@@ -131,6 +131,11 @@ there, read from the game itself rather than from a screenshot. `key` holds Shif
 too (`key shift+left`, `key ctrl+a`). `journal` says where this start's command journal is: one
 line per command, so a test can be followed and repeated.
 
+From Tongs 0.33 with Anvil 1.20 or newer, `country` and `province` also list the country's or
+province's flags, with the date each was set, and its variables, as the game's triggers see them.
+Tongs reads them through Anvil's `anvil-game` plugin. With an older Anvil the answer says the lists
+are missing instead of showing them empty.
+
 The [command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md) has
 every command, key and answer field.
 
@@ -222,6 +227,12 @@ All checks ran in the lab on one development machine, on EU4 1.37.5 (Steam) with
   Anvil 1.19.0, [tongs#183](https://github.com/happy-dwarf-team/tongs/pull/183),
   [tongs#184](https://github.com/happy-dwarf-team/tongs/pull/184),
   [tongs#185](https://github.com/happy-dwarf-team/tongs/pull/185)).
+- **Flags and variables:** in a save of Russia in 1719, `country` and `province` gave the same
+  flags, dates and variables as the save the game wrote, for all 3,299 countries and provinces
+  that have any, on Steam and on the GOG builds 1.37.5.2 and 1.37.5.0. With Anvil 1.19 the answer
+  said the lists need Anvil 1.20 (11 and 12 November 2026, Tongs 0.33.0 before its release,
+  Anvil 1.20.0 on GOG and Anvil built from its code just before the release on Steam,
+  [tongs#188](https://github.com/happy-dwarf-team/tongs/pull/188)).
 
 ## The name
 
