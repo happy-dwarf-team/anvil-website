@@ -33,7 +33,7 @@ This page is a plan, not a promise, and has no dates. Each release is on
 | 1.19 | Rust plugins can add [script effects](../plugins/api/#rust); an effect's tooltip line shows as the plugin wrote it, as a map mode's lines do |
 | 1.20 | Plugins can read rulers, heirs, consorts, flags and variables from [the world](../plugins/api/#the-world); mods can ask with [`has_dlc`](../plugins/api/#script-effects-and-the-day-end) whether a plugin is on; modders can see the game's script errors in [a panel](../using-anvil/#the-script-errors-panel), and plugins read them through [`anvil-log-throttle.messages`](../plugins/api/#the-messages-of-the-games-logs) |
 | 1.21 | Plugins can read the player's pending events, the yearly statistics of the game's graphs, timed modifiers and the province on screen from [the world](../plugins/api/#the-world); modders can see the flags, variables and timed modifiers of a province and its owner in [the inspector](../using-anvil/#the-inspector) |
-| 1.22 | A plugin can bundle features as [modules](../plugins/manifest/#modules), each with its own switch in the Manager and its own [ironman and multiplayer](../multiplayer-ironman/#plugins-with-modules) rules |
+| 1.22 | A plugin can bundle features as [modules](../plugins/manifest/#modules), each with its own switch in the Manager and its own [ironman and multiplayer](../multiplayer-ironman/#plugins-with-modules) rules; plugins can set the game speed, send units exploring and move them through [commands](../plugins/api/#commands) |
 
 **Ports of older native patches** are out: EU4 Menu Patch as [Hamweard](../../plugins/hamweard/)
 ([#105](https://github.com/happy-dwarf-team/anvil/issues/105)) and EU4 Unicode Patch as
