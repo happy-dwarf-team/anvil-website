@@ -21,7 +21,9 @@ updated by its author at any time, so Anvil never loads plugin code you have not
   when the new one is broken.
 
 The prompt shows the plugin's name, authors, version, the mod it comes with, whether it changes
-gameplay, how many game addresses it uses, its hash and its repository. The name, the authors and
+gameplay, how many game addresses it uses, its hash and its repository. From Anvil 1.22 it also
+lists the plugin's modules, what each does to the game and whether it is on by default: one
+approval covers all of them. The name, the authors and
 the repository are what the mod says, and Anvil cannot check them. From Anvil 1.12 the Manager warns
 when a mod uses the id, name or repository of a catalog plugin and is not its Workshop item; the
 panel in the game has no such warning. Only approve plugins from authors you trust.
