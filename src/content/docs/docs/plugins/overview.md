@@ -33,6 +33,7 @@ Every Anvil release has an asset `anvil-sdk-windows-x64.zip` with the headers, t
 | `include/anvil/anvil_input.h` | keys and mouse buttons for plugins, from `anvil-overlay` (1.18) |
 | `include/anvil/anvil_map.h` | map modes of plugins, from the standard plugin `anvil-map` (1.16) |
 | `include/anvil/anvil_script.h` | script effects (1.16) and the day end (1.18), from the standard plugin `anvil-script` |
+| `include/anvil/anvil_log_throttle.h` | the messages of the game's logs with their counts, from the standard plugin `anvil-log-throttle` (1.20) |
 | `include/anvil/anvil_benchmark.h` | the start-up benchmark service (C++: `anvil_benchmark.hpp`) |
 | `bin/anvil.exe` | `anvil gen`, `anvil check` and `anvil port` |
 | `cmake/` | the `AnvilPlugin` CMake package with `anvil_add_plugin` |

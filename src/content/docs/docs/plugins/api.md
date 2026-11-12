@@ -442,6 +442,23 @@ plugins are on:
   }
   ```
 
+### The messages of the game's logs
+
+The standard plugin `anvil-log-throttle`, in
+[`anvil_log_throttle.h`](https://github.com/happy-dwarf-team/anvil/blob/main/include/anvil/anvil_log_throttle.h),
+offers from Anvil 1.20 the table of the messages it throttles, `error.log` by default, with
+their counts as they happen. Its own script errors panel reads the same table.
+
+- **`anvil-log-throttle.messages`** v1: `keep` starts the table, at the plugin's load if the
+  messages of the whole session are needed, or later from that moment on. `totals` gives the
+  numbers of messages and lines, and `read` copies the messages from an index, or only those that
+  changed after a given point, so a window can refresh cheaply.
+- A message is its log, the game's C++ source file and line that wrote it (not a mod's file) and
+  the text. Its count is the lines written to the log plus the lines the plugin only counted.
+- It changes nothing in the game, so it needs no `affects_gameplay = true`. Depend on
+  `anvil-log-throttle` with `version = "^1"`. Rust: `anvil::log_throttle::Messages` in
+  `anvil-sdk` 0.1.8.
+
 In multiplayer every machine runs the same effects and day ends, so the plugin must be on every
 machine and give the same result. While Anvil suspends the plugin, its effects do nothing and its
 callback is not called. Inside both, the world answers `ANVIL_ERROR_WRONG_PHASE`. Depend on
@@ -514,7 +531,8 @@ anvil::plugin!(Hello);
   where Anvil writes the rest of the chain.
 - `anvil::game`, `anvil::world`, `anvil::commands`, `anvil::panel`, `anvil::input`,
   `anvil::map`, `anvil::script` (the day end, and from `anvil-sdk` 0.1.7 the script effects as
-  `anvil::script::Effects`) and `anvil::benchmark` wrap the services above; from `anvil-sdk`
+  `anvil::script::Effects`), `anvil::log_throttle` (from `anvil-sdk` 0.1.8) and `anvil::benchmark`
+  wrap the services above; from `anvil-sdk`
   0.1.8 `anvil::world` also reads rulers, flags and variables (`World::monarch`,
   `World::country_flags`, `World::country_variable` and the rest). A function the running service
   is too old to have answers `Unsupported`.
