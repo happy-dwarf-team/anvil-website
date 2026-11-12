@@ -271,12 +271,15 @@ before calling them.
   frame late. The same event can wait twice, so keep the id, not the key. The title is a
   localisation key; the translated texts, and whether a button is enabled, stay the window's.
   `NULL` is the country the player commands, and in observe mode `ANVIL_ERROR_NOT_FOUND`.
+  Right after a load the save's waiting events count at once, a hidden one included, so check
+  `ANVIL_GAME_PENDING_HIDDEN` before you show one.
 - **Statistics:** `kind` is `ANVIL_GAME_STATISTIC_INCOME`, `_SCORE`, `_NATION_SIZE` or
   `_INFLATION`. Unlike the rest of the world the values are **not x 1000**: income, score and
   inflation are whole numbers after the game's own division, and the nation size is a count of
-  provinces. There is one point per year end, oldest first, and the game keeps 0 for the years
-  before the country had a value, which its save leaves out. The series only changes at
-  `anvil-game.year`; for this year's value read the country.
+  provinces. There is one point per year end, oldest first, written on 1 January, so the point
+  for 1720 is the value at the end of 1719. The game keeps 0 for the years before the country had
+  a value, which its save leaves out. The series only changes at `anvil-game.year`; for this
+  year's value read the country.
 - **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms. A modifier
   read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine). A ruler takes
   about 80 ns, and a country's 110 flags about 3 µs (Steam 1.37.5 and GOG 1.37.5.2, lab machine,
