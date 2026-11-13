@@ -195,6 +195,25 @@ Unverified: the flags have not yet been seen set in a real desync, which takes t
 computers. [Anvil's design notes](https://github.com/happy-dwarf-team/anvil/blob/main/docs/design.md#131-anvil-game)
 say where they are read.
 
+#### Restart
+
+From Anvil 1.23.0 the service also has `restart(self, flags)`: the game's own restart, the one the
+panel's [**Restart game**](../../using-anvil/#restarting-the-game) uses
+([ADR 0012](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0012-game-restart.md)).
+Call it only on the player's request. It can be called from any thread and only queues the
+request; `anvil-game` acts on it after the next frame of the main loop and checks it again then.
+
+- In the menus the game quits and starts the same `eu4.exe` again, with the same command line
+  (without `continue`) and the same mods.
+- In a single-player campaign only with `ANVIL_GAME_RESTART_CLOSE_CAMPAIGN`, your word that the
+  player accepted closing it. The game then runs its own **Exit to Menu**: an ironman campaign is
+  saved, any other loses its progress since the last save.
+- `ANVIL_ERROR_WRONG_PHASE` before the game is ready, in a multiplayer session, or in a campaign
+  without the flag; `ANVIL_ERROR_UNSUPPORTED` on a game build without its addresses.
+
+Check `ANVIL_GAME_HAS(service, restart)` or depend on `anvil-game` with `version = "^1.23.0"`. In
+Rust it is `Game::restart(&host, close_campaign)` (`anvil-sdk` 0.1.11).
+
 ### The world
 
 From Anvil 1.11 the service `anvil-game.world` (version 1, `AnvilGameWorldService`) reads the
