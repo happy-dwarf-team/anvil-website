@@ -9,9 +9,9 @@ affectsGameplay: false
 order: 10
 workshop: '3823747170'
 highlight:
-  label: Warm start to the main menu
-  before: 40.80 s
-  after: 12.76 s
+  label: Start to the main menu, 10 mods
+  before: 41 s
+  after: 13 s
 ---
 
 Bellows makes Europa Universalis IV start faster and the years pass sooner. It changes no game
