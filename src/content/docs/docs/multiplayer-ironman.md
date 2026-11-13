@@ -55,6 +55,21 @@ allow_multiplayer = []
 
 A session that is both ironman and multiplayer needs both.
 
+### Plugins with modules
+
+From Anvil 1.22 a plugin can be split into modules, each with its own switch and its own
+gameplay flag. Anvil then suspends only the modules that change the game, and the rest of the
+plugin keeps working in ironman and multiplayer. A module is named `<plugin>.<module>`: switch
+it and allow it in ironman or multiplayer on the Manager's **Plugins** tab, under its plugin, or
+in `anvil/anvil.toml`:
+
+```toml
+allow_ironman = ["smithy.drill_all"]
+disabled_modules = ["smithy.sharp_text"]
+```
+
+In multiplayer the hash covers each module that changes the game and acts, like a plugin.
+
 ## Notices in the game
 
 During a session, a notice in the top right corner says what Anvil does there:
@@ -64,7 +79,7 @@ During a session, a notice in the top right corner says what Anvil does there:
   From Anvil 1.14 its **x** closes it until that session ends; the next session shows it again.
 - **Ironman with gameplay plugins** shows while a plugin you allowed in ironman acts. It says
   that achievements stay enabled but such plugins may break Paradox's rules for them, and it
-  cannot be closed.
+  cannot be closed. From Anvil 1.22 it also names the plugins and modules that act because you allowed them.
 
 ## Checksum and achievements
 

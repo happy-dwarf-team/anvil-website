@@ -200,7 +200,12 @@ disabled_plugins = ["bellows"]
 log_level = "info"            # "debug", "info", "warning" or "error"
 allow_ironman = ["tongs"]     # plugins you allow in ironman
 allow_multiplayer = []        # plugins you allow in multiplayer
+disabled_modules = []         # from 1.22: modules you turned off, as "<plugin>.<module>"
+enabled_modules = []          # from 1.22: modules that are off by default and you turned on
 ```
 
 `log_level` sets how much `anvil/anvil.log` records; `debug` helps when you report a problem.
 [Multiplayer, ironman and achievements](../multiplayer-ironman/) explains the two `allow_` lists.
+From Anvil 1.22 a plugin can have modules: on the Manager's **Plugins** tab each has a switch
+under its plugin, and a module that changes the game has its own ironman and multiplayer
+boxes. A change applies at the next start; the panel's **Status** tab shows each module's state.

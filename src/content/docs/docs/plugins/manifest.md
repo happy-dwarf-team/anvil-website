@@ -101,6 +101,58 @@ allow_multiplayer = []
 
 A session that is both ironman and multiplayer needs both.
 
+### Modules
+
+From Anvil 1.22 a plugin can bundle features of different kinds as **modules**: parts of one
+plugin, each with its own switch for the player and its own gameplay flags. Without modules,
+one feature that changes the game makes the whole plugin a gameplay plugin, and Anvil
+suspends all of it in ironman, interface features included.
+
+```toml
+anvil = ">=1.22.0"                 # older Anvils skip a plugin with [[modules]]
+affects_gameplay = false           # the plugin's own handle: shared code, reads, services
+
+[[modules]]
+id = "ui_size_fix"                 # [a-z][a-z0-9_]*, at most 32 characters
+name = "Large country views at a raised GUI scale"
+description = "Optional, shown to the player."
+affects_gameplay = false
+
+[[modules]]
+id = "drill_all"
+name = "Drill all selected armies"
+affects_gameplay = true            # required, as for the plugin
+allow_ironman = "opt-in"           # false (default) or "opt-in"
+allow_multiplayer = "opt-in"
+default = true                     # on until the player chooses; default true
+```
+
+At most 32 modules; a module that does not affect gameplay offers no opt-in. The plugin acts
+for a module through its handle: `host->module(self, "drill_all", &handle)` in C,
+`host.module("drill_all")` in C++ (`std::nullopt` when the player turned it off), and
+`Host::module` in `anvil-sdk` 0.1.10. Every call that takes `self` takes the handle, so hooks,
+patches, event subscriptions and `anvil-game.commands` posts belong to the module. Settings,
+symbols, folders and services stay the plugin's.
+
+- A module the player turned off answers `ANVIL_ERROR_DISABLED` and gives no handle, so its
+  code never runs. An undeclared one answers `ANVIL_ERROR_NOT_DECLARED`.
+- Anvil suspends each module by its own flags in ironman and multiplayer, and only its
+  subscriptions get `anvil.suspended`.
+- The player names a module `<plugin>.<module>` in `anvil/anvil.toml`, or switches it in the
+  Manager's Plugins tab. A choice applies at the next start:
+
+```toml
+disabled_modules = ["smithy.sharp_text"]   # turns off a module (wins over enabled_modules)
+enabled_modules = ["smithy.extra"]         # turns on a module whose default is false
+allow_ironman = ["smithy.drill_all"]       # a module's opt-in, next to plugin ids
+```
+
+- The multiplayer hash has a line `<plugin>.<module> <version>` for every gameplay module that
+  acts, so two players with different gameplay modules see different hashes.
+- The plugin depends on `anvil-game` implicitly when it or any module affects gameplay.
+
+The design is Anvil's [ADR 0011](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0011-plugin-modules.md).
+
 ## symbols.toml
 
 Every address in `eu4.exe` that the plugin uses, declared once:
@@ -361,6 +413,8 @@ anvil check --game <game folder> [--format text|json|github]
   of the eight codes and an entry no text of the plugin has any more are errors; a text
   without a translation, and a language without a file, are warnings.
   **`--complete-translations`** makes them errors, for a plugin that ships every language.
+- **Modules** (Anvil 1.22): one line per module with its flags and default, and a warning
+  when the `anvil` range admits a release without modules.
 - **With `--exe`:** also the build, every symbol's bytes, memory kind, pointers, exports
   and values, and instruction boundaries: the declared bytes of a function or site must be
   whole instructions, and a hook must not relocate `JRCXZ`, `JECXZ` or `LOOP*`. It
