@@ -9,7 +9,8 @@ interface Props {
 	plugin: CollectionEntry<'plugins'>;
 }
 const { plugin } = Astro.props;
-const { name, summary, status, highlight, repo, asset, workshop } = plugin.data;
+// The card is for players, so it shows the tagline (one sentence in a user's words), not the summary.
+const { name, tagline, status, highlight, repo, asset, workshop } = plugin.data;
 const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, asset));
 ---
 
@@ -30,7 +31,7 @@ const release = await getLatestRelease(repoSlug(repo), pluginAsset(plugin.id, as
 			}
 		</div>
 	</div>
-	<p>{summary}</p>
+	<p>{tagline}</p>
 	{
 		workshop && (
 			<a class="workshop" href={workshopUrl(workshop)}>
