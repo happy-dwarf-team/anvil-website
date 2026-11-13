@@ -140,6 +140,13 @@ From Tongs 0.34 with Anvil 1.21 or newer, `country` also lists the events waitin
 choice: each event's id (the one `event choose` and the event window use), key, title key, province,
 number of options, whether it is hidden, and the date the game chooses for the player.
 
+From Tongs 0.35 with Anvil 1.22 or newer, `country` also gives the country's diplomacy: its alliances,
+royal marriages, guarantees, military access both ways, subsidies, subjects with their type and
+warnings, each with the countries in it and its dates; its rivals, overlord and subjects; and its
+opinion of the player and the player's of it (the numbers of the diplomacy window), with trust,
+favors and truce. In multiplayer this shows more than a player sees: every country's trust and
+opinions.
+
 The [command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md) has
 every command, key and answer field.
 
@@ -243,6 +250,12 @@ All checks ran in the lab on one development machine, on EU4 1.37.5 (Steam) with
   event once `event choose` chose it. With
   Anvil 1.20 the answer said the list needs Anvil 1.21 (12 November 2026, Tongs before its release,
   [tongs#192](https://github.com/happy-dwarf-team/tongs/pull/192)).
+- **Diplomacy:** in the same save, with Anvil 1.22.0 on Steam and GOG 1.37.5.2, `country` for the 88
+  countries that own a province gave the same 402 relations with their dates, 104 rivals, overlords,
+  subjects and 174 opinions, trusts and favors toward the player and back as the save; the diplomacy
+  windows of the Ottomans and Great Britain showed the same opinions, allies, rivals, royal marriage
+  and subjects (13 November 2026, Tongs before its release,
+  [tongs#193](https://github.com/happy-dwarf-team/tongs/pull/193)).
 
 ## The name
 
