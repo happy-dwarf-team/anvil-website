@@ -175,7 +175,9 @@ every player waits for the slowest.
 
 In the lab on Steam 1.37.5 and GOG 1.37.5.2 and 1.37.5.0 it named the same events, decisions and casus belli
 as the prototype did, for Russia in 1719 and for Verne in Anbennar, and a load and the menu's
-**Exit Game** wrote their files marked interrupted. Not tried yet: ironman and multiplayer. The window's texts in languages other than English are drafts that
+**Exit Game** wrote their files marked interrupted. The scripted triggers list and the church
+aspects were tried on all three builds (on Anbennar only on Steam), and the cost of the third hook
+was again within the spread of the runs. Not tried yet: ironman and multiplayer. The window's texts in languages other than English are drafts that
 native speakers have not checked yet.
 
 ## When EU4 updates
