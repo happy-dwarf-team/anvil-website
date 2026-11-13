@@ -233,12 +233,16 @@ a new game build may leave the world out.
 | `country_timed_modifiers(tag, list, capacity, &count)`, `province_timed_modifiers` | The named modifiers an effect gave for a time, with their end dates, hidden and ruler flags (1.21) |
 | `country_timed_modifier_keys`, `province_timed_modifier_keys` | Their keys in the same order, such as `recently_annexed_other_religion_timer` (1.21) |
 | `province_view(&id)` | The province the game's province view shows while that window is open (1.21) |
+| `country_relations(tag, kind, out, capacity, &count)` | A country's alliances, royal marriages, guarantees, military access, subsidies, subjects or warnings (1.22) |
+| `subject_type(overlord, subject, ...)` | A subject's type, such as `vassal` or `march` (1.22) |
+| `diplomacy_status(from, to, &out)` | One country's opinion of another, its trust and favors, and whether they have a truce (1.22) |
+| `country_rivals`, `country_overlord`, `country_subjects` | Its rivals, its overlord and its direct subjects (1.22) |
 
-The calls marked 1.15, 1.20 and 1.21 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"`, `"^1.20.0"` or `"^1.21.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
-`ANVIL_GAME_WORLD_HAS(world, province_variable_names)` or `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
-(`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view)
-before calling them.
+The calls marked 1.15, 1.20, 1.21 and 1.22 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"` or `"^1.22.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
+`ANVIL_GAME_WORLD_HAS(world, province_variable_names)`, `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
+(`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view) or
+`ANVIL_GAME_WORLD_HAS(world, country_subjects)` before calling them.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -293,15 +297,29 @@ before calling them.
   from `country_modifier`.
 - **The province view:** `province_view` answers `ANVIL_ERROR_NOT_FOUND` while no province view is
   open, however the player or a plugin opened it.
+- **Diplomacy:** a relation is one object both countries share, so an alliance shows up from
+  either side with the same `first` and `second`; read who did what from those two, as the
+  save writes them: the guarantor, the payer, the overlord and the one who warns are `first`.
+  Military access alone has a list per side: `ANVIL_GAME_RELATION_MILITARY_ACCESS` lists where
+  the country has access, `_GIVING_MILITARY_ACCESS` where it gives it. The opinion is the
+  number of the diplomacy window as the game keeps it, refreshed at least monthly for a human's
+  country and yearly for an AI's, so it can trail a change for a while; the tooltip works it out
+  again. A country with no provinces, or one the game has not counted yet, answers
+  `ANVIL_ERROR_NOT_FOUND` there. `timed_sum` is the sum of the timed opinion modifiers, which
+  the game does not clamp, so it is not the opinion. A truce has no end date here, since the
+  game works it out. In multiplayer every country's trust, favors and opinions can be read,
+  which is more than a player sees, so a plugin that shows them does not enter the catalog.
 - **Cost:** a province takes about 100 ns and a pass over the map about 0.6 ms. A modifier
   read takes about 40 ns and a unit about 0.7 µs (Steam 1.37.5, lab machine). A ruler takes
   about 80 ns, and a country's 110 flags about 3 µs (Steam 1.37.5 and GOG 1.37.5.2, lab machine,
   November 2026). A statistics series takes about 15 µs, since it walks every country's, and an
   empty list of pending events well under a microsecond. A country's 101 timed modifiers take
-  about 6.5 µs and `province_view` about 30 ns (the same machine and builds).
+  about 6.5 µs and `province_view` about 30 ns. A `diplomacy_status` takes about 0.1 µs and a
+  list of 13 relations about 0.6 µs (the same machine and builds).
 - **Not on every build:** after a port some values may be missing. A country's `values` field
   says which it has, and the war, modifier, unit, ruler, flag, variable, pending event,
-  statistics, timed modifier and province view calls answer `ANVIL_ERROR_NOT_DECLARED`.
+  statistics, timed modifier, province view and diplomacy calls answer
+  `ANVIL_ERROR_NOT_DECLARED`.
 
 ```cpp
 const auto* world = host.service<AnvilGameWorldService>(ANVIL_GAME_WORLD_SERVICE, ANVIL_GAME_WORLD_SERVICE_VERSION);
@@ -586,7 +604,8 @@ anvil::plugin!(Hello);
   0.1.8 `anvil::world` also reads rulers, flags and variables (`World::monarch`,
   `World::country_flags`, `World::country_variable` and the rest), and from 0.1.9 pending events
   and statistics (`World::pending_events`, `World::country_statistics` and the event
-  `game::PENDING_EVENT`). A function the running service
+  `game::PENDING_EVENT`), and from 0.1.10 diplomacy (`World::country_relations`,
+  `World::diplomacy_status` and the rest). A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
   `unsafe`: calling the rest of a hook's chain or a game function, reading game data,
