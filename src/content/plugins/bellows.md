@@ -35,8 +35,9 @@ All numbers are from the lab, on one computer; yours will differ.
 
 ## Install
 
-Bellows needs [Anvil](../../docs/install/) 1.7 or newer. Its one dependency, the standard plugin
-`anvil-game`, comes with Anvil.
+Bellows needs [Anvil](../../docs/install/) 1.22 or newer (Bellows 1.8 ran on Anvil 1.7 to 1.21).
+An older Anvil skips Bellows 2.0 and gives the reason in `anvil/anvil.log`. Its one dependency, the
+standard plugin `anvil-game`, comes with Anvil.
 
 [Install the plugin](../../docs/install-plugins/) any way you like. There is nothing to set up. The
 first start on a new mod set learns which files that set needs, so the full gain comes from the
@@ -44,14 +45,26 @@ second start.
 
 ## Settings
 
-You do not need to change anything. The numbers above are with the default settings. Change a
-setting on the **Settings** tab of Anvil Manager or in the Anvil panel. It applies at the next
-start, except `frame_pacing_interval_ms` and `frame_pacing_input`: changed in the Anvil panel while
-`frame_pacing` is on, they apply at once (since Bellows 1.4.0).
+You do not need to change anything. The numbers above are with the default settings.
+
+**Turn a module on or off** under Bellows in the **Plugins** tab of Anvil Manager (since Bellows
+2.0). Every [module](#modules) is an Anvil module named `bellows.<module>`, so `anvil/anvil.toml`
+does the same by hand:
+
+```toml
+disabled_modules = ["bellows.frame_pacing"]   # on by default, turned off
+enabled_modules = ["bellows.never_throttle"]  # off by default, turned on
+```
+
+A module that is off runs no code at all. The choice applies at the next start.
+
+**Change a setting** on the **Settings** tab of Anvil Manager or in the Anvil panel. It applies at
+the next start, except `frame_pacing_interval_ms` and `frame_pacing_input`: changed in the Anvil
+panel while `frame_pacing` is on, they apply at once (since Bellows 1.4.0).
 
 | Setting | Default | What it does |
 | --- | --- | --- |
-| Each [module](#modules) | see the table | `on` or `off`. Most also take `verify`, which is for checking a module, not for playing |
+| Each [module](#modules) | `on` | How an enabled module runs. Most also take `verify`, which is for checking a module, not for playing. `off` still turns the module off in 2.x, but the Plugins tab is the place for that; it does not turn on a module that is off by default |
 | `mimalloc` | `startup` | `startup` keeps the faster allocator until the main menu, `on` for the whole session, which made the simulation about 5% slower |
 | `ram_prefetch_budget_mb` | 1024 | Memory for reading ahead during start-up, 64–8192 |
 | `frame_pacing_interval_ms` | 100 | Time between frames drawn at speed 5, 0–1000; 0 keeps the game's own |
@@ -62,12 +75,13 @@ start, except `frame_pacing_interval_ms` and `frame_pacing_input`: changed in th
 By hand, put one line per changed value in `anvil/data/bellows/settings.toml`:
 
 ```toml
-attr_cache = "on"
 ram_prefetch_budget_mb = 2048
+save_compress_parallel = "on"
 ```
 
 For one start, an environment variable overrides a setting, for example
-`ANVIL_BELLOWS_EXISTS_INDEX=verify`. Every 1.x release keeps these settings and what they mean; see
+`ANVIL_BELLOWS_EXISTS_INDEX=verify`. Every 2.x release keeps the module names, these settings and
+what they mean; see
 [Compatibility](https://github.com/happy-dwarf-team/bellows#compatibility) in the README.
 [`settings.toml`](https://github.com/happy-dwarf-team/bellows/blob/main/plugin/settings.toml) lists
 all of them.
@@ -133,11 +147,17 @@ the same. Those are the only multiplayer tests so far: one vanilla save, Bellows
 - **Was Bellows loaded?** `anvil/anvil.log` has one line per start with every module and its mode,
   for example `modules: mimalloc=startup, open_warmup=on, …`. A module shown as `FAILED` turned
   itself off, and the line above it says why.
-- **Turn one module off** to see whether it causes a problem, for example `range_witness = "off"`.
+- **Turn one module off** to see whether it causes a problem: untick it under Bellows in the
+  **Plugins** tab of Anvil Manager, or add it to `disabled_modules`, for example
+  `disabled_modules = ["bellows.range_witness"]`.
+- **A module you turned on before 2.0 is off again?** `attr_cache`, `listing_lookup`,
+  `never_throttle` and `checksum_defer` are off by default, and from 2.0 their setting no longer
+  turns them on. Tick them in the Plugins tab; the log says which ones your settings asked for.
+  A module you turned off with its setting stays off.
 - **A module you turned off before 1.4 is on again?** Anvil saves only values that differ from the
   default. If you set `port_table`, `province_modifier_view`, `army_search_memo` or `pops_pacing`
-  to `off` while that was the default, there is no line for it, and 1.4 turns it on. Set it to `off`
-  again; it applies at the next start.
+  to `off` while that was the default, there is no line for it, and 1.4 turns it on. Turn it off
+  in the Plugins tab; it applies at the next start.
 - **Not faster?** `open_warmup` and `ram_prefetch` pay off from the second start on a mod set. Each
   set has its profile in `anvil/data/bellows/profiles/`; deleting that folder makes Bellows learn
   again. The [Benchmark tab](#measure-your-own) gives a fair number.
@@ -168,7 +188,8 @@ the same. Those are the only multiplayer tests so far: one vanilla save, Bellows
 
 ## Modules
 
-Each part of Bellows is a module with its own setting.
+Each part of Bellows is an Anvil module (`bellows.<module>`), which you turn on or off in the
+Plugins tab of Anvil Manager, with a setting of the same name for how it runs.
 
 | Module | What it does | Default |
 | --- | --- | --- |
@@ -350,6 +371,10 @@ have every method.
 
 ## Upgrading
 
+- **From 1.x to 2.0:** update Anvil to 1.22 or newer first. Your settings stay, with one change: a
+  module that is off by default and that you turned on in its setting (`attr_cache`,
+  `listing_lookup`, `never_throttle`, `checksum_defer`) is off again until you tick it in the
+  Plugins tab. Modes such as `verify` and modules you turned off keep working.
 - **From EU4 Startup Boost:** delete the `anvil/plugins/eu4-startup-boost/` folder and install
   Bellows. It moves your settings and learned profiles on its first start.
 - **From 0.7.0 or earlier:** Bellows moves `config.toml` into `settings.toml` and keeps the old file
