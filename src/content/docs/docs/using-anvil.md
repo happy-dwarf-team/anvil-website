@@ -59,6 +59,20 @@ Anvil Manager shows the same information outside the game.
 To hide the badge, turn off **Show Anvil in the main menu** on the panel's **Settings** tab
 (plugin `anvil-overlay`). The badge is only in the main menu, never in a game.
 
+### Restarting the game
+
+From Anvil 1.23 the panel's **Status** tab has **Restart game**. It asks first, then the game
+closes and starts again through its own restart, the one **Back** on the country selection screen
+does without Hamweard: the same `eu4.exe`, the same launch options and the same mods, and the
+new start opens the main menu. Use it after a setting that applies at the next start, after you
+change a mod's files, or before multiplayer once you have played a campaign.
+
+- **In the menus** the game restarts at once.
+- **In a campaign** the game leaves it as **Exit to Menu** does. An ironman campaign is saved
+  first; any other loses its progress since your last save, and the panel says so before you
+  confirm. With Hamweard the game returns to the main menu first and restarts from there.
+- **In a multiplayer game** the button is off: leave the game first.
+
 ## Language
 
 The Manager and the panel use the language EU4 is set to: English, French, German or Spanish.
