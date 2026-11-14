@@ -31,8 +31,8 @@ it to play.
 
 ## Install
 
-Tongs needs [Anvil](../../docs/install/) 1.7 or newer, and the standard plugin `anvil-game`, which
-comes with it. Tongs 0.25 and older ran on Steam only. The unit reads need Anvil 1.15 and the unit
+Tongs 0.35 needs [Anvil](../../docs/install/) 1.23 or newer (Tongs 0.34 and older: 1.7 or newer),
+and the standard plugin `anvil-game`, which comes with it. Tongs 0.25 and older ran on Steam only. The unit reads need Anvil 1.15 and the unit
 commands Anvil 1.17; with an older Anvil they answer `unavailable` and the rest works.
 
 1. [Install the plugin](../../docs/install-plugins/) any way you like.
@@ -55,22 +55,28 @@ Everything but the journal is off by default. Change a setting on the **Settings
 | --- | --- |
 | `enabled` | Opens the pipe, so that scripts can read the game |
 | `input` | Keyboard and mouse commands, unit commands, and moving the camera and opening province views |
-| `game_calls` | Console commands and loading saves. These **change game state** |
-| `console_allow` | Danger commands that game calls may run, for example `"leak"` |
-| `game_calls_ironman` | Game calls in ironman; Anvil must allow Tongs there too |
-| `game_calls_multiplayer` | Game calls in multiplayer; Anvil must allow Tongs there too |
+| `console_allow` | Under **Game calls**: danger commands that game calls may run, for example `"leak"` |
 | `journal` | On by default: writes every command sent on the pipe, with its outcome and the game date, to `anvil/data/tongs/journal/` |
 
 Settings apply at the next start. For one start, a variable such as `ANVIL_TONGS_ENABLED=true`
 overrides a value. A `config.toml` from Tongs 0.12 or older is moved into `settings.toml` on the
 first start.
 
+Console commands and loading saves are the module **Game calls**, off by default. They **change
+game state**. Turn it on under Tongs in Anvil Manager or the Anvil panel, or with
+`enabled_modules = ["tongs.game_calls"]` in `anvil/anvil.toml`. Its ironman and multiplayer switches
+are Anvil's own opt-ins for it. Tongs 0.34 and older had the settings `game_calls`,
+`game_calls_ironman` and `game_calls_multiplayer` instead; the first start with Tongs 0.35 moves
+your choices to the module, so game calls stay as you had them.
+
 ## Limitations
 
 - **Marked as changing gameplay.** Keyboard and mouse input acts on the game as a player's would.
   So in an ironman or multiplayer game Anvil suspends Tongs: input and console commands answer
   with an error, and reads go on. You can [allow it there](../../docs/multiplayer-ironman/);
-  console commands then also need `game_calls_ironman` or `game_calls_multiplayer`.
+  console commands then also need the Game calls module allowed there
+  (`allow_ironman = ["tongs", "tongs.game_calls"]`, likewise for multiplayer). From Tongs 0.35
+  `save load` loads an ironman save only from an ironman game that allows game calls.
 - **Not verified yet:** suspension in a live multiplayer game, pause and speed with a second
   player, keyboard layouts with an IME, the game's copy and paste keys, and the Workshop mod in
   the game. Text fields, the French, German and Polish layouts, clicks on the map and a minimized
@@ -88,7 +94,7 @@ first start.
 
 - **Local only.** Only programs of the Windows user running the game can connect. There is no
   network listener.
-- **Without `game_calls` it never writes game state.** Keys, text and mouse buttons go into the
+- **Without the Game calls module it never writes game state.** Keys, text and mouse buttons go into the
   game's own SDL input queue, as a player's would.
 - **Console commands are limited.** `enable_all_commands` and the achievement and social commands
   are always refused, other dangerous ones unless `console_allow` lists them. Every call is logged
@@ -111,7 +117,7 @@ one line. Up to 8 clients can connect at once, so one can wait in `run_until` wh
 | --- | --- |
 | `enabled` | `ping`, `state`, `window`, `threads`, `screenshot`, `frames`, `ui find`, `ui tree`, `event list`, `province`, `country`, `player`, `selection`, `units`, `cursor`, `journal`, `wait_until`, `cancel`, `subscribe`, `unsubscribe`, `help` |
 | `input` | `pause`, `resume`, `speed`, `run_until`, `key`, `text`, `move`, `click`, `scroll`, `release`, `ui click`, `event choose`, `unit drill`, `unit split`, `unit merge`, `province open`, `province goto`, `map_mode` |
-| `game_calls` | `console`, `save load` |
+| the Game calls module | `console`, `save load` |
 
 `wait_until` and `run_until` count the input and console commands of every client meanwhile, and
 report pauses, so a measurement can reject a touched run. `max_pause=S` ends a wait that the game
