@@ -48,7 +48,7 @@ commands Anvil 1.17; with an older Anvil they answer `unavailable` and the rest 
 
 ## Settings
 
-Everything but the journal is off by default. Change a setting on the **Settings** tab of Anvil Manager, or in
+Everything but the journal is off by default. Change a setting on the **Plugins** tab of Anvil Manager, or in
 `anvil/data/tongs/settings.toml`, one `name = value` per line.
 
 | Setting | What it allows |

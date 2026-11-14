@@ -30,16 +30,16 @@ panel in the game has no such warning. Only approve plugins from authors you tru
 
 ## Where to approve
 
-- **In the game:** in the Anvil panel (`Ctrl+Shift+F12`), go to **Mods**, select the plugin and
-  approve it with a second click. The game is never paused.
-- **Before you play:** on the **Mods** tab of `AnvilManager.exe`. The Manager reads your playset
+- **In the game:** in the Anvil panel (`Ctrl+Shift+F12`), select the plugin under **From mods** on
+  the **Plugins** tab, click **Approve...** and confirm. The game is never paused.
+- **Before you play:** under **From mods** on the **Plugins** tab of `AnvilManager.exe`. The Manager reads your playset
   again and approves the plugin only if the mod still has the version it showed you.
 
 Either way the plugin loads at the next start.
 
 ## Revoke an approval
 
-On the **Mods** tab, in the panel or the Manager, click **Revoke the approval**. From the next
+On the **Plugins** tab, in the panel or the Manager, select the plugin and click **Revoke the approval**. From the next
 start the plugin no longer loads, and Anvil removes its copy. Disabling the mod in the launcher
 also stops its plugins, but keeps the approval for when you enable the mod again.
 

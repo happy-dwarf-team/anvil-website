@@ -14,9 +14,7 @@ Start `AnvilManager.exe` from the game folder.
 | --- | --- |
 | **Anvil** | Installs, updates, repairs and uninstalls Anvil. |
 | **Catalog** | Installs and updates the team's plugins with a click. |
-| **Plugins** | Shows which plugins will load, in which order, and why one is skipped. Turns them on and off, allows the ones that offer it in ironman or multiplayer, removes them, and installs a zip. |
-| **Mods** | Approves plugins that come with a mod, such as a Steam Workshop item. |
-| **Settings** | Edits plugin settings. |
+| **Plugins** | Shows which plugins will load, in which order, and why one is skipped. Turns them on and off, allows the ones that offer it in ironman or multiplayer, removes them, and installs a zip. It also edits each plugin's and module's settings, and approves plugins that come with a mod, such as a Steam Workshop item (section **From mods**). |
 | **Benchmark** | Measures how much faster a plugin makes the game start; see [Start-up benchmark](../benchmark/). |
 | **Crashes** | Shows crash reports. |
 | **Log** | Shows `anvil.log`, and copies a [problem report](../troubleshooting/#reporting-a-problem) for an issue. |
@@ -42,7 +40,7 @@ game.
 - **Your answer.** If you already answered the Manager's question, the game follows it.
   Otherwise the main menu asks once: **Yes, check for releases** or **No**. One answer counts for
   the Manager and the game.
-- **Turning it off.** Set **Check for new Anvil releases** on the panel's **Settings** tab
+- **Turning it off.** Set **Check for new Anvil releases** on the panel's **Plugins** tab
   (plugin `anvil-overlay`) to **Off**. **On** checks without asking; **Ask** follows the Manager.
 - **How often.** The notice comes back at each start until you close it with **x** or open the
   release page. After that it stays away until the next release.
@@ -56,7 +54,7 @@ the log.
 The panel and the badge draw on the game's Direct3D 9 renderer. With OpenGL there is neither;
 Anvil Manager shows the same information outside the game.
 
-To hide the badge, turn off **Show Anvil in the main menu** on the panel's **Settings** tab
+To hide the badge, turn off **Show Anvil in the main menu** on the panel's **Plugins** tab
 (plugin `anvil-overlay`). The badge is only in the main menu, never in a game.
 
 ## Language
@@ -75,7 +73,7 @@ language.
 From Anvil 1.16 they also speak Polish when Steam is set to Polish. EU4 has no Polish of its own,
 so this follows Steam, not the game.
 
-To choose one of the nine yourself, use the setting **Language** (Anvil panel, **Settings**,
+To choose one of the nine yourself, use the setting **Language** (Anvil panel, **Plugins**,
 `anvil-overlay`). For a test, the environment variable `ANVIL_LANGUAGE` (`en`, `fr`, `de`, `es`,
 `zh-Hans`, `zh-Hant`, `ja`, `ko`, `pl`) wins over both.
 
@@ -105,9 +103,9 @@ in 11.3 minutes without the plugin.
 ### The script errors panel
 
 From Anvil 1.20 the same plugin can show the game's script errors in a window while you play,
-for modders. Turn on **Script errors panel** (`panel`, off by default) in the overlay's settings
+for modders. Turn on **Script errors panel** (`panel`, off by default) in the overlay's Plugins
 tab or in Anvil Manager. The window then opens with the main menu at each start, and once closed
-it comes back from the **Status** tab.
+it comes back from its switch above the list of the panel's **Plugins** tab.
 
 It groups the messages by kind with their counts as they happen, not a minute later as in the
 file. First come the few that name a file and line, which **Open in VS Code** and **Copy** take
@@ -126,8 +124,8 @@ checked yet.
 
 From Anvil 1.21 the standard plugin `anvil-inspector` shows modders what the game holds for the
 province on screen, its owner and your country. Turn on **Inspector window** (`window`, off by
-default) in the overlay's settings tab or in Anvil Manager. The window then opens at each start,
-and once closed it comes back from the **Status** tab.
+default) in the overlay's Plugins tab or in Anvil Manager. The window then opens at each start,
+and once closed it comes back from its switch above the list of the panel's **Plugins** tab.
 
 Open a province's view and the window lists, for the province, its owner and your country:
 
@@ -152,7 +150,7 @@ have not checked yet.
 
 From Anvil 1.22 the standard plugin `anvil-script-profiler` shows modders which triggers and
 effects cost the game its time. It is installed with Anvil and does nothing until you start a
-measurement: open **Script profiler** from the **Status** tab of the Anvil panel, load a game and
+measurement: show **Script profiler** with its switch above the list of the Anvil panel's **Plugins** tab, load a game and
 press **Start** (then **Stop**) or **Measure 30 days** (the number of days is the **Days to
 measure** setting). The game runs slower while it measures: in the lab, 1.7% fewer days per
 second on a base-game campaign and 1% on Anbennar at most, within the spread of the runs.
@@ -239,4 +237,4 @@ enabled_modules = []          # from 1.22: modules that are off by default and y
 [Multiplayer, ironman and achievements](../multiplayer-ironman/) explains the two `allow_` lists.
 From Anvil 1.22 a plugin can have modules: on the Manager's **Plugins** tab each has a switch
 under its plugin, and a module that changes the game has its own ironman and multiplayer
-boxes. A change applies at the next start; the panel's **Status** tab shows each module's state.
+boxes. A change applies at the next start. From Anvil 1.23 the panel's **Plugins** tab has the same switches in the game, and says what the running game does with each module.
