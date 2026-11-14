@@ -43,8 +43,8 @@ when you click.
 1. Subscribe to the plugin's Workshop item, and enable the mod in your playset in the Paradox
    launcher. A plugin's page links its item.
 2. Start the game. A notice says that a plugin waits for your approval. Open the Anvil panel
-   (`Ctrl+Shift+F12`), go to **Mods** and approve it. You can also do this before playing, on
-   the **Mods** tab of `AnvilManager.exe`.
+   (`Ctrl+Shift+F12`), select the plugin under **From mods** on the **Plugins** tab and approve
+   it. You can also do this before playing, on the **Plugins** tab of `AnvilManager.exe`.
 3. Start the game again: the plugin loads from then on.
 
 Anvil asks again after every update of the mod. Until then the version you approved keeps
@@ -101,7 +101,7 @@ build no plugin knows yet, for example after an EU4 update.
 
 ## Settings
 
-Change a plugin's settings on the **Settings** tab of the Manager, or in the Anvil panel in the
+Change a plugin's settings on the **Plugins** tab of the Manager, or in the Anvil panel in the
 game. The plugin's page describes them.
 
 By hand: `anvil/data/<plugin-id>/settings.toml` holds only the values you changed. The defaults
@@ -111,7 +111,7 @@ come from the plugin itself.
 
 - **From the Catalog tab:** click **Update**. Without the release check, click **Get the current
   list** first; otherwise the Manager compares your plugins with the list it came with.
-- **From the Workshop:** the mod updates by itself. Approve the new version on the **Mods** tab.
+- **From the Workshop:** the mod updates by itself. Approve the new version on the **Plugins** tab.
 - **From a zip:** install the new zip with the Manager. It replaces the old version.
 - **By hand:** delete the plugin's folder in `anvil/plugins/`, then extract the new archive.
 
@@ -125,4 +125,4 @@ cases that need more, such as a renamed plugin.
 - **Remove:** click **Remove** on the **Plugins** tab, or delete its folder in `anvil/plugins/`.
   Its settings in `anvil/data/<plugin-id>/` stay; delete that folder too if you do not want them.
 - **From a mod:** disable the mod in the launcher, unsubscribe from it, or revoke its approval on
-  the **Mods** tab.
+  the **Plugins** tab.
