@@ -361,6 +361,11 @@ affects_gameplay = false   # does not change the game
 [retired.flows_mode]       # a setting you removed for the module's own switch
 module = "flows"
 off = ["off"]              # these saved values turn the module off
+on = ["on", "verify"]      # these turn it on
+
+[retired.flows_ironman]
+module = "flows"
+ironman = [true]           # allows it in ironman, if flows offers allow_ironman = "opt-in"
 ```
 
 - **Settings that count.** In a plugin or module that changes the game, every setting counts
@@ -370,10 +375,13 @@ off = ["off"]              # these saved values turn the module off
   with different values see different codes, and they are locked during a multiplayer game.
   A `restart = true` value saved for the next start counts from that start.
 - **Retired settings.** At the first start of the new version, a player's saved value of a
-  `[retired.<name>]` that is in its `off` adds `<plugin>.<module>` to `disabled_modules` in
-  `anvil/anvil.toml`, so the module is off at that same start, and every saved value of the
-  name is removed from the player's file. Both are written to `anvil.log`. A setting and a
-  retired setting cannot share a name.
+  `[retired.<name>]` that is in its `off` or `on` turns `<plugin>.<module>` off or on in
+  `anvil/anvil.toml` (as the overlay's switch does, so it also turns on a module with
+  `default = false`), and one in its `ironman` or `multiplayer` allows the module there (the
+  module must offer that opt-in). It holds at that same start, and every saved value of the
+  name is removed from the player's file. Both are written to `anvil.log`. Each list is
+  optional, a value cannot be in both `off` and `on`, and a setting and a retired setting
+  cannot share a name.
 
 The player's values live in `anvil/data/<plugin-id>/settings.toml`, only those that differ
 from the default, as `name = value`. The file can be edited by hand while the game is
