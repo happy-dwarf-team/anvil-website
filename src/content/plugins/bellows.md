@@ -35,8 +35,9 @@ All numbers are from the lab, on one computer; yours will differ.
 
 ## Install
 
-Bellows needs [Anvil](../../docs/install/) 1.7 or newer. Its one dependency, the standard plugin
-`anvil-game`, comes with Anvil.
+Bellows needs [Anvil](../../docs/install/) 1.23 or newer (Bellows 1.8 ran on Anvil 1.7 to 1.22).
+An older Anvil skips Bellows 2.0 and gives the reason in `anvil/anvil.log`. Its one dependency, the
+standard plugin `anvil-game`, comes with Anvil.
 
 [Install the plugin](../../docs/install-plugins/) any way you like. There is nothing to set up. The
 first start on a new mod set learns which files that set needs, so the full gain comes from the
@@ -44,30 +45,40 @@ second start.
 
 ## Settings
 
-You do not need to change anything. The numbers above are with the default settings. Change a
-setting on the **Settings** tab of Anvil Manager or in the Anvil panel. It applies at the next
-start, except `frame_pacing_interval_ms` and `frame_pacing_input`: changed in the Anvil panel while
-`frame_pacing` is on, they apply at once (since Bellows 1.4.0).
+You do not need to change anything. The numbers above are with the default settings.
 
-| Setting | Default | What it does |
-| --- | --- | --- |
-| Each [module](#modules) | see the table | `on` or `off`. Most also take `verify`, which is for checking a module, not for playing |
-| `mimalloc` | `startup` | `startup` keeps the faster allocator until the main menu, `on` for the whole session, which made the simulation about 5% slower |
-| `ram_prefetch_budget_mb` | 1024 | Memory for reading ahead during start-up, 64–8192 |
-| `frame_pacing_interval_ms` | 100 | Time between frames drawn at speed 5, 0–1000; 0 keeps the game's own |
-| `frame_pacing_input` | `draw` | `draw` shows a frame at once when you press a key or click; `wait` waits for the interval |
-| `save_compress_parallel` | `off` | `on` compresses large saves on several threads. The save is valid, but its compressed bytes differ from the game's |
-| `verifypath_session` | `on` | Keeps `verifypath_listing` answering after the main menu is up, so loading a save finds its textures sooner. A listing is read again once it is 30 s old |
+**Turn a feature on or off** under Bellows in the **Plugins** tab of Anvil Manager, or in the Anvil
+panel. Each feature is one [module](#modules), and its switch is the only one (since Bellows 2.0).
+A module is named `bellows.<module>`, so `anvil/anvil.toml` does the same by hand:
+
+```toml
+disabled_modules = ["bellows.frame_pacing"]   # on by default, turned off
+enabled_modules = ["bellows.never_throttle"]  # off by default, turned on
+```
+
+A module that is off runs no code at all. The choice applies at the next start.
+
+**A few modules have options**, shown under the module. They apply at the next start, except the
+two of frame pacing: changed in the Anvil panel while frame pacing is on, they apply at once.
+
+| Module | Setting | Default | What it does |
+| --- | --- | --- | --- |
+| Faster memory allocator | `mimalloc_scope` | until the main menu | Or the whole session, which made the simulation about 5% slower |
+| RAM prefetch | `ram_prefetch_budget_mb` | 1024 | Memory for reading ahead during start-up, 64–8192 |
+| Frame pacing at speed 5 | `frame_pacing_interval_ms` | 100 | Time between frames drawn at speed 5, 0–1000; 0 keeps the game's own |
+| Frame pacing at speed 5 | `frame_pacing_input` | `draw` | `draw` shows a frame at once when you press a key or click; `wait` waits for the interval |
+| Save compression | `save_compress_threads` | `false` | `true` compresses large saves on several threads. The save is valid, but its compressed bytes differ from the game's |
 
 By hand, put one line per changed value in `anvil/data/bellows/settings.toml`:
 
 ```toml
-attr_cache = "on"
 ram_prefetch_budget_mb = 2048
+save_compress_threads = true
 ```
 
 For one start, an environment variable overrides a setting, for example
-`ANVIL_BELLOWS_EXISTS_INDEX=verify`. Every 1.x release keeps these settings and what they mean; see
+`ANVIL_BELLOWS_RAM_PREFETCH_BUDGET_MB=2048`. Every 2.x release keeps the module names, these settings
+and what they mean; see
 [Compatibility](https://github.com/happy-dwarf-team/bellows#compatibility) in the README.
 [`settings.toml`](https://github.com/happy-dwarf-team/bellows/blob/main/plugin/settings.toml) lists
 all of them.
@@ -88,7 +99,7 @@ all of them.
 - **Files must not change while the game starts.** A file that a tool writes into the game or mod
   folders during start-up may be missed until the next start. This matters [to mod
   authors](#for-mod-authors).
-- **Not tested yet:** a save written with `save_compress_parallel` in multiplayer, ironman and cloud
+- **Not tested yet:** a save written with `save_compress_threads` in multiplayer, ironman and cloud
   saves, `transfer_skip` on a real multiplayer host, in ironman and with cloud saves, in
   multiplayer Bellows on a computer other than the host's, and the defaults of 1.4 in multiplayer
   at speed 5 or with mods.
@@ -133,11 +144,17 @@ the same. Those are the only multiplayer tests so far: one vanilla save, Bellows
 - **Was Bellows loaded?** `anvil/anvil.log` has one line per start with every module and its mode,
   for example `modules: mimalloc=startup, open_warmup=on, …`. A module shown as `FAILED` turned
   itself off, and the line above it says why.
-- **Turn one module off** to see whether it causes a problem, for example `range_witness = "off"`.
+- **Turn one module off** to see whether it causes a problem: untick it under Bellows in the
+  **Plugins** tab of Anvil Manager, or add it to `disabled_modules`, for example
+  `disabled_modules = ["bellows.range_witness"]`.
+- **A module you turned on or off before 2.0?** At the first start of 2.0, Anvil moves the choice
+  of your old settings to the module's switch and removes them from `settings.toml`; the log says
+  which. `mimalloc = "on"` (the whole session) and `save_compress_parallel = "on"` are not carried
+  over: choose the whole session and `save_compress_threads` again.
 - **A module you turned off before 1.4 is on again?** Anvil saves only values that differ from the
   default. If you set `port_table`, `province_modifier_view`, `army_search_memo` or `pops_pacing`
-  to `off` while that was the default, there is no line for it, and 1.4 turns it on. Set it to `off`
-  again; it applies at the next start.
+  to `off` while that was the default, there is no line for it, and 1.4 turns it on. Untick it
+  in the Plugins tab; it applies at the next start.
 - **Not faster?** `open_warmup` and `ram_prefetch` pay off from the second start on a mod set. Each
   set has its profile in `anvil/data/bellows/profiles/`; deleting that folder makes Bellows learn
   again. The [Benchmark tab](#measure-your-own) gives a fair number.
@@ -168,36 +185,59 @@ the same. Those are the only multiplayer tests so far: one vanilla save, Bellows
 
 ## Modules
 
-Each part of Bellows is a module with its own setting.
+Each feature of Bellows is an Anvil module (`bellows.<module>`), with its switch under Bellows in the
+Plugins tab of Anvil Manager. The groups are only for order.
+
+### Start-up
 
 | Module | What it does | Default |
 | --- | --- | --- |
-| `mimalloc` | A faster memory allocator for the game's C runtime | until the main menu |
-| `verifypath_listing` | Answers the game's path checks from directory listings. With `verifypath_session` it goes on after the main menu is up | on |
-| `exists_index` | Answers "does this file exist?" for the modifier icon check | on |
-| `trigger_intern` | Looks each trigger up in the game's trigger profile at the end of loading, through a faster index | on |
-| `metascript_subst` | Substitutes `$parameter$` placeholders in a single pass | on |
-| `metascript_blocks` | Resolves `[[parameter] ...]` blocks in a single pass; matters for mods such as Anbennar | on |
-| `open_warmup` | Opens the files the game will need on parallel threads | on |
-| `ram_prefetch` | Reads and unpacks the DLC archive members the game will need into memory | on |
-| `attr_cache` | Remembers "file not found" answers during start-up | off |
-| `token_dict_cache` | Caches the script tokenizer's keyword lookups | on |
-| `range_witness` | **Simulation.** Answers the country range check from the province that was in range last time | on |
-| `frame_pacing` | **Simulation.** At the fastest speed, draws frames every 100 ms instead of 50 ms while you do nothing | on |
-| `modifier_merge` | **Simulation.** Adds each country's modifiers to its units with an index instead of a scan; checks every 1,024th merge against the game's code | on |
-| `port_table` | **Simulation, since 1.4 on by default.** Rebuilds a country's table of the nearest port from one list of its ports instead of walking its provinces and relations again for every province of the map; checks every 32nd rebuild against the game's code | on |
-| `province_modifier_view` | **Simulation, since 1.4 on by default.** Reads one value in place instead of copying a province's whole modifier list | on |
-| `pops_pacing` | **Simulation, since 1.4 on by default.** At the fastest speed, runs the game's Paradox online-service callbacks every 500 ms instead of twice a frame | on |
-| `army_search_memo` | **Simulation, since 1.4 on by default.** In the AI's daily search for each army, in a path search and when a unit's moves are listed, works out once whether a modifier lets the army ignore forts' zones of control and what its speed modifier is | on |
-| `save_compress` | **Saving.** For compressed saves, computes the checksum eight bytes at a time; the file is byte for byte the game's | on |
-| `transfer_skip` | **Loading.** In single player, "Continue" of a text save no longer compresses the file for a multiplayer transfer nobody receives | on |
-| `history_add` | **Loading.** Adds an entry the game just read to a dated list without first walking the whole list. The list comes out the same, and the gain depends on the mods | on |
-| `checksum_defer` | **Loading, since 1.6, off by default.** Starts the game's version checksum (the code next to the version on the main menu) once the databases are loaded, instead of alongside them; the same files and checksum. About 1 s off the start of Anbennar, nothing measurable on the base game | off |
-| `listing_lookup` | **Start-up, since 1.7, off by default.** Answers the file system's second look at a mod folder (is the file there, open a file that is not there) from the folder listings Bellows already reads; every existing file is still opened by the game. About 3 s off the start of Anbennar, nothing measurable on the base game | off |
-| `never_throttle` | **Simulation, since 1.6, off by default.** While a single-player game runs at speed 5, skips the main loop's waits that the game makes while its window is minimized, so a minimized year takes about 40–60% less time. A visible window does not change | off |
+| **Faster memory allocator** (`mimalloc`) | A faster memory allocator for the game's C runtime | until the main menu |
+| **File warm-up** (`open_warmup`) | Opens the files the game will need on parallel threads | on |
+| **RAM prefetch** (`ram_prefetch`) | Reads and unpacks the DLC archive members the game will need into memory | on |
+| **Path check cache** (`verifypath_listing`) | Answers the game's path checks from directory listings until the main menu is up | on |
+| **Lookups from listings** (`listing_lookup`) | **Since 1.7, off by default.** Answers the file system's second look at a mod folder (is the file there, open a file that is not there) from the folder listings Bellows already reads; every existing file is still opened by the game. About 3 s off the start of Anbennar, nothing measurable on the base game | off |
+| **File existence index** (`exists_index`) | Answers "does this file exist?" for the modifier icon check | on |
+| **Trigger profile lookup** (`trigger_intern`) | Looks each trigger up in the game's trigger profile at the end of loading, through a faster index | on |
+| **Parameter substitution** (`metascript_subst`) | Substitutes `$parameter$` placeholders in a single pass | on |
+| **Conditional blocks** (`metascript_blocks`) | Resolves `[[parameter] ...]` blocks in a single pass; matters for mods such as Anbennar | on |
+| **Missing-file cache** (`attr_cache`) | Remembers "file not found" answers during start-up | off |
+| **Keyword cache** (`token_dict_cache`) | Caches the script tokenizer's keyword lookups | on |
 
-The diagnostic modules `zip_profile`, `token_dict_profile`, `range_profile`, `tick_profile`,
-`army_search_profile`, `score_probe` and `monthly_probe` only count, and are for development.
+### Loading
+
+| Module | What it does | Default |
+| --- | --- | --- |
+| **Dated lists while loading** (`history_add`) | Adds an entry the game just read to a dated list without first walking the whole list. The list comes out the same, and the gain depends on the mods | on |
+| **Checksum after the databases** (`checksum_defer`) | **Since 1.6, off by default.** Starts the game's version checksum (the code next to the version on the main menu) once the databases are loaded, instead of alongside them; the same files and checksum. About 1 s off the start of Anbennar, nothing measurable on the base game | off |
+| **Path checks after start-up** (`verifypath_session`) | Keeps the path check cache answering after the main menu is up, so loading a save finds its textures sooner. A listing is read again once it is 30 s old | on |
+
+### Simulation
+
+| Module | What it does | Default |
+| --- | --- | --- |
+| **Country range check** (`range_witness`) | Answers the country range check from the province that was in range last time | on |
+| **Frame pacing at speed 5** (`frame_pacing`) | At the fastest speed, draws frames every 100 ms instead of 50 ms while you do nothing | on |
+| **Online service pacing** (`pops_pacing`) | **Since 1.4 on by default.** At the fastest speed, runs the game's Paradox online-service callbacks every 500 ms instead of twice a frame | on |
+| **Full speed while minimized** (`never_throttle`) | **Since 1.6, off by default.** While a single-player game runs at speed 5, skips the main loop's waits that the game makes while its window is minimized, so a minimized year takes about 40–60% less time. A visible window does not change | off |
+| **Modifier merge index** (`modifier_merge`) | Adds each country's modifiers to its units with an index instead of a scan; checks every 1,024th merge against the game's code | on |
+| **Port table** (`port_table`) | **Since 1.4 on by default.** Rebuilds a country's table of the nearest port from one list of its ports instead of walking its provinces and relations again for every province of the map; checks every 32nd rebuild against the game's code | on |
+| **Province modifier view** (`province_modifier_view`) | **Since 1.4 on by default.** Reads one value in place instead of copying a province's whole modifier list | on |
+| **AI army search memo** (`army_search_memo`) | **Since 1.4 on by default.** In the AI's daily search for each army, in a path search and when a unit's moves are listed, works out once whether a modifier lets the army ignore forts' zones of control and what its speed modifier is | on |
+
+### Saving
+
+| Module | What it does | Default |
+| --- | --- | --- |
+| **Save compression** (`save_compress`) | For compressed saves, computes the checksum eight bytes at a time; the file is byte for byte the game's | on |
+| **Skip transfer compression** (`transfer_skip`) | In single player, "Continue" of a text save no longer compresses the file for a multiplayer transfer nobody receives | on |
+
+### For testing
+
+| Module | What it does | Default |
+| --- | --- | --- |
+| **Diagnostics** (`diagnostics`) | Tools for development: seven timing profiles and a check per module against the game's own code. Each is a setting of this module, off until chosen; with the module off, none of their code runs | off |
+
 The [README](https://github.com/happy-dwarf-team/bellows#modules) describes each module in full.
 
 ## Tested and measured
@@ -287,11 +327,11 @@ More than 1.4 million answers compared with the game's own code: 0 differences.
 | --- | ---: | --- |
 | `save_compress` off | 0.873 s | 0.871–0.900 s |
 | `save_compress` on | 0.831 s | 0.823–0.842 s |
-| on, with `save_compress_parallel` | **0.612 s** | 0.575–0.637 s |
+| on, with `save_compress_threads` | **0.612 s** | 0.575–0.637 s |
 
 With `"verify"`, every member of the compressed autosaves was byte for byte what the game's code
 gives (0 differences in 10 members of the save of 1719). A save written with
-`save_compress_parallel` loaded in a game without Bellows, and other tools read it.
+`save_compress_threads` loaded in a game without Bellows, and other tools read it.
 
 ### Loading
 
@@ -350,13 +390,16 @@ have every method.
 
 ## Upgrading
 
-- **From EU4 Startup Boost:** delete the `anvil/plugins/eu4-startup-boost/` folder and install
-  Bellows. It moves your settings and learned profiles on its first start.
-- **From 0.7.0 or earlier:** Bellows moves `config.toml` into `settings.toml` and keeps the old file
-  as `config.toml.migrated`. The `EU4SB_<NAME>` variables are no longer read; use
-  `ANVIL_BELLOWS_<NAME>`.
-- A `config.toml` written by 0.3.0 or earlier said `trigger_intern = "off"`, and the migration keeps
-  that. Delete the line to use the default `"on"`.
+- **From 1.x to 2.0:** update Anvil to 1.23 or newer first. The settings named after each module
+  (`on`, `off`, `verify`) are gone: at the first start Anvil turns a module you had set to `off`
+  off, turns on a module that is off by default and that you had turned on, and removes those lines
+  from `settings.toml`. `verify` is now a check of the Diagnostics module. Not carried over:
+  `mimalloc = "on"` (choose the whole session again) and `save_compress_parallel = "on"` (now the tick box
+  `save_compress_threads`). A profile you set to `on` in 1.x (`tick_profile = "on"` and the like) shows a
+  warning at every start until you remove that line or set it to `true`.
+- **From EU4 Startup Boost or 0.7.0 and earlier:** Bellows 2.0 no longer moves the old settings and
+  profiles. Delete `anvil/plugins/eu4-startup-boost/`, install Bellows and choose your settings
+  again; the profiles are learned again at the first start of each mod set.
 
 ## The name
 
