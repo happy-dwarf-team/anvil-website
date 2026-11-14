@@ -67,13 +67,13 @@ two of frame pacing: changed in the Anvil panel while frame pacing is on, they a
 | RAM prefetch | `ram_prefetch_budget_mb` | 1024 | Memory for reading ahead during start-up, 64–8192 |
 | Frame pacing at speed 5 | `frame_pacing_interval_ms` | 100 | Time between frames drawn at speed 5, 0–1000; 0 keeps the game's own |
 | Frame pacing at speed 5 | `frame_pacing_input` | `draw` | `draw` shows a frame at once when you press a key or click; `wait` waits for the interval |
-| Save compression | `save_compress_parallel` | `false` | `true` compresses large saves on several threads. The save is valid, but its compressed bytes differ from the game's |
+| Save compression | `save_compress_threads` | `false` | `true` compresses large saves on several threads. The save is valid, but its compressed bytes differ from the game's |
 
 By hand, put one line per changed value in `anvil/data/bellows/settings.toml`:
 
 ```toml
 ram_prefetch_budget_mb = 2048
-save_compress_parallel = true
+save_compress_threads = true
 ```
 
 For one start, an environment variable overrides a setting, for example
@@ -99,7 +99,7 @@ all of them.
 - **Files must not change while the game starts.** A file that a tool writes into the game or mod
   folders during start-up may be missed until the next start. This matters [to mod
   authors](#for-mod-authors).
-- **Not tested yet:** a save written with `save_compress_parallel` in multiplayer, ironman and cloud
+- **Not tested yet:** a save written with `save_compress_threads` in multiplayer, ironman and cloud
   saves, `transfer_skip` on a real multiplayer host, in ironman and with cloud saves, in
   multiplayer Bellows on a computer other than the host's, and the defaults of 1.4 in multiplayer
   at speed 5 or with mods.
@@ -150,7 +150,7 @@ the same. Those are the only multiplayer tests so far: one vanilla save, Bellows
 - **A module you turned on or off before 2.0?** At the first start of 2.0, Anvil moves the choice
   of your old settings to the module's switch and removes them from `settings.toml`; the log says
   which. `mimalloc = "on"` (the whole session) and `save_compress_parallel = "on"` are not carried
-  over: choose them again.
+  over: choose the whole session and `save_compress_threads` again.
 - **A module you turned off before 1.4 is on again?** Anvil saves only values that differ from the
   default. If you set `port_table`, `province_modifier_view`, `army_search_memo` or `pops_pacing`
   to `off` while that was the default, there is no line for it, and 1.4 turns it on. Untick it
@@ -327,11 +327,11 @@ More than 1.4 million answers compared with the game's own code: 0 differences.
 | --- | ---: | --- |
 | `save_compress` off | 0.873 s | 0.871–0.900 s |
 | `save_compress` on | 0.831 s | 0.823–0.842 s |
-| on, with `save_compress_parallel` | **0.612 s** | 0.575–0.637 s |
+| on, with `save_compress_threads` | **0.612 s** | 0.575–0.637 s |
 
 With `"verify"`, every member of the compressed autosaves was byte for byte what the game's code
 gives (0 differences in 10 members of the save of 1719). A save written with
-`save_compress_parallel` loaded in a game without Bellows, and other tools read it.
+`save_compress_threads` loaded in a game without Bellows, and other tools read it.
 
 ### Loading
 
@@ -394,8 +394,8 @@ have every method.
   (`on`, `off`, `verify`) are gone: at the first start Anvil turns a module you had set to `off`
   off, turns on a module that is off by default and that you had turned on, and removes those lines
   from `settings.toml`. `verify` is now a check of the Diagnostics module. Not carried over:
-  `mimalloc = "on"` (choose the whole session again) and `save_compress_parallel = "on"` (now a
-  tick box).
+  `mimalloc = "on"` (choose the whole session again) and `save_compress_parallel = "on"` (now the tick box
+  `save_compress_threads`).
 - **From EU4 Startup Boost or 0.7.0 and earlier:** Bellows 2.0 no longer moves the old settings and
   profiles. Delete `anvil/plugins/eu4-startup-boost/`, install Bellows and choose your settings
   again; the profiles are learned again at the first start of each mod set.
