@@ -395,7 +395,8 @@ have every method.
   off, turns on a module that is off by default and that you had turned on, and removes those lines
   from `settings.toml`. `verify` is now a check of the Diagnostics module. Not carried over:
   `mimalloc = "on"` (choose the whole session again) and `save_compress_parallel = "on"` (now the tick box
-  `save_compress_threads`).
+  `save_compress_threads`). A profile you set to `on` in 1.x (`tick_profile = "on"` and the like) shows a
+  warning at every start until you remove that line or set it to `true`.
 - **From EU4 Startup Boost or 0.7.0 and earlier:** Bellows 2.0 no longer moves the old settings and
   profiles. Delete `anvil/plugins/eu4-startup-boost/`, install Bellows and choose your settings
   again; the profiles are learned again at the first start of each mod set.
