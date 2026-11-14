@@ -18,8 +18,8 @@ description: What to do when a plugin does not work, and how to report a problem
 | Your antivirus removed a file | Check the file and allow only that file. See [If your antivirus objects](../safety/#if-your-antivirus-objects). |
 | No Anvil badge in the main menu | Check that `version.dll` and the `anvil` folder are next to `eu4.exe`, or click **Install Anvil** in the Manager. With OpenGL there is no badge; the Manager shows the same information. |
 | No badge and no `anvil/anvil.log`, although the files are there | Windows did not load Anvil's `version.dll`. See [If Anvil does not run at all](#if-anvil-does-not-run-at-all). |
-| A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset, approve the plugin on the Manager's **Mods** tab, and start the game again. |
-| A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version on the **Mods** tab. |
+| A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset, approve the plugin on the Manager's **Plugins** tab (under **From mods**), and start the game again. |
+| A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version on the **Plugins** tab. |
 | **Play EU4** on GOG seems to do nothing | It opens the Paradox launcher: press **Play** there. On its first start the launcher shows Paradox's EULA before **Play**, also without Anvil, and only you can accept it. |
 | Orange lines on the **Plugins** tab: `code range of symbol … overlaps symbol …` | They mean nothing: the catalog's plugins declare the same function. Anvil 1.10.1 no longer shows them. |
 | A **Multiplayer** notice covers the top right corner | It shows the plugins that change the game, for players to compare. From Anvil 1.14 click its **x**; it stays closed until that session ends. See [Notices in the game](../multiplayer-ironman/#notices-in-the-game). |

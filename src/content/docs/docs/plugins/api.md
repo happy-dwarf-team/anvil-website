@@ -401,7 +401,7 @@ panels->show(panel, 1);
 - Every call may come from any thread, and rows are copied.
 - A click runs on the main thread after a frame, so the handler may read the world. Without
   `anvil-game` no click arrives.
-- The player can close the window; the switch in the panel's status tab brings it back.
+- The player can close the window; its switch above the list of the panel's Plugins tab brings it back.
 - Text is UTF-8 and yours to translate: `language()` gives the player's language. Chinese,
   Japanese and Korean come from the fonts Windows ships.
 - The overlay runs on Direct3D 9: on the OpenGL renderer the calls work and nothing is drawn.
