@@ -125,6 +125,7 @@ affects_gameplay = true            # required, as for the plugin
 allow_ironman = "opt-in"           # false (default) or "opt-in"
 allow_multiplayer = "opt-in"
 default = true                     # on until the player chooses; default true
+group = "Armies"                   # optional subheading (Anvil 1.23), translated like the rest
 ```
 
 At most 32 modules; a module that does not affect gameplay offers no opt-in. The plugin acts
@@ -148,7 +149,8 @@ allow_ironman = ["smithy.drill_all"]       # a module's opt-in, next to plugin i
 ```
 
 - The multiplayer hash has a line `<plugin>.<module> <version>` for every gameplay module that
-  acts, so two players with different gameplay modules see different hashes.
+  acts, so two players with different gameplay modules see different hashes. From Anvil 1.23
+  the line also carries the values of the settings that count (see [settings.toml](#settingstoml)).
 - The plugin depends on `anvil-game` implicitly when it or any module affects gameplay.
 
 The design is Anvil's [ADR 0011](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0011-plugin-modules.md).
@@ -339,6 +341,40 @@ label = "Panel key"
 - `int` and `float` take optional `min`, `max` and `step`; `enum` takes `values`.
 - A `key` is a binding such as `"Ctrl+Shift+F12"`, or `""` for none.
 
+From Anvil 1.23 (declare `anvil = ">=1.23.0"`: an older Anvil skips a plugin with these keys)
+settings follow the plugin's [modules](#modules):
+
+```toml
+[setting.flip_ratio]
+type = "float"
+default = 1.5
+label = "Flip ratio"
+module = "flows"           # a module of plugin.toml: shown under it, off with it
+advanced = true            # folded under "Advanced" in the overlay and the Manager
+
+[setting.log_flows]
+type = "bool"
+default = false
+label = "Log flows"
+affects_gameplay = false   # does not change the game
+
+[retired.flows_mode]       # a setting you removed for the module's own switch
+module = "flows"
+off = ["off"]              # these saved values turn the module off
+```
+
+- **Settings that count.** In a plugin or module that changes the game, every setting counts
+  for the game unless it says `affects_gameplay = false`; a `key` setting does not count by
+  default. The values in effect of the settings that count join their owner's line in the
+  multiplayer hash (`lode 1.2.0 cooldown_months=24 flip_ratio=1.5`, names sorted), so players
+  with different values see different codes, and they are locked during a multiplayer game.
+  A `restart = true` value saved for the next start counts from that start.
+- **Retired settings.** At the first start of the new version, a player's saved value of a
+  `[retired.<name>]` that is in its `off` adds `<plugin>.<module>` to `disabled_modules` in
+  `anvil/anvil.toml`, so the module is off at that same start, and every saved value of the
+  name is removed from the player's file. Both are written to `anvil.log`. A setting and a
+  retired setting cannot share a name.
+
 The player's values live in `anvil/data/<plugin-id>/settings.toml`, only those that differ
 from the default, as `name = value`. The file can be edited by hand while the game is
 closed. An invalid value falls back to the default with a warning in the log. For a test,
@@ -415,6 +451,11 @@ anvil check --game <game folder> [--format text|json|github]
   **`--complete-translations`** makes them errors, for a plugin that ships every language.
 - **Modules** (Anvil 1.22): one line per module with its flags and default, and a warning
   when the `anvil` range admits a release without modules.
+- **Settings of modules** (Anvil 1.23): a `module` or retired `module` that `plugin.toml`
+  does not declare is an error. Warnings: the `anvil` range admits a release without
+  `module`, `advanced`, `affects_gameplay`, `[retired.*]` or a module's `group`; a setting
+  named as a module; a setting without `affects_gameplay` in a plugin or module that offers
+  multiplayer.
 - **With `--exe`:** also the build, every symbol's bytes, memory kind, pointers, exports
   and values, and instruction boundaries: the declared bytes of a function or site must be
   whole instructions, and a hook must not relocate `JRCXZ`, `JECXZ` or `LOOP*`. It
