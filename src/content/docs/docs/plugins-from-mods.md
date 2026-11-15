@@ -51,6 +51,10 @@ also stops its plugins, but keeps the approval for when you enable the mod again
   instead of every mod's copy, and `anvil/anvil.log` names the mods it hides.
 - **Local mods** (folders in `Documents/Paradox Interactive/Europa Universalis IV/mod`, or
   `Europa Universalis IV GOG/mod` for a GOG game) are approved the same way as Workshop mods.
+- **The approved copy is missing:** Anvil makes it again from the mod's files at the next start
+  and checks it against the hash you approved. From Anvil 1.24, if it cannot make the copy, the
+  plugin fails at that start with the reason (`cannot make its approved copy: …` in the log), and
+  so do the plugins that need it.
 - **Safe mode** loads no plugins from mods.
 - **Zipped mods** cannot carry plugins.
 

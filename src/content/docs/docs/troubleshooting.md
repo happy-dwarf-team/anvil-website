@@ -21,6 +21,7 @@ description: What to do when a plugin does not work, and how to report a problem
 | A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset, approve the plugin on the Manager's **Plugins** page (under **From mods**), and start the game again. |
 | A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version in the panel or the Manager. |
 | **Play EU4** on GOG seems to do nothing | It opens the Paradox launcher: press **Play** there. On its first start the launcher shows Paradox's EULA before **Play**, also without Anvil, and only you can accept it. |
+| **Play EU4** on Steam is greyed out | From Anvil 1.24, Steam would start EU4 from another folder than the one the Manager shows. See step 1 of [If Anvil does not run at all](#if-anvil-does-not-run-at-all). |
 | Orange lines on the **Plugins** page: `code range of symbol … overlaps symbol …` | They mean nothing: the catalog's plugins declare the same function. Anvil 1.10.1 no longer shows them. |
 | A **Multiplayer** notice covers the top right corner | It shows the plugins that change the game, for players to compare. From Anvil 1.14 click its **x**; it stays closed until that session ends. See [Notices in the game](../multiplayer-ironman/#notices-in-the-game). |
 | A plugin is skipped | The reason is on the Manager's **Plugins** page and in the log; see [Why a plugin is skipped](#why-a-plugin-is-skipped). |
@@ -52,6 +53,9 @@ load.**, and **What to check** opens this section. Check, in this order:
    installed in. On Steam, **Play EU4** in the Manager starts Steam's copy, whatever folder the
    Manager shows. From Anvil 1.14, the Manager names the folder the game runs from when it is
    another one, and **Switch to that folder** moves the Manager there; then install Anvil in it.
+   From Anvil 1.24 the Manager also checks before you play: when Steam lists EU4 in another
+   folder, **Play EU4** is off, its tooltip says why, and a note names the folder Steam starts,
+   with **Switch to that folder**.
    With an older Manager, find the folder of the `eu4.exe` that runs (Task Manager: right-click
    `eu4.exe`, **Open file location**) and, if it is another one, click **Change...** in the
    Manager and install Anvil there.

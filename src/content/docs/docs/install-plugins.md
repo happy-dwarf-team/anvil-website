@@ -85,6 +85,9 @@ To check a file before you install it, see
 
 In the game's main menu, point at the **Anvil** badge to see how many plugins loaded. The
 Manager's **Plugins** page shows the same without starting the game, and why a plugin is skipped.
+From Anvil 1.24 it shows each plugin as the next start will load it, with a note when that start
+would be in [safe mode](../troubleshooting/#crash-reports-and-safe-mode) and one for what it does
+first, such as making the approved copy of a [plugin from a mod](../plugins-from-mods/).
 
 For details, open `anvil/anvil.log` after the start. A loaded plugin has a line with its id,
 version and `loaded`:
@@ -121,7 +124,9 @@ cases that need more, such as a renamed plugin.
 ## Turn a plugin off or remove it
 
 - **Off for now:** untick it on the Manager's **Plugins** page. By hand, add its id to
-  `disabled_plugins` in [`anvil/anvil.toml`](../using-anvil/#anvils-settings-file).
+  `disabled_plugins` in [`anvil/anvil.toml`](../using-anvil/#anvils-settings-file). The panel's
+  **Plugins** tab does the same in the game, but it does not turn off `anvil-overlay` or
+  `anvil-game`, which the panel needs: turn those off in the Manager.
 - **Remove:** click **Remove** on the Manager's **Plugins** page, or delete its folder in `anvil/plugins/`.
   Its settings in `anvil/data/<plugin-id>/` stay; delete that folder too if you do not want them.
 - **From a mod:** disable the mod in the launcher, unsubscribe from it, or revoke its approval in

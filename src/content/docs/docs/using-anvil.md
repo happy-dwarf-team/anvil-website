@@ -264,4 +264,10 @@ boxes. A change applies at the next start. From Anvil 1.23 the panel's **Plugins
 From Anvil 1.24 each module is one line with its name, short facts in grey (whether it changes
 the game, how many settings it has and how many you changed) and a switch at the right. A click on
 the line opens its description, where it runs and its settings; the switch works on its own. A
-module whose settings you changed opens at first.
+module whose settings you changed opens at first. The panel's **Plugins** tab also shows what
+changes from the next start apart from what runs in this game.
+
+When a plugin update replaces an old setting with a module's switch, the first start of the new
+version sets the switch from the value you had saved. From Anvil 1.24 the Manager shows the module
+before that start as the start will set it, with a note that the next start first turns the old
+settings into module switches in `anvil.toml`.

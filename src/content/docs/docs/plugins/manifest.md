@@ -475,7 +475,11 @@ anvil check --game <game folder> [--format text|json|github]
   rewrites `symbols.lock`.
 - **With `--game`:** checks every plugin in the game's `anvil/plugins/` and resolves them as
   the loader would: what loads in which order, what is skipped and why, and warnings for
-  plugins whose code symbols overlap.
+  plugins whose code symbols overlap. From Anvil 1.24 it also shows the next start's plan:
+  whether that start is in safe mode, and what it writes before any plugin loads (approved
+  copies to make or remove, retired settings to move into `anvil.toml`). The JSON report has
+  them in `next_start` (`safe_mode`, `unfinished_starts`, and `writes` with `remove`, `copies`
+  and `retired`).
 - **`--format github`** prints `::error file=…,line=…` annotations, so run it from the
   repository root in GitHub Actions.
 
