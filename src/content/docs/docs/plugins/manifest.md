@@ -381,9 +381,11 @@ ironman = [true]           # allows it in ironman, if flows offers allow_ironman
   module must offer that opt-in). It holds at that same start, and every saved value of the
   name is removed from the player's file. Both are written to `anvil.log`. Each list is
   optional, a value cannot be in both `off` and `on`, and a setting and a retired setting
-  cannot share a name. Give the module the old setting's default: the player's file holds
-  only values that differ from the default, so a player who kept the old default has nothing
-  to move, and the module's `default` decides for them.
+  cannot share a name. Several retired settings may name one module; from Anvil 1.24, when
+  a player's values of them disagree (one in an `off`, another in an `on`), the module is
+  off, whatever their order in the file. Give the module the old setting's default: the
+  player's file holds only values that differ from the default, so a player who kept the
+  old default has nothing to move, and the module's `default` decides for them.
 
 The player's values live in `anvil/data/<plugin-id>/settings.toml`, only those that differ
 from the default, as `name = value`. The file can be edited by hand while the game is
@@ -464,7 +466,8 @@ anvil check --game <game folder> [--format text|json|github]
 - **Settings of modules** (Anvil 1.23): a `module` or retired `module` that `plugin.toml`
   does not declare is an error. Warnings: the `anvil` range admits a release without
   `module`, `advanced`, `affects_gameplay`, `[retired.*]` or a module's `group`; a setting
-  named as a module; a setting without `affects_gameplay` in a plugin or module that offers
+  named as a module; two `[retired.*]` of one module of which one has an `on` list (Anvil
+  1.24); a setting without `affects_gameplay` in a plugin or module that offers
   multiplayer.
 - **With `--exe`:** also the build, every symbol's bytes, memory kind, pointers, exports
   and values, and instruction boundaries: the declared bytes of a function or site must be
