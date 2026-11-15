@@ -24,9 +24,9 @@ You need **EU4 1.37.5 for Windows (64-bit) from Steam**, or the **GOG build 1.37
 4. Click **Install Anvil**. It puts `version.dll`, an `anvil` folder and a copy of the Manager
    next to `eu4.exe`. From now on, start the Manager from the game folder: in Steam, right-click
    Europa Universalis IV → **Manage** → **Browse local files**; in GOG Galaxy, **Manage installation**
-   → **Show folder**. **Add to the Start menu** on the **Anvil** tab saves you that walk. You can
+   → **Show folder**. **Add to the Start menu** on the **Anvil** page saves you that walk. You can
    delete the file you downloaded.
-5. [Add plugins](../install-plugins/). The **Catalog** tab installs them with a click.
+5. [Add plugins](../install-plugins/). The **Catalog** page installs them with a click.
 6. Start the game with **Play EU4**, or from Steam, GOG Galaxy or the Paradox launcher as usual.
 7. [Check that Anvil runs](#check-that-anvil-runs).
 
@@ -64,7 +64,7 @@ If your antivirus removes a file, see
 
 ## On GOG
 
-Anvil and the plugins on the **Catalog** tab run on both GOG builds of 1.37.5, 1.37.5.2 and
+Anvil and the plugins on the **Catalog** page run on both GOG builds of 1.37.5, 1.37.5.2 and
 1.37.5.0 (from Anvil 1.15.0).
 
 1. Check the build: GOG Galaxy can keep 1.37.5.0 or update to 1.37.5.2, and the Paradox launcher
@@ -73,7 +73,7 @@ Anvil and the plugins on the **Catalog** tab run on both GOG builds of 1.37.5, 1
    tells you to update in GOG Galaxy.
 2. Follow [Install with Anvil Manager](#install-with-anvil-manager). If the Manager asks for
    the folder, GOG Galaxy shows it under **Manage installation** → **Show folder**.
-3. Get plugins from the **Catalog** tab. The Steam Workshop does not reach a GOG game. For
+3. Get plugins from the **Catalog** page. The Steam Workshop does not reach a GOG game. For
    Mei's fonts see [its page](../../plugins/mei/).
 4. Start the game from GOG Galaxy or the Paradox launcher. **Play EU4** opens the Paradox
    launcher, as GOG does: press **Play** there. On its first start the launcher shows Paradox's
@@ -95,12 +95,12 @@ Download the newer `AnvilManager.exe`, run it and click **Install this Anvil**. 
 Anvil's own files and the Manager in the game folder. Your plugins, their settings and
 `anvil/anvil.toml` stay.
 
-**Repair** on the Manager's **Anvil** tab puts back Anvil's own files if one is missing or
+**Repair** on the Manager's **Anvil** page puts back Anvil's own files if one is missing or
 changed.
 
 ## Uninstall
 
-With the Manager: on the **Anvil** tab, click **Uninstall Anvil**. It removes `version.dll`,
+With the Manager: on the **Anvil** page, click **Uninstall Anvil**. It removes `version.dll`,
 the standard plugins, `AnvilManager.exe` and its Start menu entry, and the game is vanilla at once. Your plugins,
 their settings, crash reports and logs stay, so installing again brings everything back. Tick
 **Also remove my plugins…** to remove the whole `anvil` folder too. If the Manager replaced

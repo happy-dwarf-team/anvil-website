@@ -4,11 +4,11 @@ description: Add plugins to Anvil, check that they loaded, change their settings
 ---
 
 [Install Anvil](../install/) first. Then pick one of these ways. If you are not sure, use the
-**Catalog** tab.
+**Catalog** page.
 
 | Way | Works on | To update |
 | --- | --- | --- |
-| [**Catalog** tab of the Manager](#from-the-catalog-tab) | Steam, GOG | Click **Update** |
+| [**Catalog** page of the Manager](#from-the-catalog-page) | Steam, GOG | Click **Update** |
 | [Steam Workshop](#from-the-steam-workshop) | Steam | Comes with the mod; approve each new version |
 | [A zip, with the Manager](#from-a-zip) | Steam, GOG | Install the newer zip |
 | [By hand](#by-hand) | Steam, GOG | Replace the folder |
@@ -19,9 +19,9 @@ plugins only from authors you trust.
 Each [plugin's page](../../plugins/) shows **Requires** (the Anvil version it needs) and **Game
 builds**. On another game build Anvil skips the plugin and the game starts normally.
 
-## From the Catalog tab
+## From the Catalog page
 
-The **Catalog** tab of `AnvilManager.exe` lists the team's plugins:
+The **Catalog** page of `AnvilManager.exe` lists the team's plugins:
 [Bellows](../../plugins/bellows/), [Tongs](../../plugins/tongs/),
 [Hamweard](../../plugins/hamweard/) and [Mei](../../plugins/mei/). It needs Anvil 1.9 or newer.
 
@@ -34,8 +34,8 @@ The **Catalog** tab of `AnvilManager.exe` lists the team's plugins:
 When a newer release is listed than the one you have, the button says **Update**. The list comes
 with the Manager; **Get the current list** fetches the newest one from GitHub. From Anvil 1.15, if
 you agreed that Anvil checks GitHub for new releases, the Manager also reads the list when it
-starts: the tab's name then shows how many of your plugins have an update, as in
-**Catalog (1)**, and the **Plugins** tab names the new version. A plugin is still downloaded only
+starts: the page's name then shows how many of your plugins have an update, as in
+**Catalog (1)**, and the **Plugins** page names the new version. A plugin is still downloaded only
 when you click.
 
 ## From the Steam Workshop
@@ -43,21 +43,21 @@ when you click.
 1. Subscribe to the plugin's Workshop item, and enable the mod in your playset in the Paradox
    launcher. A plugin's page links its item.
 2. Start the game. A notice says that a plugin waits for your approval. Open the Anvil panel
-   (`Ctrl+Shift+F12`), go to **Mods** and approve it. You can also do this before playing, on
-   the **Mods** tab of `AnvilManager.exe`.
+   (`Ctrl+Shift+F12`), select the plugin under **From mods** on the **Plugins** tab and approve
+   it. You can also do this before playing, on the **Plugins** page of `AnvilManager.exe`.
 3. Start the game again: the plugin loads from then on.
 
 Anvil asks again after every update of the mod. Until then the version you approved keeps
 working. [Plugins from mods](../plugins-from-mods/) says why.
 
 The Workshop cannot install Anvil itself, so install Anvil first. It does not reach a GOG game
-either; there, use the **Catalog** tab.
+either; there, use the **Catalog** page.
 
 ## From a zip
 
 1. Download the plugin's archive, for example `bellows-windows-x64.zip`, with the button on its
    page.
-2. In `AnvilManager.exe`, open the **Plugins** tab and click **Install a plugin from a zip…**, or
+2. In `AnvilManager.exe`, open the **Plugins** page and click **Install a plugin from a zip…**, or
    drop the zip on the window.
 3. The Manager checks the plugin against your game. It shows the name, version, authors, whether
    the plugin changes gameplay, any problems, and whether Anvil would skip it.
@@ -84,7 +84,7 @@ To check a file before you install it, see
 ## Check that it loaded
 
 In the game's main menu, point at the **Anvil** badge to see how many plugins loaded. The
-Manager's **Plugins** tab shows the same without starting the game, and why a plugin is skipped.
+Manager's **Plugins** page shows the same without starting the game, and why a plugin is skipped.
 
 For details, open `anvil/anvil.log` after the start. A loaded plugin has a line with its id,
 version and `loaded`:
@@ -101,7 +101,7 @@ build no plugin knows yet, for example after an EU4 update.
 
 ## Settings
 
-Change a plugin's settings on the **Settings** tab of the Manager, or in the Anvil panel in the
+Change a plugin's settings on the **Plugins** page of the Manager, or in the Anvil panel in the
 game. The plugin's page describes them.
 
 By hand: `anvil/data/<plugin-id>/settings.toml` holds only the values you changed. The defaults
@@ -109,9 +109,9 @@ come from the plugin itself.
 
 ## Update a plugin
 
-- **From the Catalog tab:** click **Update**. Without the release check, click **Get the current
+- **From the Catalog page:** click **Update**. Without the release check, click **Get the current
   list** first; otherwise the Manager compares your plugins with the list it came with.
-- **From the Workshop:** the mod updates by itself. Approve the new version on the **Mods** tab.
+- **From the Workshop:** the mod updates by itself. Approve the new version in the panel or the Manager.
 - **From a zip:** install the new zip with the Manager. It replaces the old version.
 - **By hand:** delete the plugin's folder in `anvil/plugins/`, then extract the new archive.
 
@@ -120,9 +120,9 @@ cases that need more, such as a renamed plugin.
 
 ## Turn a plugin off or remove it
 
-- **Off for now:** untick it on the Manager's **Plugins** tab. By hand, add its id to
+- **Off for now:** untick it on the Manager's **Plugins** page. By hand, add its id to
   `disabled_plugins` in [`anvil/anvil.toml`](../using-anvil/#anvils-settings-file).
-- **Remove:** click **Remove** on the **Plugins** tab, or delete its folder in `anvil/plugins/`.
+- **Remove:** click **Remove** on the Manager's **Plugins** page, or delete its folder in `anvil/plugins/`.
   Its settings in `anvil/data/<plugin-id>/` stay; delete that folder too if you do not want them.
-- **From a mod:** disable the mod in the launcher, unsubscribe from it, or revoke its approval on
-  the **Mods** tab.
+- **From a mod:** disable the mod in the launcher, unsubscribe from it, or revoke its approval in
+  the panel or the Manager.

@@ -5,7 +5,7 @@ description: What to do when a plugin does not work, and how to report a problem
 
 ## Start here
 
-1. Open `AnvilManager.exe` in the game folder. The **Plugins** tab shows which plugins will load
+1. Open `AnvilManager.exe` in the game folder. The **Plugins** page shows which plugins will load
    and why one is skipped, without starting the game.
 2. Look for what you see in the table below.
 3. Still stuck? [Report it](#reporting-a-problem). The Manager puts what we need on your
@@ -18,12 +18,12 @@ description: What to do when a plugin does not work, and how to report a problem
 | Your antivirus removed a file | Check the file and allow only that file. See [If your antivirus objects](../safety/#if-your-antivirus-objects). |
 | No Anvil badge in the main menu | Check that `version.dll` and the `anvil` folder are next to `eu4.exe`, or click **Install Anvil** in the Manager. With OpenGL there is no badge; the Manager shows the same information. |
 | No badge and no `anvil/anvil.log`, although the files are there | Windows did not load Anvil's `version.dll`. See [If Anvil does not run at all](#if-anvil-does-not-run-at-all). |
-| A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset, approve the plugin on the Manager's **Mods** tab, and start the game again. |
-| A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version on the **Mods** tab. |
+| A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset, approve the plugin on the Manager's **Plugins** page (under **From mods**), and start the game again. |
+| A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version in the panel or the Manager. |
 | **Play EU4** on GOG seems to do nothing | It opens the Paradox launcher: press **Play** there. On its first start the launcher shows Paradox's EULA before **Play**, also without Anvil, and only you can accept it. |
-| Orange lines on the **Plugins** tab: `code range of symbol … overlaps symbol …` | They mean nothing: the catalog's plugins declare the same function. Anvil 1.10.1 no longer shows them. |
+| Orange lines on the **Plugins** page: `code range of symbol … overlaps symbol …` | They mean nothing: the catalog's plugins declare the same function. Anvil 1.10.1 no longer shows them. |
 | A **Multiplayer** notice covers the top right corner | It shows the plugins that change the game, for players to compare. From Anvil 1.14 click its **x**; it stays closed until that session ends. See [Notices in the game](../multiplayer-ironman/#notices-in-the-game). |
-| A plugin is skipped | The reason is on the **Plugins** tab and in the log; see [Why a plugin is skipped](#why-a-plugin-is-skipped). |
+| A plugin is skipped | The reason is on the Manager's **Plugins** page and in the log; see [Why a plugin is skipped](#why-a-plugin-is-skipped). |
 | A plugin does nothing in ironman or multiplayer | One that changes gameplay is suspended there; the log says `[<plugin-id>] suspended: affects gameplay and …`. See [Multiplayer, ironman and achievements](../multiplayer-ironman/). |
 | The game crashes or does not start | [Start once without plugins](#start-once-without-plugins), then turn them back on one by one. See also [Crash reports and safe mode](#crash-reports-and-safe-mode). With DXVK (Proton, or installed on Windows) in EU4's **Fullscreen** mode, choose **Windowed (Fullscreen)**: see [DXVK and Fullscreen](../faq/#dxvk-and-fullscreen). |
 | You want the game back as it was | [Turn plugins off](../install-plugins/#turn-a-plugin-off-or-remove-it) or [uninstall Anvil](../install/#uninstall). Both take effect at the next start, and `eu4.exe` was never changed. |
@@ -120,7 +120,7 @@ that start. Anvil then only writes the log.
 
 ## Reporting a problem
 
-On the Manager's **Log** tab, click **Copy a problem report**. It puts on the clipboard what the
+On the Manager's **Log** page, click **Copy a problem report**. It puts on the clipboard what the
 issue form asks for: the versions, the game build, each plugin and why it is skipped, the newest
 crash report and the end of `anvil.log`. From Anvil 1.14 it also says how many game folders
 Steam and GOG have, which one the Manager uses, whether `eu4.exe` runs from another one, and
@@ -129,7 +129,7 @@ Windows user name, and nothing is uploaded. **Open an Anvil issue** opens the fo
 into.
 
 If the log or the report names a plugin, report it to that plugin's issue tracker instead. A
-plugin's page links its repository, and the **Crashes** tab opens its tracker.
+plugin's page links its repository, and the **Crashes** page opens its tracker.
 
 Without the Manager, open an [issue](https://github.com/happy-dwarf-team/anvil/issues/new/choose)
 and attach `anvil/anvil.log`, and after a crash the `.txt` report from `anvil/crashes/`. Check the

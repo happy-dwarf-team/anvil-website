@@ -28,7 +28,7 @@ One achievement has been earned for real in an ironman game with Anvil, none yet
 ## How much faster does a plugin make my game?
 
 Each plugin's page says how it was measured. To measure on your own computer, use the
-[Benchmark tab](../benchmark/).
+[Benchmark page](../benchmark/).
 
 ## What happens when EU4 updates?
 

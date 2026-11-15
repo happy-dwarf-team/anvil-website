@@ -46,7 +46,7 @@ runs, and puts them back afterwards. The log says
 `[<plugin-id>] suspended: affects gameplay and …`. A host alone in a multiplayer game does not
 count yet: the game's own check asks for other players, so suspension starts when the first one
 joins. If the plugin offers it, you can allow it
-there: tick it on the Manager's **Plugins** tab, or edit `anvil/anvil.toml`:
+there: tick it on the Manager's **Plugins** page, or edit `anvil/anvil.toml`:
 
 ```toml
 allow_ironman = ["tongs"]
@@ -60,7 +60,7 @@ A session that is both ironman and multiplayer needs both.
 From Anvil 1.22 a plugin can be split into modules, each with its own switch and its own
 gameplay flag. Anvil then suspends only the modules that change the game, and the rest of the
 plugin keeps working in ironman and multiplayer. A module is named `<plugin>.<module>`: switch
-it and allow it in ironman or multiplayer on the Manager's **Plugins** tab, under its plugin, or
+it and allow it in ironman or multiplayer on the Manager's **Plugins** page, under its plugin, or
 in `anvil/anvil.toml`:
 
 ```toml
