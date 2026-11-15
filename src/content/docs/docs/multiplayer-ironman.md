@@ -11,7 +11,7 @@ gameplay, and Anvil acts on that.
 
 | Plugin | Declares gameplay changes | Multiplayer | Ironman |
 | --- | --- | --- | --- |
-| [Bellows](../../plugins/bellows/) | No | Stays on, tested on the host only | Stays on |
+| [Bellows](../../plugins/bellows/) | No | Stays on, tested on both computers | Stays on |
 | [Mei](../../plugins/mei/) | No | Stays on, not tested | Stays on |
 | [Hamweard](../../plugins/hamweard/) | No | Stays on, restarts as usual | Stays on |
 | [Tongs](../../plugins/tongs/) | Yes | Off, unless you allow it | Off, unless you allow it |
@@ -23,7 +23,9 @@ gameplay, and Anvil acts on that.
   simulation modules that Bellows 1.4 turns on by default were off. On 9 November 2026 a build of
   1.4 with those modules on ran 203 days at speed 3 the same way. In all three runs the game's
   usual out-of-sync check, which compares the random-number count and seed, reported nothing.
-  Bellows on another player's computer is not tested.
+  On 15 November 2026 Bellows 2.0.0 with its defaults ran on both computers, in a new game for 14
+  months with the full out-of-sync check (`-hardoos`), and the game reported nothing. Both games
+  ran on one computer, so the game slowed itself to speed 3 for the player who lagged behind.
 - **Mei in multiplayer:** every player needs the same mods anyway, and a player without Mei
   sees names written with it wrongly.
 - **Hamweard in multiplayer:** Exit to Menu restarts the game as usual, by the plugin's own check.
@@ -107,8 +109,13 @@ in ironman, two new ironman games in a row showed that achievements can be earne
 - Anvil's suspension has been seen in a live ironman game (Hamweard 1.1.0, 4 November 2026), not
   yet in a live multiplayer session.
 - Multiplayer has been tested with Bellows on the host (one vanilla save, the defaults of 1.4 at
-  speed 3 only) and with Hamweard on both computers, always with the game's usual out-of-sync
-  check, never with `-hardoos`.
+  speed 3 only), with Hamweard on both computers, and on 15 November 2026 with Bellows 2.0.0 and
+  Hamweard 1.5.0 on both computers in a new game with `-hardoos` (14 months, speed 3 to 5). That
+  test also showed the settings lock of Anvil 1.23 with a second player.
+- A campaign continued from a loaded save has not been seen to stay in sync yet. In our test (two
+  games on one computer, a GOG host and a Steam client) the host left the multiplayer session
+  after the start, also with Bellows' save modules off; whether the game does this without any
+  plugin is not checked yet.
 
 If you play these and something goes wrong, or goes right where we say "not tested",
 [tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose).

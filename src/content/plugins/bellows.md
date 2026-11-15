@@ -99,13 +99,14 @@ all of them.
 - **Files must not change while the game starts.** A file that a tool writes into the game or mod
   folders during start-up may be missed until the next start. This matters [to mod
   authors](#for-mod-authors).
-- **Tested on a host alone:** in a hosted multiplayer game with no other player yet (2.0.0,
-  15 November 2026), `transfer_skip` left the host's copy of a text save in place, and
-  `save_compress_threads` compressed that copy and a save written in the game; the save loaded
-  again in a new hosted game.
-- **Not tested yet:** a client receiving that copy or such a save, ironman and cloud saves with
-  `save_compress_threads` or `transfer_skip`, Bellows on a computer other than the host's, and
-  the defaults of 1.4 in multiplayer at speed 5 or with mods.
+- **Tested in multiplayer** (2.0.0, 15 November 2026, two games on one computer, `-hardoos`): with
+  its defaults on both computers, a new game stayed in sync for 14 months. When the host started
+  from a text save, `transfer_skip` left the host's copy in place, `save_compress_threads`
+  compressed it (37 MB to 3.1 MB in 0.24 s), and the other player received it and started the
+  game. A save written with `save_compress_threads` in a hosted game loaded again in a new one.
+- **Not tested yet:** a client receiving a save written with `save_compress_threads`, ironman
+  and cloud saves with `save_compress_threads` or `transfer_skip`, a steady speed 5 in
+  multiplayer (on one computer the game slowed itself to 3), and mods.
 
 ### AI ties and multiplayer
 
