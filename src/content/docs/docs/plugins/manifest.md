@@ -381,7 +381,9 @@ ironman = [true]           # allows it in ironman, if flows offers allow_ironman
   module must offer that opt-in). It holds at that same start, and every saved value of the
   name is removed from the player's file. Both are written to `anvil.log`. Each list is
   optional, a value cannot be in both `off` and `on`, and a setting and a retired setting
-  cannot share a name.
+  cannot share a name. Give the module the old setting's default: the player's file holds
+  only values that differ from the default, so a player who kept the old default has nothing
+  to move, and the module's `default` decides for them.
 
 The player's values live in `anvil/data/<plugin-id>/settings.toml`, only those that differ
 from the default, as `name = value`. The file can be edited by hand while the game is
