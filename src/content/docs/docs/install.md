@@ -85,7 +85,7 @@ The game's main menu shows a small **Anvil** badge with its version on the left 
 it to see how many plugins loaded. Click it to open the
 [Anvil panel](../using-anvil/#the-anvil-panel).
 
-![The Anvil badge on the left edge of the game's main menu, with its tooltip: Anvil 1.8.0, 5 loaded, 0 failed, 0 skipped; click to open the Anvil panel, or press Ctrl+Shift+F12.](../../../assets/menu-badge.png)
+![The Anvil badge on the left edge of the game's main menu, with its tooltip: Anvil 1.23.0, 10 loaded, 0 failed, 0 skipped; click to open the Anvil panel, or press Ctrl+Shift+F12.](../../../assets/menu-badge.png)
 
 No badge? See [Troubleshooting](../troubleshooting/).
 
