@@ -214,6 +214,29 @@ request; `anvil-game` acts on it after the next frame of the main loop and check
 Check `ANVIL_GAME_HAS(service, restart)` or depend on `anvil-game` with `version = "^1.23.0"`. In
 Rust it is `Game::restart(&host, close_campaign)` (`anvil-sdk` 0.1.11).
 
+#### Speed, pause and the write folder
+
+From Anvil 1.24.0 the service also reads the game's speed, its pause and its folder. All three
+can be called from any thread and only read.
+
+- `speed(&out)`: the speed as the speed bar shows it, 1 to 5. Nonzero while a session runs, also
+  while it is paused; 0 in the menus. As of the last frame of the main loop, like `date`.
+- `paused(&flags)`: nonzero while a session runs and is paused, with one reason:
+  `ANVIL_GAME_PAUSE_PLAYER` while the player's own pause is on (the space bar, the pause button),
+  else `ANVIL_GAME_PAUSE_GAME` when the game holds a pause of its own. After the player resumes,
+  the game may stay paused, and `paused` says so from the next frame. A pause because the game
+  went out of sync is [`out_of_sync`](#out-of-sync)'s `ANVIL_GAME_OOS_PAUSED`.
+- `user_dir()`: the game's own write folder, where it keeps `save games`, `logs` and
+  `settings.txt` (by default `Documents\Paradox Interactive\Europa Universalis IV`, or what
+  `-userdir` and `userdir.txt` choose), as a wide string with backslashes and no trailing one.
+  NULL until the game has set it at start-up, which it has by `anvil-game.ready`. The string
+  does not change and stays valid until the process exits.
+
+Check `ANVIL_GAME_HAS(service, speed)` or `ANVIL_GAME_HAS(service, user_dir)`, or depend on
+`anvil-game` with `version = "^1.24.0"`. To change the speed, post
+[`ANVIL_GAME_COMMAND_SPEED`](#commands). In Rust: `Game::speed`, `Game::paused` and
+`Game::user_dir` (`anvil-sdk` 0.1.12).
+
 ### The world
 
 From Anvil 1.11 the service `anvil-game.world` (version 1, `AnvilGameWorldService`) reads the
@@ -257,12 +280,17 @@ a new game build may leave the world out.
 | `diplomacy_status(from, to, &out)` | One country's opinion of another, its trust and favors, and whether they have a truce (1.22) |
 | `country_rivals`, `country_overlord`, `country_subjects` | Its rivals, its overlord and its direct subjects (1.22) |
 | `player_tags(&out)` | What `player` answers, with the player's own tag, the observed tag and whether the player is the observer (1.23) |
+| `selected_province(&id)` | The province last selected on the map (a click, the outliner, a link), also after its view closed; 0 while none has been selected in the session (1.24) |
+| `province_at(x, y, &id)` | The province under a point of the game window's client area, as the game's hover finds it, so it follows the camera; sea and wasteland count, 0 off the map (1.24) |
+| `unit_at(x, y, &ref)` | The army or navy the map picks at that point, any country's, or `ANVIL_ERROR_NOT_FOUND` (1.24) |
 
-The calls marked 1.15, 1.20, 1.21, 1.22 and 1.23 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"` or `"^1.23.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
+The calls marked 1.15, 1.20, 1.21, 1.22, 1.23 and 1.24 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"` or `"^1.24.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
 `ANVIL_GAME_WORLD_HAS(world, province_variable_names)`, `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
 (`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view),
-`ANVIL_GAME_WORLD_HAS(world, country_subjects)` or `ANVIL_GAME_WORLD_HAS(world, player_tags)` before calling them.
+`ANVIL_GAME_WORLD_HAS(world, country_subjects)`, `ANVIL_GAME_WORLD_HAS(world, player_tags)` or
+`ANVIL_GAME_WORLD_HAS(world, unit_at)` before calling them. The three map calls of 1.24 answer
+`ANVIL_ERROR_NOT_DECLARED` on a game build whose port leaves them out.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -500,6 +528,10 @@ in the province's tooltip.
   UTF-8 (its `mei.text` service, in Mei's next release after 0.6), otherwise in Windows-1252 with
   `?` for what does not fit. The tooltip lines of script effects follow the same rule from
   Anvil 1.19; Anvil 1.16 to 1.18 drop `$` and the `§` from them and keep the colour letter.
+- From Anvil 1.24.0, `show(mode)` switches the map to your mode, as its button on the minimap
+  does, after the next frame of the main loop; `anvil-map.shown` follows. It changes only what
+  the map shows, and a request still waiting when the session ends is dropped. Check
+  `ANVIL_MAP_HAS(service, show)` or depend on `anvil-map` with `version = "^1.24.0"`.
 - It changes nothing in the game, so it needs no `affects_gameplay = true`. Depend on `anvil-map`
   with `version = "^1"`. Example:
   [`player-cores`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/player-cores).
@@ -630,7 +662,11 @@ anvil::plugin!(Hello);
   `World::country_flags`, `World::country_variable` and the rest), and from 0.1.9 pending events
   and statistics (`World::pending_events`, `World::country_statistics` and the event
   `game::PENDING_EVENT`), and from 0.1.10 diplomacy (`World::country_relations`,
-  `World::diplomacy_status` and the rest), and from 0.1.11 the player's tags (`World::player_tags`).
+  `World::diplomacy_status` and the rest), and from 0.1.11 the player's tags (`World::player_tags`);
+  from 0.1.12 `anvil::game` reads the speed, the pause and the write folder (`Game::speed`,
+  `Game::paused`, `Game::user_dir`), `anvil::world` the map's selection and what is under a point
+  (`World::selected_province`, `World::province_at`, `World::unit_at`), and `anvil::map` shows a
+  mode (`MapModes::show`).
   A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
