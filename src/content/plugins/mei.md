@@ -26,7 +26,7 @@ together with Anvil. Mei does the same job as an Anvil plugin.
 - **Fonts.** A translation mod's own fonts stay. Where the game would use its own fonts, Mei brings
   fonts made from Source Han Sans, with about 13,000 characters.
 - **Search.** The province finder matches Chinese characters, full pinyin, initials and mixed
-  input. The diplomacy country list uses the same search, but was not checked in the game.
+  input. The diplomacy country list uses the same search.
 - **Typing.** Finished text reaches text fields, as an IME commits it. Backspace, the arrow keys,
   selecting, undo and paste work by character.
 - **Save names.** A save keeps the country's name and the name you type, such as
@@ -94,8 +94,7 @@ pinyin, and each applies at the next start.
   and the text being composed were not checked.
 - **Japanese kanji** in Mei's own fonts take their Simplified Chinese shapes.
 - **No Japanese translation** for 1.37 was found on the Workshop. Only test text was drawn.
-- **Not checked yet:** the diplomacy country list in the game, a text field of several rows, and
-  selecting with a mouse drag.
+- **Not checked yet:** a text field of several rows and selecting with a mouse drag.
 - **Korean dates** were not checked in the game yet, nor dates on GOG.
 - **Not ported yet:** the original's own font atlases, which draw from your system's fonts.
 - EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 and 1.37.5.0. On any other build Anvil does not
