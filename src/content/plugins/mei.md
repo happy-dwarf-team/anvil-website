@@ -95,7 +95,10 @@ pinyin, and each applies at the next start.
 - **Japanese kanji** in Mei's own fonts take their Simplified Chinese shapes.
 - **No Japanese translation** for 1.37 was found on the Workshop. Only test text was drawn.
 - **Not checked yet:** a text field of several rows and selecting with a mouse drag.
-- **Korean dates** were not checked in the game yet, nor dates on GOG.
+- **Korean dates:** with the Korean Language Mod, Mei 0.8.0 keeps the game's order in the top bar
+  (11 11월 1444). The mod writes 년, 월 and 일 in its own letters, which Mei's next release reads
+  ([mei#73](https://github.com/happy-dwarf-team/mei/pull/73); lab test, 15 November 2026). Korean
+  battle titles keep the game's order.
 - **Not ported yet:** the original's own font atlases, which draw from your system's fonts.
 - EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 and 1.37.5.0. On any other build Anvil does not
   load the plugin.
@@ -124,7 +127,8 @@ from the Workshop at a time, on one development machine (2 and 3 November 2026):
 Later features, each in the lab on Steam with the Chinese Language Mod (source: Mei's
 [changelog](https://github.com/happy-dwarf-team/mei/blob/main/CHANGELOG.md)): save names (Mei 0.5,
 9 November 2026: the load menu lists and loads a Chinese-named save; not tested in ironman or on
-GOG) and dates (Mei 0.6, 9 November 2026: the top bar, two battle titles and a siege title).
+GOG) and dates (Mei 0.6, 9 November 2026: the top bar, two battle titles and a siege title; the
+top bar also on the GOG build 1.37.5.2 with Mei 0.8.0, 15 November 2026).
 
 ## Credits and the name
 
