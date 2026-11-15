@@ -29,25 +29,25 @@ together with Anvil. Mei does the same job as an Anvil plugin.
   input. The diplomacy country list uses the same search, but was not checked in the game.
 - **Typing.** Finished text reaches text fields, as an IME commits it. Backspace, the arrow keys,
   selecting, undo and paste work by character.
-- **Save names** (from Mei 0.5). A save keeps the country's name and the name you type, such as
+- **Save names.** A save keeps the country's name and the name you type, such as
   `奥斯曼1444_11_11.eu4`, instead of Latin letters (`aaa1444_11_11.eu4`).
-- **Steam status** (from Mei 0.4). The Rich Presence text that Steam friends see reaches Steam in
-  UTF-8, so a Chinese country name reads as it should (Steam only).
+- **Dates and battle titles** follow the translation's word order: the top bar shows `1719年3月17日`
+  instead of `17 3月 1719`, and a battle is `Medine战役` instead of `战役 Medine`.
+- **Steam status.** The Rich Presence text that Steam friends see reaches Steam in UTF-8, so a
+  Chinese country name reads as it should (Steam only).
 
 ## Install
 
-Mei needs [Anvil](../../docs/install/) 1.9 or newer. Mei 0.1 needed 1.8.
+Mei needs [Anvil](../../docs/install/) 1.16 or newer; take the latest.
 
-1. Remove an old double-byte patch first: the `version.dll`, `d3d9.dll` and `plugins` folder it put
-   in the game folder. It and Anvil both use `version.dll`. From Anvil 1.16 the Manager does this
-   for you with **Replace EU4DLL** and keeps the files in `anvil-legacy-backup`
-   ([how](../../docs/install/#if-eu4dll-or-eu4-unicode-patch-is-installed)).
+1. [Install Anvil](../../docs/install/) with Anvil Manager.
 2. On Steam, subscribe to [Mei on the Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3832685486)
    and to your translation mod, and enable both in your playset. The Workshop item carries the
    plugin and its fonts. Then [approve it](../../docs/install-plugins/#from-the-steam-workshop).
-3. On GOG, or [from a zip](../../docs/install-plugins/#from-a-zip), the plugin comes without its
-   fonts. The game reads them only from a mod, so make a small local mod. Without it, a translation
-   mod's own fonts still work.
+3. On GOG, install it from the [Catalog page](../../docs/install-plugins/#from-the-catalog-page) of
+   Anvil Manager. The plugin comes without its fonts there, as it does
+   [from a zip](../../docs/install-plugins/#from-a-zip). The game reads them only from a mod, so
+   make a small local mod. Without it, a translation mod's own fonts still work.
    1. Download `mei-fonts.zip` from the same
       [release](https://github.com/happy-dwarf-team/mei/releases/latest).
    2. Open `Documents/Paradox Interactive/Europa Universalis IV GOG/mod` (without ` GOG` on Steam).
@@ -62,6 +62,15 @@ Mei needs [Anvil](../../docs/install/) 1.9 or newer. Mei 0.1 needed 1.8.
 
    4. Enable **Mei fonts** in your playset in the Paradox launcher.
 
+### If EU4DLL or EU4 Unicode Patch is installed
+
+The old double-byte patch and Anvil both use `version.dll`, so they cannot run together. Anvil
+Manager names the patch it finds and offers **Replace EU4DLL** (or **Replace EU4 Unicode
+Patch**): it moves the patch's files to `anvil-legacy-backup` in the game folder, and uninstalling
+Anvil can put them back ([how](../../docs/install/#if-eu4dll-or-eu4-unicode-patch-is-installed)).
+Saves made with Mei show garbled names in a game with EU4DLL, so a multiplayer group switches
+together.
+
 ## Settings
 
 The defaults are set for translation mods, so nothing needs configuring. All are on except fuzzy
@@ -73,7 +82,8 @@ pinyin, and each applies at the next start.
 | `utf8_scripts` | Reads script files and saves in UTF-8, so names from a supplementary translation mod show |
 | `bundled_fonts` | Uses Mei's fonts where the game would use its own |
 | `utf8_input` | Lets finished Chinese, Japanese and Korean text reach text fields |
-| `utf8_save_names` | From Mei 0.5: saves keep the country's name and the name you type instead of Latin letters. Needs `utf8_localization` |
+| `utf8_save_names` | Saves keep the country's name and the name you type instead of Latin letters. Needs `utf8_localization` |
+| `cjk_dates` | Dates and the titles of battles, sieges and occupations in the translation's word order. Needs `utf8_localization` |
 | `search` | Chinese and pinyin search |
 | `typo_tolerance` | Full pinyin of 5 or more letters still matches with one typo |
 | `fuzzy_pinyin` | zh/z, ch/c, sh/s, n/l, en/eng and in/ing match each other. Off by default |
@@ -86,10 +96,10 @@ pinyin, and each applies at the next start.
 - **No Japanese translation** for 1.37 was found on the Workshop. Only test text was drawn.
 - **Not checked yet:** the diplomacy country list in the game, a text field of several rows, and
   selecting with a mouse drag.
-- **Not ported yet:** the original's own font atlases, which draw from your system's fonts, and its
-  dates.
-- EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 (from Mei 0.2) and 1.37.5.0 (from Mei 0.4). On
-  any other build Anvil does not load the plugin.
+- **Korean dates** were not checked in the game yet, nor dates on GOG.
+- **Not ported yet:** the original's own font atlases, which draw from your system's fonts.
+- EU4 1.37.5 on Steam and the GOG builds 1.37.5.2 and 1.37.5.0. On any other build Anvil does not
+  load the plugin.
 
 ## Tested
 
@@ -111,6 +121,11 @@ from the Workshop at a time, on one development machine (2 and 3 November 2026):
   the menu, the country selection and the map; `yinggelan` finds 英格蘭.
 - [Korean Language Mod - stability](https://steamcommunity.com/sharedfiles/filedetails/?id=2714934430):
   the menu and the country selection in Korean.
+
+Later features, each in the lab on Steam with the Chinese Language Mod (source: Mei's
+[changelog](https://github.com/happy-dwarf-team/mei/blob/main/CHANGELOG.md)): save names (Mei 0.5,
+9 November 2026: the load menu lists and loads a Chinese-named save; not tested in ironman or on
+GOG) and dates (Mei 0.6, 9 November 2026: the top bar, two battle titles and a siege title).
 
 ## Credits and the name
 

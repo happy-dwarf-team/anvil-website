@@ -28,10 +28,10 @@ restart.
 
 ## Install
 
-Hamweard needs [Anvil](../../docs/install/) 1.9 or newer. Hamweard 1.0 needed 1.5.
+Hamweard needs [Anvil](../../docs/install/) 1.9 or newer; take the latest.
 
-1. If you use the original EU4 Menu Patch, remove its DLL first. Both change the same code.
-2. [Install the plugin](../../docs/install-plugins/) any way you like.
+[Install the plugin](../../docs/install-plugins/) any way you like. If you used the original EU4
+Menu Patch, remove its DLL: both change the same code.
 
 ## Settings
 
