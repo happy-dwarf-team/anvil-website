@@ -116,6 +116,14 @@ in the playset's files. The start-up noise of missing files comes last, folded i
 kind: in Anbennar that was 18,740 of 18,831 messages. **Show only new** and **Mark all seen**
 help after you change a file and reload it.
 
+From Anvil 1.23, when the game itself says what was running, the item shows it as **Context**:
+the event (`province event '6033'`), the option that was chosen (`flavor_spiked_log.1.a`) or the
+mission. For an event or an option, **Find** looks for it in `events/` with its `id =` or
+`name =` first, and for a mission in `missions/`. The game writes a context only for event
+triggers and options, on_action events and mission checks, not for decisions, casus belli, AI
+checks or tooltips. In the lab's logs it was on 2 of 10 run-time script errors of Anbennar in
+normal play and on 88 of 251 on a save of 1582, and on none of a base-game campaign.
+
 In the lab on Steam 1.37.5 its counts matched `error.log` for all 159 messages of a base-game
 campaign and all 18,760 of Anbennar's start-up. Not tried in the game yet: the buttons that open,
 copy or find, turning the setting on while the game runs, and OpenGL, where nothing is drawn.
