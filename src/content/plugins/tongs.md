@@ -31,8 +31,8 @@ it to play.
 
 ## Install
 
-Tongs 0.35 needs [Anvil](../../docs/install/) 1.23 or newer (Tongs 0.34 and older: 1.7 or newer),
-and the standard plugin `anvil-game`, which comes with it. Tongs 0.25 and older ran on Steam only.
+Tongs needs [Anvil](../../docs/install/) 1.23 or newer; take the latest. Its one dependency, the
+standard plugin `anvil-game`, comes with Anvil. (Tongs 0.34 and older ran on Anvil 1.7 or newer.)
 
 1. [Install the plugin](../../docs/install-plugins/) any way you like.
 2. Turn it on: set `enabled = true` under [Settings](#settings). It does nothing until you do.
