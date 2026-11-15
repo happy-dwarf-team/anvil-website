@@ -70,6 +70,13 @@ disabled_modules = ["smithy.sharp_text"]
 
 In multiplayer the hash covers each module that changes the game and acts, like a plugin.
 
+From Anvil 1.23 the hash also covers the values of the settings that change the game, so
+players with the same plugins and different values see different codes. During a
+multiplayer game those settings are locked: the overlay cannot change them until the game
+ends. Ironman alone locks nothing, and settings such as keys or logging stay free. Outside
+a game the overlay shows the code a multiplayer game started now would have, so players can
+compare it in the lobby, and again after the start.
+
 ## Notices in the game
 
 During a session, a notice in the top right corner says what Anvil does there:
