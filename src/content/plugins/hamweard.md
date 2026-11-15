@@ -21,6 +21,10 @@ restart.
   click **Quit** on the end-of-game screen.
 - **Back** on the country selection screen does the same.
 - **Continue game** points at your latest save, as after a restart.
+- **Hold Shift** on the click that leaves (**Quit** on the end-of-game screen, or **Back**) to
+  restart the game instead, as without the plugin: before multiplayer after a campaign, or after
+  you change a mod's files. An ironman campaign is saved first. From Anvil 1.23 the Anvil panel's
+  [**Restart game**](../../docs/using-anvil/#restarting-the-game) does the same from any screen.
 
 ## Install
 
@@ -62,7 +66,8 @@ no longer does anything.
   test did not use `-hardoos`, which compares all 140 checksums of the game state.
 - **Multiplayer after a campaign needs a restart.** A process that has played is not meant to go
   on to multiplayer. After a return the Multiplayer button does nothing, and its tooltip says why.
-  Restart the game once.
+  Restart the game once: **Shift**+**Back** on the country selection screen, or the Anvil panel's
+  **Restart game**.
 - **Ironman: on, with nothing to allow.** It works on Steam and GOG, the save on leaving included,
   and a new ironman campaign after a return says achievements can be earned. One achievement was
   earned for real on Steam in a campaign after a return, so the proof is one case and the game's own state. An ironman
