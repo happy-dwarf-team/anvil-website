@@ -23,8 +23,8 @@ it to play.
 - **Time the game** between two dates, to measure how fast it runs.
 - **Use the keyboard and mouse** as a player would, and click widgets and event options by name.
   The window does not need focus. This is off until you allow it.
-- **Drill, split and merge units** as the unit panel's buttons do, from Tongs 0.31 with Anvil
-  1.17 or newer. These are inputs too, off until you allow them.
+- **Drill, split and merge units** as the unit panel's buttons do, from Tongs 0.31. These are inputs
+  too, off until you allow them.
 - **Run console commands and load saves.** These change the game, and they are off until you
   allow them separately.
 - **An MCP server** for agents such as Claude Code.
@@ -32,8 +32,7 @@ it to play.
 ## Install
 
 Tongs 0.35 needs [Anvil](../../docs/install/) 1.23 or newer (Tongs 0.34 and older: 1.7 or newer),
-and the standard plugin `anvil-game`, which comes with it. Tongs 0.25 and older ran on Steam only. The unit reads need Anvil 1.15 and the unit
-commands Anvil 1.17; with an older Anvil they answer `unavailable` and the rest works.
+and the standard plugin `anvil-game`, which comes with it. Tongs 0.25 and older ran on Steam only.
 
 1. [Install the plugin](../../docs/install-plugins/) any way you like.
 2. Turn it on: set `enabled = true` under [Settings](#settings). It does nothing until you do.
@@ -137,16 +136,15 @@ there, read from the game itself rather than from a screenshot. `key` holds Shif
 too (`key shift+left`, `key ctrl+a`). `journal` says where this start's command journal is: one
 line per command, so a test can be followed and repeated.
 
-From Tongs 0.33 with Anvil 1.20 or newer, `country` and `province` also list the country's or
+From Tongs 0.33, `country` and `province` also list the country's or
 province's flags, with the date each was set, and its variables, as the game's triggers see them.
-Tongs reads them through Anvil's `anvil-game` plugin. With an older Anvil the answer says the lists
-are missing instead of showing them empty.
+Tongs reads them through Anvil's `anvil-game` plugin.
 
-From Tongs 0.34 with Anvil 1.21 or newer, `country` also lists the events waiting for that country's
+From Tongs 0.34, `country` also lists the events waiting for that country's
 choice: each event's id (the one `event choose` and the event window use), key, title key, province,
 number of options, whether it is hidden, and the date the game chooses for the player.
 
-From Tongs 0.35 with Anvil 1.22 or newer, `country` also gives the country's diplomacy: its alliances,
+From Tongs 0.35, `country` also gives the country's diplomacy: its alliances,
 royal marriages, guarantees, military access both ways, subsidies, subjects with their type and
 warnings, each with the countries in it and its dates; its rivals, overlord and subjects; and its
 opinion of the player and the player's of it (the numbers of the diplomacy window), with trust,
