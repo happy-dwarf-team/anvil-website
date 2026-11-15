@@ -1,9 +1,9 @@
 ---
 title: Start-up benchmark
-description: Measure on your own computer how much faster a plugin makes Europa Universalis IV start, with the Benchmark tab of Anvil Manager.
+description: Measure on your own computer how much faster a plugin makes Europa Universalis IV start, with the Benchmark page of Anvil Manager.
 ---
 
-The **Benchmark** tab of Anvil Manager measures how long the game takes to start on your
+The **Benchmark** page of Anvil Manager measures how long the game takes to start on your
 computer, without a plugin and with it, for example [Bellows](../../plugins/bellows/).
 
 The game starts again and again, and each start quits by itself once the game is ready. Nothing
@@ -12,21 +12,22 @@ anonymous report, copy it, or do neither.
 
 ## Before you start
 
-- Start `AnvilManager.exe` from the game folder.
+- Start `AnvilManager.exe` from the game folder. Its pages are in the sidebar, under **Play EU4**;
+  in a narrow window the sidebar folds to icons.
 - The plugin you compare must be enabled and, if it comes from a mod, approved, with no update
   waiting. It must take part in the benchmark. Bellows does.
 - Steam must run, and the game must not.
 - Leave the computer alone while the series runs. With 5 warm starts per setup that is at least
-  ten full starts to the main menu. The tab shows how long to expect.
+  ten full starts to the main menu. The page shows how long to expect.
 
 The Manager checks these before the series, and says what to do when one fails. You do not need
 administrator rights.
 
 ## Run a series
 
-1. Open the **Benchmark** tab.
+1. Open the **Benchmark** page.
 2. Under **Compare**, choose the plugin.
-3. Choose how many valid warm starts each setup needs: 3, 5 (the default) or 10. The tab
+3. Choose how many valid warm starts each setup needs: 3, 5 (the default) or 10. The page
    shows how many starts and minutes to expect.
 4. Click **Start the series**.
 
@@ -42,7 +43,7 @@ a start does not discard it, but it is noted next to the start.
 - **Warm starts:** for each setup the median time, the fastest and slowest start (min–max),
   the number of starts and every time, with a dot per start on a shared axis.
 - **Difference:** the median with the plugin minus the median without it, in seconds and
-  percent. When the min–max ranges of the two setups overlap, the tab says that the
+  percent. When the min–max ranges of the two setups overlap, the page says that the
   difference is uncertain instead of colouring it.
 - **Cold starts:** listed one by one; a cold difference is shown only when both setups had a
   cold start.
@@ -88,7 +89,7 @@ What a report contains, where it goes, how long it is kept and how to have it de
 [Benchmark reports and your privacy](../benchmark-privacy/).
 
 The Manager keeps the last ten reports in `anvil/data/anvil/benchmarks/` in the game folder;
-**Kept reports** on the tab opens them.
+**Kept reports** on the page opens them.
 
 The full rules are in the
 [start-up benchmark specification](https://github.com/happy-dwarf-team/anvil/blob/main/docs/spec/benchmark-v1.md).

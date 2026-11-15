@@ -139,7 +139,7 @@ symbols, folders and services stay the plugin's.
 - Anvil suspends each module by its own flags in ironman and multiplayer, and only its
   subscriptions get `anvil.suspended`.
 - The player names a module `<plugin>.<module>` in `anvil/anvil.toml`, or switches it in the
-  Manager's Plugins tab. A choice applies at the next start:
+  Manager's Plugins page. A choice applies at the next start:
 
 ```toml
 disabled_modules = ["smithy.sharp_text"]   # turns off a module (wins over enabled_modules)

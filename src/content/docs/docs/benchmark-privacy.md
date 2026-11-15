@@ -3,7 +3,7 @@ title: Benchmark reports and your privacy
 description: What a start-up benchmark report from Anvil Manager contains, where it goes when you click Send, how long it is kept and how to have it deleted.
 ---
 
-Anvil Manager's [Benchmark tab](../benchmark/) measures how long Europa Universalis IV takes
+Anvil Manager's [Benchmark page](../benchmark/) measures how long Europa Universalis IV takes
 to start on your computer, without a plugin and with it. When the series ends you can send
 its report to the Anvil maintainers, copy it, or do nothing. This page says what a report
 contains, where it goes when you click **Send**, how long it is kept and how to have it

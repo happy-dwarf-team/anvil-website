@@ -7,7 +7,7 @@ The [Plugins page](../../../plugins/) lists plugins that have a public release. 
 open a pull request on [anvil-website](https://github.com/happy-dwarf-team/anvil-website) with
 one Markdown file. The maintainer reviews it and decides on merging.
 
-The **Catalog** tab of Anvil Manager is a separate list. It holds the team's plugins only.
+The **Catalog** page of Anvil Manager is a separate list. It holds the team's plugins only.
 
 ## What the page shows by itself
 

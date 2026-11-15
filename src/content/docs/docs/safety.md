@@ -23,7 +23,7 @@ antivirus objects.
   new version waits for you. See [Plugins from mods](../plugins-from-mods/).
 - **You see a plugin before it is installed.** The Manager shows its name, authors, whether it
   changes gameplay, and whether it fits your game build.
-- **The Manager's catalog pins each file.** A plugin from the **Catalog** tab is installed only
+- **The Manager's catalog pins each file.** A plugin from the **Catalog** page is installed only
   if its SHA-256 equals the one in the list, and each release in the list had its size, hash
   and build attestation checked when it was added.
 - **Nothing happens on the network by itself.** Anvil never downloads a file by itself. The

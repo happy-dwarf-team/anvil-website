@@ -8,9 +8,10 @@ it. This page describes both, and where Anvil keeps its files.
 
 ## Anvil Manager
 
-Start `AnvilManager.exe` from the game folder.
+Start `AnvilManager.exe` from the game folder. Its pages are in the sidebar, under **Play EU4**;
+in a narrow window the sidebar folds to icons.
 
-| Tab | What it does |
+| Page | What it does |
 | --- | --- |
 | **Anvil** | Installs, updates, repairs and uninstalls Anvil. |
 | **Catalog** | Installs and updates the team's plugins with a click. |
@@ -79,7 +80,7 @@ To choose one of the nine yourself, use the setting **Language** (Anvil panel, *
 
 `anvil.log` and `anvil check` stay in English, as do a plugin's name and, before Anvil 1.20,
 its description and setting labels. From 1.20 a plugin can bring them in these languages
-([translations](../plugins/manifest/#translations)); Anvil's own plugins and the Catalog tab
+([translations](../plugins/manifest/#translations)); Anvil's own plugins and the Catalog page
 do. No native speaker has checked the translations yet. Corrections are welcome in
 an [Anvil issue](https://github.com/happy-dwarf-team/anvil/issues/new/choose).
 
@@ -229,7 +230,7 @@ a game session starts, and plugins that depend on it are skipped without it.
 
 ## Anvil's settings file
 
-`anvil/anvil.toml` is optional. The Manager's **Plugins** tab edits it for you.
+`anvil/anvil.toml` is optional. The Manager's **Plugins** page edits it for you.
 
 ```toml
 enabled = true                # false starts the game without plugins
@@ -243,6 +244,6 @@ enabled_modules = []          # from 1.22: modules that are off by default and y
 
 `log_level` sets how much `anvil/anvil.log` records; `debug` helps when you report a problem.
 [Multiplayer, ironman and achievements](../multiplayer-ironman/) explains the two `allow_` lists.
-From Anvil 1.22 a plugin can have modules: on the Manager's **Plugins** tab each has a switch
+From Anvil 1.22 a plugin can have modules: on the Manager's **Plugins** page each has a switch
 under its plugin, and a module that changes the game has its own ironman and multiplayer
 boxes. A change applies at the next start. From Anvil 1.23 the panel's **Plugins** tab has the same switches in the game, and says what the running game does with each module.

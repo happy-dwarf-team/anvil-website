@@ -20,7 +20,7 @@ This page is a plan, not a promise, and has no dates. Each release is on
 | 1.6 | The game date for plugins and a [shorter `error.log`](../using-anvil/#a-shorter-errorlog) |
 | 1.7 | The panel and the Manager in [French, German and Spanish](../using-anvil/#language); the GOG build 1.37.5.2 |
 | 1.8 | A [badge in the main menu](../install/#check-that-anvil-runs) |
-| 1.9 | The [**Catalog** tab](../install-plugins/#from-the-catalog-tab); Chinese, Japanese and Korean with [Mei](../../plugins/mei/); a problem report to copy |
+| 1.9 | The [**Catalog** tab](../install-plugins/#from-the-catalog-page); Chinese, Japanese and Korean with [Mei](../../plugins/mei/); a problem report to copy |
 | 1.10 | The Manager finds and starts a GOG game and reads its own user folder; authors can [check symbols by digest](../plugins/manifest/#digests-instead-of-bytes) |
 | 1.11 | Plugins can [read the campaign](../plugins/api/#the-world) and [open a window](../plugins/api/#windows) without game addresses; [`anvil port`](../plugins/manifest/#anvil-port) moves a plugin's addresses to a new game build; a clear notice [after an EU4 update](../using-anvil/#when-eu4-updates) |
 | 1.12 | Once Anvil knows a new game build, [one notice names the plugins that wait for it](../using-anvil/#when-eu4-updates) and the badge comes back with an amber dot; [`anvil port`](../plugins/manifest/#anvil-port) takes the new build's id from Anvil's own list |
