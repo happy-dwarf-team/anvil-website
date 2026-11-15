@@ -47,7 +47,7 @@ second start.
 
 You do not need to change anything. The numbers above are with the default settings.
 
-**Turn a feature on or off** under Bellows in the **Plugins** tab of Anvil Manager, or in the Anvil
+**Turn a feature on or off** under Bellows on the **Plugins** page of Anvil Manager, or in the Anvil
 panel. Each feature is one [module](#modules), and its switch is the only one (since Bellows 2.0).
 A module is named `bellows.<module>`, so `anvil/anvil.toml` does the same by hand:
 
@@ -144,8 +144,8 @@ the same. Those are the only multiplayer tests so far: one vanilla save, Bellows
 - **Was Bellows loaded?** `anvil/anvil.log` has one line per start with every module and its mode,
   for example `modules: mimalloc=startup, open_warmup=on, …`. A module shown as `FAILED` turned
   itself off, and the line above it says why.
-- **Turn one module off** to see whether it causes a problem: untick it under Bellows in the
-  **Plugins** tab of Anvil Manager, or add it to `disabled_modules`, for example
+- **Turn one module off** to see whether it causes a problem: untick it under Bellows on the
+  **Plugins** page of Anvil Manager, or add it to `disabled_modules`, for example
   `disabled_modules = ["bellows.range_witness"]`.
 - **A module you turned on or off before 2.0?** At the first start of 2.0, Anvil moves the choice
   of your old settings to the module's switch and removes them from `settings.toml`; the log says
