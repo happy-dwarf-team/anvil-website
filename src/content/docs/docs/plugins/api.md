@@ -237,12 +237,13 @@ a new game build may leave the world out.
 | `subject_type(overlord, subject, ...)` | A subject's type, such as `vassal` or `march` (1.22) |
 | `diplomacy_status(from, to, &out)` | One country's opinion of another, its trust and favors, and whether they have a truce (1.22) |
 | `country_rivals`, `country_overlord`, `country_subjects` | Its rivals, its overlord and its direct subjects (1.22) |
+| `player_tags(&out)` | What `player` answers, with the player's own tag, the observed tag and whether the player is the observer (1.23) |
 
-The calls marked 1.15, 1.20, 1.21 and 1.22 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"` or `"^1.22.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
+The calls marked 1.15, 1.20, 1.21, 1.22 and 1.23 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"` or `"^1.23.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
 `ANVIL_GAME_WORLD_HAS(world, province_variable_names)`, `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
-(`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view) or
-`ANVIL_GAME_WORLD_HAS(world, country_subjects)` before calling them.
+(`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view),
+`ANVIL_GAME_WORLD_HAS(world, country_subjects)` or `ANVIL_GAME_WORLD_HAS(world, player_tags)` before calling them.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -610,7 +611,8 @@ anvil::plugin!(Hello);
   `World::country_flags`, `World::country_variable` and the rest), and from 0.1.9 pending events
   and statistics (`World::pending_events`, `World::country_statistics` and the event
   `game::PENDING_EVENT`), and from 0.1.10 diplomacy (`World::country_relations`,
-  `World::diplomacy_status` and the rest). A function the running service
+  `World::diplomacy_status` and the rest), and from 0.1.11 the player's tags (`World::player_tags`).
+  A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
   `unsafe`: calling the rest of a hook's chain or a game function, reading game data,
