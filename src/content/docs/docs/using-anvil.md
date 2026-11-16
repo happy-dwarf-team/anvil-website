@@ -194,6 +194,13 @@ measurement early; the file is still written and marked interrupted (on a quit o
 exits normally). It works in ironman and multiplayer, where it warns that it slows your game and
 every player waits for the slowest.
 
+From Anvil 1.25 the profiler also adds a note to Anvil's
+[crash reports](../troubleshooting/#crash-reports-and-safe-mode): the events, decisions, on_actions
+and other owners of script it finds on the crashed game's stack, with the block, such as
+`decision form_germany: allow`. You do not need to start a measurement. Until a crash it costs
+nothing. In the lab it named the event of a test mod's crash each time, on Steam 1.37.5; it was
+not tried on the GOG builds.
+
 In the lab on Steam 1.37.5 and GOG 1.37.5.2 and 1.37.5.0 it named the same events, decisions and casus belli
 as the prototype did, for Russia in 1719 and for Verne in Anbennar, and a load and the menu's
 **Exit Game** wrote their files marked interrupted. The scripted triggers list and the church

@@ -29,6 +29,7 @@ description: What to do when a plugin does not work, and how to report a problem
 | A plugin is skipped | The reason is on the Manager's **Plugins** page and in the log; see [Why a plugin is skipped](#why-a-plugin-is-skipped). |
 | A plugin does nothing in ironman or multiplayer | One that changes gameplay is suspended there; the log says `[<plugin-id>] suspended: affects gameplay and …`. See [Multiplayer, ironman and achievements](../multiplayer-ironman/). |
 | The game crashes or does not start | [Start once without plugins](#start-once-without-plugins), then turn them back on one by one. See also [Crash reports and safe mode](#crash-reports-and-safe-mode). With DXVK (Proton, or installed on Windows) in EU4's **Fullscreen** mode, choose **Windowed (Fullscreen)**: see [DXVK and Fullscreen](../faq/#dxvk-and-fullscreen). |
+| A modded game crashes each time the same event or decision runs, also with plugins off | A mod may name a province the map does not have. See [A mod's script names a province the map does not have](#a-mods-script-names-a-province-the-map-does-not-have). |
 | You want the game back as it was | [Turn plugins off](../install-plugins/#turn-a-plugin-off-or-remove-it) or [uninstall Anvil](../install/#uninstall). Both take effect at the next start, and `eu4.exe` was never changed. |
 
 ## Read the log
@@ -112,11 +113,35 @@ When the game crashes, Anvil writes a report to `anvil/crashes/`: a `.txt` to re
 a small minidump. The last 10 are kept. The report says whether a plugin was involved and links
 to that plugin's issue tracker. Nothing is uploaded.
 
+From Anvil 1.25 a report also ends with **Notes from plugins** (`notes` in the `.json`), which
+Anvil's own plugins add. The [script profiler](../using-anvil/#the-script-profiler) lists the
+events, decisions and other script it finds on the crashed game's stack, innermost first, such as
+`event flavor_rus.12: option 2 effect`. You do not need to start a measurement for this. It is a
+scan of the stack, so it can also name script that ran just before. For a crash in a modded game,
+it points to the mod whose script was running.
+
 After two starts in a row that ended before the game was ready (a crash, a hang or a killed
 process), the next start is in safe mode. It loads only `anvil-game` and `anvil-overlay`, so the
 panel can tell you why, and the other plugins are listed as `skipped — safe mode`. The start
 after that loads them again. If the crashes come back, start once without plugins (below) and
 turn them back on one by one.
+
+### A mod's script names a province the map does not have
+
+The game does not check the province numbers in scripts. A mod that says `owns = 5075` on a map
+of 4941 provinces gets no line in `error.log`, and the game reads memory past its province table.
+Usually that gives a wrong answer, but it can crash the game whenever the event or decision runs,
+also with every plugin off. Before [Bellows](../../plugins/bellows/) 2.0.1 its memory allocator
+made this crash more likely.
+
+To find the mod:
+
+- In [Etch](https://etch.happydwarf.dev/) 2.13 or newer, open your playset and run **Etch: Check
+  Province IDs in the Playset**. Problems lists every such number with its mod, file and line.
+- Or search your mods' `events`, `decisions`, `missions` and `common` folders for the number.
+- The notes of a crash report (above) name the event or decision that was running.
+
+Tell the mod's author; the fix is in their script.
 
 ## Start once without plugins
 
