@@ -83,8 +83,8 @@ Anvil and the plugins on the **Catalog** page run on both GOG builds of 1.37.5, 
 
 Anvil runs in the Windows game under Proton with one launch option. A team member plays and
 develops with it on desktop Linux (Steam 1.37.5, Anvil 1.22 and 1.23). We have not tested it on
-our own machines, and nobody has tried the Steam Deck or the Manager under Proton yet: see
-[Linux and Steam Deck](../faq/#linux-and-steam-deck).
+our own machines, nobody has tried the Steam Deck yet, and the Manager cannot start the game
+there: see [Linux and Steam Deck](../faq/#linux-and-steam-deck).
 
 1. In Steam, open EU4's **Properties** → **Compatibility**, tick **Force the use of a specific
    Steam Play compatibility tool** and pick a Proton version. Without it, Steam runs the native
@@ -102,12 +102,11 @@ our own machines, and nobody has tried the Steam Deck or the Manager under Proto
 4. Start the game from Steam and [check that Anvil runs](#check-that-anvil-runs). If there is no
    badge and `anvil/anvil.log` was not written at this start, the launch option is missing or
    misspelled.
-5. Install plugins [by hand](../install-plugins/#by-hand). Bellows, Hamweard and Tongs worked in
-   the team member's tests. A plugin [from the Steam Workshop](../install-plugins/#from-the-steam-workshop)
-   needs your approval in the Anvil panel, which nobody has tried under Proton yet.
+5. Install plugins [from the Steam Workshop](../install-plugins/#from-the-steam-workshop) and
+   approve them in the Anvil panel, or [by hand](../install-plugins/#by-hand). Both work there.
+   Bellows, Hamweard and Tongs worked in the team member's tests.
 
-In EU4's display settings, choose **Windowed (Fullscreen)**: see
-[DXVK and Fullscreen](../faq/#dxvk-and-fullscreen).
+Start the game from Steam: the Manager's **Start the game** does not start it under Proton.
 
 ## Check that Anvil runs
 

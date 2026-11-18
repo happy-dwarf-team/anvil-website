@@ -78,14 +78,16 @@ update ([On GOG](../install/#on-gog)).
 Anvil runs in the Windows game under Proton with the launch option
 `WINEDLLOVERRIDES="version=n,b" %command%` ([steps](../install/#on-linux-with-proton)). What we
 know comes from a team member's tests on desktop Linux (a Wayland session, Steam 1.37.5, Anvil
-1.22 and 1.23), not from our own machines:
+1.22 and 1.23, Proton-CachyOS 11 with DXVK 3.1.1), not from our own machines:
 
-- Anvil loads, and its badge shows in the main menu.
-- Bellows, Hamweard and Tongs work. Two copies of the game played one multiplayer game together
-  in one Proton prefix.
-- Not tried yet: the Steam Deck, `AnvilManager.exe` under Proton, the Anvil panel, Chinese,
-  Japanese or Korean text, and EU4's **Fullscreen** mode. Proton has no Segoe UI, so we expect
-  the panel to use a plainer font.
+- Anvil loads, and its badge shows in the main menu. The Anvil panel opens, in a plainer font
+  than on Windows, because Proton has no Segoe UI.
+- Bellows, Hamweard and Tongs work. Plugins from the Steam Workshop, approved in the panel, work
+  too. Two copies of the game played one multiplayer game together in one Proton prefix.
+- EU4's display modes **Windowed (Fullscreen)**, **Windowed** and **Fullscreen** all worked.
+- `AnvilManager.exe` finds the running game, but its **Start the game** does not start it: a
+  console window flashes and closes. Start the game from Steam.
+- Not tried yet: the Steam Deck, Valve's own Proton builds, and Chinese, Japanese or Korean text.
 
 Reports are welcome, from a Deck most of all: [tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose)
 what worked, with your Proton version and `anvil/anvil.log`. The native Linux and macOS builds of
@@ -102,8 +104,9 @@ DXVK is the Direct3D 9 layer that Proton uses, and some players install it on Wi
   without Anvil. That crash is between DXVK and the system's OpenGL driver, not Anvil.
 - **What to use:** with DXVK, choose **Windowed (Fullscreen)**, EU4's borderless mode. It started
   without a crash in the same test.
-- **Proton and the Steam Deck:** Fullscreen has not been tried there. Choose Windowed
-  (Fullscreen) there too.
+- **Proton:** Fullscreen worked on desktop Linux in a team member's tests, with Proton-CachyOS
+  11 and DXVK 3.1.1 ([Linux and Steam Deck](#linux-and-steam-deck)). On the Steam Deck it has
+  not been tried.
 
 The test ran on Windows 11 with DXVK 2.7.1 from its official release, EU4 1.37.5 (Steam) and an
 NVIDIA RTX 4090. With Microsoft's own Direct3D 9, both Fullscreen and Windowed (Fullscreen) worked.
