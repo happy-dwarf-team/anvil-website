@@ -432,7 +432,7 @@ status = "draft"            # "checked" once a native speaker checked it
 `anvil_add_plugin` runs it at build time; call it yourself for other build systems:
 
 ```powershell
-anvil gen [--lang c|cpp|rust] [--settings <settings.toml>] <symbols.toml|settings.toml>... <out-dir>
+anvil gen [--lang c|cpp|rust|rust-sdk] [--settings <settings.toml>] <symbols.toml|settings.toml>... <out-dir>
 ```
 
 | File | Contents |
@@ -441,10 +441,20 @@ anvil gen [--lang c|cpp|rust] [--settings <settings.toml>] <symbols.toml|setting
 | `symbols.gen.hpp` | namespace `sym`: one typed constant per symbol, for example `sym::speed_object` |
 | `settings.gen.h` | `CFG_<NAME>` ids and `CFG_<NAME>_<OPTION>` enum indices |
 | `settings.gen.hpp` | namespace `cfg`: `cfg::<name>.get()` |
-| `symbols.gen.rs`, `settings.gen.rs` | the same ids, function types and values for Rust (`--lang rust` only) |
+| `symbols.gen.rs`, `settings.gen.rs` | the same ids, function types and values for Rust (`--lang rust` or `rust-sdk` only) |
 
-Without `--lang` it writes the C and C++ headers. Declare the types named in `signature`
-and `type` before including the header.
+Without `--lang` it writes the C and C++ headers. From Anvil 1.25:
+
+- `--lang rust-sdk` writes the same `symbols.gen.rs` as `--lang rust`, with a module `typed`
+  for the `anvil-sdk` crate: each function symbol with its type, for `Host::hook_symbol`.
+- `--lang` given more than once writes each language named, e.g. `--lang c --lang cpp`.
+- Besides C++ keywords and a value named `id`, `value` or `symbol_name`, `anvil gen` refuses
+  names that the C++ header cannot hold: a symbol named `id`, `value` or `symbol_name`, a value
+  with its symbol's name, a setting named `id`, `get`, `setting_name`, `restart`,
+  `default_value`, `minimum` or `maximum`, and an enum option with its setting's name.
+  `anvil check` reports them at their line, whatever language the plugin uses.
+
+Declare the types named in `signature` and `type` before including the header.
 
 ## anvil check
 
@@ -513,8 +523,13 @@ A wrong address is worse than none, so a symbol stays for you to place when:
 - it fails what `anvil check --exe` would report for the new build.
 
 Each of those gets a comment in the file with the reason and, where one is known, an address to
-look at. The file does not parse until you place the symbol or declare it `absent`. The entry of
+look at. The file does not parse until you place the symbol or declare it `absent`; an export
+has no address to drop, so `anvil check --exe` reports it on the new build instead. The entry of
 a function whose operands changed is placed, with a warning to read it.
+
+`anvil port` edits each symbol's own `[symbol.<name>]` table. From Anvil 1.25 it refuses, before
+writing anything, a file with a symbol written as an inline table or with dotted keys under
+`[symbol]`; write that symbol as a table of its own first.
 
 Exit codes: `0` every symbol placed, `1` some left for you, `2` cannot port. Then run
 `anvil check --exe` for each build, which needs an Anvil that knows the new one.
