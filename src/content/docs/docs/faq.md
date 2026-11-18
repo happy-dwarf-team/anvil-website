@@ -51,8 +51,8 @@ versions Anvil skips them.
 
 - **Microsoft Store (Game Pass):** not tested. Its `eu4.exe` is a different build, so Anvil would
   report it as `unknown` and skip every plugin that uses game addresses. The game starts normally.
-- **Linux with Proton:** not tested. Proton runs the Windows game, but Anvil has not been tried
-  there.
+- **Linux with Proton:** works on desktop Linux in a team member's tests, with one launch option
+  ([On Linux with Proton](../install/#on-linux-with-proton)). The Steam Deck is not tested.
 - **macOS and the native Linux build of EU4:** not supported, and not planned
   ([roadmap](../roadmap/#not-planned)).
 
@@ -75,10 +75,21 @@ update ([On GOG](../install/#on-gog)).
 
 ### Linux and Steam Deck
 
-Not tested yet, so there are no install steps for Proton here. Reports are welcome: if you try it,
-[tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose) what worked, with your
-Proton version and `anvil/anvil.log`. The native Linux and macOS builds of EU4 are not planned
-([roadmap](../roadmap/#not-planned)).
+Anvil runs in the Windows game under Proton with the launch option
+`WINEDLLOVERRIDES="version=n,b" %command%` ([steps](../install/#on-linux-with-proton)). What we
+know comes from a team member's tests on desktop Linux (a Wayland session, Steam 1.37.5, Anvil
+1.22 and 1.23), not from our own machines:
+
+- Anvil loads, and its badge shows in the main menu.
+- Bellows, Hamweard and Tongs work. Two copies of the game played one multiplayer game together
+  in one Proton prefix.
+- Not tried yet: the Steam Deck, `AnvilManager.exe` under Proton, the Anvil panel, Chinese,
+  Japanese or Korean text, and EU4's **Fullscreen** mode. Proton has no Segoe UI, so we expect
+  the panel to use a plainer font.
+
+Reports are welcome, from a Deck most of all: [tell us](https://github.com/happy-dwarf-team/anvil/issues/new/choose)
+what worked, with your Proton version and `anvil/anvil.log`. The native Linux and macOS builds of
+EU4 are not planned ([roadmap](../roadmap/#not-planned)).
 
 #### DXVK and Fullscreen
 
@@ -91,7 +102,8 @@ DXVK is the Direct3D 9 layer that Proton uses, and some players install it on Wi
   without Anvil. That crash is between DXVK and the system's OpenGL driver, not Anvil.
 - **What to use:** with DXVK, choose **Windowed (Fullscreen)**, EU4's borderless mode. It started
   without a crash in the same test.
-- **Proton and the Steam Deck:** not tested yet, in either mode.
+- **Proton and the Steam Deck:** Fullscreen has not been tried there. Choose Windowed
+  (Fullscreen) there too.
 
 The test ran on Windows 11 with DXVK 2.7.1 from its official release, EU4 1.37.5 (Steam) and an
 NVIDIA RTX 4090. With Microsoft's own Direct3D 9, both Fullscreen and Windowed (Fullscreen) worked.
