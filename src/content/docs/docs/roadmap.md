@@ -72,8 +72,8 @@ This page is a plan, not a promise, and has no dates. Each release is on
 - Code signing. Releases keep SHA-256 checksums and a build attestation instead
   ([#157](https://github.com/happy-dwarf-team/anvil/issues/157)).
 - The native Linux and macOS builds of EU4, 32-bit, other Paradox games, and EU4 versions other
-  than 1.37.5. The Windows game on Linux with Proton is not tested
-  ([FAQ](../faq/#does-it-work-on-the-microsoft-store-linux-or-macos)).
+  than 1.37.5. The Windows game on Linux with Proton is another matter: Anvil runs there with
+  one launch option ([FAQ](../faq/#linux-and-steam-deck)).
 - Scripting languages inside plugins.
 
 Ideas and requests go to the
