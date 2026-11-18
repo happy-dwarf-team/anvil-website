@@ -102,9 +102,9 @@ our own machines, and nobody has tried the Steam Deck or the Manager under Proto
 4. Start the game from Steam and [check that Anvil runs](#check-that-anvil-runs). If there is no
    badge and `anvil/anvil.log` was not written at this start, the launch option is missing or
    misspelled.
-5. Install plugins [by hand](../install-plugins/#by-hand) or
-   [from the Steam Workshop](../install-plugins/#from-the-steam-workshop). Bellows, Hamweard and
-   Tongs worked in the team member's tests.
+5. Install plugins [by hand](../install-plugins/#by-hand). Bellows, Hamweard and Tongs worked in
+   the team member's tests. A plugin [from the Steam Workshop](../install-plugins/#from-the-steam-workshop)
+   needs your approval in the Anvil panel, which nobody has tried under Proton yet.
 
 In EU4's display settings, choose **Windowed (Fullscreen)**: see
 [DXVK and Fullscreen](../faq/#dxvk-and-fullscreen).
