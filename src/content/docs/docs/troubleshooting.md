@@ -19,6 +19,7 @@ description: What to do when a plugin does not work, and how to report a problem
 | No Anvil badge in the main menu | Check that `version.dll` and the `anvil` folder are next to `eu4.exe`, or click **Install Anvil** in the Manager. With OpenGL there is no badge; the Manager shows the same information. |
 | No badge and no `anvil/anvil.log`, although the files are there | Windows did not load Anvil's `version.dll`. See [If Anvil does not run at all](#if-anvil-does-not-run-at-all). |
 | On Linux, the game starts without Anvil | Proton used its own `version.dll`. Add the launch option `WINEDLLOVERRIDES="version=n,b" %command%`: see [On Linux with Proton](../install/#on-linux-with-proton). |
+| On Linux, the Manager's **Start the game** only flashes a console window | Under Proton the Manager cannot start the game yet ([anvil#494](https://github.com/happy-dwarf-team/anvil/issues/494)). Start it from Steam. |
 | A Workshop plugin does nothing | The Workshop cannot install Anvil, so [install Anvil](../install/) first. Enable the mod in your playset, approve the plugin on the Manager's **Plugins** page (under **From mods**), and start the game again. |
 | A Workshop plugin stayed on an old version | Anvil asks again after every update of a mod. Approve the new version in the panel or the Manager. |
 | **Play EU4** on GOG seems to do nothing | It opens the Paradox launcher: press **Play** there. On its first start the launcher shows Paradox's EULA before **Play**, also without Anvil, and only you can accept it. |
