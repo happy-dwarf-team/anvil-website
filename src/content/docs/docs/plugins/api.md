@@ -471,12 +471,67 @@ window of your own.
 - The first binding of a code keeps it. A second one, or the panel key, answers
   `ANVIL_ERROR_CONFLICT` and stays inert until it gets a free code.
 - `ANVIL_INPUT_CONSUME` keeps the press from the game, `ANVIL_INPUT_REPEAT` also delivers the
-  auto-repeat. `held(code)` is for keys polled every frame, such as a camera key.
+  auto-repeat. `held(code)` is for keys polled every frame, such as a
+  [camera](#the-map-camera) key.
 - Nothing is delivered while the player types in the game (anvil-game's `keyboard()`, also 1.18)
   or uses Anvil's panel; `state()` says what holds keys back.
 - The handler runs on the main thread after the next frame, so it may read the world.
 - It only reads input, so it needs no `affects_gameplay = true`. Depend on `anvil-overlay` with
   `version = "^1.18.0"`, `optional = true` if the plugin also works without it.
+
+### The map camera
+
+From Anvil 1.25 the service `anvil-game.camera` (version 1, `AnvilGameCameraService` in
+`anvil_game.h`) reads the game's map camera and pans it as the arrow keys do, with no game
+addresses of your own. The camera is this client's view, not game state: only this game's view
+moves, as with the player's own keys and mouse, and nothing goes to the game state or to the
+other players in multiplayer.
+
+| Call | Does what |
+| --- | --- |
+| `view(&out)` | Fills an `AnvilGameCameraView`: `position`, where the camera is, `look_at`, the point it looks at, and `flags`, with `ANVIL_GAME_CAMERA_LOCKED` while the game holds the camera still (a menu is open, or the graphics cannot draw) |
+| `pan(right, up)` | Pans the camera for one frame as the arrow keys do: `right` and `up` from -1 to 1, so (1, 0) is the right arrow held for this frame and (0.5, 0) half that; a longer vector is shortened to length 1. (0, 0) does nothing |
+
+- **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
+  `run_on_main_thread` work, while a session runs, as for [the world](#the-world). Anywhere else,
+  in the main menu and during a load, a call answers `ANVIL_ERROR_WRONG_PHASE` and does nothing.
+- **The view:** set `size` to `sizeof` the struct; a smaller struct gets the fields its size
+  covers. Points are in map units: `[1]` is the height above the map's plane, `[0]` and `[2]` lie
+  on it. After a pan the game moves both points towards their targets over the next frames, so a
+  pan shows in `view` a frame or more later.
+- **The pan:** its speed is the arrows' own, from the player's scroll speed setting, the camera's
+  height and the frame's time, capped as the game caps it. Call it once a frame for as long as
+  your input lasts, such as while [`held(code)`](#keys) says your key is down. The game's own keys
+  and mouse still pan too, and a second call in the same frame pans twice. While the camera is
+  locked the arrow keys and the mouse do not move it, and `pan` answers `ANVIL_ERROR_WRONG_PHASE`.
+- **Errors:** `ANVIL_ERROR_INVALID_ARGUMENT` for a NULL struct, a size below `position`'s end or
+  a value that is not finite; `ANVIL_ERROR_INTERNAL` when the game's memory is not what it should
+  be, which costs that answer only.
+- **Versions:** depend on `anvil-game` with `version = "^1.25.0"`. `get_service` gives NULL with
+  an older `anvil-game` and on a game build whose port leaves the camera out. Calls added later
+  within version 1 go at the end of the struct; check them with `ANVIL_GAME_CAMERA_HAS`.
+- It moves only this client's view, so it needs no `affects_gameplay = true`.
+
+```cpp
+const auto* camera = host.service<AnvilGameCameraService>(ANVIL_GAME_CAMERA_SERVICE, ANVIL_GAME_CAMERA_SERVICE_VERSION);
+const auto* input = host.service<AnvilInputService>(ANVIL_INPUT_SERVICE, ANVIL_INPUT_SERVICE_VERSION);
+
+// pan_left, pan_right, pan_up and pan_down are settings of type key.
+host.subscribe(ANVIL_GAME_EVENT_FRAME, [camera, input](std::string_view, const void*) {
+    if (camera == nullptr || input == nullptr) return;
+    auto down = [input](anvil::Key key) { return float(input->held(key.code)); };
+    const float right = down(cfg::pan_right.get()) - down(cfg::pan_left.get());
+    const float up = down(cfg::pan_up.get()) - down(cfg::pan_down.get());
+    if (right != 0.0f || up != 0.0f) camera->pan(right, up);
+});
+```
+
+Tested in the game on Steam 1.37.5 and GOG 1.37.5.2
+([anvil#447](https://github.com/happy-dwarf-team/anvil/pull/447), November 2026): the view, a
+camera locked by the Esc menu, and pans to the right, up, and down and to the left with a vector
+shortened to length 1. Not tested yet: a pan next to a real arrow key held for as long, a pan while
+the player drags the map, GOG 1.37.5.0 (where `anvil check` finds the camera's addresses) and
+multiplayer.
 
 ### Commands
 
@@ -654,7 +709,8 @@ anvil::plugin!(Hello);
   `anvil::catch_panic`.
 - A `Change` removes its change when it is dropped. A `FunctionHook` lives in a `static`,
   where Anvil writes the rest of the chain.
-- `anvil::game`, `anvil::world`, `anvil::commands`, `anvil::panel`, `anvil::input`,
+- `anvil::game`, `anvil::world`, `anvil::commands`, `anvil::camera` (from `anvil-sdk` 0.2:
+  `Camera::view` and `Camera::pan`), `anvil::panel`, `anvil::input`,
   `anvil::map`, `anvil::script` (the day end, and from `anvil-sdk` 0.1.7 the script effects as
   `anvil::script::Effects`), `anvil::log_throttle` (from `anvil-sdk` 0.1.8) and `anvil::benchmark`
   wrap the services above; from `anvil-sdk`
