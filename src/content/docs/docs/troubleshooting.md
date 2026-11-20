@@ -137,7 +137,7 @@ made this crash more likely.
 To find the mod:
 
 - In [Etch](https://etch.happydwarf.dev/) 2.13 or newer, open your playset and run **Etch: Check
-  Province IDs in the Playset**. Problems lists every such number with its mod, file and line.
+  Province IDs and Names in the Playset**. Problems lists every such number with its mod, file and line.
 - Or search your mods' `events`, `decisions`, `missions` and `common` folders for the number.
 - The notes of a crash report (above) name the event or decision that was running.
 
