@@ -80,8 +80,14 @@ no longer does anything.
   which with Anbennar was about 60 MB per **Back** and per campaign. What stays is mostly the last
   campaign's world and interface: in the lab a **Back** left about 5 MB with Anbennar and 8 MB
   without mods, and in a row of returns the game grew by about 45 MB per return with Anbennar and
-  20 MB without mods. A return took as long after 40 in a row as at the start. When less than 1 GB
-  of the system's commit limit is left, a return restarts the game instead.
+  20 MB without mods. A late save costs more: with a save from 1719, without mods, each return
+  after the first kept about 45–90 MB, among them part of the save's history and the campaign's
+  windows. From 1.6.0 Hamweard also frees those (the lab's fixes of 19 November 2026): the game's
+  heap then keeps about 4 MB more live data per return with that save; over the first ten returns
+  it also keeps about 0.5 GB of freed heap space committed, and after that the game's memory grows
+  by about 8 MB per return (lab, 20 returns in a row). A return took as long after 40 in a row as
+  at the start. When less than 1 GB of the system's commit limit is left, a return restarts the
+  game instead.
 - **A long campaign kept memory it no longer used, until 1.3.2.** Each time the game recalculated
   an overlord's modifiers it made one per subject and never freed the old ones: about 2 MB a year
   without mods and 4.8 MB with Anbennar, in the lab's heap trace. From 1.3.2 Hamweard frees them,
