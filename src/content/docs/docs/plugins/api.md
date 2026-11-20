@@ -283,14 +283,19 @@ a new game build may leave the world out.
 | `selected_province(&id)` | The province last selected on the map (a click, the outliner, a link), also after its view closed; 0 while none has been selected in the session (1.24) |
 | `province_at(x, y, &id)` | The province under a point of the game window's client area, as the game's hover finds it, so it follows the camera; sea and wasteland count, 0 off the map (1.24) |
 | `unit_at(x, y, &ref)` | The army or navy the map picks at that point, any country's, or `ANVIL_ERROR_NOT_FOUND` (1.24) |
+| `exploration_regions(&fleet, explore, regions, capacity, &count)` | The sea regions (`ANVIL_GAME_EXPLORE_SEA`) or coasts (`ANVIL_GAME_EXPLORE_COAST`) a fleet's Explore dialog offers, in the game's order; a region is its index in the map's regions. Not whether the fleet may explore now (port, explorer, ships): the dialog's button checks that (1.25) |
+| `region_name(region, ...)`, `region_key(region, ...)` | A region's name as the game shows it, and its script key such as `baltic_sea_region` (1.25) |
+| `province_triggered_modifier_keys(province, keys, capacity, &length)` | The keys of the province triggered modifiers the province was given (`add_province_triggered_modifier`), in the game's order, whether or not their triggers hold now; with `province_timed_modifier_keys` they are every key `has_province_modifier` looks for (1.25) |
 
-The calls marked 1.15, 1.20, 1.21, 1.22, 1.23 and 1.24 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"` or `"^1.24.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
+The calls marked 1.15, 1.20, 1.21, 1.22, 1.23, 1.24 and 1.25 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"`, `"^1.24.0"` or `"^1.25.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
 `ANVIL_GAME_WORLD_HAS(world, province_variable_names)`, `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
 (`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view),
 `ANVIL_GAME_WORLD_HAS(world, country_subjects)`, `ANVIL_GAME_WORLD_HAS(world, player_tags)` or
-`ANVIL_GAME_WORLD_HAS(world, unit_at)` before calling them. The three map calls of 1.24 answer
-`ANVIL_ERROR_NOT_DECLARED` on a game build whose port leaves them out.
+`ANVIL_GAME_WORLD_HAS(world, unit_at)`, `ANVIL_GAME_WORLD_HAS(world, region_key)` or
+`ANVIL_GAME_WORLD_HAS(world, province_triggered_modifier_keys)` before calling them. The three map
+calls of 1.24 and the four calls of 1.25 answer `ANVIL_ERROR_NOT_DECLARED` on a game build whose port
+leaves them out.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -548,7 +553,7 @@ a click; that every machine then runs it alike has not been tested in a live mul
 | `ANVIL_GAME_COMMAND_SPLIT` | One army or navy splits in half, rounded up, as the button does |
 | `ANVIL_GAME_COMMAND_EVENT_OPTION` | Version 2: chooses an option of the local player's pending event, as its button does |
 | `ANVIL_GAME_COMMAND_SPEED` | Version 3 (Anvil 1.22): sets the game speed (`speed`, 1 to 5) as clicks on the speed bar would; nothing while the in-game menu is open, and in multiplayer only the host can |
-| `ANVIL_GAME_COMMAND_EXPLORE` | Version 3: armies explore the land, fleets circumnavigate, or units that explore stop (`explore`); an intent, as for drill. A fleet's sea or coast exploration is not offered yet |
+| `ANVIL_GAME_COMMAND_EXPLORE` | Version 3: armies explore the land, fleets circumnavigate, or units that explore stop (`explore`); an intent, as for drill. A fleet's sea or coast exploration is not posted yet; from 1.25 the world's `exploration_regions` lists the regions the game would offer |
 | `ANVIL_GAME_COMMAND_MOVE` | Version 3: armies or fleets move to `province`, as a right-click's plain move; `ANVIL_GAME_COMMAND_QUEUE` adds to the path as Shift. A move the game does not allow now counts as `refused` |
 | `ANVIL_GAME_COMMAND_SIEGE_AREA`, `_SUPPRESS_AREA` | Version 3: for each army, a click on the map area of `province` in the siege or rebel-suppression map mode: the area joins the army's autonomous siege or rebel hunt, or leaves it; the game checks it and posts the command, otherwise `refused` |
 
@@ -722,7 +727,9 @@ anvil::plugin!(Hello);
   from 0.1.12 `anvil::game` reads the speed, the pause and the write folder (`Game::speed`,
   `Game::paused`, `Game::user_dir`), `anvil::world` the map's selection and what is under a point
   (`World::selected_province`, `World::province_at`, `World::unit_at`), and `anvil::map` shows a
-  mode (`MapModes::show`).
+  mode (`MapModes::show`); from 0.1.13 `anvil::world` lists a fleet's exploration regions and
+  names them (`World::exploration_regions`, `World::region_name`, `World::region_key`), and from
+  0.1.14 a province's triggered modifier keys (`World::province_triggered_modifiers`).
   A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
