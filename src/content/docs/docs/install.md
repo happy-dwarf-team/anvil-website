@@ -79,6 +79,35 @@ Anvil and the plugins on the **Catalog** page run on both GOG builds of 1.37.5, 
    launcher, as GOG does: press **Play** there. On its first start the launcher shows Paradox's
    EULA before **Play**. That is the same without Anvil, and only you can accept it.
 
+## On Linux with Proton
+
+Anvil runs in the Windows game under Proton with one launch option. A team member plays and
+develops with it on desktop Linux (Steam 1.37.5, Anvil 1.22 and 1.23). We have not tested it on
+our own machines, nobody has tried the Steam Deck yet, and the Manager cannot start the game
+there: see [Linux and Steam Deck](../faq/#linux-and-steam-deck).
+
+1. In Steam, open EU4's **Properties** → **Compatibility**, tick **Force the use of a specific
+   Steam Play compatibility tool** and pick a Proton version. Without it, Steam runs the native
+   Linux build of EU4, which Anvil cannot load into.
+2. Install Anvil [by hand](#install-by-hand): extract `anvil-windows-x64.zip` next to `eu4.exe`.
+3. In **Properties** → **General** → **Launch options**, enter:
+
+   ```
+   WINEDLLOVERRIDES="version=n,b" %command%
+   ```
+
+   Without it, Proton uses its own `version.dll` and the game starts without Anvil. Write `n,b`,
+   not only `n`: Anvil hands the game's calls on to the system's `version.dll`, which under
+   Proton is Proton's own.
+4. Start the game from Steam and [check that Anvil runs](#check-that-anvil-runs). If there is no
+   badge and `anvil/anvil.log` was not written at this start, the launch option is missing or
+   misspelled.
+5. Install plugins [from the Steam Workshop](../install-plugins/#from-the-steam-workshop) and
+   approve them in the Anvil panel, or [by hand](../install-plugins/#by-hand). Both work there.
+   Bellows, Hamweard and Tongs worked in the team member's tests.
+
+Start the game from Steam: the Manager's **Start the game** does not start it under Proton.
+
 ## Check that Anvil runs
 
 The game's main menu shows a small **Anvil** badge with its version on the left edge. Point at

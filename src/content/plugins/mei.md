@@ -57,7 +57,7 @@ Mei needs [Anvil](../../docs/install/) 1.16 or newer; take the latest.
       ```
       name="Mei fonts"
       path="mod/mei-fonts"
-      supported_version="1.37.*"
+      supported_version="v1.37.*.*"
       ```
 
    4. Enable **Mei fonts** in your playset in the Paradox launcher.
