@@ -200,7 +200,7 @@ Plugins tab of Anvil Manager. The groups are only for order.
 | **File warm-up** (`open_warmup`) | Opens the files the game will need on parallel threads | on |
 | **RAM prefetch** (`ram_prefetch`) | Reads and unpacks the DLC archive members the game will need into memory | on |
 | **Path check cache** (`verifypath_listing`) | Answers the game's path checks from directory listings until the main menu is up | on |
-| **Lookups from listings** (`listing_lookup`) | **Since 1.7, off by default.** Answers the file system's second look at a mod folder (is the file there, open a file that is not there) from the folder listings Bellows already reads; every existing file is still opened by the game. About 3 s off the start of Anbennar, nothing measurable on the base game | off |
+| **Lookups from listings** (`listing_lookup`) | **Since 2.1 on by default** (off from 1.7 to 2.0). Answers the file system's second look at a mod folder (is the file there, open a file that is not there) from the folder listings Bellows already reads; every existing file is still opened by the game. Needs Path check cache. About 3 s off the start of Anbennar, nothing measurable on the base game | on |
 | **File existence index** (`exists_index`) | Answers "does this file exist?" for the modifier icon check | on |
 | **Trigger profile lookup** (`trigger_intern`) | Looks each trigger up in the game's trigger profile at the end of loading, through a faster index | on |
 | **Parameter substitution** (`metascript_subst`) | Substitutes `$parameter$` placeholders in a single pass | on |
@@ -372,12 +372,15 @@ first load after a reboot, multiplayer.
 the same version code in every start. Not measured: the first start after a reboot, a slow disk,
 multiplayer with the module on.
 
-`listing_lookup` (since 1.7, off by default) was measured the same way on 10 November 2026
+`listing_lookup` (since 1.7; on by default since 2.1) was measured the same way on 10 November 2026
 (source: the [Bellows README](https://github.com/happy-dwarf-team/bellows#physfs-lookups-from-listings)):
 on Anbennar 22.08 → 18.86 s (medians, the ranges apart), on the base game 11.65 → 11.58 s, which is
 within the noise. The game's logs had the same lines and the main menu showed the same version code
 in every start, and a start with `"verify"` per mod set found 0 differences from the game's own
-answers. Not measured: the first start after a reboot, other mod sets, the GOG build in the game.
+answers. Before 2.1 turned it on, a start on Anbennar with the module's check compared about
+100,000 more answers with the game's, again with 0 differences
+([bellows#221](https://github.com/happy-dwarf-team/bellows/pull/221), 17 November 2026). Not
+measured: the first start after a reboot, other mod sets, the GOG build in the game.
 
 ### Minimized at speed 5
 
