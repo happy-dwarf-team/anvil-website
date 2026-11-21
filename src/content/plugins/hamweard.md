@@ -51,6 +51,10 @@ no longer does anything.
   the last campaign. From 1.3.3 Hamweard puts it back on each return, with the "no ruler" and "no
   consort" ones, and in the lab a campaign after 2 returns matched a fresh start draw by draw for
   10 days of play. Without mods a campaign after 6 returns was still the same after 30 days.
+  From 1.6.1 a return also clears the AI's army strength caches, which the game empties only at
+  the end of each AI day: the AI army map mode (console `mapmode armyeval`) can fill them outside
+  it, and the next campaign could meet those entries. In the lab's tests they were always empty
+  at a return already.
 - **Canals.** A canal changes the map itself, and the map outlives the campaign. The plugin copies
   the map before the first canal and puts it back on a return. If it cannot be put back, that
   return restarts the game, as it does without the plugin.
@@ -85,7 +89,10 @@ no longer does anything.
   windows. From 1.6.0 Hamweard also frees those (the lab's fixes of 19 November 2026): the game's
   heap then keeps about 4 MB more live data per return with that save; over the first ten returns
   it also keeps about 0.5 GB of freed heap space committed, and after that the game's memory grows
-  by about 8 MB per return (lab, 20 returns in a row). A return took as long after 40 in a row as
+  by about 8 MB per return (lab, 20 returns in a row). From 1.6.1 it also frees the leaders the old
+  campaign leaves, which no part of the game deletes: about 3,400 per return from a new campaign
+  without mods and 7,100 with Anbennar, most of them mercenary captains, roughly 0.6 MB per return
+  without mods (lab, 21 November 2026). A return took as long after 40 in a row as
   at the start. When less than 1 GB of the system's commit limit is left, a return restarts the
   game instead.
 - **A long campaign kept memory it no longer used, until 1.3.2.** Each time the game recalculated
@@ -157,6 +164,10 @@ All runs were in the lab on one development machine. The
   10 days of play, and so was the save. On GOG 1.37.5.2 without mods a campaign after 6 returns
   matched a fresh one after 30 days. Steam without mods and GOG 1.37.5.0 were checked by their
   game addresses only.
+- **The return fixes of 1.6.1** (21 November 2026): the lab's reset oracle, a fresh process
+  against one after three returns, in five runs: vanilla 1444, a 1719 save, an 1821 save, Anbennar
+  and GOG 1.37.5.2. All 15 returns freed the old campaign's leaders and cleared the strength
+  caches without a crash, and every run had equal saves and the same number of random draws.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
 fourth campaign of such a series.
