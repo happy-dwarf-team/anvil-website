@@ -254,6 +254,8 @@ a game session starts, and plugins that depend on it are skipped without it.
 ## Anvil's settings file
 
 `anvil/anvil.toml` is optional. The Manager's **Plugins** page edits it for you.
+From Anvil 1.26 a file that does not parse, or a list of the wrong type, loads no plugin until it
+is fixed, and the log names the line: Anvil cannot tell then which plugins you turned off.
 
 ```toml
 enabled = true                # false starts the game without plugins
