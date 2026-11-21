@@ -18,7 +18,7 @@ Most calls return an `AnvilResult`: `ANVIL_OK` or an `ANVIL_ERROR_*` code.
 | `log` | Write a UTF-8 line to `anvil/anvil.log`, tagged with your plugin id. |
 | `plugin_dir` | Your read-only plugin folder. |
 | `data_dir` | Your writable folder, `anvil/data/<plugin-id>/`. |
-| `game` | The running game: `build_id` (`NULL` if unknown), `image_base`, `image_size`, and `sha256` once verified. |
+| `game` | The running game: `build_id` (`NULL` if unknown), `image_base`, `image_size`, and `sha256` once verified. Anvil sets `sha256` from another thread after the load, so in C++ read it with `host.game_sha256()` (SDK of Anvil 1.26), which reads it atomically and gives an empty string until then. |
 | `api_version`, `anvil_version` | The host's plugin API version (2) and Anvil version. |
 
 ## Changes
@@ -70,7 +70,11 @@ the redirected call. A mid hook that writes `cpu->rip` ends the chain there.
 A change whose bytes overlap another plugin's change at a different address is refused
 with `ANVIL_ERROR_CONFLICT`, and the log names both plugins. Identical byte patches share
 ownership. A hook whose relocated bytes contain `JRCXZ` or `LOOP*`, or that has fewer than
-5 declared bytes, is refused with `ANVIL_ERROR_UNSAFE_SITE`.
+5 declared bytes, is refused with `ANVIL_ERROR_UNSAFE_SITE`. From Anvil 1.26 so is a hook
+whose relocated bytes hold a short branch (`Jcc rel8`, `JMP rel8`) before their last
+instruction, whose overwritten bytes are all `??`, or which would copy bytes past the declared
+ones ([anvil#535](https://github.com/happy-dwarf-team/anvil/issues/535),
+[#536](https://github.com/happy-dwarf-team/anvil/issues/536)).
 
 ### Reading the game
 
@@ -136,7 +140,7 @@ All its events are published on the game's main thread:
 | `anvil-game.main_menu` | none | From Anvil 1.8: the main menu came up or went away. Ask the service's `main_menu`. |
 | `anvil-game.day`, `.month`, `.year` | `AnvilGameDateChange` | From Anvil 1.11: the date moved on, after the outer frame. `date`, `previous` and `days` say by how much, and the monthly and yearly updates are done by then. At most one of each per frame. Not for the first date of a session or across a load. |
 | `anvil-game.player` | `AnvilGamePlayerChange` | From Anvil 1.11: the player's country changed within a session. Not for the first country of a session. |
-| `anvil-game.war` | `AnvilGameWarChange` | From Anvil 1.11: a war started or ended, compared once a game day. Not for the wars a session starts with: ask `war_ids` then. |
+| `anvil-game.war` | `AnvilGameWarChange` | From Anvil 1.11: a war started or ended, compared once a game day. Not for the wars a session starts with: ask `war_ids` then. From Anvil 1.26 a war is told apart by its address, start date and original sides, so a new war the game puts at a gone war's address gives that war's end and then the new war's start. |
 | `anvil-game.pending_event` | `AnvilGamePendingChange` | From Anvil 1.21: an event of the player's own country came (`ANVIL_GAME_PENDING_ADDED`) or left (`ANVIL_GAME_PENDING_REMOVED`: chosen by the player, a plugin or the game), after the outer frame, also while the game is paused. Not for the events a session starts with, nor when the player's country changes: ask `pending_events` then. |
 | `anvil-game.oos` | `AnvilGameOosChange` | From Anvil 1.14: the session's [out-of-sync flags](#out-of-sync) changed, after the outer frame. `flags` and `previous` hold them now and before, `session` is the session's number. |
 

@@ -462,7 +462,7 @@ Declare the types named in `signature` and `type` before including the header.
 
 ```powershell
 anvil check <plugin folder> [--exe <eu4.exe>] [--format text|json|github] [--complete-translations]
-anvil check --game <game folder> [--format text|json|github]
+anvil check --game <game folder> [--format text|json|github] [--host-version <x.y.z>]
 ```
 
 - **Without `--exe`:** the schemas of the three files, names that `anvil gen` would refuse,
@@ -481,15 +481,22 @@ anvil check --game <game folder> [--format text|json|github]
   multiplayer.
 - **With `--exe`:** also the build, every symbol's bytes, memory kind, pointers, exports
   and values, and instruction boundaries: the declared bytes of a function or site must be
-  whole instructions, and a hook must not relocate `JRCXZ`, `JECXZ` or `LOOP*`. It
-  rewrites `symbols.lock`.
+  whole instructions, and a hook must not relocate `JRCXZ`, `JECXZ` or `LOOP*`. From Anvil
+  1.26 also a short branch before the last relocated instruction, and a hook whose
+  overwritten bytes are all `??`, as the loader [refuses them](../api/#chains). It
+  rewrites `symbols.lock`. From Anvil 1.26 an exe of a build the file does not declare, or
+  one this Anvil does not know, is reported and leaves `symbols.lock` alone.
 - **With `--game`:** checks every plugin in the game's `anvil/plugins/` and resolves them as
   the loader would: what loads in which order, what is skipped and why, and warnings for
   plugins whose code symbols overlap. From Anvil 1.24 it also shows the next start's plan:
   whether that start is in safe mode, and what it writes before any plugin loads (approved
   copies to make or remove, retired settings to move into `anvil.toml`). The JSON report has
   them in `next_start` (`safe_mode`, `unfinished_starts`, and `writes` with `remove`, `copies`
-  and `retired`).
+  and `retired`). From Anvil 1.26 the plugins' `anvil` ranges are checked against the Anvil
+  installed in that folder (the version of its `version.dll`), as its loader checks them, not
+  against the CLI's own version; without an Anvil there it uses its own and says so.
+  `--host-version` sets the version to check against. An `anvil.toml` that does not parse,
+  or a list of the wrong type, is a problem, since the loader then loads no plugin.
 - **`--format github`** prints `::error file=…,line=…` annotations, so run it from the
   repository root in GitHub Actions.
 

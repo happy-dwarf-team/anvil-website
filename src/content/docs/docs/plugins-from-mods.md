@@ -54,7 +54,10 @@ also stops its plugins, but keeps the approval for when you enable the mod again
 - **The approved copy is missing:** Anvil makes it again from the mod's files at the next start
   and checks it against the hash you approved. From Anvil 1.24, if it cannot make the copy, the
   plugin fails at that start with the reason (`cannot make its approved copy: …` in the log), and
-  so do the plugins that need it.
+  so do the plugins that need it. From Anvil 1.26 the same goes for a copy whose files changed,
+  for example a damaged file on the drive: Anvil checks the copy against your approval at each
+  start and makes it again while the mod still has the approved files. If the mod's files changed
+too, the plugin waits for your approval again.
 - **Safe mode** loads no plugins from mods.
 - **Zipped mods** cannot carry plugins.
 

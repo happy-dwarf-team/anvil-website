@@ -39,7 +39,9 @@ Both are a `version.dll` like Anvil, so they cannot run together. From Anvil 1.1
 names the patch it finds, and the button reads **Replace EU4DLL** (or **Replace EU4 Unicode
 Patch**). It moves the patch's files, its `version.dll` included, to a new folder
 `anvil-legacy-backup` in the game folder and installs Anvil. Other files in the patch's
-`plugins` folder stay where they are, and the Manager lists them.
+`plugins` folder stay where they are, and the Manager lists them. From Anvil 1.26, if a replace
+was interrupted (the Manager closed or the computer turned off), click the button again: it
+finishes the replace and keeps everything in the same backup.
 [Mei](../../plugins/mei/) shows the Chinese, Japanese or Korean text of your translation mod
 instead.
 

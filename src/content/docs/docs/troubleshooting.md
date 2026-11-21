@@ -30,6 +30,8 @@ description: What to do when a plugin does not work, and how to report a problem
 | A plugin does nothing in ironman or multiplayer | One that changes gameplay is suspended there; the log says `[<plugin-id>] suspended: affects gameplay and …`. See [Multiplayer, ironman and achievements](../multiplayer-ironman/). |
 | The game crashes or does not start | [Start once without plugins](#start-once-without-plugins), then turn them back on one by one. See also [Crash reports and safe mode](#crash-reports-and-safe-mode). With DXVK (Proton, or installed on Windows) in EU4's **Fullscreen** mode, choose **Windowed (Fullscreen)**: see [DXVK and Fullscreen](../faq/#dxvk-and-fullscreen). |
 | A modded game crashes each time the same event or decision runs, also with plugins off | A mod may name a province the map does not have. See [A mod's script names a province the map does not have](#a-mods-script-names-a-province-the-map-does-not-have). |
+| A save crashes the game once it runs on, also with plugins off | The save may hold more ideas in a group than the group has now. See [A save has more ideas in a group than the group has](#a-save-has-more-ideas-in-a-group-than-the-group-has). |
+| No plugin loads after you edited `anvil/anvil.toml` | From Anvil 1.26 a file that does not parse loads no plugin until it is fixed, so a plugin you turned off does not load by mistake. The log says `anvil.toml cannot be read (line …)`. Fix that line, or delete the file to go back to the defaults; the Manager's **Plugins** page writes a new one when you change something. |
 | You want the game back as it was | [Turn plugins off](../install-plugins/#turn-a-plugin-off-or-remove-it) or [uninstall Anvil](../install/#uninstall). Both take effect at the next start, and `eu4.exe` was never changed. |
 
 ## Read the log
@@ -120,6 +122,15 @@ events, decisions and other script it finds on the crashed game's stack, innermo
 scan of the stack, so it can also name script that ran just before. For a crash in a modded game,
 it points to the mod whose script was running.
 
+From Anvil 1.26 `anvil-game` adds a note for two crashes that are the game's own, which a report
+used to blame on a plugin ([anvil#426](https://github.com/happy-dwarf-team/anvil/issues/426)):
+
+- **A province the map does not have.** The note names the number, for example "where the entry
+  of province 5075 would be …, but this map has provinces 1 to 4941". See
+  [A mod's script names a province the map does not have](#a-mods-script-names-a-province-the-map-does-not-have).
+- **Too many ideas in a group.** The note says that the game was adding up a country's idea
+  modifiers. See [A save has more ideas in a group than the group has](#a-save-has-more-ideas-in-a-group-than-the-group-has).
+
 After two starts in a row that ended before the game was ready (a crash, a hang or a killed
 process), the next start is in safe mode. It loads only `anvil-game` and `anvil-overlay`, so the
 panel can tell you why, and the other plugins are listed as `skipped — safe mode`. The start
@@ -139,9 +150,23 @@ To find the mod:
 - In [Etch](https://etch.happydwarf.dev/) 2.13 or newer, open your playset and run **Etch: Check
   Province IDs and Names in the Playset**. Problems lists every such number with its mod, file and line.
 - Or search your mods' `events`, `decisions`, `missions` and `common` folders for the number.
-- The notes of a crash report (above) name the event or decision that was running.
+- The notes of a crash report (above) name the event or decision that was running, and from
+  Anvil 1.26 the province number.
 
 Tell the mod's author; the fix is in their script.
+
+### A save has more ideas in a group than the group has
+
+The game checks how many ideas a country takes in a group while you play, but not when it loads
+a save. If a save has more ideas taken in a group than the group has now, for example after a mod
+update removed an idea from it, the game reads past the group's end on the daily update. That
+crashes the game once it runs on from that save, also with every plugin off. From Anvil 1.26 the
+crash report's notes say so.
+
+To find the country, open an uncompressed copy of the save in a text editor and search for
+`active_idea_groups={`. Each country has one, with lines such as `SWE_ideas=7`; a number larger
+than that group's idea count (7 for most groups) is the one. Load the save with the mod version
+it was made with, or tell the authors of the mod that changed the group.
 
 ## Start once without plugins
 
