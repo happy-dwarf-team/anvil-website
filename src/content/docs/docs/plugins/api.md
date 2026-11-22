@@ -252,7 +252,7 @@ a new game build may leave the world out.
 | --- | --- |
 | `player(&tag)` | The country the game treats as the player's |
 | `province_limit()` | Valid province IDs are 1 up to this, exclusive |
-| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland |
+| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland; from 1.26 whether it is part of the Holy Roman Empire and a city (`ANVIL_GAME_PROVINCE_HRE`, `_CITY`) |
 | `province_name(id, buffer, capacity, &length)` | The name the game shows, in UTF-8 |
 | `province_cores(id, tags, capacity, &count)` | The countries with a core |
 | `country(tag, &out)` | Capital, province count, treasury, stability, prestige, manpower, income |
@@ -290,7 +290,7 @@ a new game build may leave the world out.
 | `exploration_regions(&fleet, explore, regions, capacity, &count)` | The sea regions (`ANVIL_GAME_EXPLORE_SEA`) or coasts (`ANVIL_GAME_EXPLORE_COAST`) a fleet's Explore dialog offers, in the game's order; a region is its index in the map's regions. Not whether the fleet may explore now (port, explorer, ships): the dialog's button checks that (1.25) |
 | `region_name(region, ...)`, `region_key(region, ...)` | A region's name as the game shows it, and its script key such as `baltic_sea_region` (1.25) |
 | `province_triggered_modifier_keys(province, keys, capacity, &length)` | The keys of the province triggered modifiers the province was given (`add_province_triggered_modifier`), in the game's order, whether or not their triggers hold now; with `province_timed_modifier_keys` they are every key `has_province_modifier` looks for (1.25) |
-| `province_key(province, key, ...)`, `country_key(tag, key, ...)` | The script key of a province's religion, culture or trade goods, or of a country's state religion or primary culture (`ANVIL_GAME_KEY_RELIGION`, `_CULTURE`, `_TRADE_GOODS`), as the game's files write it, such as `orthodox` or `grain`; `ANVIL_ERROR_NOT_FOUND` when there is none (1.26) |
+| `province_key(province, key, ...)`, `country_key(tag, key, ...)` | The script key of a province's religion, culture, trade goods, the group of its religion or culture, or its area, region, superregion, continent or trade node, or of a country's state religion, primary culture and their groups (`ANVIL_GAME_KEY_RELIGION`, `_CULTURE`, `_TRADE_GOODS`, `_RELIGION_GROUP`, `_CULTURE_GROUP`, `_AREA`, `_REGION`, `_SUPERREGION`, `_CONTINENT`, `_TRADE_NODE`), as the game's files write it, such as `orthodox`, `grain` or `scandinavia_region`; `ANVIL_ERROR_NOT_FOUND` when there is none (1.26) |
 
 The calls marked 1.15, 1.20, 1.21, 1.22, 1.23, 1.24, 1.25 and 1.26 were added within version 1: depend on `anvil-game` with
 `version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"`, `"^1.24.0"`, `"^1.25.0"` or `"^1.26.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
@@ -649,8 +649,19 @@ cores = {
   without an owner does not pass it.
 - `religion = orthodox`, `culture = swedish` and `trade_goods = grain` pass the provinces with that
   religion, culture or trade goods, and with `owner = yes` `religion` and `culture` read the
-  owner's state religion and primary culture. Write the key from the game's files, which can
-  differ from the name it shows: Moskva's culture in 1719 is `russian_new`.
+  owner's state religion and primary culture. `religion_group = muslim` and
+  `culture_group = scandinavian` do the same for their groups. Write the key from the game's
+  files, which can differ from the name it shows: Moskva's culture in 1719 is `russian_new`,
+  which is in the `slavic` group, not `east_slavic`.
+- `area = uppland_area`, `region = scandinavia_region`, `superregion = europe_superregion` and
+  `continent = europe` pass the provinces in that place, with the keys of the game's
+  `map/area.txt`, `region.txt`, `superregion.txt` and `continent.txt`. They are the province's,
+  so they refuse `owner = yes`.
+- `trade_node = baltic_sea` passes the provinces of that trade node, with the keys of the game's
+  `common/tradenodes`. It is the province's, so it refuses `owner = yes`.
+- `capital = yes` passes a province that is its owner's capital and `capital = no` one that is
+  not, `hre = yes` or `no` whether it is part of the Holy Roman Empire, and `city = yes` or `no`
+  whether it is a city or still a colony; a province without an owner passes none of them.
 - `scale = { low high }` with `high_color = { r g b }` colours from `color` at `low` to
   `high_color` at `high`, and the legend shows both ends.
 - A province that passes no rule keeps its political colour; a last
@@ -808,9 +819,12 @@ anvil::plugin!(Hello);
   0.1.14 a province's triggered modifier keys (`World::province_triggered_modifiers`).
   From `anvil-sdk` 0.3 (Anvil 1.26), `anvil::map` sets a legend (`MapModes::set_legend`),
   `anvil::panel` has swatch rows (`Row::swatch`), and `anvil::world` reads religion, culture and
-  trade goods keys (`World::province_religion`, `province_culture`, `province_trade_goods`,
-  `country_religion`, `country_culture`). 0.3 changes one thing: `Row` is
-  `#[non_exhaustive]`, so a `match` on it needs a `_` arm. Write `anvil-sdk = "0.3"` in
+  trade goods keys, their groups and a province's places (`World::province_religion`,
+  `province_culture`, `province_trade_goods`, `country_religion`, `country_culture`, the
+  `_religion_group` and `_culture_group` methods, `province_area`, `province_region`,
+  `province_superregion`, `province_continent`, `province_trade_node`), and `Province` has `hre`
+  and `city`. 0.3 changes two things: `Row` is `#[non_exhaustive]`, so a `match` on it needs a
+  `_` arm, and code that builds a `Province` itself needs the two new fields. Write `anvil-sdk = "0.3"` in
   `Cargo.toml`.
   A function the running service
   is too old to have answers `Unsupported`.
