@@ -81,7 +81,11 @@ The result then names the reason.
 your computer, your mods, the versions, the plugin's state and fields in each start, and the
 JSON itself. One switch leaves out the Steam Workshop ids of your mods.
 
-- **Send** uploads it once to the Anvil maintainers. Nothing is sent without this click.
+- **Send** uploads it once to the Anvil maintainers. Nothing is sent without this click. The
+  receiver takes a limited number of reports per day. From Anvil 1.26, when that limit is
+  reached the Manager says **The receiver cannot take more reports today. Try again tomorrow.**
+  instead of asking you to try again later. When a send fails, the line under it gives the
+  reason, and you can copy the report instead.
 - **Copy** puts the same JSON on your clipboard, for example for a
   [Bellows performance report](https://github.com/happy-dwarf-team/bellows/issues/new?template=performance_report.yml).
 

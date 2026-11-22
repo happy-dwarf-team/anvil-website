@@ -18,7 +18,7 @@ Most calls return an `AnvilResult`: `ANVIL_OK` or an `ANVIL_ERROR_*` code.
 | `log` | Write a UTF-8 line to `anvil/anvil.log`, tagged with your plugin id. |
 | `plugin_dir` | Your read-only plugin folder. |
 | `data_dir` | Your writable folder, `anvil/data/<plugin-id>/`. |
-| `game` | The running game: `build_id` (`NULL` if unknown), `image_base`, `image_size`, and `sha256` once verified. |
+| `game` | The running game: `build_id` (`NULL` if unknown), `image_base`, `image_size`, and `sha256` once verified. Anvil sets `sha256` from another thread after the load, so in C++ read it with `host.game_sha256()` (SDK of Anvil 1.26), which reads it atomically and gives an empty string until then. |
 | `api_version`, `anvil_version` | The host's plugin API version (2) and Anvil version. |
 
 ## Changes
@@ -70,7 +70,11 @@ the redirected call. A mid hook that writes `cpu->rip` ends the chain there.
 A change whose bytes overlap another plugin's change at a different address is refused
 with `ANVIL_ERROR_CONFLICT`, and the log names both plugins. Identical byte patches share
 ownership. A hook whose relocated bytes contain `JRCXZ` or `LOOP*`, or that has fewer than
-5 declared bytes, is refused with `ANVIL_ERROR_UNSAFE_SITE`.
+5 declared bytes, is refused with `ANVIL_ERROR_UNSAFE_SITE`. From Anvil 1.26 so is a hook
+whose relocated bytes hold a short branch (`Jcc rel8`, `JMP rel8`) before their last
+instruction, whose overwritten bytes are all `??`, or which would copy bytes past the declared
+ones ([anvil#535](https://github.com/happy-dwarf-team/anvil/issues/535),
+[#536](https://github.com/happy-dwarf-team/anvil/issues/536)).
 
 ### Reading the game
 
@@ -136,7 +140,7 @@ All its events are published on the game's main thread:
 | `anvil-game.main_menu` | none | From Anvil 1.8: the main menu came up or went away. Ask the service's `main_menu`. |
 | `anvil-game.day`, `.month`, `.year` | `AnvilGameDateChange` | From Anvil 1.11: the date moved on, after the outer frame. `date`, `previous` and `days` say by how much, and the monthly and yearly updates are done by then. At most one of each per frame. Not for the first date of a session or across a load. |
 | `anvil-game.player` | `AnvilGamePlayerChange` | From Anvil 1.11: the player's country changed within a session. Not for the first country of a session. |
-| `anvil-game.war` | `AnvilGameWarChange` | From Anvil 1.11: a war started or ended, compared once a game day. Not for the wars a session starts with: ask `war_ids` then. |
+| `anvil-game.war` | `AnvilGameWarChange` | From Anvil 1.11: a war started or ended, compared once a game day. Not for the wars a session starts with: ask `war_ids` then. From Anvil 1.26 a war is told apart by its address, start date and original sides, so a new war the game puts at a gone war's address gives that war's end and then the new war's start. |
 | `anvil-game.pending_event` | `AnvilGamePendingChange` | From Anvil 1.21: an event of the player's own country came (`ANVIL_GAME_PENDING_ADDED`) or left (`ANVIL_GAME_PENDING_REMOVED`: chosen by the player, a plugin or the game), after the outer frame, also while the game is paused. Not for the events a session starts with, nor when the player's country changes: ask `pending_events` then. |
 | `anvil-game.oos` | `AnvilGameOosChange` | From Anvil 1.14: the session's [out-of-sync flags](#out-of-sync) changed, after the outer frame. `flags` and `previous` hold them now and before, `session` is the session's number. |
 
@@ -248,7 +252,7 @@ a new game build may leave the world out.
 | --- | --- |
 | `player(&tag)` | The country the game treats as the player's |
 | `province_limit()` | Valid province IDs are 1 up to this, exclusive |
-| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland |
+| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland; from 1.26 whether it is part of the Holy Roman Empire, a city and coastal (`ANVIL_GAME_PROVINCE_HRE`, `_CITY`, `_COASTAL`) |
 | `province_name(id, buffer, capacity, &length)` | The name the game shows, in UTF-8 |
 | `province_cores(id, tags, capacity, &count)` | The countries with a core |
 | `country(tag, &out)` | Capital, province count, treasury, stability, prestige, manpower, income |
@@ -286,16 +290,17 @@ a new game build may leave the world out.
 | `exploration_regions(&fleet, explore, regions, capacity, &count)` | The sea regions (`ANVIL_GAME_EXPLORE_SEA`) or coasts (`ANVIL_GAME_EXPLORE_COAST`) a fleet's Explore dialog offers, in the game's order; a region is its index in the map's regions. Not whether the fleet may explore now (port, explorer, ships): the dialog's button checks that (1.25) |
 | `region_name(region, ...)`, `region_key(region, ...)` | A region's name as the game shows it, and its script key such as `baltic_sea_region` (1.25) |
 | `province_triggered_modifier_keys(province, keys, capacity, &length)` | The keys of the province triggered modifiers the province was given (`add_province_triggered_modifier`), in the game's order, whether or not their triggers hold now; with `province_timed_modifier_keys` they are every key `has_province_modifier` looks for (1.25) |
+| `province_key(province, key, ...)`, `country_key(tag, key, ...)` | The script key of a province's religion, culture, trade goods, the group of its religion or culture, or its area, region, superregion, continent or trade node, or of a country's state religion, primary culture and their groups (`ANVIL_GAME_KEY_RELIGION`, `_CULTURE`, `_TRADE_GOODS`, `_RELIGION_GROUP`, `_CULTURE_GROUP`, `_AREA`, `_REGION`, `_SUPERREGION`, `_CONTINENT`, `_TRADE_NODE`), as the game's files write it, such as `orthodox`, `grain` or `scandinavia_region`; `ANVIL_ERROR_NOT_FOUND` when there is none (1.26) |
 
-The calls marked 1.15, 1.20, 1.21, 1.22, 1.23, 1.24 and 1.25 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"`, `"^1.24.0"` or `"^1.25.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
+The calls marked 1.15, 1.20, 1.21, 1.22, 1.23, 1.24, 1.25 and 1.26 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"`, `"^1.24.0"`, `"^1.25.0"` or `"^1.26.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
 `ANVIL_GAME_WORLD_HAS(world, province_variable_names)`, `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
 (`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view),
 `ANVIL_GAME_WORLD_HAS(world, country_subjects)`, `ANVIL_GAME_WORLD_HAS(world, player_tags)` or
 `ANVIL_GAME_WORLD_HAS(world, unit_at)`, `ANVIL_GAME_WORLD_HAS(world, region_key)` or
-`ANVIL_GAME_WORLD_HAS(world, province_triggered_modifier_keys)` before calling them. The three map
-calls of 1.24 and the four calls of 1.25 answer `ANVIL_ERROR_NOT_DECLARED` on a game build whose port
-leaves them out.
+`ANVIL_GAME_WORLD_HAS(world, province_triggered_modifier_keys)` or `ANVIL_GAME_WORLD_HAS(world, country_key)`
+before calling them. The three map calls of 1.24, the four calls of 1.25 and the two of 1.26 answer
+`ANVIL_ERROR_NOT_DECLARED` on a game build whose port leaves them out.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -457,6 +462,10 @@ panels->show(panel, 1);
 - The player can close the window; its switch above the list of the panel's Plugins tab brings it back.
 - Text is UTF-8 and yours to translate: `language()` gives the player's language. Chinese,
   Japanese and Korean come from the fonts Windows ships.
+- From Anvil 1.26.0 a row of the kind `ANVIL_PANEL_SWATCH` draws a square of its `color`
+  (`0x00RRGGBB`) before its label, as a map mode's legend does. `AnvilPanelRow` gains `color` and
+  `reserved2` at its end. Pass `sizeof(AnvilPanelRow)` as the row size. Rows of the old size still
+  work, and an older overlay refuses the kind with `ANVIL_ERROR_INVALID_ARGUMENT`.
 - The overlay runs on Direct3D 9: on the OpenGL renderer the calls work and nothing is drawn.
 
 For a window in the game's own interface you need your own addresses; there is no service for
@@ -592,9 +601,21 @@ in the province's tooltip.
   does, after the next frame of the main loop; `anvil-map.shown` follows. It changes only what
   the map shows, and a request still waiting when the session ends is dropped. Check
   `ANVIL_MAP_HAS(service, show)` or depend on `anvil-map` with `version = "^1.24.0"`.
+- From Anvil 1.26.0, `set_legend(mode, entries, count, sizeof(AnvilMapLegendEntry))` gives the
+  mode a legend: up to 32 entries of a colour and a label. While the mode is shown, anvil-map shows
+  the legend in a window of Anvil's overlay titled with the mode's label, and hides it with the
+  mode. Check `ANVIL_MAP_HAS(service, set_legend)` or depend on `anvil-map` with
+  `version = "^1.26.0"`.
 - It changes nothing in the game, so it needs no `affects_gameplay = true`. Depend on `anvil-map`
   with `version = "^1"`. Example:
   [`player-cores`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/player-cores).
+
+#### Map modes from a mod's files
+
+From Anvil 1.26 a mod can add a map mode with no plugin and no code: a text file in
+`<mod>/anvil/map_modes/` whose rules colour the provinces, with a legend. anvil-map registers
+those modes on this same service, so they share its 13 numbers with the plugins' modes. The
+files, their rules and examples are on [Map modes from mod files](../map-mode-files/).
 
 ### Script effects and the day end
 
@@ -618,7 +639,9 @@ plugins are on:
   lowercase. It is true in a single-player campaign when that plugin is loaded and not
   suspended, and false otherwise: in multiplayer, in the menu, while a save loads, and without
   Anvil, where the game takes it as a DLC it does not know and says nothing in `error.log`.
-  Anvil changes no file and no DLC list, so the game's checksum stays the same.
+  Anvil changes no file and no DLC list, so the game's checksum stays the same. Before Anvil 1.26
+  it kept the previous campaign's answer while a save loaded from a running campaign, so a save
+  loaded into ironman could read yes for a plugin suspended there.
 
   ```
   if = {
@@ -730,6 +753,15 @@ anvil::plugin!(Hello);
   mode (`MapModes::show`); from 0.1.13 `anvil::world` lists a fleet's exploration regions and
   names them (`World::exploration_regions`, `World::region_name`, `World::region_key`), and from
   0.1.14 a province's triggered modifier keys (`World::province_triggered_modifiers`).
+  From `anvil-sdk` 0.3 (Anvil 1.26), `anvil::map` sets a legend (`MapModes::set_legend`),
+  `anvil::panel` has swatch rows (`Row::swatch`), and `anvil::world` reads religion, culture and
+  trade goods keys, their groups and a province's places (`World::province_religion`,
+  `province_culture`, `province_trade_goods`, `country_religion`, `country_culture`, the
+  `_religion_group` and `_culture_group` methods, `province_area`, `province_region`,
+  `province_superregion`, `province_continent`, `province_trade_node`), and `Province` has `hre`,
+  `city` and `coastal`. 0.3 changes two things: `Row` is `#[non_exhaustive]`, so a `match` on it needs a
+  `_` arm, and code that builds a `Province` itself needs the three new fields. Write `anvil-sdk = "0.3"` in
+  `Cargo.toml`.
   A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
