@@ -100,7 +100,9 @@ no longer does anything.
   1,300 after the 1719 save and 800 after a new campaign without mods, about 0.5 MB per return
   after that save (lab, 22 November 2026). It also frees the modifiers the game gives a country
   for each of its centers of trade, lost at every return and every load of a save: about 0.1 MB
-  per return after the 1719 save (lab heap trace, 22 November 2026). A return took as long after
+  per return after the 1719 save (lab heap trace, 22 November 2026). A save loaded from the
+  in-game menu resets the world the same way and lost the same, 4–5 MB per load of that save;
+  from 1.7.0 Hamweard frees it there too (same trace). A return took as long after
   40 in a row as at the start. When less than 1 GB of the system's commit limit is left, a return
   restarts the game instead.
 - **A long campaign kept memory it no longer used, until 1.3.2.** Each time the game recalculated
