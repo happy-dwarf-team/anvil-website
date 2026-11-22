@@ -58,6 +58,11 @@ also stops its plugins, but keeps the approval for when you enable the mod again
   for example a damaged file on the drive: Anvil checks the copy against your approval at each
   start and makes it again while the mod still has the approved files. If the mod's files changed
 too, the plugin waits for your approval again.
+- **A Workshop update while the game starts:** from Anvil 1.26, Anvil reads a plugin's
+  `plugin.toml`, its symbols and its settings from the same bytes it hashed, with the files locked.
+  An update in the middle of a start cannot pair the plugin you approved with files you did not.
+- **`anvil/map_modes/`** in a mod holds [map modes from files](../plugins/api/#map-modes-from-a-mods-files)
+  (Anvil 1.26), not a plugin: it needs no approval.
 - **Safe mode** loads no plugins from mods.
 - **Zipped mods** cannot carry plugins.
 

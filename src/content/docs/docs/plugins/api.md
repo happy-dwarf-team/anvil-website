@@ -461,6 +461,10 @@ panels->show(panel, 1);
 - The player can close the window; its switch above the list of the panel's Plugins tab brings it back.
 - Text is UTF-8 and yours to translate: `language()` gives the player's language. Chinese,
   Japanese and Korean come from the fonts Windows ships.
+- From Anvil 1.26.0 a row of the kind `ANVIL_PANEL_SWATCH` draws a square of its `color`
+  (`0x00RRGGBB`) before its label, as a map mode's legend does. `AnvilPanelRow` gains `color` and
+  `reserved2` at its end. Pass `sizeof(AnvilPanelRow)` as the row size. Rows of the old size still
+  work, and an older overlay refuses the kind with `ANVIL_ERROR_INVALID_ARGUMENT`.
 - The overlay runs on Direct3D 9: on the OpenGL renderer the calls work and nothing is drawn.
 
 For a window in the game's own interface you need your own addresses; there is no service for
@@ -596,9 +600,46 @@ in the province's tooltip.
   does, after the next frame of the main loop; `anvil-map.shown` follows. It changes only what
   the map shows, and a request still waiting when the session ends is dropped. Check
   `ANVIL_MAP_HAS(service, show)` or depend on `anvil-map` with `version = "^1.24.0"`.
+- From Anvil 1.26.0, `set_legend(mode, entries, count, sizeof(AnvilMapLegendEntry))` gives the
+  mode a legend: up to 32 entries of a colour and a label. While the mode is shown, anvil-map shows
+  the legend in a window of Anvil's overlay titled with the mode's label, and hides it with the
+  mode. Check `ANVIL_MAP_HAS(service, set_legend)` or depend on `anvil-map` with
+  `version = "^1.26.0"`.
 - It changes nothing in the game, so it needs no `affects_gameplay = true`. Depend on `anvil-map`
   with `version = "^1"`. Example:
   [`player-cores`](https://github.com/happy-dwarf-team/anvil/tree/main/examples/player-cores).
+
+#### Map modes from a mod's files
+
+From Anvil 1.26 a mod can add a map mode with no plugin and no code: a text file in
+`<mod>/anvil/map_modes/`, in the game's script syntax. Each block is a mode with a button on the
+minimap's list. Its rules read a province's flags, variables and modifiers, and the first rule a
+province passes gives its colour, its line in the tooltip and its entry in the legend.
+
+```
+holy_sites = {
+    label = "Holy sites"
+    tab = 4
+    rule = { flag = my_holy_site color = { 224 176 0 } label = "Holy site" }
+    rule = { variable = my_faith at_least = 5 color = { 128 64 192 } label = "Faith 5 or more" }
+    rule = { modifier = local_missionary_strength above = 0.01 color = { 64 128 255 } label = "Missionaries" }
+}
+```
+
+- A province that passes no rule keeps its political colour; a last
+  `rule = { always = yes ... }` colours the rest.
+- The bounds are `at_least`, `at_most`, `above` and `below`, with at most three decimals. Without
+  one, a `variable` or `modifier` rule passes when the value is not 0. A modifier is the
+  province's own value, not its owner's.
+- The colours are computed when the player shows the mode and each month while it stays shown.
+- Anvil reads the files of the playset's mods once, when the game has started, so a change needs a
+  restart. A file with the same name in a later mod replaces an earlier one. The game does not read
+  `anvil/`, so the files leave its checksum alone.
+- A mistake leaves that mode out and writes the file and the line to `anvil/anvil.log`.
+- A mode changes nothing in the game, so it works in ironman and multiplayer. It also colours
+  provinces under terra incognita.
+- The player needs Anvil 1.26 or newer. All the keys are in the
+  [specification](https://github.com/happy-dwarf-team/anvil/blob/main/docs/spec/map-mode-files-v1.md).
 
 ### Script effects and the day end
 
@@ -622,7 +663,9 @@ plugins are on:
   lowercase. It is true in a single-player campaign when that plugin is loaded and not
   suspended, and false otherwise: in multiplayer, in the menu, while a save loads, and without
   Anvil, where the game takes it as a DLC it does not know and says nothing in `error.log`.
-  Anvil changes no file and no DLC list, so the game's checksum stays the same.
+  Anvil changes no file and no DLC list, so the game's checksum stays the same. Before Anvil 1.26
+  it kept the previous campaign's answer while a save loaded from a running campaign, so a save
+  loaded into ironman could read yes for a plugin suspended there.
 
   ```
   if = {
@@ -734,6 +777,10 @@ anvil::plugin!(Hello);
   mode (`MapModes::show`); from 0.1.13 `anvil::world` lists a fleet's exploration regions and
   names them (`World::exploration_regions`, `World::region_name`, `World::region_key`), and from
   0.1.14 a province's triggered modifier keys (`World::province_triggered_modifiers`).
+  From `anvil-sdk` 0.3 (Anvil 1.26), `anvil::map` sets a legend (`MapModes::set_legend`) and
+  `anvil::panel` has swatch rows (`Row::swatch`). 0.3 changes one thing: `Row` is
+  `#[non_exhaustive]`, so a `match` on it needs a `_` arm. Write `anvil-sdk = "0.3"` in
+  `Cargo.toml`.
   A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays
