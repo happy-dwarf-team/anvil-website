@@ -290,16 +290,17 @@ a new game build may leave the world out.
 | `exploration_regions(&fleet, explore, regions, capacity, &count)` | The sea regions (`ANVIL_GAME_EXPLORE_SEA`) or coasts (`ANVIL_GAME_EXPLORE_COAST`) a fleet's Explore dialog offers, in the game's order; a region is its index in the map's regions. Not whether the fleet may explore now (port, explorer, ships): the dialog's button checks that (1.25) |
 | `region_name(region, ...)`, `region_key(region, ...)` | A region's name as the game shows it, and its script key such as `baltic_sea_region` (1.25) |
 | `province_triggered_modifier_keys(province, keys, capacity, &length)` | The keys of the province triggered modifiers the province was given (`add_province_triggered_modifier`), in the game's order, whether or not their triggers hold now; with `province_timed_modifier_keys` they are every key `has_province_modifier` looks for (1.25) |
+| `province_key(province, key, ...)`, `country_key(tag, key, ...)` | The script key of a province's religion, culture or trade goods, or of a country's state religion or primary culture (`ANVIL_GAME_KEY_RELIGION`, `_CULTURE`, `_TRADE_GOODS`), as the game's files write it, such as `orthodox` or `grain`; `ANVIL_ERROR_NOT_FOUND` when there is none (1.26) |
 
-The calls marked 1.15, 1.20, 1.21, 1.22, 1.23, 1.24 and 1.25 were added within version 1: depend on `anvil-game` with
-`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"`, `"^1.24.0"` or `"^1.25.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
+The calls marked 1.15, 1.20, 1.21, 1.22, 1.23, 1.24, 1.25 and 1.26 were added within version 1: depend on `anvil-game` with
+`version = "^1.15.0"`, `"^1.20.0"`, `"^1.21.0"`, `"^1.22.0"`, `"^1.23.0"`, `"^1.24.0"`, `"^1.25.0"` or `"^1.26.0"`, or check `ANVIL_GAME_WORLD_HAS(world, selected_units)`,
 `ANVIL_GAME_WORLD_HAS(world, province_variable_names)`, `ANVIL_GAME_WORLD_HAS(world, country_statistics)`
 (`ANVIL_GAME_WORLD_HAS(world, province_view)` for the timed modifiers and the province view),
 `ANVIL_GAME_WORLD_HAS(world, country_subjects)`, `ANVIL_GAME_WORLD_HAS(world, player_tags)` or
 `ANVIL_GAME_WORLD_HAS(world, unit_at)`, `ANVIL_GAME_WORLD_HAS(world, region_key)` or
-`ANVIL_GAME_WORLD_HAS(world, province_triggered_modifier_keys)` before calling them. The three map
-calls of 1.24 and the four calls of 1.25 answer `ANVIL_ERROR_NOT_DECLARED` on a game build whose port
-leaves them out.
+`ANVIL_GAME_WORLD_HAS(world, province_triggered_modifier_keys)` or `ANVIL_GAME_WORLD_HAS(world, country_key)`
+before calling them. The three map calls of 1.24, the four calls of 1.25 and the two of 1.26 answer
+`ANVIL_ERROR_NOT_DECLARED` on a game build whose port leaves them out.
 
 - **When:** only on the main thread after a frame, in a handler of an `anvil-game` event or in
   `run_on_main_thread` work, while a session runs. Anywhere else a call answers
@@ -646,6 +647,10 @@ cores = {
   the `value` `treasury`, `stability`, `prestige`, `manpower`, `monthly_income` or `provinces`,
   `subject = yes` (the owner has an overlord) or `subject_of = RUS` (that overlord). A province
   without an owner does not pass it.
+- `religion = orthodox`, `culture = swedish` and `trade_goods = grain` pass the provinces with that
+  religion, culture or trade goods, and with `owner = yes` `religion` and `culture` read the
+  owner's state religion and primary culture. Write the key from the game's files, which can
+  differ from the name it shows: Moskva's culture in 1719 is `russian_new`.
 - `scale = { low high }` with `high_color = { r g b }` colours from `color` at `low` to
   `high_color` at `high`, and the legend shows both ends.
 - A province that passes no rule keeps its political colour; a last
@@ -801,8 +806,10 @@ anvil::plugin!(Hello);
   mode (`MapModes::show`); from 0.1.13 `anvil::world` lists a fleet's exploration regions and
   names them (`World::exploration_regions`, `World::region_name`, `World::region_key`), and from
   0.1.14 a province's triggered modifier keys (`World::province_triggered_modifiers`).
-  From `anvil-sdk` 0.3 (Anvil 1.26), `anvil::map` sets a legend (`MapModes::set_legend`) and
-  `anvil::panel` has swatch rows (`Row::swatch`). 0.3 changes one thing: `Row` is
+  From `anvil-sdk` 0.3 (Anvil 1.26), `anvil::map` sets a legend (`MapModes::set_legend`),
+  `anvil::panel` has swatch rows (`Row::swatch`), and `anvil::world` reads religion, culture and
+  trade goods keys (`World::province_religion`, `province_culture`, `province_trade_goods`,
+  `country_religion`, `country_culture`). 0.3 changes one thing: `Row` is
   `#[non_exhaustive]`, so a `match` on it needs a `_` arm. Write `anvil-sdk = "0.3"` in
   `Cargo.toml`.
   A function the running service
