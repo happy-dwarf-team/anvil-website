@@ -252,7 +252,7 @@ a new game build may leave the world out.
 | --- | --- |
 | `player(&tag)` | The country the game treats as the player's |
 | `province_limit()` | Valid province IDs are 1 up to this, exclusive |
-| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland; from 1.26 whether it is part of the Holy Roman Empire and a city (`ANVIL_GAME_PROVINCE_HRE`, `_CITY`) |
+| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland; from 1.26 whether it is part of the Holy Roman Empire, a city and coastal (`ANVIL_GAME_PROVINCE_HRE`, `_CITY`, `_COASTAL`) |
 | `province_name(id, buffer, capacity, &length)` | The name the game shows, in UTF-8 |
 | `province_cores(id, tags, capacity, &count)` | The countries with a core |
 | `country(tag, &out)` | Capital, province count, treasury, stability, prestige, manpower, income |
@@ -662,6 +662,8 @@ cores = {
 - `capital = yes` passes a province that is its owner's capital and `capital = no` one that is
   not, `hre = yes` or `no` whether it is part of the Holy Roman Empire, and `city = yes` or `no`
   whether it is a city or still a colony; a province without an owner passes none of them.
+- `coastal = yes` passes land the game counts as coastal and `coastal = no` other land, owned or
+  not; the sea, lakes and wasteland pass neither.
 - `scale = { low high }` with `high_color = { r g b }` colours from `color` at `low` to
   `high_color` at `high`, and the legend shows both ends.
 - A province that passes no rule keeps its political colour; a last
@@ -822,9 +824,9 @@ anvil::plugin!(Hello);
   trade goods keys, their groups and a province's places (`World::province_religion`,
   `province_culture`, `province_trade_goods`, `country_religion`, `country_culture`, the
   `_religion_group` and `_culture_group` methods, `province_area`, `province_region`,
-  `province_superregion`, `province_continent`, `province_trade_node`), and `Province` has `hre`
-  and `city`. 0.3 changes two things: `Row` is `#[non_exhaustive]`, so a `match` on it needs a
-  `_` arm, and code that builds a `Province` itself needs the two new fields. Write `anvil-sdk = "0.3"` in
+  `province_superregion`, `province_continent`, `province_trade_node`), and `Province` has `hre`,
+  `city` and `coastal`. 0.3 changes two things: `Row` is `#[non_exhaustive]`, so a `match` on it needs a
+  `_` arm, and code that builds a `Province` itself needs the three new fields. Write `anvil-sdk = "0.3"` in
   `Cargo.toml`.
   A function the running service
   is too old to have answers `Unsupported`.
