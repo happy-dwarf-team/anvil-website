@@ -639,11 +639,13 @@ cores = {
 
 - A rule reads one of `flag`, `variable`, `modifier` (the province's own value of it) or `value`:
   the province's `development`, `base_tax`, `base_production` or `base_manpower`.
-- `owned_by = RUS` passes the provinces that country owns, `core = yes` or `no` whether the owner
-  has a core there, and `occupied = yes` or `no` whether another country or rebels hold it.
+- `owned_by = RUS` passes the provinces that country owns and `controlled_by = RUS` those it
+  holds, `core = yes` or `no` whether the owner has a core there and `core = RUS` whether that
+  country has one, and `occupied = yes` or `no` whether another country or rebels hold it.
 - With `owner = yes` the rule reads the province's owner instead: its flag, variable or modifier,
   the `value` `treasury`, `stability`, `prestige`, `manpower`, `monthly_income` or `provinces`,
-  or `subject = yes` (the owner has an overlord). A province without an owner does not pass it.
+  `subject = yes` (the owner has an overlord) or `subject_of = RUS` (that overlord). A province
+  without an owner does not pass it.
 - `scale = { low high }` with `high_color = { r g b }` colours from `color` at `low` to
   `high_color` at `high`, and the legend shows both ends.
 - A province that passes no rule keeps its political colour; a last
