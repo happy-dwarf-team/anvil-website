@@ -51,17 +51,21 @@ no longer does anything.
   the last campaign. From 1.3.3 Hamweard puts it back on each return, with the "no ruler" and "no
   consort" ones, and in the lab a campaign after 2 returns matched a fresh start draw by draw for
   10 days of play. Without mods a campaign after 6 returns was still the same after 30 days.
-  From 1.6.1 a return also clears the AI's army strength caches, which the game empties only at
+  From 1.7.0 a return also clears the AI's army strength caches, which the game empties only at
   the end of each AI day: the AI army map mode (console `mapmode armyeval`) can fill them outside
   it, and the next campaign could meet those entries. In the lab's tests they were always empty
   at a return already.
 - **Canals.** A canal changes the map itself, and the map outlives the campaign. The plugin copies
   the map before the first canal and puts it back on a return. If it cannot be put back, that
   return restarts the game, as it does without the plugin.
-- **Random New World restarts.** After a Random New World map, from a new campaign or a loaded
-  save, Exit to Menu and Back restart the game, as they do without the plugin. The game's own
-  restore of the map misses part of it: in the lab Tortuga was no longer in the Caribbean colonial
-  region, and the next campaign's missions differed.
+- **Random New World, from 1.7.0.** A Random New World map rewrites more of the map than a canal,
+  and the game's own restore misses part of it: in the lab Tortuga was no longer in the Caribbean
+  colonial region, and the next campaign's missions differed. From 1.7.0 the plugin copies those
+  parts as well and puts them back on a return, without a restart. In the lab a new campaign after
+  returns from two Random New World campaigns matched a fresh one for 60 days of play, draw by
+  draw and in the save (Steam, without mods; GOG and mods not tested). If the map cannot be put
+  back, that return restarts the game. Before 1.7.0, Exit to Menu and Back after such a map restart
+  the game, as they do without the plugin.
 - **Multiplayer: no return, and one test with a second player.** Exit to Menu and Back restart the game in
   any multiplayer session, as they do without the plugin. The plugin checks that itself and stays
   loaded. Tested on Steam with a host and a client, both with Hamweard: the game's usual
@@ -89,12 +93,14 @@ no longer does anything.
   windows. From 1.6.0 Hamweard also frees those (the lab's fixes of 19 November 2026): the game's
   heap then keeps about 4 MB more live data per return with that save; over the first ten returns
   it also keeps about 0.5 GB of freed heap space committed, and after that the game's memory grows
-  by about 8 MB per return (lab, 20 returns in a row). From 1.6.1 it also frees the leaders the old
-  campaign leaves, which no part of the game deletes: about 3,400 per return from a new campaign
-  without mods and 7,100 with Anbennar, most of them mercenary captains, roughly 0.6 MB per return
-  without mods (lab, 21 November 2026). A return took as long after 40 in a row as
-  at the start. When less than 1 GB of the system's commit limit is left, a return restarts the
-  game instead.
+  by about 8 MB per return (lab, 20 returns in a row). From 1.7.0 it also frees the leaders and the
+  rebel factions the old campaign leaves, which no part of the game deletes. Leaders: about 3,400
+  per return from a new campaign without mods and 7,100 with Anbennar, most of them mercenary
+  captains, roughly 0.6 MB per return without mods (lab, 21 November 2026). Rebel factions: about
+  1,300 after the 1719 save and 800 after a new campaign without mods, about 0.5 MB per return
+  after that save (lab, 22 November 2026). A return took as long after 40 in a row as at the
+  start. When less than 1 GB of the system's commit limit is left, a return restarts the game
+  instead.
 - **A long campaign kept memory it no longer used, until 1.3.2.** Each time the game recalculated
   an overlord's modifiers it made one per subject and never freed the old ones: about 2 MB a year
   without mods and 4.8 MB with Anbennar, in the lab's heap trace. From 1.3.2 Hamweard frees them,
@@ -116,9 +122,9 @@ plugin chose a restart, and why.
 | What you see | Why | What to do |
 | --- | --- | --- |
 | Exit to Menu or Back restarts the game | The plugin is not loaded | Check in the Anvil panel that Hamweard is loaded and approved. |
-| The same, and the log says `the map could not be put back` | A canal changed the map and the saved copy no longer fits it | Nothing to fix: a campaign does not start on the changed map, so the plugin restarts the game. |
+| The same, and the log says `the map could not be put back` | A canal or a Random New World map changed the map and the saved copy no longer fits it | Nothing to fix: a campaign does not start on the changed map, so the plugin restarts the game. |
 | The same, and the log says `multiplayer` | A multiplayer session ends with a restart | Expected. |
-| The same, and the log says `Random New World` | Such a map changes more than a return can put back | Expected. |
+| The same, and the log says `Random New World` | Before 1.7.0, such a map changes more than a return can put back | Expected. From 1.7.0 the return puts the map back. |
 | The same, and the log says `too little memory` | Less than 1 GB of the system's commit limit was left | Expected: the restart gives the memory back. |
 | Anvil refuses to load Hamweard | Another game build, or the original EU4 Menu Patch changed the same code | Use a supported build, and remove the Menu Patch DLL. |
 
@@ -164,10 +170,13 @@ All runs were in the lab on one development machine. The
   10 days of play, and so was the save. On GOG 1.37.5.2 without mods a campaign after 6 returns
   matched a fresh one after 30 days. Steam without mods and GOG 1.37.5.0 were checked by their
   game addresses only.
-- **The return fixes of 1.6.1** (21 November 2026): the lab's reset oracle, a fresh process
-  against one after three returns, in five runs: vanilla 1444, a 1719 save, an 1821 save, Anbennar
-  and GOG 1.37.5.2. All 15 returns freed the old campaign's leaders and cleared the strength
-  caches without a crash, and every run had equal saves and the same number of random draws.
+- **The return fixes of 1.7.0** (21 and 22 November 2026): the lab's reset oracle, a fresh
+  process against one after three returns, the same seed, 60 days of play, the random log
+  compared day by day and the save line by line. Five runs: vanilla 1444, a 1719 save, an 1821
+  save, Anbennar and GOG 1.37.5.2. Their returns freed the old campaign's leaders and rebel
+  factions and cleared the strength caches without a crash, and every run had an equal save and
+  the same number of random draws. Two more runs on Steam passed after Random New World
+  campaigns and after canal campaigns.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
 fourth campaign of such a series.
