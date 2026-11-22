@@ -90,6 +90,7 @@ export default defineConfig({
 						{ slug: 'docs/plugins/overview' },
 						{ slug: 'docs/plugins/first-plugin' },
 						{ slug: 'docs/plugins/recipes' },
+						{ slug: 'docs/plugins/map-mode-files' },
 						{ slug: 'docs/plugins/manifest' },
 						{ slug: 'docs/plugins/api' },
 						{ slug: 'docs/plugins/workshop', label: 'Publish on the Steam Workshop' },

@@ -613,75 +613,9 @@ in the province's tooltip.
 #### Map modes from a mod's files
 
 From Anvil 1.26 a mod can add a map mode with no plugin and no code: a text file in
-`<mod>/anvil/map_modes/`, in the game's script syntax. Each block is a mode with a button on the
-minimap's list. Its rules read a province's or its owner's flags, variables, modifiers and some of
-the game's own numbers, who owns and controls it and whose cores it has, and the first rule a
-province passes gives its colour, its line in the tooltip and its entry in the legend.
-
-```
-holy_sites = {
-    label = "Holy sites"
-    tab = 4
-    rule = { flag = my_holy_site color = { 224 176 0 } label = "Holy site" }
-    rule = { variable = my_faith at_least = 5 color = { 128 64 192 } label = "Faith 5 or more" }
-    rule = { modifier = local_missionary_strength above = 0.01 color = { 64 128 255 } label = "Missionaries" }
-}
-development = {
-    label = "Development"
-    rule = { value = development above = 0 scale = { 3 30 } color = { 240 240 200 } high_color = { 160 0 0 } label = "Development" }
-}
-cores = {
-    label = "Cores and occupation"
-    rule = { occupied = yes color = { 200 40 40 } label = "Occupied" }
-    rule = { core = no color = { 230 160 0 } label = "Owned without a core" }
-    rule = { subject = yes owner = yes color = { 120 120 200 } label = "A subject's" }
-}
-```
-
-- A rule reads one of `flag`, `variable`, `modifier` (the province's own value of it) or `value`:
-  the province's `development`, `base_tax`, `base_production` or `base_manpower`.
-- `owned_by = RUS` passes the provinces that country owns and `controlled_by = RUS` those it
-  holds, `core = yes` or `no` whether the owner has a core there and `core = RUS` whether that
-  country has one, and `occupied = yes` or `no` whether another country or rebels hold it.
-- With `owner = yes` the rule reads the province's owner instead: its flag, variable or modifier,
-  the `value` `treasury`, `stability`, `prestige`, `manpower`, `monthly_income` or `provinces`,
-  `subject = yes` (the owner has an overlord) or `subject_of = RUS` (that overlord). A province
-  without an owner does not pass it.
-- `religion = orthodox`, `culture = swedish` and `trade_goods = grain` pass the provinces with that
-  religion, culture or trade goods, and with `owner = yes` `religion` and `culture` read the
-  owner's state religion and primary culture. `religion_group = muslim` and
-  `culture_group = scandinavian` do the same for their groups. Write the key from the game's
-  files, which can differ from the name it shows: Moskva's culture in 1719 is `russian_new`,
-  which is in the `slavic` group, not `east_slavic`.
-- `area = uppland_area`, `region = scandinavia_region`, `superregion = europe_superregion` and
-  `continent = europe` pass the provinces in that place, with the keys of the game's
-  `map/area.txt`, `region.txt`, `superregion.txt` and `continent.txt`. They are the province's,
-  so they refuse `owner = yes`.
-- `trade_node = baltic_sea` passes the provinces of that trade node, with the keys of the game's
-  `common/tradenodes`. It is the province's, so it refuses `owner = yes`.
-- `capital = yes` passes a province that is its owner's capital and `capital = no` one that is
-  not, `hre = yes` or `no` whether it is part of the Holy Roman Empire, and `city = yes` or `no`
-  whether it is a city or still a colony; a province without an owner passes none of them.
-- `coastal = yes` passes land the game counts as coastal and `coastal = no` other land, owned or
-  not; the sea, lakes and wasteland pass neither.
-- `scale = { low high }` with `high_color = { r g b }` colours from `color` at `low` to
-  `high_color` at `high`, and the legend shows both ends.
-- A province that passes no rule keeps its political colour; a last
-  `rule = { always = yes ... }` colours the rest.
-- The bounds are `at_least`, `at_most`, `above` and `below`, with at most three decimals. Without
-  one, a `variable`, `modifier` or `value` rule passes when the value is not 0, so a scale that
-  starts at 0 needs `at_least = 0`.
-- The colours are computed when the player shows the mode and each month while it stays shown.
-- Anvil reads the files of the playset's mods when the game has started. An edited file shows the
-  next time the player picks the mode (or a month later): its rules and legend change without a
-  restart. A mode's label, tab and icon, and a new mode, need a restart; `anvil/anvil.log` says
-  so. A file with the same name in a later mod replaces an earlier one. The game does not read
-  `anvil/`, so the files leave its checksum alone.
-- A mistake leaves that mode out and writes the file and the line to `anvil/anvil.log`.
-- A mode changes nothing in the game, so it works in ironman and multiplayer. It also colours
-  provinces under terra incognita.
-- The player needs Anvil 1.26 or newer. All the keys are in the
-  [specification](https://github.com/happy-dwarf-team/anvil/blob/main/docs/spec/map-mode-files-v1.md).
+`<mod>/anvil/map_modes/` whose rules colour the provinces, with a legend. anvil-map registers
+those modes on this same service, so they share its 13 numbers with the plugins' modes. The
+files, their rules and examples are on [Map modes from mod files](../map-mode-files/).
 
 ### Script effects and the day end
 
