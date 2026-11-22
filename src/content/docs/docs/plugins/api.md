@@ -613,8 +613,9 @@ in the province's tooltip.
 
 From Anvil 1.26 a mod can add a map mode with no plugin and no code: a text file in
 `<mod>/anvil/map_modes/`, in the game's script syntax. Each block is a mode with a button on the
-minimap's list. Its rules read a province's flags, variables and modifiers, and the first rule a
-province passes gives its colour, its line in the tooltip and its entry in the legend.
+minimap's list. Its rules read a province's or its owner's flags, variables, modifiers and some of
+the game's own numbers, and the first rule a province passes gives its colour, its line in the
+tooltip and its entry in the legend.
 
 ```
 holy_sites = {
@@ -624,13 +625,24 @@ holy_sites = {
     rule = { variable = my_faith at_least = 5 color = { 128 64 192 } label = "Faith 5 or more" }
     rule = { modifier = local_missionary_strength above = 0.01 color = { 64 128 255 } label = "Missionaries" }
 }
+development = {
+    label = "Development"
+    rule = { value = development above = 0 scale = { 3 30 } color = { 240 240 200 } high_color = { 160 0 0 } label = "Development" }
+}
 ```
 
+- A rule reads one of `flag`, `variable`, `modifier` (the province's own value of it) or `value`:
+  the province's `development`, `base_tax`, `base_production` or `base_manpower`.
+- With `owner = yes` the rule reads the province's owner instead: its flag, variable or modifier,
+  or the `value` `treasury`, `stability`, `prestige`, `manpower`, `monthly_income` or
+  `provinces`. A province without an owner does not pass it.
+- `scale = { low high }` with `high_color = { r g b }` colours from `color` at `low` to
+  `high_color` at `high`, and the legend shows both ends.
 - A province that passes no rule keeps its political colour; a last
   `rule = { always = yes ... }` colours the rest.
 - The bounds are `at_least`, `at_most`, `above` and `below`, with at most three decimals. Without
-  one, a `variable` or `modifier` rule passes when the value is not 0. A modifier is the
-  province's own value, not its owner's.
+  one, a `variable`, `modifier` or `value` rule passes when the value is not 0, so a scale that
+  starts at 0 needs `at_least = 0`.
 - The colours are computed when the player shows the mode and each month while it stays shown.
 - Anvil reads the files of the playset's mods once, when the game has started, so a change needs a
   restart. A file with the same name in a later mod replaces an earlier one. The game does not read

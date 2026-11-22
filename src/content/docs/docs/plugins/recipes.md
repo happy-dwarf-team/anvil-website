@@ -227,7 +227,7 @@ Chinese, Japanese and Korean come from the fonts Windows ships.
 | Show a window | [Windows](../api/#windows) |
 | React to a key or a mouse button the player picks | [Keys](../api/#keys) (Anvil 1.18) |
 | Show a value per province on the map | [Map modes](../api/#map-modes) (Anvil 1.16) |
-| Colour the map from a mod's flags, variables or modifiers, with no code | [Map modes from a mod's files](../api/#map-modes-from-a-mods-files) (Anvil 1.26) |
+| Colour the map from a mod's flags, variables or modifiers, or by development, with no code | [Map modes from a mod's files](../api/#map-modes-from-a-mods-files) (Anvil 1.26) |
 | Have the player's armies drill, merge or split, or choose an event's option | [Commands](../api/#commands) (Anvil 1.17) |
 | Give mods an effect of your own, or run once a game day | [Script effects and the day end](../api/#script-effects-and-the-day-end) (Anvil 1.16 and 1.18) |
 | Keep files between starts | `host.data_dir()`, `anvil/data/<plugin-id>/` |
