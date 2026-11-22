@@ -614,8 +614,8 @@ in the province's tooltip.
 From Anvil 1.26 a mod can add a map mode with no plugin and no code: a text file in
 `<mod>/anvil/map_modes/`, in the game's script syntax. Each block is a mode with a button on the
 minimap's list. Its rules read a province's or its owner's flags, variables, modifiers and some of
-the game's own numbers, and the first rule a province passes gives its colour, its line in the
-tooltip and its entry in the legend.
+the game's own numbers, who owns and controls it and whose cores it has, and the first rule a
+province passes gives its colour, its line in the tooltip and its entry in the legend.
 
 ```
 holy_sites = {
@@ -629,13 +629,21 @@ development = {
     label = "Development"
     rule = { value = development above = 0 scale = { 3 30 } color = { 240 240 200 } high_color = { 160 0 0 } label = "Development" }
 }
+cores = {
+    label = "Cores and occupation"
+    rule = { occupied = yes color = { 200 40 40 } label = "Occupied" }
+    rule = { core = no color = { 230 160 0 } label = "Owned without a core" }
+    rule = { subject = yes owner = yes color = { 120 120 200 } label = "A subject's" }
+}
 ```
 
 - A rule reads one of `flag`, `variable`, `modifier` (the province's own value of it) or `value`:
   the province's `development`, `base_tax`, `base_production` or `base_manpower`.
+- `owned_by = RUS` passes the provinces that country owns, `core = yes` or `no` whether the owner
+  has a core there, and `occupied = yes` or `no` whether another country or rebels hold it.
 - With `owner = yes` the rule reads the province's owner instead: its flag, variable or modifier,
-  or the `value` `treasury`, `stability`, `prestige`, `manpower`, `monthly_income` or
-  `provinces`. A province without an owner does not pass it.
+  the `value` `treasury`, `stability`, `prestige`, `manpower`, `monthly_income` or `provinces`,
+  or `subject = yes` (the owner has an overlord). A province without an owner does not pass it.
 - `scale = { low high }` with `high_color = { r g b }` colours from `color` at `low` to
   `high_color` at `high`, and the legend shows both ends.
 - A province that passes no rule keeps its political colour; a last
@@ -644,8 +652,10 @@ development = {
   one, a `variable`, `modifier` or `value` rule passes when the value is not 0, so a scale that
   starts at 0 needs `at_least = 0`.
 - The colours are computed when the player shows the mode and each month while it stays shown.
-- Anvil reads the files of the playset's mods once, when the game has started, so a change needs a
-  restart. A file with the same name in a later mod replaces an earlier one. The game does not read
+- Anvil reads the files of the playset's mods when the game has started. An edited file shows the
+  next time the player picks the mode (or a month later): its rules and legend change without a
+  restart. A mode's label, tab and icon, and a new mode, need a restart; `anvil/anvil.log` says
+  so. A file with the same name in a later mod replaces an earlier one. The game does not read
   `anvil/`, so the files leave its checksum alone.
 - A mistake leaves that mode out and writes the file and the line to `anvil/anvil.log`.
 - A mode changes nothing in the game, so it works in ironman and multiplayer. It also colours
