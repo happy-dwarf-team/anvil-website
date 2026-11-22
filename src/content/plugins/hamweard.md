@@ -98,9 +98,11 @@ no longer does anything.
   per return from a new campaign without mods and 7,100 with Anbennar, most of them mercenary
   captains, roughly 0.6 MB per return without mods (lab, 21 November 2026). Rebel factions: about
   1,300 after the 1719 save and 800 after a new campaign without mods, about 0.5 MB per return
-  after that save (lab, 22 November 2026). A return took as long after 40 in a row as at the
-  start. When less than 1 GB of the system's commit limit is left, a return restarts the game
-  instead.
+  after that save (lab, 22 November 2026). It also frees the modifiers the game gives a country
+  for each of its centers of trade, lost at every return and every load of a save: about 0.1 MB
+  per return after the 1719 save (lab heap trace, 22 November 2026). A return took as long after
+  40 in a row as at the start. When less than 1 GB of the system's commit limit is left, a return
+  restarts the game instead.
 - **A long campaign kept memory it no longer used, until 1.3.2.** Each time the game recalculated
   an overlord's modifiers it made one per subject and never freed the old ones: about 2 MB a year
   without mods and 4.8 MB with Anbennar, in the lab's heap trace. From 1.3.2 Hamweard frees them,
