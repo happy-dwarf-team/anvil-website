@@ -98,9 +98,11 @@ no longer does anything.
   per return from a new campaign without mods and 7,100 with Anbennar, most of them mercenary
   captains, roughly 0.6 MB per return without mods (lab, 21 November 2026). Rebel factions: about
   1,300 after the 1719 save and 800 after a new campaign without mods, about 0.5 MB per return
-  after that save (lab, 22 November 2026). It also frees the modifiers the game gives a country
-  for each of its centers of trade, lost at every return and every load of a save: about 0.1 MB
-  per return after the 1719 save (lab heap trace, 22 November 2026). A save loaded from the
+  after that save (lab, 22 November 2026). It also frees the estates' running influence and
+  loyalty changes, about 0.2 MB per return after the 1719 save (lab, 19 November 2026), and the
+  modifiers the game gives a country for each of its centers of trade, lost at every return and
+  every load of a save: about 0.1 MB per return after that save (lab heap trace, 22 November
+  2026). A save loaded from the
   in-game menu resets the world the same way and lost the same, 4–5 MB per load of that save;
   from 1.7.0 Hamweard frees it there too (same trace). A return took as long after
   40 in a row as at the start. When less than 1 GB of the system's commit limit is left, a return
@@ -180,7 +182,9 @@ All runs were in the lab on one development machine. The
   save, Anbennar and GOG 1.37.5.2. Their returns freed the old campaign's leaders and rebel
   factions and cleared the strength caches without a crash, and every run had an equal save and
   the same number of random draws. Two more runs on Steam passed after Random New World
-  campaigns and after canal campaigns.
+  campaigns and after canal campaigns. All seven passed again with the center-of-trade and
+  save-load fixes, and a campaign with two saves loaded from the in-game menu ended as it does
+  without them.
 
 Before the plugin destroyed the windows of the last campaign, the game crashed in the second to
 fourth campaign of such a series.
