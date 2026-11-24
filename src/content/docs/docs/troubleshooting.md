@@ -159,9 +159,12 @@ Tell the mod's author; the fix is in their script.
 
 The game checks how many ideas a country takes in a group while you play, but not when it loads
 a save. If a save has more ideas taken in a group than the group has now, for example after a mod
-update removed an idea from it, the game reads past the group's end on the daily update. That
-crashes the game once it runs on from that save, also with every plugin off. From Anvil 1.26 the
-crash report's notes say so.
+update removed an idea from it, the game reads past the group's end each time it adds up that
+country's modifiers, from the moment the save is selected. What it finds there depends on the
+memory after the group, so the save can crash the game at once, later, or not at all, also with
+every plugin off. In our tests one such save crashed as soon as it was loaded in some starts and in
+others played on for up to a year without a crash. From Anvil 1.26 the crash report's notes say so when it
+crashes.
 
 To find the country, open an uncompressed copy of the save in a text editor and search for
 `active_idea_groups={`. Each country has one, with lines such as `SWE_ideas=7`; a number larger
