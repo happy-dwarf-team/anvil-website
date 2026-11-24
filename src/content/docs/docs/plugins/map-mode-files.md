@@ -162,10 +162,16 @@ coasts = {
     rule = { city = no color = { 230 160 0 } label = "Colony" }
     rule = { coastal = yes color = { 40 120 220 } label = "Coast" }
 }
+forts = {
+    label = "Forts"
+    rule = { modifier = fort_level at_least = 1 scale = { 1 8 } color = { 230 200 120 } high_color = { 120 40 20 } label = "Fort level" }
+    rule = { always = yes owner = yes color = { 200 200 200 } label = "No fort" }
+}
 ```
 
 A province takes the first rule it passes, so in `coasts` a coastal colony is a colony, and
-coastal land with no owner is coast.
+coastal land with no owner is coast. In `forts`, the modifier `fort_level` is the fort level the
+game counts for the province, the one its province view shows.
 
 ## Limits
 
