@@ -252,7 +252,7 @@ a new game build may leave the world out.
 | --- | --- |
 | `player(&tag)` | The country the game treats as the player's |
 | `province_limit()` | Valid province IDs are 1 up to this, exclusive |
-| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland; from 1.26 whether it is part of the Holy Roman Empire, a city and coastal (`ANVIL_GAME_PROVINCE_HRE`, `_CITY`, `_COASTAL`) |
+| `province(id, &out)` | Owner, controller, base tax, production and manpower, land and wasteland; from 1.26 whether it is part of the Holy Roman Empire, a city and coastal (`ANVIL_GAME_PROVINCE_HRE`, `_CITY`, `_COASTAL`); from 1.27 whether it is in a state (`ANVIL_GAME_PROVINCE_STATE`), and its local autonomy, devastation and trade power × 1000, with `values` bits (`ANVIL_GAME_PROVINCE_VALUE_*`) saying which ones the build has |
 | `province_name(id, buffer, capacity, &length)` | The name the game shows, in UTF-8 |
 | `province_cores(id, tags, capacity, &count)` | The countries with a core |
 | `country(tag, &out)` | Capital, province count, treasury, stability, prestige, manpower, income |
@@ -760,8 +760,9 @@ anvil::plugin!(Hello);
   `_religion_group` and `_culture_group` methods, `province_area`, `province_region`,
   `province_superregion`, `province_continent`, `province_trade_node`), and `Province` has `hre`,
   `city` and `coastal`. 0.3 changes two things: `Row` is `#[non_exhaustive]`, so a `match` on it needs a
-  `_` arm, and code that builds a `Province` itself needs the three new fields. Write `anvil-sdk = "0.3"` in
-  `Cargo.toml`.
+  `_` arm, and code that builds a `Province` itself needs the three new fields. From `anvil-sdk` 0.4
+  (Anvil 1.27), `Province` also has `state`, `local_autonomy`, `devastation` and `trade_power`, which
+  code that builds a `Province` itself needs too. Write `anvil-sdk = "0.4"` in `Cargo.toml`.
   A function the running service
   is too old to have answers `Unsupported`.
 - Host and service calls are safe Rust. What touches the game's memory by address stays

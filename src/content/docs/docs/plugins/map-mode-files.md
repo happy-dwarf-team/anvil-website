@@ -59,7 +59,7 @@ entry) and exactly one test:
 | `flag = name` | with that province flag (what `has_province_flag` sees) |
 | `variable = name` | with that province variable, within the bounds |
 | `modifier = key` | with the province's own value of that modifier within the bounds, such as `local_missionary_strength` |
-| `value = development` | with its development within the bounds; also `base_tax`, `base_production` and `base_manpower` |
+| `value = development` | with its development within the bounds; also `base_tax`, `base_production` and `base_manpower`, and from Anvil 1.27 `local_autonomy` (as the game shows it), `devastation` and `trade_power` (its trade power in its trade node, as of the game's last update) |
 | `owned_by = RUS` | that country owns |
 | `controlled_by = RUS` | that country holds, as owner or occupier |
 | `core = yes` or `no` | where the owner has a core, or has none |
@@ -74,11 +74,13 @@ entry) and exactly one test:
 | `hre = yes` or `no` | that is part of the Holy Roman Empire, or is not |
 | `city = yes` or `no` | that is a city, or still a colony |
 | `coastal = yes` or `no` | land the game counts as coastal, or other land, owned or not; the sea, lakes and wasteland pass neither |
+| `state = yes` or `no` | from Anvil 1.27: that is in one of its owner's states, or is a territory |
 
 Write a key as the game's files write it, which can differ from the name the game shows: in 1719
 Moskva's culture is `russian_new`, in the `slavic` group, not `russian` and `east_slavic`. The
 game's `common/religions`, `common/cultures` and `common/tradegoods` list them. A province with
-no owner passes no rule on the owner's core, its occupation, its capital, the empire or a city.
+no owner passes no rule on the owner's core, its occupation, its capital, the empire, a city or a
+state.
 
 ### The owner
 
@@ -167,11 +169,17 @@ forts = {
     rule = { modifier = fort_level at_least = 1 scale = { 1 8 } color = { 230 200 120 } high_color = { 120 40 20 } label = "Fort level" }
     rule = { always = yes owner = yes color = { 200 200 200 } label = "No fort" }
 }
+war_damage = {
+    label = "War damage"
+    rule = { value = devastation above = 0 scale = { 0 50 } color = { 240 210 80 } high_color = { 110 0 0 } label = "Devastation" }
+    rule = { state = no color = { 230 160 30 } label = "Territory" }
+}
 ```
 
 A province takes the first rule it passes, so in `coasts` a coastal colony is a colony, and
 coastal land with no owner is coast. In `forts`, the modifier `fort_level` is the fort level the
-game counts for the province, the one its province view shows.
+game counts for the province, the one its province view shows. `war_damage` needs Anvil 1.27; in
+it a devastated territory shows its devastation.
 
 ## Limits
 
