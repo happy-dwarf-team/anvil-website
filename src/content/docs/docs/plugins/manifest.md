@@ -164,7 +164,8 @@ build = "eu4-1.37.5-steam-win64"
 
 [symbol.speed_object]                 # a function
 rva = 0x8024D0
-bytes = "48 8B 81 18 04 00 00 C3"     # hex pairs, ?? = any byte
+sha256 = "AE4C23FB37CE181F11EF2E3EAF4BAC498572CD06FA1783BB0BBCFE0FE93A1407"
+size = 8                              # the digest covers the 8 bytes at rva
 memory = "code"                       # code, read or write
 signature = "void* (void* session)"   # typed in C, C++ and Rust
 note = "session vtable slot 0x100: returns the game-speed object"
@@ -176,10 +177,11 @@ points_to = 0x10D2E80
 
 [symbol.root_and_date]                # values read from the verified bytes
 rva = 0x14321FC
-bytes = "48 8B 05 75 DC F0 00 8B 98 D0 1D 00 00"
+sha256 = "1CB3A5F923B2390CEBF07440FFAC7742C7369FB6B8E4AE06E0DECBC38376D5D8"
+size = 13
 memory = "code"
-values.root        = { at = 3, rip_relative = 7, type = "Root" }
-values.date_offset = { at = 9, size = 4 }
+values.root        = { at = 3, rip_relative = 7, type = "Root", is = 0x233FE78 }
+values.date_offset = { at = 9, size = 4, is = 0x1DD0 }
 
 [symbol.physfs_get_write_dir]         # by export name instead of RVA
 export = "PHYSFS_getWriteDir"
@@ -192,32 +194,39 @@ signature = "const char* ()"
   (`type`) or a **site** (none of them). `signature`, `points_to` and `type` exclude each
   other.
 - A symbol has exactly one of `rva` and `export`. One at an `rva` needs `memory`, and
-  `bytes` or `points_to` (a data symbol may have neither). For an `export`, `bytes` are
-  optional and check the prologue.
+  `sha256` with `size` or `points_to` (a data symbol may have neither). For an `export`,
+  `sha256` and `size` are optional and check the prologue.
+- `sha256` is the SHA-256 of the `size` bytes at the symbol, in hex, with every offset that
+  `any` lists set to 0 before hashing; `any` lists offsets that are not compared. While you
+  work you may write the expected bytes instead; see
+  [Digests instead of bytes](#digests-instead-of-bytes).
 - A block for `replace_block` may name `resume`, another symbol where the game continues;
   the default is the end of the block.
-- A value has `at` (its offset in `bytes`) and either `size` (1, 2, 4 or 8) or
-  `rip_relative`, the offset of the instruction's end, which yields an RVA.
+- A value has `at` (its offset in the symbol's bytes) and either `size` (1, 2, 4 or 8) or
+  `rip_relative`, the offset of the instruction's end, which yields an RVA. `is` states the
+  value the bytes must give: verification checks it, and `anvil gen` writes it as the
+  constant. A value without `is` is read when the game loads.
 - Names match `[a-z][a-z0-9_]*`; they become identifiers in the generated headers.
 
 Before loading the DLL, Anvil compares every symbol with the running game:
-`bytes` (`??` skipped), the memory kind against the section, and `points_to` against the
-stored pointer. Bytes already changed by other plugins are compared in their original
-form, so two plugins can rely on the same function. On a mismatch the plugin is skipped
-with the symbol, the RVA and the first differing byte in the log.
+the digest of its bytes (`any` offsets zeroed) and each `is`, the memory kind against the
+section, and `points_to` against the stored pointer. Bytes already changed by other plugins
+are compared in their original form, so two plugins can rely on the same function. On a
+mismatch the plugin is skipped with the symbol, the RVA and both digests in the log.
 
 ### Several builds
 
 From Anvil 1.7, a file can declare more than one build, for example Steam and the GOG build
 1.37.5.2. It lists them in `builds` instead of `build` and still declares each symbol once.
-What a symbol is stays shared; only `rva`, `bytes` and `points_to` may differ, in a
-`build."<id>"` table of the symbol:
+What a symbol is stays shared; only where it is and what bytes it has (`rva`, `sha256`,
+`size`, `any` and `points_to`) may differ, in a `build."<id>"` table of the symbol:
 
 ```toml
 builds = ["eu4-1.37.5-steam-win64", "eu4-1.37.5.2-gog-win64"]
 
 [symbol.frame]                        # the same bytes, another address
-bytes = "48 89 5C 24 08 48 89 6C 24 10"
+sha256 = "6E06F5F68091C944A879D036CD67F041FAC7D1D1B62ADFF485C5EE3A90362A64"
+size = 10
 memory = "code"
 signature = "uintptr_t (void* app, uint8_t outer)"
 build."eu4-1.37.5-steam-win64" = { rva = 0x14C25A0 }
@@ -225,19 +234,21 @@ build."eu4-1.37.5.2-gog-win64" = { rva = 0x14BC400 }
 
 [symbol.speed_object]                 # other bytes: a table per build
 memory = "code"
-values.speed = { at = 3, size = 4 }   # 0x418 on Steam, 0x408 on GOG
+values.speed = { at = 3, size = 4 }   # 0x418 on Steam, 0x408 on GOG: no is, read at load
 
 [symbol.speed_object.build."eu4-1.37.5-steam-win64"]
 rva = 0x8024D0
-bytes = "48 8B 81 18 04 00 00 C3"
+sha256 = "AE4C23FB37CE181F11EF2E3EAF4BAC498572CD06FA1783BB0BBCFE0FE93A1407"
+size = 8
 
 [symbol.speed_object.build."eu4-1.37.5.2-gog-win64"]
 rva = 0x801850
-bytes = "48 8B 81 08 04 00 00 C3"
+sha256 = "8F07B1074C83410F33EBF37059EF5D88E560BD1B81DECD74D35506EC5408E384"
+size = 8
 ```
 
-- Each of `rva`, `bytes` and `points_to` is given either for every build or per build, not
-  both. Each build must pass the rules above on its own; an error names the build.
+- Each of `rva`, `sha256`, `size`, `any` and `points_to` is given either for every build or
+  per build, not both. Each build must pass the rules above on its own; an error names the build.
 - A symbol keeps its id in every build, so the plugin's code does not change. Anvil uses
   the running game's addresses, and a file that does not list the running build skips the
   plugin.
@@ -255,7 +266,8 @@ apply to the builds it is in:
 ```toml
 [symbol.lobby_close]
 rva = 0x1658D50
-bytes = "40 53 48 83 EC 20"
+sha256 = "621623B29226F30F5005D55F719BC15E2CBADAF7A1AEAFA0B1A2F71213541DD6"
+size = 6
 memory = "code"
 signature = "void (void* lobby)"
 absent = ["eu4-1.37.5.2-gog-win64"]
@@ -277,30 +289,32 @@ absent = ["eu4-1.37.5.2-gog-win64"]
 
 ### Digests instead of bytes
 
-`bytes` puts short pieces of `eu4.exe` in your repository, zip and Workshop item. From Anvil
-1.10 a symbol can state their SHA-256 instead, so these files hold no game code:
+From Anvil 1.10 a symbol states the SHA-256 of its bytes, so your repository, zip and
+Workshop item hold no code of `eu4.exe`. The older key `bytes` writes the expected bytes
+out as hex pairs (`??` for any byte); it stays valid for all of plugin API 2 and is the
+handy form while you work, but it copies pieces of the game into every file you share.
+Write it locally, for example:
 
 ```toml
-[symbol.speed_object]
-rva = 0x8024D0
-sha256 = "5F3A…"                                 # of the bytes at rva, with the `any` offsets set to 0
-size = 8                                         # required with sha256
-any = [3, 4]                                     # optional: offsets not compared, as ?? in bytes
+[symbol.my_site]
+rva = 0x123450
+bytes = "40 53 ?? ?? 90 90"                      # an invented example, not the game's code
 memory = "code"
-values.speed = { at = 3, size = 4, is = 0x418 }  # optional is: the value the bytes must give
 ```
+
+and before you commit, run
+[`tools/symbols-to-digest.py`](https://github.com/happy-dwarf-team/anvil/blob/main/tools/symbols-to-digest.py)
+on `symbols.toml`. It needs no game: it replaces each `bytes` with `sha256`, `size` and
+`any` (`any = [2, 3]` here) and writes `is` for each value that is the same in every build
+and does not lie on a `??`; then run `anvil check --exe` once per build.
 
 - `sha256`, `size` and `any` are placement keys like `bytes`, shared or per build. `bytes` and
   `sha256` exclude each other per placement.
-- A `value` with `is` keeps its `anvil gen` constant; without `is` it is read when the game
-  loads.
-- Write `bytes` while you work, then run
-  [`tools/symbols-to-digest.py`](https://github.com/happy-dwarf-team/anvil/blob/main/tools/symbols-to-digest.py),
-  which needs no game, and `anvil check --exe` once per build.
 - A mismatch names both digests, not the first differing byte, and a port to another game build
   needs the old `eu4.exe`, because the repository no longer holds the pattern.
 - An older Anvil does not know the keys and skips the plugin, so declare `anvil = ">=1.10.0"`.
-  `bytes` stays valid for all of plugin API 2. The template uses it for readability.
+- Describe the game's code in `note` and comments by its address and what it does, not by
+  the names a debugger shows.
 
 [ADR 0003](https://github.com/happy-dwarf-team/anvil/blob/main/docs/adr/0003-symbol-digests.md)
 has the reasons and the limits: a digest is not secrecy.

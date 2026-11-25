@@ -62,21 +62,41 @@ signature = "void* (void* session)"
 
 [symbol.speed_object.build."eu4-1.37.5-steam-win64"]
 rva = 0x8024D0
-bytes = "48 8B 81 18 04 00 00 C3"      # mov rax, [rcx+0x418]; ret
+sha256 = "AE4C23FB37CE181F11EF2E3EAF4BAC498572CD06FA1783BB0BBCFE0FE93A1407"
+size = 8      # returns the game-speed object, a field at session+0x418
 
 [symbol.speed_object.build."eu4-1.37.5.2-gog-win64"]
 rva = 0x801850
-bytes = "48 8B 81 08 04 00 00 C3"      # mov rax, [rcx+0x408]; ret
+sha256 = "8F07B1074C83410F33EBF37059EF5D88E560BD1B81DECD74D35506EC5408E384"
+size = 8      # the same getter; the field is 0x10 lower on GOG, at session+0x408
 ```
 
-At build time `anvil gen` turns it into `symbols.gen.hpp`, so the code says
+`sha256` is the SHA-256 of the `size` bytes at `rva`: Anvil reads them from the running game
+and compares the digest, so the file states which code it expects without holding a copy of
+it. At build time `anvil gen` turns it into `symbols.gen.hpp`, so the code says
 `sym::speed_object`, and a detour that does not match the signature does not compile. The
 [manifest reference](../manifest/#symbolstoml) lists every key. To support one build only,
-write `build = "<id>"` instead of `builds`, and give `rva` and `bytes` in the symbol itself.
+write `build = "<id>"` instead of `builds`, and give `rva`, `sha256` and `size` in the
+symbol itself.
 
-These two symbols are examples. For your own, you find the function and its bytes in `eu4.exe` with
-a disassembler such as Ghidra; `anvil check` then verifies what you wrote. To read the campaign or
-open a window you need no symbols at all: start from [Recipes](../recipes/) instead.
+These two symbols are examples. For your own, you find the function in `eu4.exe` with a
+disassembler such as Ghidra. While you work, write the bytes you expect as `bytes`
+(`??` for a byte that may differ):
+
+```toml
+[symbol.my_function]
+rva = 0x123450
+bytes = "40 53 ?? ?? 90 90"      # an invented example, not the game's code
+memory = "code"
+```
+
+Before you commit, run Anvil's
+[`tools/symbols-to-digest.py`](https://github.com/happy-dwarf-team/anvil/blob/main/tools/symbols-to-digest.py)
+on `symbols.toml`: it replaces each `bytes` with `sha256`, `size` and `any`, so your
+repository carries no code of the game. Describe the code in `note` by its address and what
+it does, not by names a debugger shows. `anvil check` then verifies what you wrote. To read
+the campaign or open a window you need no symbols at all: start from [Recipes](../recipes/)
+instead.
 
 ## 4. Build
 
@@ -96,7 +116,7 @@ in `build/plugin/my-plugin/`.
 cmake --build build --config Release --target my_plugin-check
 ```
 
-This runs `anvil check --exe`: it verifies every symbol against `eu4.exe` (build, bytes,
+This runs `anvil check --exe`: it verifies every symbol against `eu4.exe` (build, digest,
 memory kind, instruction boundaries) and rewrites `symbols.lock`, with one check per build.
 Run it again with the other build's `eu4.exe`, or drop that build from `builds`:
 
