@@ -92,8 +92,11 @@ memory = "code"
 
 Before you commit, run Anvil's
 [`tools/symbols-to-digest.py`](https://github.com/happy-dwarf-team/anvil/blob/main/tools/symbols-to-digest.py)
-on `symbols.toml`: it replaces each `bytes` with `sha256`, `size` and `any`, so your
-repository carries no code of the game. Describe the code in `note` by its address and what
+(in the SDK archive's `tools/` from Anvil 1.28) on `symbols.toml`: it replaces each `bytes`
+with `sha256`, `size` and `any`, so your repository carries no code of the game. To see the
+bytes again later, `anvil check --exe <eu4.exe> --dump-bytes <file>` (Anvil 1.28) writes them
+to a file outside the plugin folder, for you alone
+([anvil check](../manifest/#anvil-check)). Describe the code in `note` by its address and what
 it does, not by names a debugger shows. `anvil check` then verifies what you wrote. To read
 the campaign or open a window you need no symbols at all: start from [Recipes](../recipes/)
 instead.

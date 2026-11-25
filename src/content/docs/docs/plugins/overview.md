@@ -36,6 +36,7 @@ Every Anvil release has an asset `anvil-sdk-windows-x64.zip` with the headers, t
 | `include/anvil/anvil_log_throttle.h` | the messages of the game's logs with their counts, from the standard plugin `anvil-log-throttle` (1.20) |
 | `include/anvil/anvil_benchmark.h` | the start-up benchmark service (C++: `anvil_benchmark.hpp`) |
 | `bin/anvil.exe` | `anvil gen`, `anvil check` and `anvil port` |
+| `tools/symbols-to-digest.py` | turns the `bytes` of a `symbols.toml` into `sha256`, `size` and `any` before a commit (Python 3.11 or newer; 1.28) |
 | `cmake/` | the `AnvilPlugin` CMake package with `anvil_add_plugin` |
 
 A plugin repository fetches it in `CMakeLists.txt`, pinned by its hash:

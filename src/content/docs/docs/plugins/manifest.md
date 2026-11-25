@@ -304,9 +304,15 @@ memory = "code"
 
 and before you commit, run
 [`tools/symbols-to-digest.py`](https://github.com/happy-dwarf-team/anvil/blob/main/tools/symbols-to-digest.py)
-on `symbols.toml`. It needs no game: it replaces each `bytes` with `sha256`, `size` and
-`any` (`any = [2, 3]` here) and writes `is` for each value that is the same in every build
-and does not lie on a `??`; then run `anvil check --exe` once per build.
+on `symbols.toml`. From Anvil 1.28 the tool is also in the SDK archive, at
+`tools/symbols-to-digest.py` (Python 3.11 or newer). It needs no game: it replaces each
+`bytes` with `sha256`, `size` and `any` (`any = [2, 3]` here) and writes `is` for each value
+that is the same in every build and does not lie on a `??`; then run `anvil check --exe` once
+per build.
+
+To get the bytes back later, for porting or to write a similar symbol, ask `anvil check` for
+them (Anvil 1.28): `--dump-bytes <file>` writes them from your `eu4.exe` to a file of your own
+outside the plugin folder; see [anvil check](#anvil-check).
 
 - `sha256`, `size` and `any` are placement keys like `bytes`, shared or per build. `bytes` and
   `sha256` exclude each other per placement.
@@ -475,7 +481,7 @@ Declare the types named in `signature` and `type` before including the header.
 `anvil check` validates a plugin without starting the game:
 
 ```powershell
-anvil check <plugin folder> [--exe <eu4.exe>] [--format text|json|github] [--complete-translations]
+anvil check <plugin folder> [--exe <eu4.exe> [--dump-bytes <file>]] [--format text|json|github] [--complete-translations]
 anvil check --game <game folder> [--format text|json|github] [--host-version <x.y.z>]
 ```
 
@@ -500,6 +506,20 @@ anvil check --game <game folder> [--format text|json|github] [--host-version <x.
   overwritten bytes are all `??`, as the loader [refuses them](../api/#chains). It
   rewrites `symbols.lock`. From Anvil 1.26 an exe of a build the file does not declare, or
   one this Anvil does not know, is reported and leaves `symbols.lock` alone.
+- **`--dump-bytes <file>`** (Anvil 1.28, needs `--exe`): also writes, for every symbol that
+  verified on that build and has bytes, a `[symbol.<name>]` table with its `rva`, the `bytes`
+  read from `eu4.exe` (`??` at its `any` offsets) and `memory`, under a top-level `build`. It
+  is the pattern a digest no longer shows: keep it for porting, or paste a `bytes` line back
+  into `symbols.toml` while you work and run `tools/symbols-to-digest.py` before you commit.
+  Pointer slots, data, failing and `absent` symbols are left out, and the summary and the
+  JSON report (`dump_bytes`) say how many were written.
+  - The file holds the game's own code, as its header says: keep it for yourself and do not
+    commit, publish or ship it.
+  - A path inside the plugin folder is refused (exit `2`, nothing written), since that
+    folder goes into Git and the plugin's zip. A path inside any other Git work tree is
+    written with a warning to make Git ignore it.
+  - When `symbols.toml` does not declare the exe's build, or the build is unknown, nothing
+    is written and the summary says why. `symbols.lock` is written as before.
 - **With `--game`:** checks every plugin in the game's `anvil/plugins/` and resolves them as
   the loader would: what loads in which order, what is skipped and why, and warnings for
   plugins whose code symbols overlap. From Anvil 1.24 it also shows the next start's plan:
