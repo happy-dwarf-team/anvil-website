@@ -19,7 +19,7 @@ it to play.
 
 - **Read the game:** the date, speed and pause, the window, the worker threads, the interface's
   widgets, open events, provinces, countries and a country's armies and navies.
-- **Take screenshots** of the window, also while it is covered.
+- **Take screenshots** of the window or a part of it, also while it is covered.
 - **Time the game** between two dates, to measure how fast it runs.
 - **Use the keyboard and mouse** as a player would, and click widgets and event options by name.
   The window does not need focus. This is off until you allow it.
@@ -150,6 +150,13 @@ warnings, each with the countries in it and its dates; its rivals, overlord and 
 opinion of the player and the player's of it (the numbers of the diplomacy window), with trust,
 favors and truce. In multiplayer this shows more than a player sees: every country's trust and
 opinions.
+
+From Tongs 0.38, `screenshot region=X,Y,W,H` writes only that part of the window, cut at its
+native size and never scaled. `province goto` and `province open` park Tongs' pointer at the
+window's centre, so a real mouse on another screen no longer scrolls the map away from the target;
+moving the real mouse or `release` hands the pointer back. The MCP server's `tongs_ready` answers
+`blocked` when the game's confirm window, such as the achievements notice of a modded save, holds
+the start, instead of waiting for its timeout.
 
 The [command reference](https://github.com/happy-dwarf-team/tongs/blob/main/docs/commands.md) has
 every command, key and answer field.
